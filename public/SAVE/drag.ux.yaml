@@ -14,7 +14,7 @@ scripts:
   };
 
   this.cameraScreenToWorldVec = function(screenX, screenY, d) {
-    console.log("screenX:" + screenX + ", screenY:" + screenY);
+    //console.log("screenX:" + screenX + ", screenY:" + screenY);
 
     var s2wVec = new THREE.Vector3();
     var cameraPosition = new THREE.Vector3();
@@ -22,7 +22,7 @@ scripts:
     var y = -(screenY / window.innerHeight) * 2 + 1;
 
     s2wVec.set(x, y, d);
-    console.log("s2wVec:" + s2wVec.toArray());
+    //console.log("s2wVec:" + s2wVec.toArray());
     _dView.projector.unprojectVector(s2wVec, _dView.state.cameraInUse);
     cameraPosition.setFromMatrixPosition(_dView.state.cameraInUse.matrixWorld);
     s2wVec.sub(cameraPosition);
@@ -33,9 +33,9 @@ scripts:
     var Vec3 = goog.vec.Vec3;
     var moveToPosition = Vec3.createFloat32();
 
-    console.log("pickInfo.globalNormal:" + pickInfo.globalNormal[0] + ", " + pickInfo.globalNormal[1] + ", " + pickInfo.globalNormal[2]);
-    console.log("pickInfo.globalPosition:" + pickInfo.globalPosition[0] + ", " + pickInfo.globalPosition[1] + ", " + pickInfo.globalPosition[2]);
-    console.log("pointerInfo.position:" + pointerInfo.position);
+    //console.log("pickInfo.globalNormal:" + pickInfo.globalNormal[0] + ", " + pickInfo.globalNormal[1] + ", " + pickInfo.globalNormal[2]);
+    //console.log("pickInfo.globalPosition:" + pickInfo.globalPosition[0] + ", " + pickInfo.globalPosition[1] + ", " + pickInfo.globalPosition[2]);
+    //console.log("pointerInfo.position:" + pointerInfo.position);
 
     this.ycam = pickInfo.distance;
 
@@ -43,14 +43,14 @@ scripts:
 
     // Vec3.subtract(this.translation, s2wVec, this.offsetTransPos);
 
-    console.log("pointerDown s2wVec:" + s2wVec[0] + ", " + s2wVec[1] + ", " + s2wVec[2]);
-    console.log("pointerDown translation:" + this.translation[0] + ", " + this.translation[1] + ", " + this.translation[2]);
-    console.log("pointerDown ycam:" + this.ycam);
-    // console.log("pointerDown offsetTransPos:" + this.offsetTransPos[0] + ", " + this.offsetTransPos[1] + ", " + this.offsetTransPos[2]);
+    //console.log("pointerDown s2wVec:" + s2wVec[0] + ", " + s2wVec[1] + ", " + s2wVec[2]);
+    //console.log("pointerDown translation:" + this.translation[0] + ", " + this.translation[1] + ", " + this.translation[2]);
+    //console.log("pointerDown ycam:" + this.ycam);
+    // //console.log("pointerDown offsetTransPos:" + this.offsetTransPos[0] + ", " + this.offsetTransPos[1] + ", " + this.offsetTransPos[2]);
 
     // Vec3.add(this.translation, this.offsetTransPos, moveToPosition);
 
-    // console.log("pointerDown moveToPosition:" + moveToPosition[0] + ", " + moveToPosition[1] + ", " + moveToPosition[2]);
+    // //console.log("pointerDown moveToPosition:" + moveToPosition[0] + ", " + moveToPosition[1] + ", " + moveToPosition[2]);
     // this.translation = Vec3.createFloat32FromArray(pickInfo.globalPosition);
   };
 
@@ -70,7 +70,7 @@ scripts:
 
     var Vec3 = goog.vec.Vec3;
 
-    //console.log("pointerDown ycam:" + this.ycam);
+    ////console.log("pointerDown ycam:" + this.ycam);
 
     var moveToPosition = Vec3.add(this.translation, this.offsetTransPos, Vec3.create());
 

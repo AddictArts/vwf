@@ -78,11 +78,11 @@ scripts:
     this.cameraTranslation = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalSource);
     goog.vec.Vec3.subtract(this.planePoint, this.cameraTranslation, this.pointerVector);
 
-    console.log("planeNormal:" + this.planeNormal[0] + ", " + this.planeNormal[1] + ", " + this.planeNormal[2]);
-    console.log("cameraTranslation:" + this.cameraTranslation[0] + ", " + this.cameraTranslation[1] + ", " + this.cameraTranslation[2]);
-    console.log("pointerVector:" + this.pointerVector[0] + ", " + this.pointerVector[1] + ", " + this.pointerVector[2]);
-    console.log("planePoint:" + this.planePoint[0] + ", " + this.planePoint[1] + ", " + this.planePoint[2]);
-    console.log("distance:" + pickInfo.distance);
+    //console.log("planeNormal:" + this.planeNormal[0] + ", " + this.planeNormal[1] + ", " + this.planeNormal[2]);
+    //console.log("cameraTranslation:" + this.cameraTranslation[0] + ", " + this.cameraTranslation[1] + ", " + this.cameraTranslation[2]);
+    //console.log("pointerVector:" + this.pointerVector[0] + ", " + this.pointerVector[1] + ", " + this.pointerVector[2]);
+    //console.log("planePoint:" + this.planePoint[0] + ", " + this.planePoint[1] + ", " + this.planePoint[2]);
+    //console.log("distance:" + pickInfo.distance);
 
     //planeNormal:0, -1, 0
     //cameraTranslation:-40, -30, 20
@@ -94,6 +94,9 @@ scripts:
   }
 
   this.pointerMove = function(pointerInfo, pickInfo) {
+
+    //when the gateway decides this is in the right position, disable dragging
+    if(this.enabled === false) return;
     // update the camera location and the view vector
     this.cameraTranslation = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalSource);
     
@@ -103,8 +106,8 @@ scripts:
     this.planeNormal = goog.vec.Vec3.createFloat32FromArray([-1.0, 0.0, 0.0]); // XXX
     var newPlaneIntersection = this.linePlaneIntersection(this.planePoint, this.planeNormal, this.cameraTranslation, this.pointerVector);
 
-    console.log("pointerVector:" + this.pointerVector[0] + ", " + this.pointerVector[1] + ", " + this.pointerVector[2]);
-    console.log("newPlaneIntersection:" + newPlaneIntersection[0] + ", " + newPlaneIntersection[1] + ", " + newPlaneIntersection[2]);
+    //console.log("pointerVector:" + this.pointerVector[0] + ", " + this.pointerVector[1] + ", " + this.pointerVector[2]);
+    //console.log("newPlaneIntersection:" + newPlaneIntersection[0] + ", " + newPlaneIntersection[1] + ", " + newPlaneIntersection[2]);
 
     if (newPlaneIntersection !== undefined) {
       var translation = goog.vec.Vec3.createFloat32FromArray(this.translation); // XXX was parent
@@ -112,11 +115,15 @@ scripts:
 
       goog.vec.Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
 
-      console.log("translation:" + translation[0] + ", " + translation[1] + ", " + translation[2]);
-      console.log("diff:" + diff[0] + ", " + diff[1] + ", " + diff[2]);
+      //console.log("translation:" + translation[0] + ", " + translation[1] + ", " + translation[2]);
+      //console.log("diff:" + diff[0] + ", " + diff[1] + ", " + diff[2]);
 
       this.translation = goog.vec.Vec3.add(translation, diff, goog.vec.Vec3.create()); // XXX was parent
       this.planePoint = goog.vec.Vec3.clone(newPlaneIntersection);
+      //toss it into the model driver here
+      //the view driver will pick up the notification that SSGState has changed, and message the user
+      if(this.SSGUpdate)
+        this.SSGState = this.SSGUpdate(this.transform);
     }
 
   } //@ sourceURL=planarDrag.vwf

@@ -23,6 +23,7 @@ children:
     implements:
     #- drag.ux # must have a parent transform
     - planarDrag.vwf # must have a parent transform
+    - SSGObject.vwf
     source: wall.dae
     type: model/vnd.collada+xml
     properties:

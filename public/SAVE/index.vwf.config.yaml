@@ -1,7 +1,8 @@
 --- 
 model:
   vwf/model/threejs:
+  SAVEModelDriver:
 view:
   vwf/view/threejs: "#vwf-root"
   vwf/view/editor:
-  SAVEDriver:
+  SAVEViewDriver:
