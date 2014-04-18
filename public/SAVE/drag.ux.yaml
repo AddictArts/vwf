@@ -1,7 +1,7 @@
+# inspired by the vwf planarDrag.vwf behaviour
 ---
 methods:
-  mouseInit:
-  cameraScreenToWorldVec:
+  linePlaneIntersection:
 events:
   pointerDown:
   pointerMove:
@@ -9,49 +9,35 @@ events:
 scripts:
 - |
   this.initialize = function() {
-    this.ycam = undefined;
-    this.offsetTransPos = goog.vec.Vec3.createFloat32();
+    this.planePoint = undefined;
   };
 
-  this.cameraScreenToWorldVec = function(screenX, screenY, d) {
-    console.log("screenX:" + screenX + ", screenY:" + screenY);
+  this.linePlaneIntersection = function(planePoint, planeNormal, linePoint, lineVec) {
+    var Vec3 = goog.vec.Vec3;
+    var temp = Vec3.createFloat32();
+    var vector = Vec3.createFloat32();
+    var intersection, dotNumerator, dotDenominator;
 
-    var s2wVec = new THREE.Vector3();
-    var cameraPosition = new THREE.Vector3();
-    var x = (screenX / window.innerWidth) * 2 - 1;
-    var y = -(screenY / window.innerHeight) * 2 + 1;
+    // calculate the distance between the linePoint and the line-plane intersection point
+    Vec3.subtract(planePoint, linePoint, temp);
+    dotNumerator = Vec3.dot(temp, planeNormal);
+    dotDenominator = Vec3.dot(lineVec, planeNormal);
 
-    s2wVec.set(x, y, d);
-    console.log("s2wVec:" + s2wVec.toArray());
-    _dView.projector.unprojectVector(s2wVec, _dView.state.cameraInUse);
-    cameraPosition.setFromMatrixPosition(_dView.state.cameraInUse.matrixWorld);
-    s2wVec.sub(cameraPosition);
-    return goog.vec.Vec3.createFloat32FromArray(s2wVec.normalize().toArray());
-  };
+    // line and plane are not parallel
+    if (dotDenominator != 0.0) {
+      intersection = Vec3.createFloat32();
+      // create a vector from the linePoint to the intersection point
+      Vec3.scale(lineVec, dotNumerator / dotDenominator, vector); 
+      // get the coordinates of the line-plane intersection point
+      Vec3.add(linePoint, vector, intersection);
+    }
+
+    return intersection;
+  }
 
   this.pointerDown = function(pointerInfo, pickInfo) {
     var Vec3 = goog.vec.Vec3;
-    var moveToPosition = Vec3.createFloat32();
-
-    console.log("pickInfo.globalNormal:" + pickInfo.globalNormal[0] + ", " + pickInfo.globalNormal[1] + ", " + pickInfo.globalNormal[2]);
-    console.log("pickInfo.globalPosition:" + pickInfo.globalPosition[0] + ", " + pickInfo.globalPosition[1] + ", " + pickInfo.globalPosition[2]);
-    console.log("pointerInfo.position:" + pointerInfo.position);
-
-    this.ycam = pickInfo.distance;
-
-    var s2wVec = this.cameraScreenToWorldVec(pointerInfo.screenPosition[0], pointerInfo.screenPosition[1], 1.0);
-
-    // Vec3.subtract(this.translation, s2wVec, this.offsetTransPos);
-
-    console.log("pointerDown s2wVec:" + s2wVec[0] + ", " + s2wVec[1] + ", " + s2wVec[2]);
-    console.log("pointerDown translation:" + this.translation[0] + ", " + this.translation[1] + ", " + this.translation[2]);
-    console.log("pointerDown ycam:" + this.ycam);
-    // console.log("pointerDown offsetTransPos:" + this.offsetTransPos[0] + ", " + this.offsetTransPos[1] + ", " + this.offsetTransPos[2]);
-
-    // Vec3.add(this.translation, this.offsetTransPos, moveToPosition);
-
-    // console.log("pointerDown moveToPosition:" + moveToPosition[0] + ", " + moveToPosition[1] + ", " + moveToPosition[2]);
-    // this.translation = Vec3.createFloat32FromArray(pickInfo.globalPosition);
+    this.planePoint = Vec3.createFloat32FromArray(pickInfo.globalPosition);
   };
 
   this.pointerUp = function(pointerInfo, pickInfo) {
@@ -66,14 +52,21 @@ scripts:
   // vwf.models[3].model.state.nodes[_Editor.GetSelectedVWFID()].threeObject
 
   this.pointerMove = function(pointerInfo, pickInfo) {
-    return;
-
     var Vec3 = goog.vec.Vec3;
 
-    //console.log("pointerDown ycam:" + this.ycam);
+    // update the camera location and the view vector
+    var cameraTranslation = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalSource);
+    // we need a way of getting the pointerVector here without using the globalPosition, because that might not have a value
+    var pointerVector = Vec3.createFloat32FromArray(pickInfo.pointerVector);
+    var planeNormal = Vec3.createFloat32FromArray([-1.0, 0.0, 0.0]); // restrict movement to just the y (in and out) and the z (up and down)
+    var newPlaneIntersection = this.linePlaneIntersection(this.planePoint, planeNormal, cameraTranslation, pointerVector);
 
-    var moveToPosition = Vec3.add(this.translation, this.offsetTransPos, Vec3.create());
+    if (newPlaneIntersection !== undefined) {
+      var translation = Vec3.createFloat32FromArray(this.translation); // was parent...
+      var diff = Vec3.createFloat32();
 
-    this.translation = moveToPosition;
-
+      goog.vec.Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
+      this.translation = Vec3.add(translation, diff, Vec3.createFloat32()); // was parent...
+      this.planePoint = Vec3.clone(newPlaneIntersection);
+    }
   }; //@ sourceURL=drag.ux
