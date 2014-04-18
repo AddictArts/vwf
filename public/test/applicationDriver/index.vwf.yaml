@@ -1,0 +1,14 @@
+--- 
+extends: http://vwf.example.com/scene.vwf
+children:
+  light:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "directional"
+      translation: [ 0.0, -25.0, 20.0 ]
+      rotation: [ -1.0, 0.0, 0.0, 36.0 ]
+  camera:
+    extends: "http://vwf.example.com/camera.vwf"
+    properties:
+      translation: [ -40.0, -30.0, 20.0 ]
+      rotation: [ -0.3, 0.1, -1.0, 50.0 ]

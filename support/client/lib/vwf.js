@@ -479,7 +479,7 @@
                 Object.keys(userLibraries).forEach(function(libtype)
                 {
                     Object.keys(userLibraries[libtype]).forEach(function(lib){
-                        if(!requireArray[lib])
+                        if(initializers[libtype] &&!requireArray[lib])
                         {
                             var libEntry = {
                                 active:true,
@@ -488,7 +488,7 @@
                             requireArray.push(libEntry);
                             requireArray[lib] = libEntry;
                         }
-                        if(!initializers[libtype][lib])
+                        if(initializers[libtype] && !initializers[libtype][lib])
                         {
                             var libEntry = {
                                 active:true,
