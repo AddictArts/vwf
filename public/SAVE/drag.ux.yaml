@@ -1,7 +1,11 @@
 # inspired by the vwf planarDrag.vwf behaviour
 ---
+properties:
+  _onEdge: false
+  _fenced: false
 methods:
   linePlaneIntersection:
+  fenceMovement:
 events:
   pointerDown:
   pointerMove:
@@ -33,7 +37,25 @@ scripts:
     }
 
     return intersection;
-  }
+  };
+
+  this.fenceMovement = function(translation) {
+    var z = translation[2];
+    var y = translation[1];
+
+    if (this._fenced) {
+      if (y < -3.75) translation[1] = -3.75;
+      if (y > 3.75) translation[1] = 3.75;
+
+      translation[2] = 1.0;
+
+      if (translation[1] <= -3.75) this._onEdge = true;
+    } else if (z < 1.0) {
+      translation[2] = 1.0;
+
+      if (y > -3.75 && y < 3.75) this._fenced = true;
+    }
+  };
 
   this.pointerDown = function(pointerInfo, pickInfo) {
     var Vec3 = goog.vec.Vec3;
@@ -52,21 +74,30 @@ scripts:
   // vwf.models[3].model.state.nodes[_Editor.GetSelectedVWFID()].threeObject
 
   this.pointerMove = function(pointerInfo, pickInfo) {
+    if (this._onEdge) return;
+
     var Vec3 = goog.vec.Vec3;
 
     // update the camera location and the view vector
-    var cameraTranslation = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalSource);
+    var cameraTranslation = Vec3.createFloat32FromArray(pickInfo.globalSource);
     // we need a way of getting the pointerVector here without using the globalPosition, because that might not have a value
     var pointerVector = Vec3.createFloat32FromArray(pickInfo.pointerVector);
     var planeNormal = Vec3.createFloat32FromArray([-1.0, 0.0, 0.0]); // restrict movement to just the y (in and out) and the z (up and down)
     var newPlaneIntersection = this.linePlaneIntersection(this.planePoint, planeNormal, cameraTranslation, pointerVector);
 
     if (newPlaneIntersection !== undefined) {
-      var translation = Vec3.createFloat32FromArray(this.translation); // was parent...
+      var translation = Vec3.createFloat32FromArray(this.translation);
       var diff = Vec3.createFloat32();
 
-      goog.vec.Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
-      this.translation = Vec3.add(translation, diff, Vec3.createFloat32()); // was parent...
+      Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
+      Vec3.add(this.translation, diff, translation);
+
+
+      this.fenceMovement(translation);
+      this.translation = translation;
+
+
       this.planePoint = Vec3.clone(newPlaneIntersection);
+
     }
   }; //@ sourceURL=drag.ux
