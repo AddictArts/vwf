@@ -77,8 +77,6 @@ scripts:
     if (this._onEdge) return;
 
     var Vec3 = goog.vec.Vec3;
-
-    // update the camera location and the view vector
     var cameraTranslation = Vec3.createFloat32FromArray(pickInfo.globalSource);
     // we need a way of getting the pointerVector here without using the globalPosition, because that might not have a value
     var pointerVector = Vec3.createFloat32FromArray(pickInfo.pointerVector);
@@ -91,13 +89,8 @@ scripts:
 
       Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
       Vec3.add(this.translation, diff, translation);
-
-
       this.fenceMovement(translation);
       this.translation = translation;
-
-
       this.planePoint = Vec3.clone(newPlaneIntersection);
-
     }
   }; //@ sourceURL=drag.ux

@@ -33,6 +33,24 @@ children:
     #         this.future(3).toggle();
     #       initialize: |
     #         // this.future(20).toggle();
+  doorWood_dae:
+    extends: http://vwf.example.com/node3.vwf
+    implements:
+    - drag.ux # must have a parent transform
+    source: doorWood.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 1.0, 1.0, 1.0 ]
+      translation: [ 3.0, -3.8, 10.0 ]
+  doorSteel_dae:
+    extends: http://vwf.example.com/node3.vwf
+    implements:
+    - drag.ux # must have a parent transform
+    source: doorSteel.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 1.0, 1.0, 1.0 ]
+      translation: [ 8.0, -3.8, 10.0 ]
   light:
     extends: http://vwf.example.com/light.vwf
     properties:
