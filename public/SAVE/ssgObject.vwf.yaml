@@ -20,4 +20,5 @@
 methods:
   SSGUpdate:
 properties:
-  SSGState:  
+  SSGState:
+  SSGType:  

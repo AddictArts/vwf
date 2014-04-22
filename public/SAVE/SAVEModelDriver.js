@@ -33,13 +33,14 @@ define(['module','vwf/model'],function(module,model){
 		},
 		settingProperty:function(nodeID,propertyName,propertyValue)
 		{
+			this.nodes[nodeID].properties[propertyName] = propertyValue;
 			//hummmm, not seeing notifications for transform here. Are they caught by the THREE driver?
 		},
 		callingMethod:function(nodeID,methodName,args)
 		{
 			//if the wall notifies us that it has moved, then we call the gateway to see if this is a good position
 			//note: why don't we get the transform set notification in setproperty? Did this behavior change in newest VWF?
-			if(this.getNodeByName('wall_dae') == this.nodes[nodeID])
+			if(vwf.getProperty(nodeID,'SSGType') == 'wall')
 			{
 				if(methodName == 'SSGUpdate')
 				{
@@ -48,14 +49,29 @@ define(['module','vwf/model'],function(module,model){
 					
 					//imagine that gateway decided that some state is now 'Correct Position'
 					{
-						if(goog.vec.Vec3.distance([transform[12],transform[13],transform[14]],[0,3.8,1]) < .2)
+						
+						//clamp first to the Y. When close enough, let the view know that it should no longer move this way
+						if(Math.abs(transform[13] - 3.8) < .1)
 						{
-							//so, we're going to change a value that disables the dragging behavior.
-							//Note: I think it a better idea to handle the dragging in the view driver. I"ll update tomorrow.
-							vwf.setProperty(nodeID,'enabled',false);
+							vwf.setProperty(nodeID,'moveY',false);
+							transform[13] = 3.8;
+							vwf.setProperty(nodeID,'transform',transform);
+						}
 
-							//this will be set to the SSGState property. The view driver will pick up that notification and do something
-							return 'correct';
+						//now, clamp to the X
+						if(vwf.getProperty(nodeID,'moveY') == false &&  Math.abs(transform[12] - .0) < .1)
+						{
+							vwf.setProperty(nodeID,'moveX',false);
+							transform[12] = 0;
+							vwf.setProperty(nodeID,'transform',transform);
+						}
+						
+						//now the z
+						if(vwf.getProperty(nodeID,'moveY') == false &&Math.abs(transform[14] - 1) < .1)
+						{
+							vwf.setProperty(nodeID,'moveZ',false);
+							transform[14] = 1;
+							vwf.setProperty(nodeID,'transform',transform);
 						}
 					}
 					return undefined;
@@ -70,6 +86,7 @@ define(['module','vwf/model'],function(module,model){
 			if(nodeID)
 				this.nodes[nodeID].children.push(this.nodes[childID]);
 			this.nodes[childID].parent = this.nodes[nodeID];
+			
 		},
 		getNodeByName :function(name)
 		{

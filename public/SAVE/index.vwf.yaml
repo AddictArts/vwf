@@ -18,34 +18,6 @@ children:
   #   properties:
   #     translation: [ 0.0, 0.0, 0.0 ]
   #   children:
-  wall_dae:
-    extends: http://vwf.example.com/node3.vwf
-    implements:
-    #- drag.ux # must have a parent transform
-    - planarDrag.vwf # must have a parent transform
-    - SSGObject.vwf
-    source: wall.dae
-    type: model/vnd.collada+xml
-    properties:
-      _isDragging: false
-      _onEdge: false
-      _drag_to: null
-      scale: [ 1.0, 1.0, 1.0 ]
-      # enabled: true # does not seem to work
-      # visible: true # does not seem to work
-      translation: [ 0.0, 10.0, 3.0 ]
-    # children: # Looking into the collada file, it seems the root of the collada document has a single child, which is a mesh. .visible does not hit the whole heirarchy, only the current node.
-    #   wall: # So, you need to 'bind' a vwf node to the node withing the collada document, so that you can control the visible property of the mesh.
-    #     extends: http://vwf.example.com/node3.vwf
-    #     properties:
-    #       # enabled: false
-    #       visible: true
-    #     methods:
-    #       toggle: |
-    #         this.visible = !this.visible;
-    #         this.future(3).toggle();
-    #       initialize: |
-    #         // this.future(20).toggle();
   light:
     extends: http://vwf.example.com/light.vwf
     properties:
