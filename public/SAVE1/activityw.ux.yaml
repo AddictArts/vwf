@@ -1,0 +1,19 @@
+
+---
+properties:
+methods:
+events:
+  pointerUp:
+scripts:
+- |
+  this.initialize = function() {
+  };
+
+  this.pointerUp = function(pointerInfo, pickInfo) {
+  	console.log("activity pointerUp called");
+
+  	$.ajax({
+  		url: "http://localhost:3001/action",
+  		data: { action: "PLACE", arguments: [] }
+  	});
+  };

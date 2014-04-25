@@ -1,0 +1,107 @@
+# inspired by the vwf planarDrag.vwf behaviour
+---
+properties:
+  _onEdge: false
+  _fenced: false
+  _inputMode:
+    set: |
+      switch(value) {
+      // case "1":
+      // case "2":
+      //   break;
+      default:
+        console.log("inputMode.set: '' and '' are the only supported input modes");
+        this.logger.warnx("inputMode.set: '' and '' are the only supported input modes");
+        break;
+      } //@ sourceURL=_inputMode.set
+methods:
+  linePlaneIntersection:
+  fenceMovement:
+events:
+  pointerDown:
+  pointerMove:
+  pointerUp:
+scripts:
+- |
+  this.initialize = function() {
+    this.planePoint = undefined;
+  };
+
+  this.linePlaneIntersection = function(planePoint, planeNormal, linePoint, lineVec) {
+    var Vec3 = goog.vec.Vec3;
+    var temp = Vec3.createFloat32();
+    var vector = Vec3.createFloat32();
+    var intersection, dotNumerator, dotDenominator;
+
+    // calculate the distance between the linePoint and the line-plane intersection point
+    Vec3.subtract(planePoint, linePoint, temp);
+    dotNumerator = Vec3.dot(temp, planeNormal);
+    dotDenominator = Vec3.dot(lineVec, planeNormal);
+
+    // line and plane are not parallel
+    if (dotDenominator != 0.0) {
+      intersection = Vec3.createFloat32();
+      // create a vector from the linePoint to the intersection point
+      Vec3.scale(lineVec, dotNumerator / dotDenominator, vector); 
+      // get the coordinates of the line-plane intersection point
+      Vec3.add(linePoint, vector, intersection);
+    }
+
+    return intersection;
+  };
+
+  this.fenceMovement = function(translation) {
+    var z = translation[2];
+    var y = translation[1];
+
+    if (this._fenced) {
+      if (y < -3.75) translation[1] = -3.75;
+      if (y > 3.75) translation[1] = 3.75;
+
+      translation[2] = 1.0;
+
+      if (translation[1] <= -3.75) this._onEdge = true;
+    } else if (z < 1.0) {
+      translation[2] = 1.0;
+
+      if (y > -3.75 && y < 3.75) this._fenced = true;
+    }
+  };
+
+  this.pointerDown = function(pointerInfo, pickInfo) {
+    var Vec3 = goog.vec.Vec3;
+    this.planePoint = Vec3.createFloat32FromArray(pickInfo.globalPosition);
+  };
+
+  this.pointerUp = function(pointerInfo, pickInfo) {
+  };
+
+  // _dView.state.cameraInUse
+  // -> THREE.PerspectiveCamera {id: 3, uuid: "9A1888C3-7109-43E5-970D-76CBD72A0D4F", name: "camera", parent: THREE.Scene, children: Array[0]…}
+  // vwf.models[0].model.nodes[id]
+  // vwf.application()
+  // "index-vwf"
+  // vwf.models[0].model.nodes[cameraID].worldTransform
+  // vwf.models[3].model.state.nodes[_Editor.GetSelectedVWFID()].threeObject
+
+  this.pointerMove = function(pointerInfo, pickInfo) {
+    if (this._onEdge) return;
+
+    var Vec3 = goog.vec.Vec3;
+    var cameraTranslation = Vec3.createFloat32FromArray(pickInfo.globalSource);
+    // we need a way of getting the pointerVector here without using the globalPosition, because that might not have a value
+    var pointerVector = Vec3.createFloat32FromArray(pickInfo.pointerVector);
+    var planeNormal = Vec3.createFloat32FromArray([-1.0, 0.0, 0.0]); // restrict movement to just the y (in and out) and the z (up and down)
+    var newPlaneIntersection = this.linePlaneIntersection(this.planePoint, planeNormal, cameraTranslation, pointerVector);
+
+    if (newPlaneIntersection !== undefined) {
+      var translation = Vec3.createFloat32FromArray(this.translation);
+      var diff = Vec3.createFloat32();
+
+      Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
+      Vec3.add(this.translation, diff, translation);
+      this.fenceMovement(translation);
+      this.translation = translation;
+      this.planePoint = Vec3.clone(newPlaneIntersection);
+    }
+  }; //@ sourceURL=drag.ux
