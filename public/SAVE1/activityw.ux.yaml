@@ -1,26 +1,62 @@
-
 ---
 properties:
+  args:
+  action:
 methods:
+  getActionActivity:
 events:
   pointerUp:
 scripts:
 - |
   this.initialize = function() {
+    this.args = {
+      floorKBID : "undefined floorKBID",
+      wallKBID : "undefined wallKBID",
+      doorWoodKBID : "undefined doorWoodKBID",
+      doorSteelKBID : "undefined doorSteelKBID",
+      distanceLeft : -1.0,
+      distanceRight : -1.0,
+      onEdge : false,
+      paint : "undefined paint"
+    };
+    this.action = this.action || "undefined action";
+  };
+
+  this.getActionActivity = function(action) {
+    var action,
+        args = "undefined arguments";
+
+    switch(action) {
+    case "PLACE":
+      args = [ this.args.wallKBID, this.args.floorKBID, this._onEdge ];
+      break;
+    case "INSTALL":
+      var doorKBID = (this.name == "doorWood_dae")? this.args.doorWoodKBID : this.args.doorSteelKBID;
+
+      args = [ doorKBID, this.args.wallKBID, this.args.distanceLeft, this.args.distanceRight ];
+      break;
+    case "PAINT":
+      var doorKBID = (this.name == "doorWood_dae")? this.args.doorWoodKBID : this.args.doorSteelKBID;
+
+      args = [ doorKBID, this.args.paint ];
+      break;
+    }
+
+    action = {  action: action, arguments: args };
+    return action;
   };
 
   this.pointerUp = function(pointerInfo, pickInfo) {
     console.log("activity pointerUp called");
-
   	$.ajax({
       url: "http://localhost:3001/action",
       // processData: false,
       type: 'post',
       cache: false,
-      // dataType: 'json',
+      // dataType: 'action',
       // contentType: 'application/json; charset=utf-8',
       // data: JSON.stringify({ action: "PLACE", arguments: [ 1 ] }),
-      data: { activity: JSON.stringify({ action: "PLACE", arguments: [ ] }) },
+      data: { activity: JSON.stringify(this.getActionActivity(this.action)) },
     })
     .done(function(json) {
       console.log("reponse:" + json);
@@ -29,3 +65,10 @@ scripts:
       console.log("error:" + XMLHttpRequest.responseText);
     });
   }; //@ sourceURL=activity.ux
+
+  // http://www.html5rocks.com/en/tutorials/cors/
+  // response['Access-Control-Allow-Origin'] = '*'
+  // response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  // response['Access-Control-Max-Age'] = 1000
+  // # note that '*' is not valid for Access-Control-Allow-Headers
+  // response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'

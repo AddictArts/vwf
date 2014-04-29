@@ -1,0 +1,7 @@
+{
+	activityServerAddress: "localhost:3001/action",
+	floorKBID : "undefined floorKBID",
+	wallKBID : "undefined wallKBID",
+	doorWoodKBID : "undefined doorWoodKBID",
+	doorSteelKBID : "undefined doorSteelKBID"
+}

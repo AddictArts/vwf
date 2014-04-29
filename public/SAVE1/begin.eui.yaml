@@ -1,0 +1,6 @@
+---
+scripts:
+- |
+  this.initialize = function() {
+  	console.log("configure the exercise ui begin.eui");
+  }; //@ sourceURL=init.eui

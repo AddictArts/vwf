@@ -9,7 +9,6 @@ methods:
 events:
   pointerDown:
   pointerMove:
-  pointerUp:
 scripts:
 - |
   this.initialize = function() {
@@ -60,9 +59,6 @@ scripts:
   this.pointerDown = function(pointerInfo, pickInfo) {
     var Vec3 = goog.vec.Vec3;
     this.planePoint = Vec3.createFloat32FromArray(pickInfo.globalPosition);
-  };
-
-  this.pointerUp = function(pointerInfo, pickInfo) {
   };
 
   // _dView.state.cameraInUse
