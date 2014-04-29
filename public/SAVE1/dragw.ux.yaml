@@ -3,17 +3,6 @@
 properties:
   _onEdge: false
   _fenced: false
-  _inputMode:
-    set: |
-      switch(value) {
-      // case "1":
-      // case "2":
-      //   break;
-      default:
-        console.log("inputMode.set: '' and '' are the only supported input modes");
-        this.logger.warnx("inputMode.set: '' and '' are the only supported input modes");
-        break;
-      } //@ sourceURL=_inputMode.set
 methods:
   linePlaneIntersection:
   fenceMovement:
@@ -104,4 +93,4 @@ scripts:
       this.translation = translation;
       this.planePoint = Vec3.clone(newPlaneIntersection);
     }
-  }; //@ sourceURL=drag.ux
+  }; //@ sourceURL=dragw.ux

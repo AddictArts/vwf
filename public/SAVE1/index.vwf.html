@@ -7,44 +7,40 @@
       var doorWoodID = undefined;
       var doorSteelID = undefined;
 
-      function setMode(mode) {
-        switch(mode) {
-        case "wall":
-          // vwf_view.kernel.callMethod('index-vwf', 'deleteplayer', parms);
-          wallID = wallID || vwf_view.kernel.find(appID, "//wall_dae");
-          break;
-        case "doorWood":
-          doorWoodID = doorWoodID || vwf_view.kernel.find(appID, "//doorWood_dae");
-          break;
-        case "doorSteel":
-          doorSteelID = doorSteelID || vwf_view.kernel.find(appID, "//doorSteel_dae");
-          break;
-        }
-
-        vwf_view.kernel.setProperty(appID, "inputMode", mode);
-        // highlightMode(mode);
-      }
-
       function SceneInitialize() {
+        $('#wall').on('click', function() {
+          wallID = wallID || vwf_view.kernel.find(appID, "//wall");
+          vwf_view.kernel.callMethod(wallID, 'toggle');
+          $('#wall').off('click');
+        });
+        $('#doorWood').on('click', function() {
+          doorWoodID = doorWoodID || vwf_view.kernel.find(appID, "//doorWood");
+          vwf_view.kernel.callMethod(doorWoodID, 'toggle');
+          $('#doorWood').off('click');
+        });
+        $('#doorSteel').on('click', function() {
+          doorSteelID = doorSteelID || vwf_view.kernel.find(appID, "//doorSteel");
+          vwf_view.kernel.callMethod(doorSteelID, 'toggle');
+          $('#doorSteel').off('click');
+        });
+
         $(window).unload(function() { SceneDestroy(); });
       }
 
       function SceneDestroy() {
-        // vwf_view.kernel.callMethod('index-vwf', 'deleteplayer', parms);
+        // vwf_view.kernel.setProperty(appID, "inputMode", mode);
+        // vwf_view.kernel.callMethod(appID, 'sceneDestroy', [ ]);
       }
 
       $(document).ready(function() { SceneInitialize(); }); //@ sourceURL=index.vwf.html
     </script>
   </head>
 <body>
-  <div id="wrapper" class="wrapper">
+  <div id="wrapper" class="wrapper" style="position:absolute;left:100px;top:100px;">
     <div class="toolstyle" id="toolbar">
-      <img id="icon1" src="interior-wall-framing-diagram-13.jpg" style="border:3px solid red" alt="icon1" 
-        onclick="setMode('wall')"/>
-      <img id="icon2" src="wdoor.png" style="border:2px solid black" alt="icon2" 
-        onclick="setMode('doorWood')"/>
-      <img id="icon3" src="sdoor.png" style="border:2px solid black" alt="icon3" 
-        onclick="setMode('doorSteel')"/>
+      <img id="wall" src="interior-wall-framing-diagram-13.jpg" style="border:3px solid red" alt="wall"/>
+      <img id="doorWood" src="wdoor.png" style="border:2px solid black" alt="doorWood"/>
+      <img id="doorSteel" src="sdoor.png" style="border:2px solid black" alt="doorSteel"/>
     </div>
   </div>
   <script type="text/javascript">

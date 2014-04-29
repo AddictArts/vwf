@@ -10,10 +10,22 @@ scripts:
   };
 
   this.pointerUp = function(pointerInfo, pickInfo) {
-  	console.log("activity pointerUp called");
+    console.log("activity pointerUp called");
 
   	$.ajax({
-  		url: "http://localhost:3001/action",
-  		data: { action: "PLACE", arguments: [] }
-  	});
-  };
+      url: "http://localhost:3001/action",
+      // processData: false,
+      type: 'post',
+      cache: false,
+      // dataType: 'json',
+      // contentType: 'application/json; charset=utf-8',
+      // data: JSON.stringify({ action: "PLACE", arguments: [ 1 ] }),
+      data: { activity: JSON.stringify({ action: "PLACE", arguments: [ ] }) },
+    })
+    .done(function(json) {
+      console.log("reponse:" + json);
+    })
+    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log("error:" + XMLHttpRequest.responseText);
+    });
+  }; //@ sourceURL=activity.ux

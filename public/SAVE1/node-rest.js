@@ -56,7 +56,8 @@ routes.post(routes.ACTION, function(req, res) {
 	// log(req.contentType);
 	log(actionArgs);
 
-	res.send('{}\n', 200, JSONt);
+	res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+	res.send('{ }\n', 200, JSONt);
 	// res.send(JSON.stringify({
 	// 	name: name
 	// }), 200, JSONt);
