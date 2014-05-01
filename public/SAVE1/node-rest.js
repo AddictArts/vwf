@@ -56,6 +56,13 @@ routes.post(routes.ACTION, function(req, res) {
 	// log(req.contentType);
 	log(actionArgs);
 
+	// http://www.html5rocks.com/en/tutorials/cors/
+	// response['Access-Control-Allow-Origin'] = '*'
+	// response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+	// response['Access-Control-Max-Age'] = 1000
+	// # note that '*' is not valid for Access-Control-Allow-Headers
+	// response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+
 	res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
 	res.send('{ }\n', 200, JSONt);
 	// res.send(JSON.stringify({

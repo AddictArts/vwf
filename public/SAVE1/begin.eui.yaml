@@ -1,6 +1,39 @@
 ---
+properties:
+  __initializeStep: 0
+  # inputMode:
+  #   set: |
+  #     switch(value) {
+  #       // case "1":
+  #       //   break;
+  #       default:
+  #         this.logger.warnx("inputMode.set: unsupported input modes");
+  #         break;
+  #     } //@ sourceURL=inputMode.set
 scripts:
 - |
   this.initialize = function() {
-  	console.log("configure the exercise ui begin.eui");
-  }; //@ sourceURL=init.eui
+    this.__initializeStep++;
+
+    if (this.__initializeStep == 1) return;
+
+    var self = this;
+
+  	console.log("Configure the exercise begin.eui");
+
+    $.getJSON("eui.json")
+    .done(function(data) {
+      console.log("data:" + data);
+      self.children['wall_dae'].activityArguments.wallKBID = data.wallKBID;
+      self.children['wall_dae'].activityArguments.floorKBID = data.floorKBID;
+
+      self.children['doorWood_dae'].activityArguments.doorWoodKBID = data.doorWoodKBID;
+      self.children['doorWood_dae'].activityArguments.wallKBID = data.wallKBID;
+
+      self.children['doorSteel_dae'].activityArguments.doorSteelKBID = data.doorSteelKBID;
+      self.children['doorSteel_dae'].activityArguments.wallKBID = data.wallKBID;
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("error:" + textStatus);
+    });
+  }; //@ sourceURL=begin.eui

@@ -2,16 +2,6 @@
 extends: http://vwf.example.com/scene.vwf
 implements:
 - begin.eui
-properties:
-  # inputMode:
-  #   set: |
-  #     switch(value) {
-  #       // case "1":
-  #       //   break;
-  #       default:
-  #         this.logger.warnx("inputMode.set: unsupported input modes");
-  #         break;
-  #     } //@ sourceURL=inputMode.set
 children:
   xyzbar_dae:
     extends: http://vwf.example.com/node3.vwf
@@ -42,7 +32,7 @@ children:
     extends: http://vwf.example.com/node3.vwf
     implements:
     - dragw.ux
-    - activityw.ux
+    - activity.ux
     source: wall.dae
     type: model/vnd.collada+xml
     properties:
@@ -57,8 +47,8 @@ children:
   doorWood_dae:
     extends: http://vwf.example.com/node3.vwf
     implements:
-    - dragd.ux # must have a parent transform
-    - activityw.ux
+    - dragd.ux
+    - activity.ux
     source: doorWood.dae
     type: model/vnd.collada+xml
     properties:
@@ -70,11 +60,15 @@ children:
         extends: http://vwf.example.com/node3.vwf
         implements:
         - togglevis.ux
+        - paintvis.ux
+        children:
+          material:
+            extends: http://vwf.example.com/material.vwf
   doorSteel_dae:
     extends: http://vwf.example.com/node3.vwf
     implements:
     - dragd.ux # must have a parent transform
-    - activityw.ux
+    - activity.ux
     source: doorSteel.dae
     type: model/vnd.collada+xml
     properties:
@@ -82,10 +76,16 @@ children:
       scale: [ 1.0, 1.0, 1.0 ]
       translation: [ 8.0, -3.8, 10.0 ]
     children:
+      material:
+        extends: http://vwf.example.com/material.vwf
       doorSteel:
         extends: http://vwf.example.com/node3.vwf
         implements:
         - togglevis.ux
+        - paintvis.ux
+        children:
+          material:
+            extends: http://vwf.example.com/material.vwf
   light:
     extends: http://vwf.example.com/light.vwf
     properties:

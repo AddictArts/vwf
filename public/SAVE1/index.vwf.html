@@ -2,10 +2,15 @@
   <head>
     <title>Hello World Exercise UI</title>
     <script type="text/javascript">
+      (function() {
       var appID = vwf_view.kernel.application();
       var wallID = undefined;
       var doorWoodID = undefined;
       var doorSteelID = undefined;
+      var doorWood_daeID = undefined;
+      var doorSteel_daeID = undefined;
+      var blue = [ 0, 0, 255 ];
+      var green = [ 0, 255, 0 ];
 
       function SceneInitialize() {
         $('#wall').on('click', function() {
@@ -23,6 +28,18 @@
           vwf_view.kernel.callMethod(doorSteelID, 'toggle');
           $('#doorSteel').off('click');
         });
+        $('#bluePaint').on('click', function() { // Maybe set is a better way?
+          doorWoodID = doorWoodID || vwf_view.kernel.find(appID, "//doorWood");
+          vwf_view.kernel.callMethod(doorWoodID, 'paint', [ blue ]);
+          doorWood_daeID = doorWood_daeID || vwf_view.kernel.find(appID, "//doorWood_dae");
+          vwf_view.kernel.callMethod(doorWood_daeID, 'paintActivity', [ blue ]);
+        });
+        $('#greenPaint').on('click', function() {
+          doorSteelID = doorSteelID || vwf_view.kernel.find(appID, "//doorSteel");
+          vwf_view.kernel.callMethod(doorSteelID, 'paint', [ green ]);
+          doorSteel_daeID = doorSteel_daeID || vwf_view.kernel.find(appID, "//doorSteel_dae");
+          vwf_view.kernel.callMethod(doorSteel_daeID, 'paintActivity', [ green ]);
+        });
 
         $(window).unload(function() { SceneDestroy(); });
       }
@@ -33,14 +50,17 @@
       }
 
       $(document).ready(function() { SceneInitialize(); }); //@ sourceURL=index.vwf.html
+      })();
     </script>
   </head>
 <body>
-  <div id="wrapper" class="wrapper" style="position:absolute;left:100px;top:100px;">
+  <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;">
     <div class="toolstyle" id="toolbar">
       <img id="wall" src="interior-wall-framing-diagram-13.jpg" style="border:3px solid red" alt="wall"/>
       <img id="doorWood" src="wdoor.png" style="border:2px solid black" alt="doorWood"/>
       <img id="doorSteel" src="sdoor.png" style="border:2px solid black" alt="doorSteel"/>
+      <img id="bluePaint" src="blue.png" style="border:2px solid black" alt="blue paint"/>
+      <img id="greenPaint" src="green.png" style="border:2px solid black" alt="green paint"/>
     </div>
   </div>
   <script type="text/javascript">

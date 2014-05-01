@@ -1,0 +1,90 @@
+---
+properties:
+  activityArguments:
+  action:
+methods:
+  getActionActivity:
+  paintActivity:
+events:
+  pointerUp:
+scripts:
+- |
+  this.initialize = function() {
+    this.activityArguments = {
+      floorKBID : "activity.ux floorKBID",
+      wallKBID : "activity.ux wallKBID",
+      doorWoodKBID : "activity.ux doorWoodKBID",
+      doorSteelKBID : "activity.ux doorSteelKBID",
+      distanceLeft : -1.0,
+      distanceRight : -1.0,
+      onEdge : false,
+      paint : "activity.ux paint"
+    };
+    this.action = this.action || "activity.ux action";
+  };
+
+  this.getActionActivity = function(action) {
+    var action,
+        activityArguments = "undefined arguments";
+
+    switch(action) {
+    case "PLACE":
+      activityArguments = [ this.activityArguments.wallKBID, this.activityArguments.floorKBID, this._onEdge ];
+      break;
+    case "INSTALL":
+      var doorKBID = (this.name == "doorWood_dae")? this.activityArguments.doorWoodKBID : this.activityArguments.doorSteelKBID;
+
+      activityArguments = [ doorKBID, this.activityArguments.wallKBID, this.activityArguments.distanceLeft, this.activityArguments.distanceRight ];
+      break;
+    case "PAINT":
+      var doorKBID = (this.name == "doorWood_dae")? this.activityArguments.doorWoodKBID : this.activityArguments.doorSteelKBID;
+
+      activityArguments = [ doorKBID, this.activityArguments.paint ];
+      break;
+    }
+
+    action = {  action: action, arguments: activityArguments };
+    return action;
+  };
+
+  this.pointerUp = function(pointerInfo, pickInfo) {
+    console.log("activity.ux pointerUp");
+
+  	$.ajax({
+      url: "http://localhost:3001/action",
+      // processData: false,
+      type: 'post',
+      cache: false,
+      // dataType: 'json',
+      // contentType: 'application/json; charset=utf-8',
+      data: { activity: JSON.stringify(this.getActionActivity(this.action)) },
+    })
+    .done(function(data) {
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("error:" + textStatus);
+    });
+  };
+
+  // http://www.html5rocks.com/en/tutorials/cors/
+  // response['Access-Control-Allow-Origin'] = '*'
+  // response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  // response['Access-Control-Max-Age'] = 1000
+  // # note that '*' is not valid for Access-Control-Allow-Headers
+  // response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+
+  this.paintActivity = function(color) {
+    console.log("activity.ux paintActivity");
+
+    $.ajax({
+      url: "http://localhost:3001/action",
+      type: 'post',
+      cache: false,
+      data: { activity: JSON.stringify(this.getActionActivity('PAINT')) },
+    })
+    .done(function(data) {
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("error:" + textStatus);
+    });
+  }; //@ sourceURL=activity.ux
