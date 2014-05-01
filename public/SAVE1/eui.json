@@ -1,8 +1,8 @@
 {
 	"activityServerAddress": "localhost:3001/action",
-	"floorKBID" : "begin.eui floorKBID",
-	"wallKBID" : "begin.eui wallKBID",
-	"doorWoodKBID" : "begin.eui doorWoodKBID",
-	"doorSteelKBID" : "begin.eui doorSteelKBID",
+	"floorKBID" : "floorID",
+	"wallKBID" : "wallID",
+	"doorWoodKBID" : "doorWoodID",
+	"doorSteelKBID" : "doorSteelID",
 	"requestToolTrayClasses": { }
 }

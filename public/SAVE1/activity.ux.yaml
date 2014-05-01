@@ -29,7 +29,7 @@ scripts:
 
     switch(action) {
     case "PLACE":
-      activityArguments = [ this.activityArguments.wallKBID, this.activityArguments.floorKBID, this._onEdge ];
+      activityArguments = [ this.activityArguments.wallKBID, this.activityArguments.floorKBID, this.activityArguments.onEdge];
       break;
     case "INSTALL":
       var doorKBID = (this.name == "doorWood_dae")? this.activityArguments.doorWoodKBID : this.activityArguments.doorSteelKBID;
@@ -50,6 +50,26 @@ scripts:
   this.pointerUp = function(pointerInfo, pickInfo) {
     console.log("activity.ux pointerUp");
 
+    var Vec3 = goog.vec.Vec3;
+
+    this.activityArguments.onEdge = this._onEdge;
+
+    if (this.action == "INSTALL") {
+      var edgeDoorOneVec = Vec3.createFloat32FromArray(this.translation);
+      var edgeDoorTwoVec = Vec3.createFloat32FromArray(this.translation);
+      var edgeFloorOneVec = Vec3.createFloat32FromArray(this.parent.children['slab_dae'].translation);
+      var edgeFloorTwoVec = Vec3.createFloat32FromArray(this.parent.children['slab_dae'].translation);
+
+      Vec3.subtract(edgeDoorOneVec, Vec3.createFloat32FromArray([ 1.5, edgeDoorOneVec[1], edgeDoorOneVec[2] ]), edgeDoorOneVec);
+      Vec3.add(edgeDoorTwoVec, Vec3.createFloat32FromArray([ 1.5, -edgeDoorTwoVec[1], -edgeDoorTwoVec[2] ]), edgeDoorTwoVec);
+      // I'm going to cheat here and use 0 for the y and z components since I know the slab_dae is at 0, 0, 0 initially
+      Vec3.subtract(edgeFloorOneVec, Vec3.createFloat32FromArray([ 10, 0, 0 ]), edgeFloorOneVec);
+      Vec3.add(edgeFloorTwoVec, Vec3.createFloat32FromArray([ 10, 0, 0 ]), edgeFloorTwoVec);
+      this.activityArguments.distanceLeft = Vec3.distance(edgeDoorOneVec, edgeFloorOneVec);
+      this.activityArguments.distanceRight = Vec3.distance(edgeDoorTwoVec, edgeFloorTwoVec);
+    }
+
+    $('#debugMsg').text(JSON.stringify(this.getActionActivity(this.action)));
   	$.ajax({
       url: "http://localhost:3001/action",
       // processData: false,
@@ -76,6 +96,7 @@ scripts:
   this.paintActivity = function(color) {
     console.log("activity.ux paintActivity");
 
+    $('#debugMsg').text(JSON.stringify(this.getActionActivity('PAINT')));
     $.ajax({
       url: "http://localhost:3001/action",
       type: 'post',
