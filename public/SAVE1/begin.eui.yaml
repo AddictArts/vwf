@@ -10,6 +10,8 @@ properties:
   #         this.logger.warnx("inputMode.set: unsupported input modes");
   #         break;
   #     } //@ sourceURL=inputMode.set
+methods:
+  resetMe:
 scripts:
 - |
   this.initialize = function() {
@@ -24,16 +26,46 @@ scripts:
     $.getJSON("eui.json")
     .done(function(data) {
       console.log("data:" + data);
-      self.children['wall_dae'].activityArguments.wallKBID = data.wallKBID;
-      self.children['wall_dae'].activityArguments.floorKBID = data.floorKBID;
 
-      self.children['doorWood_dae'].activityArguments.doorWoodKBID = data.doorWoodKBID;
-      self.children['doorWood_dae'].activityArguments.wallKBID = data.wallKBID;
+      var wallNode = self.children['wall_dae']['wall'];
+      var doorWoodNode = self.children['doorWood_dae']['doorWood'];
+      var doorSteelNode = self.children['doorSteel_dae']['doorSteel'];
 
-      self.children['doorSteel_dae'].activityArguments.doorSteelKBID = data.doorSteelKBID;
-      self.children['doorSteel_dae'].activityArguments.wallKBID = data.wallKBID;
+      wallNode.activityArguments.wallKBID = data.wallKBID;
+      wallNode.activityArguments.floorKBID = data.floorKBID;
+      wallNode.activityServerAddress = data.activityServerAddress;
+
+      doorWoodNode.activityArguments.doorWoodKBID = data.doorWoodKBID;
+      doorWoodNode.activityArguments.wallKBID = data.wallKBID;
+      doorWoodNode.activityServerAddress = data.activityServerAddress;
+
+      doorSteelNode.activityArguments.doorSteelKBID = data.doorSteelKBID;
+      doorSteelNode.activityArguments.wallKBID = data.wallKBID;
+      doorSteelNode.activityServerAddress = data.activityServerAddress;
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       console.log("error:" + textStatus);
     });
+  };
+
+  this.resetMe = function() {
+    console.log("begin.eui resetMe");
+
+    var wallNode = this.children['wall_dae']['wall'];
+    var doorWoodNode = this.children['doorWood_dae']['doorWood'];
+    var doorSteelNode = this.children['doorSteel_dae']['doorSteel'];
+
+    // These values should come from one place and not need maintaining in two, so maybe the eui.json?
+    // For now this is good enough
+    wallNode._onEdge = false;
+    wallNode._fenced = false;
+    wallNode.translation = [ 0.0, 10.0, 3.0 ];
+
+    doorWoodNode._fenced = false;
+    if (doorWoodNode.initialColor) doorWoodNode.material.color = doorWoodNode.initialColor;
+    doorWoodNode.translation = [ 3.0, -3.8, 10.0 ];
+
+    doorSteelNode._fenced = false;
+    if (doorSteelNode.initialColor) doorSteelNode.material.color = doorSteelNode.initialColor;
+    doorSteelNode.translation = [ 8.0, -3.8, 10.0 ];
   }; //@ sourceURL=begin.eui

@@ -5,7 +5,7 @@ implements:
 children:
   xyzbar_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: xyzbar.dae
+    source: models/xyzbar.dae
     type: model/vnd.collada+xml
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
@@ -24,65 +24,64 @@ children:
         - togglevis.ux
   slab_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: slab.dae
+    source: models/slab.dae
     type: model/vnd.collada+xml
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
   wall_dae:
     extends: http://vwf.example.com/node3.vwf
     implements:
-    - dragw.ux
-    - activity.ux
-    source: wall.dae
+    source: models/wall.dae
     type: model/vnd.collada+xml
     properties:
-      action: "PLACE"
       scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 0.0, 10.0, 3.0 ]
-    children: # Looking into the collada file, it seems the root of the collada document has a single child, which is a mesh. .visible does not hit the whole heirarchy, only the current node.
-      wall: # So, you need to 'bind' a vwf node to the node withing the collada document, so that you can control the visible property of the mesh.
+    children: # Looking into the collada file, .visible does not hit the whole hierarchy, only the current node.
+      wall: # So, you need to 'bind' a vwf node to the node within the collada document, so that you can control the visible property of the mesh.
         extends: http://vwf.example.com/node3.vwf
         implements:
         - togglevis.ux
+        - dragw.ux
+        - activity.ux
+        properties:
+          action: "PLACE"
+          translation: [ 0.0, 10.0, 3.0 ]
   doorWood_dae:
     extends: http://vwf.example.com/node3.vwf
-    implements:
-    - dragd.ux
-    - activity.ux
-    source: doorWood.dae
+    source: models/doorWood.dae
     type: model/vnd.collada+xml
     properties:
-      action: "INSTALL"
       scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 3.0, -3.8, 10.0 ]
     children:
       doorWood:
         extends: http://vwf.example.com/node3.vwf
         implements:
         - togglevis.ux
         - paintvis.ux
+        - dragd.ux
+        - activity.ux
+        properties:
+          action: "INSTALL"
+          translation: [ 3.0, -3.8, 10.0 ]
         children:
           material:
             extends: http://vwf.example.com/material.vwf
   doorSteel_dae:
     extends: http://vwf.example.com/node3.vwf
-    implements:
-    - dragd.ux # must have a parent transform
-    - activity.ux
-    source: doorSteel.dae
+    source: models/doorSteel.dae
     type: model/vnd.collada+xml
     properties:
-      action: "INSTALL"
       scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 8.0, -3.8, 10.0 ]
     children:
-      material:
-        extends: http://vwf.example.com/material.vwf
       doorSteel:
         extends: http://vwf.example.com/node3.vwf
         implements:
         - togglevis.ux
         - paintvis.ux
+        - dragd.ux
+        - activity.ux
+        properties:
+          action: "INSTALL"
+          translation: [ 8.0, -3.8, 10.0 ]
         children:
           material:
             extends: http://vwf.example.com/material.vwf

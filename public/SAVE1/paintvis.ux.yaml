@@ -10,19 +10,22 @@
 #         extends: http://vwf.example.com/material.vwf
 #
 ---
+properties:
+  initialColor:
 methods:
   paint:
 scripts:
 - |
   this.paint = function(color) {
+    this.initialColor = this.initialColor || this.material.color;
     this.material.color = color;
 
     switch(color[1]) { // intentionally taking the easy way to determing the color from an rgb array since there are only 2 and it is good enough for this sprint!
     case 255:
-      this.parent.activityArguments.paint = "green";
+      this.activityArguments.paint = "green";
       break;
     case 0:
-      this.parent.activityArguments.paint = "blue";
+      this.activityArguments.paint = "blue";
       break;
     }
   }; //@ sourceURL=paintvis.ux
