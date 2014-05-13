@@ -1,0 +1,42 @@
+--- 
+extends: http://vwf.example.com/scene.vwf
+# implements:
+# - begin.eui
+children:
+  # M4_Carbine_v02_Ungrouped_dae:
+  #   extends: http://vwf.example.com/node3.vwf
+  #   source: models/M4_Carbine_v02_Ungrouped.dae
+  #   type: model/vnd.collada+xml
+  #   properties:
+  #     scale: [ 10.0, 10.0, 10.0 ]
+  # xyzbar_dae:
+  #   extends: http://vwf.example.com/node3.vwf
+  #   source: models/xyzbar.dae
+  #   type: model/vnd.collada+xml
+  #   properties:
+  #     scale: [ 1.0, 1.0, 1.0 ]
+    # children:
+    #   x:
+    #     extends: http://vwf.example.com/node3.vwf
+    #     implements:
+    #     - togglevis.ux
+    #   y:
+    #     extends: http://vwf.example.com/node3.vwf
+    #     implements:
+    #     - togglevis.ux
+    #   z:
+    #     extends: http://vwf.example.com/node3.vwf
+    #     implements:
+    #     - togglevis.ux
+  M4_Carbine_v02_grouped_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: models/M4_v02_grouped.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 10.0, 10.0, 10.0 ]
+  light:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "directional"
+      translation: [ 0.0, -25.0, 20.0 ]
+      rotation: [ -1.0, 0.0, 0.0, 36.0 ]
