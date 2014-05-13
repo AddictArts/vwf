@@ -1,0 +1,129 @@
+# Copyright 2012 United States Government, as represented by the Secretary of Defense, Under
+# Secretary of Defense (Personnel & Readiness).
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License. You may obtain a copy of the License at
+# 
+#   http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License
+# is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+# or implied. See the License for the specific language governing permissions and limitations under
+# the License.
+
+## The component representation of a control behavior
+## 
+## @name control.vwf
+## @namespace
+
+---
+methods:
+  mouseInit:
+  linePlaneIntersection: 
+events:
+  pointerDown:
+  pointerMove:
+  pointerUp:
+scripts:
+- |
+  this.initialize = function() {
+    this.planeNormal = undefined;
+    this.planePoint = undefined;
+    this.cameraTranslation = undefined;
+    this.pointerVector = goog.vec.Vec3.create();
+  }
+  // Sets up the mouse pointer information used for dragging.
+  this.mouseInit = function() {
+    this.input = {
+      "pointerInfo": undefined,
+      "pickInfo": undefined,
+      update: function(pointerInfo, pickInfo) {
+      },
+      clear: function() {
+      },
+      change: function() {
+      }
+    };
+  }  
+
+  this.linePlaneIntersection = function( planePoint, planeNormal, linePoint, lineVec ) {
+
+    var intersection, dotNumerator, dotDenominator;
+    var vector = goog.vec.Vec3.create();
+
+    //calculate the distance between the linePoint and the line-plane intersection point
+    var temp = goog.vec.Vec3.create();
+    
+    goog.vec.Vec3.subtract( planePoint, linePoint, temp );
+    dotNumerator = goog.vec.Vec3.dot( temp, planeNormal );
+    dotDenominator = goog.vec.Vec3.dot( lineVec, planeNormal );
+ 
+    //line and plane are not parallel
+    if( dotDenominator != 0.0 ){
+      intersection = goog.vec.Vec3.create();
+
+      //create a vector from the linePoint to the intersection point
+      goog.vec.Vec3.scale( lineVec, dotNumerator / dotDenominator, vector );
+ 
+      //get the coordinates of the line-plane intersection point
+      goog.vec.Vec3.add( linePoint, vector, intersection );  
+    }
+
+    return intersection;
+  }
+
+  this.pointerDown = function(pointerInfo, pickInfo) {
+    this.planeNormal = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalNormal);
+    this.planePoint = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalPosition);
+    this.cameraTranslation = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalSource);
+    goog.vec.Vec3.subtract(this.planePoint, this.cameraTranslation, this.pointerVector);
+
+    //console.log("planeNormal:" + this.planeNormal[0] + ", " + this.planeNormal[1] + ", " + this.planeNormal[2]);
+    //console.log("cameraTranslation:" + this.cameraTranslation[0] + ", " + this.cameraTranslation[1] + ", " + this.cameraTranslation[2]);
+    //console.log("pointerVector:" + this.pointerVector[0] + ", " + this.pointerVector[1] + ", " + this.pointerVector[2]);
+    //console.log("planePoint:" + this.planePoint[0] + ", " + this.planePoint[1] + ", " + this.planePoint[2]);
+    //console.log("distance:" + pickInfo.distance);
+
+    //planeNormal:0, -1, 0
+    //cameraTranslation:-40, -30, 20
+    //pointerVector:35.38841247558594, 39.75, -13.705223083496094 
+    //planePoint:-4.611586093902588, 9.75, 6.2947773933410645
+  }
+
+  this.pointerUp = function(pointerInfo, pickInfo) {
+  }
+
+  this.pointerMove = function(pointerInfo, pickInfo) {
+
+    //when the gateway decides this is in the right position, disable dragging
+    if(this.enabled === false) return;
+    // update the camera location and the view vector
+    this.cameraTranslation = goog.vec.Vec3.createFloat32FromArray(pickInfo.globalSource);
+    
+    // we need a way of getting the pointerVector here without using the 
+    // globalPosition, because that might not have a value
+    this.pointerVector = goog.vec.Vec3.createFloat32FromArray(pickInfo.pointerVector);
+    this.planeNormal = goog.vec.Vec3.createFloat32FromArray([-1.0, 0.0, 0.0]); // XXX
+    var newPlaneIntersection = this.linePlaneIntersection(this.planePoint, this.planeNormal, this.cameraTranslation, this.pointerVector);
+
+    //console.log("pointerVector:" + this.pointerVector[0] + ", " + this.pointerVector[1] + ", " + this.pointerVector[2]);
+    //console.log("newPlaneIntersection:" + newPlaneIntersection[0] + ", " + newPlaneIntersection[1] + ", " + newPlaneIntersection[2]);
+
+    if (newPlaneIntersection !== undefined) {
+      var translation = goog.vec.Vec3.createFloat32FromArray(this.translation); // XXX was parent
+      var diff = goog.vec.Vec3.create();
+
+      goog.vec.Vec3.subtract(newPlaneIntersection, this.planePoint, diff);
+
+      //console.log("translation:" + translation[0] + ", " + translation[1] + ", " + translation[2]);
+      //console.log("diff:" + diff[0] + ", " + diff[1] + ", " + diff[2]);
+
+      this.translation = goog.vec.Vec3.add(translation, diff, goog.vec.Vec3.create()); // XXX was parent
+      this.planePoint = goog.vec.Vec3.clone(newPlaneIntersection);
+      //toss it into the model driver here
+      //the view driver will pick up the notification that SSGState has changed, and message the user
+      if(this.SSGUpdate)
+        this.SSGState = this.SSGUpdate(this.transform);
+    }
+
+  } //@ sourceURL=planarDrag.vwf

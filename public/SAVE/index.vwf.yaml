@@ -13,44 +13,11 @@ children:
     type: model/vnd.collada+xml
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
-  wall_dae:
-    extends: http://vwf.example.com/node3.vwf
-    implements:
-    - drag.ux # must have a parent transform
-    source: wall.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 0.0, 10.0, 3.0 ]
-    # children: # Looking into the collada file, it seems the root of the collada document has a single child, which is a mesh. .visible does not hit the whole heirarchy, only the current node.
-    #   wall: # So, you need to 'bind' a vwf node to the node withing the collada document, so that you can control the visible property of the mesh.
-    #     extends: http://vwf.example.com/node3.vwf
-    #     properties:
-    #       visible: true
-    #     methods:
-    #       toggle: |
-    #         this.visible = !this.visible;
-    #         this.future(3).toggle();
-    #       initialize: |
-    #         // this.future(20).toggle();
-  doorWood_dae:
-    extends: http://vwf.example.com/node3.vwf
-    implements:
-    - drag.ux # must have a parent transform
-    source: doorWood.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 3.0, -3.8, 10.0 ]
-  doorSteel_dae:
-    extends: http://vwf.example.com/node3.vwf
-    implements:
-    - drag.ux # must have a parent transform
-    source: doorSteel.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 8.0, -3.8, 10.0 ]
+  # wallOriginParent:
+  #   extends: http://vwf.example.com/node3.vwf
+  #   properties:
+  #     translation: [ 0.0, 0.0, 0.0 ]
+  #   children:
   light:
     extends: http://vwf.example.com/light.vwf
     properties:
