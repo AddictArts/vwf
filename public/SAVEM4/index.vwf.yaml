@@ -9,12 +9,12 @@ children:
   #   type: model/vnd.collada+xml
   #   properties:
   #     scale: [ 10.0, 10.0, 10.0 ]
-  # xyzbar_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: models/xyzbar.dae
-  #   type: model/vnd.collada+xml
-  #   properties:
-  #     scale: [ 1.0, 1.0, 1.0 ]
+  xyzbar_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: models/xyzbar.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 1.0, 1.0, 1.0 ]
     # children:
     #   x:
     #     extends: http://vwf.example.com/node3.vwf
@@ -28,12 +28,12 @@ children:
     #     extends: http://vwf.example.com/node3.vwf
     #     implements:
     #     - togglevis.ux
-  M4_Carbine_v02_grouped_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: models/M4_v02_grouped.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 10.0, 10.0, 10.0 ]
+  # M4_Carbine_v02_grouped_dae:
+  #   extends: http://vwf.example.com/node3.vwf
+  #   source: models/M4_v02_grouped.dae
+  #   type: model/vnd.collada+xml
+  #   properties:
+  #     scale: [ 10.0, 10.0, 10.0 ]
   light:
     extends: http://vwf.example.com/light.vwf
     properties:
