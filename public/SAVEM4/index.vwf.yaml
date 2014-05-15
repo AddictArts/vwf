@@ -2,6 +2,9 @@
 extends: http://vwf.example.com/scene.vwf
 # implements:
 # - begin.eui
+methods:
+  initializeCamera:
+  update: 
 children:
   # M4_Carbine_v02_Ungrouped_dae:
   #   extends: http://vwf.example.com/node3.vwf
@@ -9,6 +12,13 @@ children:
   #   type: model/vnd.collada+xml
   #   properties:
   #     scale: [ 10.0, 10.0, 10.0 ]
+  M4_Carbine_v02_grouped_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: models/M4_v02_grouped.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 20.0, 20.0, 20.0 ]
+      translation: [ 0.0, 0.0, 5.0 ]
   xyzbar_dae:
     extends: http://vwf.example.com/node3.vwf
     source: models/xyzbar.dae
@@ -28,15 +38,43 @@ children:
     #     extends: http://vwf.example.com/node3.vwf
     #     implements:
     #     - togglevis.ux
-  # M4_Carbine_v02_grouped_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: models/M4_v02_grouped.dae
-  #   type: model/vnd.collada+xml
-  #   properties:
-  #     scale: [ 10.0, 10.0, 10.0 ]
+  greemplane_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: ../../primitives/GreenPlane.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 0.0001, 0.0001, 0.0001 ]
+      translation: [ 0.0, 0.0, -1.0 ]
+  TexturedCube_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: ../../primitives/TexturedCube.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 0.125, 0.125, 0.125 ]
+      translation: [ 6.0, 4.0, 0.0 ]
   light:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
-      translation: [ 0.0, -25.0, 20.0 ]
-      rotation: [ -1.0, 0.0, 0.0, 36.0 ]
+      translation: [ 0.0, 25.0, 20.0 ]
+      rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+  # camera:
+  #   extends: "http://vwf.example.com/camera.vwf"
+  #   properties:
+  #     translation: [ -40.0, -30.0, 20.0 ]
+  #     rotation: [ -0.3, 0.1, -1.0, 50.0 ]
+scripts:
+- | 
+    this.initialize = function() {
+        this.future(0).initializeCamera();
+    }
+
+    this.initializeCamera = function() {
+      this.camera.translation = [ 40.0, 30.0, 20.0 ];
+      this.camera.lookAt = this.xyzbar_dae.id;
+      this.camera.navmode = "fly";
+      // this.camera.navmode = "none";
+    }
+
+    this.update = function() {
+    } //@ sourceURL=index.vwf

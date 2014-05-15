@@ -1,9 +1,11 @@
+"use strict";
+
 // XXX debug global for now...
-SAVE = { };
+var SAVE = { };
 
-// I have a feeling this could life in support/client/lib as a user view config and no need to patch vwf.js?
+// I have a feeling this could live in support/client/lib as a user view config and no need to patch vwf.js?
 
-define([ 'module', 'vwf/view', 'jquery' ], function(module, view, $) {
+define([ 'module', 'vwf/view', 'vwf/view/threejs', 'jquery' ], function(module, view, sj3module, $) {
   var renderer;
   var scene;
   var camera;
@@ -32,6 +34,8 @@ define([ 'module', 'vwf/view', 'jquery' ], function(module, view, $) {
           scene = SAVE.scene = findScene();
           camera = SAVE.camera = findCamera();
           SAVE.view = this;
+          SAVE.threejs = sj3module;
+          SAVE.cameraId = vwf_view.kernel.find(undefined, "//camera")[0];
         }
     }
   });
