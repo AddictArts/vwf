@@ -6,63 +6,26 @@ methods:
   initializeCamera:
   update: 
 children:
-  # M4_Carbine_v02_Ungrouped_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: models/M4_Carbine_v02_Ungrouped.dae
-  #   type: model/vnd.collada+xml
-  #   properties:
-  #     scale: [ 10.0, 10.0, 10.0 ]
-  M4_Carbine_v02_grouped_dae:
+  m4_low_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: models/M4_v02_grouped.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 20.0, 20.0, 20.0 ]
-      translation: [ 0.0, 0.0, 5.0 ]
-  xyzbar_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: models/xyzbar.dae
+    source: models/m4_low.dae
     type: model/vnd.collada+xml
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
-    # children:
-    #   x:
-    #     extends: http://vwf.example.com/node3.vwf
-    #     implements:
-    #     - togglevis.ux
-    #   y:
-    #     extends: http://vwf.example.com/node3.vwf
-    #     implements:
-    #     - togglevis.ux
-    #   z:
-    #     extends: http://vwf.example.com/node3.vwf
-    #     implements:
-    #     - togglevis.ux
-  greemplane_dae:
+      translation: [ 0.0, 0.0, 2.0 ]
+  M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: ../../primitives/GreenPlane.dae
+    source: models/M4_Environment_01.dae
     type: model/vnd.collada+xml
     properties:
-      scale: [ 0.0001, 0.0001, 0.0001 ]
-      translation: [ 0.0, 0.0, -1.0 ]
-  TexturedCube_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: ../../primitives/TexturedCube.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 0.125, 0.125, 0.125 ]
-      translation: [ 6.0, 4.0, 0.0 ]
+      scale: [ 1.0, 1.0, 1.0 ]
+      translation: [ 0.0, 0.0, 0.0 ]
   light:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
       translation: [ 0.0, 25.0, 20.0 ]
       rotation: [ 1.0, 1.0, 0.0, 36.0 ]
-  # camera:
-  #   extends: "http://vwf.example.com/camera.vwf"
-  #   properties:
-  #     translation: [ -40.0, -30.0, 20.0 ]
-  #     rotation: [ -0.3, 0.1, -1.0, 50.0 ]
 scripts:
 - | 
     this.initialize = function() {
@@ -70,9 +33,9 @@ scripts:
     }
 
     this.initializeCamera = function() {
-      this.camera.translation = [ 40.0, 30.0, 20.0 ];
-      this.camera.lookAt = this.xyzbar_dae.id;
-      this.camera.navmode = "fly";
+      this.camera.translation = [ 3.0, 5.0, 2.0 ];
+      this.camera.lookAt = this.m4_low_dae.id;
+      // this.camera.navmode = "fly";
       // this.camera.navmode = "none";
     }
 
