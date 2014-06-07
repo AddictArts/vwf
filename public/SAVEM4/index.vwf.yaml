@@ -6,9 +6,9 @@ methods:
   initializeCamera:
   update: 
 children:
-  m4_low_dae:
+  M4_lowPoly_06_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: models/m4_low.dae
+    source: models/M4_lowPoly_06.dae
     type: model/vnd.collada+xml
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
@@ -33,8 +33,8 @@ scripts:
     }
 
     this.initializeCamera = function() {
-      this.camera.translation = [ 3.0, 5.0, 2.0 ];
-      this.camera.lookAt = this.m4_low_dae.id;
+      this.camera.translation = [-0.6049838066101074,0.5065683126449585,2]; //[ 3.0, 5.0, 2.0 ]
+      this.camera.lookAt = this.M4_lowPoly_06_dae.id;
       // this.camera.navmode = "fly";
       // this.camera.navmode = "none";
     }

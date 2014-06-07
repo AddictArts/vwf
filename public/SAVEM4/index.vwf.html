@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>Exercise UI</title>
+    <script type="text/javascript" src="../js/dat.gui.min.js"></script>
+    <script type="text/javascript">
+      (function() {
+      var appID = vwf_view.kernel.application();
+
+      var Tooltray = function() {
+        this.message = 'M4 Carbine';
+        this.speed = 0.8;
+        this.displayOutline = false;
+        this.explode = function() { console.log('You clicked me!'); };
+      };
+
+      function SceneInitialize() {
+        var tray = new Tooltray();
+        var gui = new dat.GUI();
+        gui.add(tray, 'message');
+        gui.add(tray, 'speed', -5, 5);
+        gui.add(tray, 'outline');
+        gui.add(tray, 'explode');
+
+        $(window).unload(function() { SceneDestroy(); });
+      }
+
+      function SceneDestroy() {
+        // vwf_view.kernel.satProperty(appID, "inputMode", mode);
+        // vwf_view.kernel.callMethod(appID, 'sceneDestroy', [ ]);
+      }
+
+      $(document).ready(function() { SceneInitialize(); }); //@ sourceURL=index.vwf.html
+      })();
+    </script>
+  </head>
+<body>
+  <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;">
+    <div class="toolstyle" id="toolbar">
+    </div>
+    <div id="debugMsg" class="" style="position:absolute;left:0px;top:220px;"></div>
+  </div>
+  <script type="text/javascript">
+    $('#wrapper').appendTo('#vwf-root');
+  </script>
+</body>
+</html>
