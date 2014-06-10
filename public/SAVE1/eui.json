@@ -1,8 +1,8 @@
 {
 	"activityServerAddress": "http://localhost:3001/action",
-	"floorKBID" : "kbfile#S1",
-	"wallKBID" : "kbfile#W",
-	"doorWoodKBID" : "kbfile#D2",
-	"doorSteelKBID" : "kbfile#D1",
+	"floorKBID" : "floorID",
+	"wallKBID" : "wallID",
+	"doorWoodKBID" : "doorWoodID",
+	"doorSteelKBID" : "doorSteelID",
 	"requestToolTrayClasses": { }
 }
