@@ -1,18 +1,33 @@
 --- 
 extends: http://vwf.example.com/scene.vwf
-# implements:
+implements:
 # - begin.eui
+- activity.ux
 methods:
   initializeCamera:
-  update: 
+  lookAt:
+  instance:
 children:
-  M4_lowPoly_06_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: models/M4_lowPoly_06.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 0.0, 0.0, 2.0 ]
+  # xyzbar_dae:
+  #   extends: http://vwf.example.com/node3.vwf
+  #   source: models/xyzbar.dae
+  #   type: model/vnd.collada+xml
+  # M4_lowPoly_06_dae:
+  #   extends: http://vwf.example.com/node3.vwf
+  #   source: models/M4_lowPoly_06.dae
+  #   type: model/vnd.collada+xml
+  #   properties:
+  #     scale: [ 1.0, 1.0, 1.0 ]
+  #     translation: [ 0.0, 0.0, 2.0 ]
+  #   children:
+  #     M4_Carbine:
+  #       extends: "http://vwf.example.com/node3.vwf"
+  #       children:
+  #         Selector_Lever:
+  #           extends: "http://vwf.example.com/node3.vwf"
+  #           properties:
+  #             translation: [ 0.0, 0.0, 0.0]
+  #             scale: [ 10.0, 10.0, 10.0 ]
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
     source: models/M4_Environment_01.dae
@@ -20,24 +35,125 @@ children:
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
       translation: [ 0.0, 0.0, 0.0 ]
-  light:
+  light1:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
-      translation: [ 0.0, 25.0, 20.0 ]
+      translation: [ 0.0, 5.0, 5.0 ]
+      rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+  light2:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "directional"
+      translation: [ 0.0, -5.0, 5.0 ]
       rotation: [ 1.0, 1.0, 0.0, 36.0 ]
 scripts:
-- | 
+- |
+    var vwf_node3 = {
+      extends: "http://vwf.example.com/node3.vwf",
+      source: "models/xyzbar.dae",
+      type: "model/vnd.collada+xml",
+      // implements: ["http://vwf.example.com/path/to/behavior.vwf"],
+      properties: {
+        translation: [ 0.0, 0.0, 2.0 ],
+        rotation: [ 0.0, 0.0, -1.0, 90.0 ],
+        scale: [ 1.0, 1.0, 1.0 ]
+      },
+      methods: {
+        positionWeapon: undefined,
+        selectorLever: undefined,
+        selectorLeverSemi: undefined,
+        selectorLeverSafe: undefined,
+        selectorLeverBurst: undefined,
+        magazineCatch: undefined,
+        magazine: undefined
+      },
+      children: {
+        // childFromURI: "http://vwf.example.com/path/to/component.vwf",
+        M4_Carbine: {
+          extends: "http://vwf.example.com/node3.vwf",
+          children: {
+            Selector_Lever: {
+              extends: "http://vwf.example.com/node3.vwf",
+              // properties: {
+              //   translation: [ 0.0, 0.0, 0.0],
+              //   scale: [ 10.0, 10.0, 10.0 ]
+              // }
+              // scripts: [ ]
+            },
+            Magazine_Catch: {
+              extends: "http://vwf.example.com/node3.vwf"
+            },
+            Magazine_Catch_Button: {
+              extends: "http://vwf.example.com/node3.vwf"
+            },
+            Tube: {
+              extends: "http://vwf.example.com/node3.vwf"
+            },
+            Base: {
+              extends: "http://vwf.example.com/node3.vwf"
+            }
+          }
+        }
+      },
+      scripts: [
+        "this.positionWeapon = function() {\
+          console.info('positioning weapon facing down range');\
+          this.rotation = [ 0.0, 0.0, 1.0, 0.0 ];\
+        }",
+        "this.selectorLever = function() {\
+          console.info('selector lever activated');\
+          this.parent.camera.translation = [ -0.6, 0.5, 2.0 ];\
+        }",
+        "this.selectorLeverSemi = function() {\
+          console.info('selector lever to semi');\
+          this.M4_Carbine.Selector_Lever.rotation = [ 0.0, 1.0, 0.0, 0.0 ];\
+        }",
+        "this.selectorLeverSafe = function() {\
+          console.info('selector lever to safe');\
+          this.M4_Carbine.Selector_Lever.rotation = [ 0.0, 1.0, 0.0, 90.0 ];\
+        }",
+        "this.selectorLeverBurst = function() {\
+          console.info('selector lever to burst');\
+          this.M4_Carbine.Selector_Lever.rotation = [ 0.0, -1.0, 0.0, 90.0 ];\
+        }",
+        "this.magazineCatch = function() {\
+          console.info('magazine catch pushed');\
+          this.M4_Carbine.Magazine_Catch.translation = [ 0.0, 0.1, 0.0 ];\
+          this.M4_Carbine.Magazine_Catch_Button.translation = [ 0.0, 0.1, 0.0 ];\
+        }",
+        "this.magazine = function() {\
+          console.info('magazine removed');\
+          this.M4_Carbine.Tube.translation = [ 0.0, 0.0, -0.5 ];\
+          this.M4_Carbine.Base.translation = [ 0.0, 0.0, -0.5 ];\
+        }"
+      ]
+    };
+
     this.initialize = function() {
         this.future(0).initializeCamera();
-    }
+    };
 
     this.initializeCamera = function() {
-      this.camera.translation = [-0.6049838066101074,0.5065683126449585,2]; //[ 3.0, 5.0, 2.0 ]
-      this.camera.lookAt = this.M4_lowPoly_06_dae.id;
-      // this.camera.navmode = "fly";
-      // this.camera.navmode = "none";
-    }
+      this.camera.translation = [ -1.25, -0.25, 2.0 ];
+      this.camera.rotation = [ 0.0, 0.0, -1.0, 90.0 ];
+      // this.camera.translation = [ -0.6, 0.5, 2 ];
+      // this.camera.lookAt = this.M4_lowPoly_06_dae.id;
+      // this.camera.navmode = "fly"; //"none";
+    };
 
-    this.update = function() {
-    } //@ sourceURL=index.vwf
+    this.lookAt = function(what) {
+      // this.camera.lookAt = this.M4_Carbine_dae.id;
+      this.camera.lookAt = this[what].id;
+    };
+
+    this.instance = function() {
+      var msg = "The M4 is ready, select your next action";
+      $('#actionMsg').text(msg);
+
+      console.info('instancing tool tray item ' + arguments[ 0 ] + ', ' + arguments[ 1 ]);
+      vwf_node3.source = arguments[ 1 ];
+      this.children.create(arguments[ 0 ], vwf_node3);
+      this.future(0).lookAt(arguments[ 0 ]);
+      this.activity('INSTANCE'); //XXX change this!!!!
+    }; //@ sourceURL=index.vwf

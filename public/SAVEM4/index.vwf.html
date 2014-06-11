@@ -4,40 +4,90 @@
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
     <script type="text/javascript">
       (function() {
+      var vwf = {
+        m4_CarbineID: undefined 
+      };
       var appID = vwf_view.kernel.application();
 
-      var Tooltray = function() {
-        this.message = 'M4 Carbine';
-        this.speed = 0.8;
-        this.displayOutline = false;
-        this.explode = function() { console.log('You clicked me!'); };
+      var M4 = {
+        gui: undefined,
+        tray: undefined,
+        guiref: { },
+        Tooltray: function() {
+          this.m4Carbine = function() {
+            M4.gui.remove(M4.guiref.m4c);
+            vwf_view.kernel.callMethod(appID, 'instance', ['M4_Carbine_dae', 'models/M4_lowPoly_06.dae']);
+            M4.tray.positionWeapon = M4.positionWeapon;
+            M4.gui.add(M4.tray, 'positionWeapon').name('Position Weapon');
+            M4.tray.selectorLever = M4.selectorLever;
+            M4.guiref.sl = M4.gui.add(M4.tray, 'selectorLever').name('Selector Lever').onFinishChange(M4.addSelectorLeverActionGroup);
+
+            M4.tray.magazineCatch = M4.magazineCatch;
+            M4.gui.add(M4.tray, 'magazineCatch').name('Magazine Catch');
+            M4.tray.magazine = M4.magazine;
+            M4.gui.add(M4.tray, 'magazine').name('Magazine');
+          };
+        },
+        positionWeapon: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'positionWeapon');
+        },
+        selectorLever: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLever');
+        },
+        addSelectorLeverActionGroup: function() {
+          var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
+
+          M4.gui.remove(M4.guiref.sl);
+          M4.tray.semi = M4.semi;
+          selectorLeverFolder.add(M4.tray, 'semi').name('SEMI');
+          M4.tray.safe = M4.safe;
+          selectorLeverFolder.add(M4.tray, 'safe').name('SAFE');
+          M4.tray.burst = M4.burst;
+          selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
+        },
+        semi: function() {
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverSemi');
+        },
+        safe: function() {
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverSafe');
+        },
+        burst: function() {
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverBurst');
+        },
+        magazineCatch: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazineCatch');
+        },
+        magazine: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazine');
+        },
+
+        init: function() {
+          this.tray = new this.Tooltray();
+          this.gui = new dat.GUI();
+          M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
+        }
       };
 
       function SceneInitialize() {
-        var tray = new Tooltray();
-        var gui = new dat.GUI();
-        gui.add(tray, 'message');
-        gui.add(tray, 'speed', -5, 5);
-        gui.add(tray, 'outline');
-        gui.add(tray, 'explode');
-
+        M4.init();
         $(window).unload(function() { SceneDestroy(); });
       }
 
       function SceneDestroy() {
         // vwf_view.kernel.satProperty(appID, "inputMode", mode);
-        // vwf_view.kernel.callMethod(appID, 'sceneDestroy', [ ]);
       }
 
-      $(document).ready(function() { SceneInitialize(); }); //@ sourceURL=index.vwf.html
-      })();
+      $(document).ready(function() { SceneInitialize(); });
+      })(); //@ sourceURL=index.vwf.html
     </script>
   </head>
 <body>
   <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;">
-    <div class="toolstyle" id="toolbar">
-    </div>
-    <div id="debugMsg" class="" style="position:absolute;left:0px;top:220px;"></div>
+    <div id="actionMsg"></div>
   </div>
   <script type="text/javascript">
     $('#wrapper').appendTo('#vwf-root');
