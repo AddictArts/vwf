@@ -90,7 +90,7 @@
           //   vwf.cameraID = vwf.cameraID || vwf_view.kernel.find(vwf.appID, "//camera");
           //   vwf_view.kernel.setProperty(vwf.cameraID, "rotation", [ 0.0, 0.0, 1.0, -90.0 ]);
           // });
-          this.gui.add(this.tray, 'cameraZoom', 0.0, 50.0, 1.0).name('Cam Zoom').onChange(function(value) {
+          this.gui.add(this.tray, 'cameraZoom', 0.0, 90.0).step(1.0).name('Cam Zoom').onFinishChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
           });
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');

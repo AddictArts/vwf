@@ -11,7 +11,9 @@ methods:
   clearLookAt:
   instance:
 properties:
-  zoomValue:
+  zoomedValue:
+  scaling:
+  camTarget:
 children:
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
@@ -32,6 +34,9 @@ children:
       lightType: "directional"
       translation: [ 0.0, -5.0, 5.0 ]
       rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+  camera:
+    extends: "http://vwf.example.com/camera.vwf"
+    properties:
 scripts:
 - |
     var vwf_node3 = {
@@ -109,38 +114,55 @@ scripts:
     };
 
     this.initialize = function() {
-      this.zoomValue = 0.0;
+      this.zoomedValue = 0.0;
+      this.scaled = 0.0;
       this.future(0).initializeCamera();
     };
 
     this.initializeCamera = function() {
-      this.camera.translation = [ -1.25, 0.0, 2.0 ]; //[ -1.25, -0.25, 2.0 ]
+      this.camera.translation = [ -1.25, 0.0, 2.0 ];
+      // this.camWorldPosition = [ this.camera.translation[ 0 ], this.camera.translation[ 1 ], this.camera.translation[ 2 ] ];
       this.camera.rotation = [ 0.0, 0.0, 1.0, -90.0 ];
     };
 
     this.zoom = function(value) {
       console.info('zoom ' + value);
 
-      var x = this.camera.translation[0];
-      var y = this.camera.translation[1];
-      var z = this.camera.translation[2];
-      var value = value / 100.0; // normalize it
+      var scale = 1.0 - value / 100.0; // normalize the value
+      var tmp = scale;
+      var delta = value - this.zoomedValue;
 
-      console.info('offset x ' + x + ', y ' + y + ', z ' + z);
+      if (value < this.zoomedValue) {
+        delta = this.zoomedValue - value;
 
-      if (value < this.zoomValue) {
-        // Note: assuming target is the origin for now!
-        x /= 0.95; // x -= x * factor
-        y /= 0.95; // y -= y * factor
+        if (value == 0.0) {
+          scale = (1.0 / this.scaling);
+          this.scaling = 0.0;
+        } else {
+          scale = (1.0 / this.scaling) * scale;
+          this.scaling = tmp;
+        }
       } else {
-        x *= 0.95; // x += x * (this.zoomFactor + factor);
-        y *= 0.95; // y += y * (this.zoomFactor + factor);
+        this.scaling = scale;
       }
 
-      this.zoomValue = value;
-      console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
-      this.camera.translation = [ x, y, z ];
-      // this.camera.translateTo([ x, y, z ], 0.5);
+      if (delta < 0.00001) return; // floating-point fun, less than epsilon
+
+      // Note: assuming target is the origin for now!
+      var x = this.camera.translation[0];
+      var y = this.camera.translation[1];
+      var z = this.camera.translation[2]; // we keep the z as the target z
+      var theta = Math.atan2(x, y); // radians
+      var phi = Math.atan2(Math.sqrt(x * x + y * y), 0.0); // radians
+      var radius = Math.sqrt(x * x + y * y) * scale;
+
+      console.info('scale: ' + scale + ', radius: ' + radius);
+      x = radius * Math.sin(phi) * Math.sin(theta);
+      y = radius * Math.sin(phi) * Math.cos(theta);
+      console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
+      this.zoomedValue = value;
+      // this.camera.translation = [ x, y, z ];
+      this.camera.translateTo([ x, y, z ], 0.5);
     };
 
     this.orbit = function(theta) {
@@ -153,18 +175,18 @@ scripts:
       var theta = theta * (Math.PI / 180.0);
 
       console.info('offset x ' + x + ', y ' + y + ', z ' + z);
-      // var theta = Math.atan2(offset[0], offset[1]);
-      // theta += thetaDelta;
       var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
       var radius = Math.sqrt(x * x + y * y + z * z); // again the origin is the target
 
-      console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius ' + radius);
+      console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius: ' + radius);
       x = radius * Math.sin(phi) * Math.sin(theta);
       y = radius * Math.sin(phi) * Math.cos(theta);
       z = radius * Math.cos(phi);
       console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
       this.camera.translation = [ x, y, z ];
-      this.future(0).lookAt('M4_Carbine_dae'); //XXX
+      console.info('target theta ' + theta * (180.0 / Math.PI));
+      console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+      this.future(0).lookAt(this.camTarget);
     };
 
     this.clearLookAt = function() {
@@ -174,6 +196,7 @@ scripts:
     this.lookAt = function(what) {
       this.camera.lookAt = this[what].id;
       this.future(0).clearLookAt();
+      console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
     };
 
     this.instance = function() {
@@ -184,6 +207,6 @@ scripts:
 
       vwf_node3.source = arguments[ 1 ];
       this.children.create(arguments[ 0 ], vwf_node3);
-      // this.future(0).lookAt(arguments[ 0 ]); //XXX
+      this.camTarget = arguments[ 0 ];
       this.activity('INSTANCE'); //XXX change this!!!!
     }; //@ sourceURL=index.vwf
