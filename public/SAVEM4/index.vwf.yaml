@@ -102,13 +102,15 @@ scripts:
         }",
         "this.magazineCatch = function() {\
           console.info('magazine catch pushed');\
-          this.M4_Carbine.Magazine_Catch.translation = [ 0.0, 0.1, 0.0 ];\
-          this.M4_Carbine.Magazine_Catch_Button.translation = [ 0.0, 0.1, 0.0 ];\
+          this.M4_Carbine.Magazine_Catch.translateTo([ 0.0, 0.00395, 0.0 ], 0.125);\
+          this.M4_Carbine.Magazine_Catch_Button.translateTo([ 0.0, 0.00395, 0.0 ], 0.125);\
         }",
         "this.magazine = function() {\
           console.info('magazine removed');\
-          this.M4_Carbine.Tube.translation = [ 0.0, 0.0, -0.5 ];\
-          this.M4_Carbine.Base.translation = [ 0.0, 0.0, -0.5 ];\
+          this.M4_Carbine.Magazine_Catch.translateTo([ 0.0, -0.0018, 0.0 ], 0.125);\
+          this.M4_Carbine.Magazine_Catch_Button.translateTo([ 0.0, -0.0018, 0.0 ], 0.125);\
+          this.M4_Carbine.Tube.translateTo([ 0.0, 0.0, -0.125 ], 0.25);\
+          this.M4_Carbine.Base.translateTo([ 0.0, 0.0, -0.125 ], 0.25);\
         }"
       ]
     };
@@ -128,26 +130,25 @@ scripts:
     this.zoom = function(value) {
       console.info('zoom ' + value);
 
+      var EPS = 0.00001;
       var scale = 1.0 - value / 100.0; // normalize the value
       var tmp = scale;
-      var delta = value - this.zoomedValue;
 
-      if (value < this.zoomedValue) {
-        delta = this.zoomedValue - value;
-
-        if (value == 0.0) {
+      if (this.zoomedValue > 0.0) {
+        if (value < EPS) {
           scale = (1.0 / this.scaling);
           this.scaling = 0.0;
+          value = 0.0;
         } else {
-          scale = (1.0 / this.scaling) * scale;
+          scale = (1.0 / this.scaling) * tmp;
           this.scaling = tmp;
         }
       } else {
         this.scaling = scale;
       }
 
-      if (delta < 0.00001) return; // floating-point fun, less than epsilon
-
+      this.zoomedValue = value;
+      console.info('scale: ' + scale + ', scaling: ' + this.scaling);
       // Note: assuming target is the origin for now!
       var x = this.camera.translation[0];
       var y = this.camera.translation[1];
@@ -156,13 +157,12 @@ scripts:
       var phi = Math.atan2(Math.sqrt(x * x + y * y), 0.0); // radians
       var radius = Math.sqrt(x * x + y * y) * scale;
 
-      console.info('scale: ' + scale + ', radius: ' + radius);
+      console.info('radius: ' + radius);
       x = radius * Math.sin(phi) * Math.sin(theta);
       y = radius * Math.sin(phi) * Math.cos(theta);
       console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
-      this.zoomedValue = value;
       // this.camera.translation = [ x, y, z ];
-      this.camera.translateTo([ x, y, z ], 0.5);
+      this.camera.translateTo([ x, y, z ], 0.125);
     };
 
     this.orbit = function(theta) {

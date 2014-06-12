@@ -74,7 +74,7 @@
           this.tray = new this.Tooltray();
           this.gui = new dat.GUI();
           this.gui.add(this.tray, 'activityMsg').name('Messages');
-          this.gui.add(this.tray, 'cameraOrbit', 0.0, 180.0).name('Cam Orbit').onChange(function(value) {
+          this.gui.add(this.tray, 'cameraOrbit', 0.0, 180.0).name('Orbit').onChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value ]); // really we start at -90 behind the target, so we multiply by -1.0
           });
           // this.gui.add(this.tray, 'cameraYaw', 0.0, 180.0).name('Cam Yaw').onChange(function(value) {
@@ -90,7 +90,7 @@
           //   vwf.cameraID = vwf.cameraID || vwf_view.kernel.find(vwf.appID, "//camera");
           //   vwf_view.kernel.setProperty(vwf.cameraID, "rotation", [ 0.0, 0.0, 1.0, -90.0 ]);
           // });
-          this.gui.add(this.tray, 'cameraZoom', 0.0, 90.0).step(1.0).name('Cam Zoom').onFinishChange(function(value) {
+          this.gui.add(this.tray, 'cameraZoom', 0.0, 90.0).step(1.0).name('Zoom').onFinishChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
           });
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
