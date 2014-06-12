@@ -5,29 +5,14 @@ implements:
 - activity.ux
 methods:
   initializeCamera:
+  zoom:
+  orbit:
   lookAt:
+  clearLookAt:
   instance:
+properties:
+  zoomValue:
 children:
-  # xyzbar_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: models/xyzbar.dae
-  #   type: model/vnd.collada+xml
-  # M4_lowPoly_06_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: models/M4_lowPoly_06.dae
-  #   type: model/vnd.collada+xml
-  #   properties:
-  #     scale: [ 1.0, 1.0, 1.0 ]
-  #     translation: [ 0.0, 0.0, 2.0 ]
-  #   children:
-  #     M4_Carbine:
-  #       extends: "http://vwf.example.com/node3.vwf"
-  #       children:
-  #         Selector_Lever:
-  #           extends: "http://vwf.example.com/node3.vwf"
-  #           properties:
-  #             translation: [ 0.0, 0.0, 0.0]
-  #             scale: [ 10.0, 10.0, 10.0 ]
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
     source: models/M4_Environment_01.dae
@@ -69,17 +54,11 @@ scripts:
         magazine: undefined
       },
       children: {
-        // childFromURI: "http://vwf.example.com/path/to/component.vwf",
         M4_Carbine: {
           extends: "http://vwf.example.com/node3.vwf",
           children: {
             Selector_Lever: {
               extends: "http://vwf.example.com/node3.vwf",
-              // properties: {
-              //   translation: [ 0.0, 0.0, 0.0],
-              //   scale: [ 10.0, 10.0, 10.0 ]
-              // }
-              // scripts: [ ]
             },
             Magazine_Catch: {
               extends: "http://vwf.example.com/node3.vwf"
@@ -103,7 +82,6 @@ scripts:
         }",
         "this.selectorLever = function() {\
           console.info('selector lever activated');\
-          this.parent.camera.translation = [ -0.6, 0.5, 2.0 ];\
         }",
         "this.selectorLeverSemi = function() {\
           console.info('selector lever to semi');\
@@ -131,29 +109,81 @@ scripts:
     };
 
     this.initialize = function() {
-        this.future(0).initializeCamera();
+      this.zoomValue = 0.0;
+      this.future(0).initializeCamera();
     };
 
     this.initializeCamera = function() {
-      this.camera.translation = [ -1.25, -0.25, 2.0 ];
-      this.camera.rotation = [ 0.0, 0.0, -1.0, 90.0 ];
-      // this.camera.translation = [ -0.6, 0.5, 2 ];
-      // this.camera.lookAt = this.M4_lowPoly_06_dae.id;
-      // this.camera.navmode = "fly"; //"none";
+      this.camera.translation = [ -1.25, 0.0, 2.0 ]; //[ -1.25, -0.25, 2.0 ]
+      this.camera.rotation = [ 0.0, 0.0, 1.0, -90.0 ];
+    };
+
+    this.zoom = function(value) {
+      console.info('zoom ' + value);
+
+      var x = this.camera.translation[0];
+      var y = this.camera.translation[1];
+      var z = this.camera.translation[2];
+      var value = value / 100.0; // normalize it
+
+      console.info('offset x ' + x + ', y ' + y + ', z ' + z);
+
+      if (value < this.zoomValue) {
+        // Note: assuming target is the origin for now!
+        x /= 0.95; // x -= x * factor
+        y /= 0.95; // y -= y * factor
+      } else {
+        x *= 0.95; // x += x * (this.zoomFactor + factor);
+        y *= 0.95; // y += y * (this.zoomFactor + factor);
+      }
+
+      this.zoomValue = value;
+      console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
+      this.camera.translation = [ x, y, z ];
+      // this.camera.translateTo([ x, y, z ], 0.5);
+    };
+
+    this.orbit = function(theta) {
+      console.info('orbit ' + theta + ' degrees');
+
+      // Note: assuming target is the origin for now!
+      var x = this.camera.translation[0];
+      var y = this.camera.translation[1];
+      var z = this.camera.translation[2];
+      var theta = theta * (Math.PI / 180.0);
+
+      console.info('offset x ' + x + ', y ' + y + ', z ' + z);
+      // var theta = Math.atan2(offset[0], offset[1]);
+      // theta += thetaDelta;
+      var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
+      var radius = Math.sqrt(x * x + y * y + z * z); // again the origin is the target
+
+      console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius ' + radius);
+      x = radius * Math.sin(phi) * Math.sin(theta);
+      y = radius * Math.sin(phi) * Math.cos(theta);
+      z = radius * Math.cos(phi);
+      console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
+      this.camera.translation = [ x, y, z ];
+      this.future(0).lookAt('M4_Carbine_dae'); //XXX
+    };
+
+    this.clearLookAt = function() {
+      this.camera.lookAt = null;
     };
 
     this.lookAt = function(what) {
-      // this.camera.lookAt = this.M4_Carbine_dae.id;
       this.camera.lookAt = this[what].id;
+      this.future(0).clearLookAt();
     };
 
     this.instance = function() {
+      console.info('instancing tool tray item ' + arguments[ 0 ] + ', ' + arguments[ 1 ]);
+
       var msg = "The M4 is ready, select your next action";
       $('#actionMsg').text(msg);
 
-      console.info('instancing tool tray item ' + arguments[ 0 ] + ', ' + arguments[ 1 ]);
       vwf_node3.source = arguments[ 1 ];
       this.children.create(arguments[ 0 ], vwf_node3);
-      this.future(0).lookAt(arguments[ 0 ]);
+      // this.future(0).lookAt(arguments[ 0 ]); //XXX
       this.activity('INSTANCE'); //XXX change this!!!!
     }; //@ sourceURL=index.vwf

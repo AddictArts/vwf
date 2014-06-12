@@ -5,18 +5,23 @@
     <script type="text/javascript">
       (function() {
       var vwf = {
-        m4_CarbineID: undefined 
+        m4_CarbineID: undefined,
+        cameraID: undefined,
+        appID: vwf_view.kernel.application()
       };
-      var appID = vwf_view.kernel.application();
 
       var M4 = {
         gui: undefined,
         tray: undefined,
         guiref: { },
         Tooltray: function() {
+          this.activityMsg = true;
+          this.cameraOrbit = 90.0;
+          this.cameraYaw = 90.0;
+          this.cameraZoom = 0.0;
           this.m4Carbine = function() {
             M4.gui.remove(M4.guiref.m4c);
-            vwf_view.kernel.callMethod(appID, 'instance', ['M4_Carbine_dae', 'models/M4_lowPoly_06.dae']);
+            vwf_view.kernel.callMethod(vwf.appID, 'instance', ['M4_Carbine_dae', 'models/M4_lowPoly_06.dae']);
             M4.tray.positionWeapon = M4.positionWeapon;
             M4.gui.add(M4.tray, 'positionWeapon').name('Position Weapon');
             M4.tray.selectorLever = M4.selectorLever;
@@ -29,11 +34,11 @@
           };
         },
         positionWeapon: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'positionWeapon');
         },
         selectorLever: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLever');
         },
         addSelectorLeverActionGroup: function() {
@@ -57,17 +62,37 @@
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverBurst');
         },
         magazineCatch: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazineCatch');
         },
         magazine: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(appID, "//M4_Carbine_dae");
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazine');
         },
 
         init: function() {
           this.tray = new this.Tooltray();
           this.gui = new dat.GUI();
+          this.gui.add(this.tray, 'activityMsg').name('Messages');
+          this.gui.add(this.tray, 'cameraOrbit', 0.0, 180.0).name('Cam Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value ]); // really we start at -90 behind the target, so we multiply by -1.0
+          });
+          // this.gui.add(this.tray, 'cameraYaw', 0.0, 180.0).name('Cam Yaw').onChange(function(value) {
+          //   vwf.cameraID = vwf.cameraID || vwf_view.kernel.find(vwf.appID, "//camera");
+          //   vwf_view.kernel.setProperty(vwf.cameraID, "rotation", [ 0.0, 0.0, 1.0, -value ]);
+          // }).onFinishChange(function() {
+          //   M4.tray.cameraYaw = 90.0;
+
+          //   for (var i in M4.gui.__controllers) {
+          //     M4.gui.__controllers[i].updateDisplay();
+          //   }
+
+          //   vwf.cameraID = vwf.cameraID || vwf_view.kernel.find(vwf.appID, "//camera");
+          //   vwf_view.kernel.setProperty(vwf.cameraID, "rotation", [ 0.0, 0.0, 1.0, -90.0 ]);
+          // });
+          this.gui.add(this.tray, 'cameraZoom', 0.0, 50.0, 1.0).name('Cam Zoom').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
+          });
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
         }
       };
@@ -78,7 +103,6 @@
       }
 
       function SceneDestroy() {
-        // vwf_view.kernel.satProperty(appID, "inputMode", mode);
       }
 
       $(document).ready(function() { SceneInitialize(); });
