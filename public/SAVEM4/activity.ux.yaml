@@ -53,7 +53,7 @@ scripts:
   }
 
   this.activity = function(activity) {
-    console.info("activity.ux activity");
+    console.info("activity.ux activity " + activity);
 
     var activityJSON = JSON.stringify(getActionActivity(this.action));
 
