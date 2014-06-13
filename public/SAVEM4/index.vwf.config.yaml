@@ -3,5 +3,5 @@ model:
   vwf/model/threejs:
 view:
   vwf/view/threejs: "#vwf-root"
-  vwf/view/editor:
-  view/OrbitCamera:
+  # vwf/view/editor:
+  # view/OrbitCamera:

@@ -472,37 +472,6 @@
                     initializers["view"]["vwf/view/threejs"].active = true;
                 }
 
-
-                //fix to allow loading of user driver. Whats going on here? I was  under the impression that loading custom drivers
-                //for each applicaiton was a prime usecase
-                //need to add library names from userlibraries to initializers and requireConfig. Seems like this was designed only to 
-                //enable or disable drivers that are hard coded, but not add new ones.
-                Object.keys(userLibraries).forEach(function(libtype)
-                {
-                    Object.keys(userLibraries[libtype]).forEach(function(lib){
-                        if(initializers[libtype] &&!requireArray[lib])
-                        {
-                            var libEntry = {
-                                active:true,
-                                library:lib
-                            }
-                            requireArray.push(libEntry);
-                            requireArray[lib] = libEntry;
-                        }
-                        if(initializers[libtype] && !initializers[libtype][lib])
-                        {
-                            var libEntry = {
-                                active:true,
-                                library:lib,
-                                type:libtype,
-                                parameters:userLibraries[libtype][lib]
-                            }
-                            initializers[libtype][lib] =libEntry;
-                            initializers[libtype].push(libEntry);
-                        }
-                    })
-                })
-
                 require( requireConfig, getActiveLibraries(requireArray, false), function( ready ) {
 
                     ready( function() {
@@ -667,9 +636,7 @@
                         var viewArguments = undefined;
                     }
 
-                    //fix to allow loading of user driver. Whats going on here? I was  under the impression that loading custom drivers
-                    //for each applicaiton was a prime usecase
-                    if ( ! viewName.match( "^vwf/view/" ) && this.modules[viewName] ) { // old way
+                    if ( ! viewName.match( "^vwf/view/" ) ) { // old way
 
                         var view = this.modules[viewName];
 

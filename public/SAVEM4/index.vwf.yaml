@@ -1,18 +1,20 @@
 --- 
 extends: http://vwf.example.com/scene.vwf
-# implements:
+implements:
 # - begin.eui
+- activity.ux
 methods:
   initializeCamera:
-  update: 
+  zoom:
+  orbit:
+  lookAt:
+  clearLookAt:
+  instance:
+properties:
+  zoomedValue:
+  scaling:
+  camTarget:
 children:
-  m4_low_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: models/m4_low.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 0.0, 0.0, 2.0 ]
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
     source: models/M4_Environment_01.dae
@@ -20,24 +22,148 @@ children:
     properties:
       scale: [ 1.0, 1.0, 1.0 ]
       translation: [ 0.0, 0.0, 0.0 ]
-  light:
+  light1:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
-      translation: [ 0.0, 25.0, 20.0 ]
+      translation: [ 0.0, 5.0, 5.0 ]
       rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+  light2:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "directional"
+      translation: [ 0.0, -5.0, 5.0 ]
+      rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+  camera:
+    extends: "http://vwf.example.com/camera.vwf"
+    properties:
 scripts:
-- | 
-    this.initialize = function() {
-        this.future(0).initializeCamera();
+- |
+  var vwf_M4_node3 = {
+    extends: "http://vwf.example.com/node3.vwf",
+    source: "models/xyzbar.dae",
+    type: "model/vnd.collada+xml",
+    implements: [ "M4_Carbine.ux", "activity.ux" ],
+    properties: {
+      translation: [ 0.0, 0.0, 2.0 ],
+      rotation: [ 0.0, 0.0, -1.0, 90.0 ],
+      scale: [ 1.0, 1.0, 1.0 ]
+    },
+    children: {
+      M4_Carbine: {
+        extends: "http://vwf.example.com/node3.vwf",
+        children: {
+          Selector_Lever: {
+            extends: "http://vwf.example.com/node3.vwf",
+          },
+          Magazine_Catch: {
+            extends: "http://vwf.example.com/node3.vwf"
+          },
+          Magazine_Catch_Button: {
+            extends: "http://vwf.example.com/node3.vwf"
+          },
+          Tube: {
+            extends: "http://vwf.example.com/node3.vwf"
+          },
+          Base: {
+            extends: "http://vwf.example.com/node3.vwf"
+          }
+        }
+      }
+    }
+  };
+
+  this.initialize = function() {
+    this.zoomedValue = 0.0;
+    this.scaled = 0.0;
+    this.future(0).initializeCamera();
+  };
+
+  this.initializeCamera = function() {
+    this.camera.translation = [ -1.25, 0.0, 2.0 ];
+    this.camera.rotation = [ 0.0, 0.0, 1.0, -90.0 ];
+  };
+
+  this.zoom = function(value) {
+    console.info('zoom ' + value);
+
+    var EPS = 0.00001;
+    var scale = 1.0 - value / 100.0; // normalize the value
+    var tmp = scale;
+
+    if (this.zoomedValue > 0.0) {
+      if (value < EPS) {
+        scale = (1.0 / this.scaling);
+        this.scaling = 0.0;
+        value = 0.0;
+      } else {
+        scale = (1.0 / this.scaling) * tmp;
+        this.scaling = tmp;
+      }
+    } else {
+      this.scaling = scale;
     }
 
-    this.initializeCamera = function() {
-      this.camera.translation = [ 3.0, 5.0, 2.0 ];
-      this.camera.lookAt = this.m4_low_dae.id;
-      // this.camera.navmode = "fly";
-      // this.camera.navmode = "none";
-    }
+    this.zoomedValue = value;
+    console.info('scale: ' + scale + ', scaling: ' + this.scaling);
+    // Note: assuming target is the origin for now!
+    var x = this.camera.translation[0];
+    var y = this.camera.translation[1];
+    var z = this.camera.translation[2]; // we keep the z as the target z
+    var theta = Math.atan2(x, y); // radians
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), 0.0); // radians
+    var radius = Math.sqrt(x * x + y * y) * scale;
 
-    this.update = function() {
-    } //@ sourceURL=index.vwf
+    console.info('radius: ' + radius);
+    x = radius * Math.sin(phi) * Math.sin(theta);
+    y = radius * Math.sin(phi) * Math.cos(theta);
+    console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
+    // this.camera.translation = [ x, y, z ];
+    this.camera.translateTo([ x, y, z ], 0.125);
+  };
+
+  this.orbit = function(theta) {
+    console.info('orbit ' + theta + ' degrees');
+
+    // Note: assuming target is the origin for now!
+    var x = this.camera.translation[0];
+    var y = this.camera.translation[1];
+    var z = this.camera.translation[2];
+    var theta = theta * (Math.PI / 180.0);
+
+    console.info('offset x ' + x + ', y ' + y + ', z ' + z);
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
+    var radius = Math.sqrt(x * x + y * y + z * z); // again the origin is the target
+
+    console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius: ' + radius);
+    x = radius * Math.sin(phi) * Math.sin(theta);
+    y = radius * Math.sin(phi) * Math.cos(theta);
+    z = radius * Math.cos(phi);
+    console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
+    this.camera.translation = [ x, y, z ];
+    console.info('target theta ' + theta * (180.0 / Math.PI));
+    console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+    this.future(0).lookAt(this.camTarget);
+  };
+
+  this.clearLookAt = function() {
+    this.camera.lookAt = null;
+  };
+
+  this.lookAt = function(what) {
+    this.camera.lookAt = this[what].id;
+    this.future(0).clearLookAt();
+    console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+  };
+
+  this.instance = function() {
+    console.info('instancing tool tray item ' + arguments[ 0 ] + ', ' + arguments[ 1 ]);
+
+    var msg = "The M4 is ready, select your next action";
+    $('#actionMsg').text(msg);
+
+    vwf_M4_node3.source = arguments[ 1 ];
+    this.children.create(arguments[ 0 ], vwf_M4_node3);
+    this.camTarget = arguments[ 0 ];
+    this.activity('INSTANCE'); //XXX change this!!!!
+  }; //@ sourceURL=index.vwf
