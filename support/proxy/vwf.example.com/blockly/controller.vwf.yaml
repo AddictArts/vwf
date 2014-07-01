@@ -50,13 +50,18 @@ properties:
         this.allowedBlocksChanged( value );
       }
     value: 20
+  blockly_toolbox:
+  blockly_defaultXml:
 methods:
   getWorldXYVector:
+  blocklyClear:
 events:
   blocklyStarted:
   blocklyExecuted:
   blocklyErrored:
   blocklyStopped:
+  blocklyBlockAdded:
+  blocklyBlockRemoved:
   blocklyCodeChanged:
   topBlockCountChanged:
   blockCountChanged:

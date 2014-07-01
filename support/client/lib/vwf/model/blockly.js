@@ -40,23 +40,35 @@ define( [ "module", "vwf/model",
             if ( options === undefined ) { 
                 options = {}; 
             }
-            if ( this.state === undefined ) {   
-                this.state = {};
-            }
-            if ( this.state.nodes === undefined ) {   
-                this.state.nodes = {};
-            }
-            if ( this.state.prototypes === undefined ) {   
-                this.state.prototypes = {};
-            }
 
-            if ( this.state.blockly === undefined ) {
-                this.state.blockly = { "node": undefined };
-            }  
-
-            this.state.executingBlocks = undefined;
-
-            this.state.haltExecution = false;
+            this.state = {
+                "nodes": {},
+                "scenes": {},
+                "prototypes": {},
+                "blockly": { "node": undefined },
+                "executingBlocks": {},
+                "executionHalted": false,
+                "createNode": function( nodeID, childID, childExtendsID, childImplementsIDs,
+                                childSource, childType, childIndex, childName, callback ) {
+                    return {
+                        "parentID": nodeID,
+                        "ID": childID,
+                        "extendsID": childExtendsID,
+                        "implementsIDs": childImplementsIDs,
+                        "source": childSource,
+                        "type": childType,
+                        "name": childName,
+                        "blocks": "<xml></xml>",
+                        "toolbox": undefined,
+                        "deafultXml": undefined,
+                        "code": undefined,
+                        "lastLineExeTime": undefined,
+                        "timeBetweenLines": 1,
+                        "interpreter": undefined,
+                        "interpreterStatus": ""
+                    };
+                }
+            };
 
             // turns on logger debugger console messages 
             this.debug = {
@@ -67,6 +79,7 @@ define( [ "module", "vwf/model",
                 "properties": false,
                 "setting": false,
                 "getting": false,
+                "methods": false,
                 "prototypes": false
             };
 
@@ -108,6 +121,12 @@ define( [ "module", "vwf/model",
                 return;                
             }
 
+            var node = this.state.nodes[ childID ];
+            if ( node === undefined && isBlockly3Node( childID ) ) {
+                this.state.nodes[ childID ] = node = this.state.createNode( nodeID, childID, childExtendsID, childImplementsIDs,
+                                childSource, childType, childIndex, childName, callback );
+            }
+
 
         },
 
@@ -118,35 +137,19 @@ define( [ "module", "vwf/model",
                 this.logger.infox( "initializingNode", nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childName );
             } 
 
-            var node;
-            var createNode = function() {
-                return {
-                    "parentID": nodeID,
-                    "ID": childID,
-                    "extendsID": childExtendsID,
-                    "implementsIDs": childImplementsIDs,
-                    "source": childSource,
-                    "type": childType,
-                    "name": childName,
-                    
-                    "blocks": "<xml></xml>",
-                    "code": undefined,
-                    "codeLine": -1,
-                    "lastLineExeTime": undefined,
-                    "timeBetweenLines": 1,
-                    "interpreter": undefined,
-                    "interpreterStatus": ""
-                };
-            }; 
-            if ( isBlockly3Node( childID ) ) {
-                this.state.nodes[ childID ] = node = createNode();
-            }
+
         },
 
         deletingNode: function( nodeID ) {
+            
             if ( this.debug.deleting ) {
                 this.logger.infox( "deletingNode", nodeID );
             }
+
+            if ( this.state.nodes[ nodeID ] !== undefined ) {
+                delete this.state.nodes[ nodeID ];
+            }
+            
         },
 
         addingChild: function( nodeID, childID, childName ) {
@@ -215,37 +218,7 @@ define( [ "module", "vwf/model",
             var node = this.state.nodes[ nodeID ]; // { name: childName, glgeObject: undefined }
             var value = undefined;
 
-            var getJavaScript = function( node ) {
-                var xml = Blockly.Xml.workspaceToDom( Blockly.getMainWorkspace() );
-                
-                Blockly.JavaScript.vwfID = node.ID;
-
-                if ( xml ) { 
-                    node.blocks = Blockly.Xml.domToText( xml );
-                }
-                //node.code = Blockly.JavaScript.workspaceToCode().split( '\n' );
-            node.code = Blockly.JavaScript.workspaceToCode();
-            };
-
-            if ( nodeID == this.kernel.application() ) {
-                if ( propertyName === "executingAll" ) {
-                    var exe = Boolean( propertyValue );
-                    if ( exe ) {
-                        if ( this.state.executingBlocks === undefined ) {
-                            this.state.executingBlocks = {};
-                            for ( var id in this.state.nodes ) {
-                                if ( this.state.blockly.node && id == this.state.blockly.node.ID ) {
-                                    getJavaScript( node );
-                                }
-                                this.state.executingBlocks[ id ] = node; 
-                                node.codeLine = -1;   
-                            }    
-                        }
-                    } else {
-                        this.state.executingBlocks = undefined;    
-                    }
-                }
-            } else if ( ( node !== undefined ) && ( validPropertyValue( propertyValue ) ) ) {
+            if ( ( node !== undefined ) && ( validPropertyValue( propertyValue ) ) ) {
 
                 switch ( propertyName ) {
                     
@@ -263,20 +236,29 @@ define( [ "module", "vwf/model",
                             if ( this.state.executingBlocks === undefined ) {
                                 this.state.executingBlocks = {};
                             }
-                            if ( this.state.blockly.node && nodeID == this.state.blockly.node.ID ) {
-                                getJavaScript( node );
-                            }
                             if ( this.state.executingBlocks[ nodeID ] === undefined ) {
+                                getJavaScript( node );
                                 this.state.executingBlocks[ nodeID ] = node;
-                                node.codeLine = -1;
                             }
+                            setToolboxBlockEnable( false );
                         } else {
-                            delete this.state.executingBlocks[ nodeID ];
-                            var count = Object.keys( this.state.executingBlocks ).length;
-                            if ( count === 0 ) {
-                                this.state.executingBlocks = undefined;    
+                            if ( this.state.executingBlocks && this.state.executingBlocks[ nodeID ] !== undefined ) {
+                                delete this.state.executingBlocks[ nodeID ];
+                                var count = Object.keys( this.state.executingBlocks ).length;
+                                if ( count === 0 ) {
+                                    this.state.executingBlocks = {};
+                                    setToolboxBlockEnable( true );    
+                                }
                             }
                         }
+                        break;
+
+                    case "blockly_toolbox":
+                        node.toolbox = propertyValue;
+                        break;
+
+                    case "blockly_defaultXml":
+                        node.defaultXml = propertyValue;
                         break;
 
                     default:
@@ -298,15 +280,7 @@ define( [ "module", "vwf/model",
             var node = this.state.nodes[ nodeID ];
             var value = undefined;
 
-            if ( nodeID == this.kernel.application() ) {
-                
-                // this is not quite right, need to check to see if 
-                // all of the blocks are blockly_executing here
-                if ( propertyName === "executingAll" ) {
-                    value = ( this.state.executingBlocks !== undefined ); 
-                }
-
-            } else if ( node !== undefined ){
+            if ( node !== undefined ) {
                 switch ( propertyName ) {
                     
                     case "blockly_executing":
@@ -335,15 +309,42 @@ define( [ "module", "vwf/model",
         callingMethod: function( nodeID, methodName /* [, parameter1, parameter2, ... ] */ ) { // TODO: parameters
             var node = this.state.nodes[ nodeID ];
 
+            if ( this.debug.methods ) {
+                this.logger.infox( "   M === callingMethod ", nodeID, methodName );
+            }
+
             if ( nodeID == this.kernel.application() ) {
+                
                 switch ( methodName ) {
+                    
                     case "stopAllExecution":
                         for ( var id in this.state.executingBlocks ) {
-                            this.settingProperty( id, 'blockly_executing', false );
+                            this.state.executingBlocks[ id ].interpreterStatus = "completed";
+                            this.kernel.setProperty( id, 'blockly_executing', false );
+                            this.kernel.fireEvent( id, "blocklyStopped", [ true ] );
+                        }
+                        break;
+
+                    case "startAllExecution":
+                        for ( var id in this.state.nodes ) {
+                            this.kernel.setProperty( id, 'blockly_executing', true );
+                            this.kernel.fireEvent( id, "blocklyStarted", [ true ] );
+                        }  
+                        break;
+
+
+                }
+            } else if ( node !== undefined ) {
+                switch ( methodName ) {
+                    case "blocklyClear":
+                        if ( Blockly.mainWorkspace ) {
+                            
+                            Blockly.mainWorkspace.clear();
+                            this.kernel.setProperty( nodeID, "blockly_xml", '<xml></xml>' );
                         }
                         break;
                 }
-            } 
+            }
         },
 
 
@@ -365,11 +366,12 @@ define( [ "module", "vwf/model",
                 for ( var nodeID in this.state.executingBlocks ) {
 
                     blocklyNode = this.state.executingBlocks[ nodeID ];
-                    executeNextLine = false;
+                    var executeNextLine = false;
 
-                    if ( blocklyNode.interpreter === undefined ) {
+                    if ( blocklyNode.interpreter === undefined ||
+                         blocklyNode.interpreterStatus === "completed" ) {
                         blocklyNode.interpreter = createInterpreter( acorn, blocklyNode.code );
-                        blocklyNode.interpreterStatus == "created";
+                        blocklyNode.interpreterStatus = "created";
                         blocklyNode.lastLineExeTime = vwfTime;
                         executeNextLine = true;
                     } else {
@@ -382,7 +384,7 @@ define( [ "module", "vwf/model",
 
                     if ( executeNextLine ) {
 
-                        self.state.haltExecution = false;
+                        self.state.executionHalted = false;
                         
                         nextStep( blocklyNode );
 
@@ -427,31 +429,69 @@ define( [ "module", "vwf/model",
             nodeID );
     }
 
+    function isBlocklyNode( implementsIDs ) {
+        var found = false;
+        if ( implementsIDs ) {
+            for ( var i = 0; i < implementsIDs.length && !found; i++ ) {
+                found = ( implementsIDs[i] == "http-vwf-example-com-blockly-controller-vwf" ); 
+            }
+        }
+       return found;
+    }
+
     function validPropertyValue( obj ) {
         var objType = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
         return ( objType != 'null' && objType != 'undefined' );
     }
 
+    function getJavaScript( node ) {
+        var xml = Blockly.Xml.workspaceToDom( Blockly.getMainWorkspace() );
+        
+        Blockly.JavaScript.vwfID = node.ID;
+
+        if ( xml ) { 
+            node.blocks = Blockly.Xml.domToText( xml );
+        }
+        node.code = Blockly.JavaScript.workspaceToCode();
+    }
+
+    function setToolboxBlockEnable( enable ) {
+        if ( Blockly.Toolbox.flyout_ !== undefined && Blockly.Toolbox.flyout_.workspace_ !== undefined ) { 
+            var blocks = Blockly.Toolbox.flyout_.workspace_.getTopBlocks( false );
+            if ( blocks ) {
+                for ( var i = 0; i < blocks.length; i++ ) {
+                    blocks[ i ].setDisabled( !enable );
+                }    
+            }
+        } else if ( Blockly.mainWorkspace && Blockly.mainWorkspace.flyout_ && Blockly.mainWorkspace.flyout_.workspace_ ){
+            var blocks = Blockly.mainWorkspace.flyout_.workspace_.getTopBlocks( false );
+            if ( blocks ) {
+                for ( var i = 0; i < blocks.length; i++ ) {
+                    blocks[ i ].setDisabled( !enable );
+                }    
+            }
+        }
+    }
+
     function nextStep( node ) {
-        //var finishedProgram
+
         if ( node.interpreter !== undefined ) {
             var stepType = node.interpreter.step();
-            
-            switch ( stepType ) {
-                
-                case "stepProgram":
-                    if ( node.interpreterStatus === "created" ) {
-                        this.kernel.fireEvent( node.ID, "blocklyStarted", [ true ] );
-                        blocklyNode.interpreterStatus = "started";                        
-                    } else if ( node.interpreterStatus === "started" ) {
-                        this.kernel.setProperty( node.ID, "blockly_executing", false );
-                        this.kernel.fireEvent( node.ID, "blocklyStopped", [ blocklyNode.codeLine ] );
-                        blocklyNode.interpreterStatus = "finished";
-                    }
-                    break;
+
+            if ( stepType === "stepProgram" ) {
+                if ( node.interpreterStatus === "created" ) {
+                    self.kernel.fireEvent( node.ID, "blocklyStarted", [ true ] );
+                    node.interpreterStatus = "started";                        
+                }
+            } else if ( stepType === false ) {
+                if ( node.interpreterStatus === "started" ) {
+                    self.kernel.setProperty( node.ID, "blockly_executing", false );
+                    self.kernel.fireEvent( node.ID, "blocklyStopped", [ true ] );
+                    node.interpreterStatus = "completed"; 
+                }               
             }
 
-            if ( stepType && !self.state.haltExecution ) {
+            if ( stepType && !self.state.executionHalted ) {
                 // I'm not sure I understand the use setTimeout here??
                 // anyone have an idea of why this would be better?
                 window.setTimeout( nextStep( node ), 0 );
@@ -463,21 +503,53 @@ define( [ "module", "vwf/model",
         
         var initFunc = function( interpreter, scope ) {
             
+            var vwfKernelFunctions, i;
             var myVwf = interpreter.createObject( interpreter.OBJECT );
             interpreter.setProperty( scope, 'vwf', myVwf );
 
-            var numFunctions = [ 'callMethod', 'setProperty', 'getProperty', 'fireEvent' ];
-            for ( var i = 0; i < numFunctions.length; i++ ) {
+
+            vwfKernelFunctions = [ 'setProperty', 'getProperty' ];
+            for ( i = 0; i < vwfKernelFunctions.length; i++ ) {
                 var wrapper = ( function( nativeFunc ) {
                     return function() {
+                        var parms = [];
                         for ( var j = 0; j < arguments.length; j++) {
-                            arguments[ j ] = arguments[ j ].toString();
+                            parms.push( arguments[ j ].toString() );
                         }
-                        self.state.haltExecution = true;
-                        return interpreter.createPrimitive( nativeFunc.apply( vwf, arguments ));
+                        self.state.executionHalted = true;
+                        return interpreter.createPrimitive( nativeFunc.apply( vwf, parms ) );
                     };
-                })( vwf[ numFunctions[ i ] ]);
-                interpreter.setProperty( myVwf, numFunctions[ i ], interpreter.createNativeFunction( wrapper ) );
+                } )( vwf[ vwfKernelFunctions[ i ] ] );
+                interpreter.setProperty( myVwf, vwfKernelFunctions[ i ], interpreter.createNativeFunction( wrapper ) );
+            }
+
+            vwfKernelFunctions = [ 'callMethod', 'fireEvent' ];
+            for ( i = 0; i < vwfKernelFunctions.length; i++ ) {
+                var wrapper = ( function( nativeFunc ) {
+                    return function() {
+                        var parms = [];
+                        for ( var j = 0; j < arguments.length; j++) {
+                            if ( j >= 2 ) {
+                                if ( arguments[ j ].type === 'object' ) {
+                                    var temp = [];
+                                    if ( arguments[ j ].properties !== undefined ) {
+                                        for ( var k = 0; k <= arguments[ j ].properties.length; k++ ) {
+                                            temp.push( arguments[ j ].properties[ k ].toString() )
+                                        }
+                                    }
+                                    parms.push( temp );
+                                } else {
+                                    parms.push( arguments[ j ].toString() );
+                                }
+                            } else {
+                                parms.push( arguments[ j ].toString() );
+                            }
+                        }
+                        self.state.executionHalted = true;
+                        return interpreter.createPrimitive( nativeFunc.apply( vwf, parms ) );
+                    };
+                } )( vwf[ vwfKernelFunctions[ i ] ] );
+                interpreter.setProperty( myVwf, vwfKernelFunctions[ i ], interpreter.createNativeFunction( wrapper ) );
             }
 
         };

@@ -14,11 +14,13 @@
 /// @module vwf/view/blockly
 /// @requires vwf/view
 
-define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
+define( [ "module", "vwf/view", "jquery", "vwf/model/blockly/JS-Interpreter/acorn" ], function( module, view, $, acorn ) {
 
     var self;
 
     var createBlocklyDivs = true;
+    var blocksInWorkspace = {};
+    var handleChangedEvents = true;
 
     return view.load( module, {
 
@@ -34,17 +36,11 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
 
             if ( options === undefined ) { options = {}; }
 
-            if ( this.state === undefined ) {   
-                this.state = {};
-            }
-            if ( this.state.nodes === undefined ) {   
-                this.state.nodes = {};
-            }
-            if ( this.state.blockly === undefined ) {
-                this.state.blockly = { 
-                    "node": undefined
-                };
-            }
+            this.delayedProperties = {
+                "blockly_toolbox": undefined,
+                "blockly_defaultXml": undefined,
+                "blockly_autoClose": undefined
+            };
 
             this.options = ( options !== undefined ? options : {} );
 
@@ -60,23 +56,38 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
         createdNode: function( nodeID, childID, childExtendsID, childImplementsIDs,
             childSource, childType, childIndex, childName, callback /* ( ready ) */) {
 
-            if ( createBlocklyDivs && childID == this.kernel.application() ) {
-                this.logger.infox( "createdNode", nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childName );
+            if ( childID == this.kernel.application() ) {
                 
-                if ( this.options.createButton ) {
-                    $( 'body' ).append( 
-                        "<div id='"+ self.options.divParent +"'>" +
-                            "<div id='" + self.options.divName + "'/>" + 
-                            "<div><button id='runButton' onclick='onRun()'>Run</button></div>" +
-                        "</div>" ).children(":last");
-                } else {
-                    $( 'body' ).append( 
-                        "<div id='"+ self.options.divParent +"'>" +
-                            "<div id='" + self.options.divName + "'/>" + 
-                        "</div>" ).children(":last");
+                if ( createBlocklyDivs ) {
+                    this.state.scenes[ childID ] = {
+                        "toolbox": undefined,
+                        "defaultXml": undefined
+                    }
+
+                    if ( this.options.createButton ) {
+                        $( 'body' ).append( 
+                            "<div id='"+ self.options.divParent +"'>" +
+                                "<div id='" + self.options.divParent + "-top'/>" +
+                                "<div id='" + self.options.divName + "'/>" + 
+                                "<div id='runButton' onclick='onRun()'>Run</div>" +
+                            "</div>" ).children(":last");
+                    } else {
+                        $( 'body' ).append( 
+                            "<div id='"+ self.options.divParent +"'>" +
+                                "<div id='" + self.options.divParent + "-top'/>" +
+                                "<div id='" + self.options.divName + "'/>" + 
+                            "</div>" ).children(":last");
+                    }
+                    createBlocklyDivs = false;
                 }
-                createBlocklyDivs = false;
-            }            
+
+            } else {
+                var node = this.state.nodes[ childID ];
+                if ( node === undefined && isBlockly3Node( childID ) ) {
+                    this.state.nodes[ childID ] = node = this.state.createNode( nodeID, childID, childExtendsID, childImplementsIDs,
+                                childSource, childType, childIndex, childName, callback );
+                }
+            }           
             
         },
 
@@ -86,6 +97,7 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
 
             if ( childID == this.kernel.application() ) {
                 
+                self.kernel.setProperty( childID, "toolbox", self.options.toolbox );
                 Blockly.inject( document.getElementById( self.options.divName ), { 
                     path: this.options.blocklyPath,
                     toolbox: document.getElementById( self.options.toolbox ) 
@@ -93,10 +105,45 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
 
                 Blockly.addChangeListener( function( event ) {
                     
-                    if ( self.state.blockly.node !== undefined ) {
-                        var blockCount = Blockly.mainWorkspace.getAllBlocks().length;
+                    if ( handleChangedEvents && self.state.blockly.node !== undefined ) {
+                        var i, block;
+                        var previousBlockIds = Object.keys( blocksInWorkspace );
+                        var previousBlockCount = previousBlockIds.length;
+                        var blocks = Blockly.mainWorkspace.getAllBlocks();
+                        var blockCount = blocks.length;
                         var topBlockCount = Blockly.mainWorkspace.topBlocks_.length;
                         
+                        if ( blockCount > previousBlockCount ) {
+                            
+                            for ( i = 0; i < blocks.length; i++ ) {
+                                block = blocks[ i ];
+                                if ( blocksInWorkspace[ block.id ] === undefined ) {
+                                    blocksInWorkspace[ block.id ] = { "id": block.id, "type": block.type }; 
+                                    self.kernel.fireEvent( self.state.blockly.node.ID, "blocklyBlockAdded", [ block.id, block.type ] );   
+                                }
+                            } 
+
+                        } else if ( blockCount < previousBlockCount ) {
+
+                            var activeBlocks = {};
+                            for ( i = 0; i < blocks.length; i++ ) {
+                                activeBlocks[ blocks[ i ].id ] = blocks[ i ];    
+                            }
+                            var blockIDsRemoved = [];
+                            for ( var id in blocksInWorkspace ) {
+                                if ( activeBlocks[ id ] === undefined ) {
+                                    blockIDsRemoved.push( id );    
+                                }
+                            }
+                            for ( i = 0; i < blockIDsRemoved.length; i++ ) {
+                                block = blocksInWorkspace[ blockIDsRemoved[ i ] ];
+                                self.kernel.fireEvent( self.state.blockly.node.ID, "blocklyBlockRemoved", [ block.id, block.type ] );
+                                delete blocksInWorkspace[ blockIDsRemoved[ i ] ];   
+                            }
+
+                        }
+                        
+                        self.kernel.fireEvent( self.kernel.application(), "blocklyContentChanged", [ true ] );
                         self.kernel.setProperty( self.state.blockly.node.ID, "blockly_blockCount", blockCount );
                         self.kernel.setProperty( self.state.blockly.node.ID, "blockly_topBlockCount", topBlockCount );
 
@@ -118,8 +165,12 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
  
         // -- deletedNode ------------------------------------------------------------------------------
 
-        deletedNode: function( childID ) {
-            delete this.nodes[ childID ];
+        deletedNode: function( nodeID ) {
+            
+            if ( this.state.nodes[ nodeID ] !== undefined ) {
+                delete this.state.nodes[ nodeID ];
+            }
+            
         },
 
         // -- addedChild -------------------------------------------------------------------------------
@@ -151,37 +202,69 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
             var node = this.state.nodes[ nodeID ];
 
             //this.logger.infox( "S === satProperty ", nodeID, propertyName, propertyValue );
+            if ( propertyValue === undefined ) {
+                return;
+            }
 
             if ( nodeID == this.kernel.application() ) {
                 
-                if ( propertyName === "blocklyUiNodeID" ) {
-                    
-                    if ( propertyValue !== undefined && this.state.nodes[ propertyValue ] !== undefined ) {
-                        var show = true;
-                        node = this.state.nodes[ propertyValue ];
-                        if ( this.state.blockly.node !== undefined ) {
-                            getBlockXML( this.state.blockly.node );
-                            setBlocklyUIVisibility( this.state.blockly.node, false ); 
-                            show = ( this.state.blockly.node.ID !== propertyValue );
-                            this.state.blockly.node = undefined;                           
-                        } 
-                        if ( show ) {
-                            this.state.blockly.node = node;
-                            setBlockXML( node );
-                            setBlocklyUIVisibility( node, true );
-                        }                        
-                    } else {
-                        if ( this.state.blockly.node !== undefined ) {
-                            getBlockXML( this.state.blockly.node );
-                            setBlocklyUIVisibility( this.state.blockly.node, false );
-                            this.state.blockly.node = undefined;                            
-                        } 
-                    }
+                var app = this.state.scenes[ nodeID ];
+                switch ( propertyName ) {
+                    case "blockly_activeNodeID":
+                        if ( this.state.nodes[ propertyValue ] !== undefined ) {
+                            var show = true;
+                            node = this.state.nodes[ propertyValue ];
+                            if ( this.state.blockly.node !== undefined ) {
+                                getBlockXML( this.state.blockly.node );
+                                setBlocklyUIVisibility( this.state.blockly.node, false ); 
+                                show = ( this.state.blockly.node.ID !== propertyValue );
+                                this.state.blockly.node = undefined;                           
+                            } 
+                            if ( show ) {
+                                if ( node.toolbox !== undefined ) {
+                                    loadToolbox( node.toolbox );    
+                                } else if ( app.toolbox !== undefined ) {
+                                    loadToolbox( app.toolbox );
+                                }
+                                if ( node.defaultXml !== undefined ) {
+                                    loadDefaultXml( node.defaultXml );    
+                                } else if ( app.defaultXml !== undefined ) {
+                                    loadDefaultXml( app.defaultXml ); 
+                                }                               
+                                this.state.blockly.node = node;
+                                setBlockXML( node );
+                                setBlocklyUIVisibility( node, true );
+                            }                        
+                        } else {
+                            if ( this.state.blockly.node !== undefined ) {
+                                getBlockXML( this.state.blockly.node );
+                                setBlocklyUIVisibility( this.state.blockly.node, false );
+                                this.state.blockly.node = undefined;                            
+                            } 
+                        }
+                        break;
+
+                    case "blockly_toolbox":
+                        app.toolbox = propertyValue;
+                        loadToolbox( propertyValue );
+                        break;
+
+                    case "blockly_defaultXml":
+                        app.defaultXml = propertyValue;
+                        loadDefaultXml( propertyValue )
+                        break;
+
+                    case "blockly_autoClose":
+                        if ( Blockly && Blockly.Toolbox && Blockly.Toolbox.flyout_ ){
+                            Blockly.Toolbox.flyout_.autoClose = Boolean( propertyValue );                       
+                        } else {
+                            this.delayedProperties.blockly_autoClose = Boolean( propertyValue );
+                        }
+                        break;
+
                 }
 
-            } 
-
-        
+            }         
         },
 
         // -- gotProperty ------------------------------------------------------------------------------
@@ -211,7 +294,26 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
 
     } );
 
+    function isBlockly3Node( nodeID ) {
+        return self.kernel.test( nodeID,
+            "self::element(*,'http://vwf.example.com/blockly/controller.vwf')",
+            nodeID );
+    }
+
+    function isBlocklyNode( implementsIDs ) {
+        var found = false;
+        if ( implementsIDs ) {
+            for ( var i = 0; i < implementsIDs.length && !found; i++ ) {
+                found = ( implementsIDs[i] == "http-vwf-example-com-blockly-controller-vwf" ); 
+            }
+        }
+       return found;
+    }
+
     function setBlockXML( node ) {
+
+        handleChangedEvents = false;
+
         var xmlText = node.blocks;
         var xmlDom = null;
         try {
@@ -226,11 +328,19 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace( Blockly.mainWorkspace, xmlDom );
         } 
-        var blockCount = Blockly.mainWorkspace.getAllBlocks().length;
+        var blocks = Blockly.mainWorkspace.getAllBlocks();
+        var blockCount = blocks.length;
         var topBlockCount = Blockly.mainWorkspace.topBlocks_.length;
         
+        blocksInWorkspace = {};
+        for ( var i = 0; i < blocks.length; i++ ) {
+            blocksInWorkspace[ blocks[ i ].id ] = { "id": blocks[ i ].id, "type": blocks[ i ].type };
+        }
+
         self.kernel.setProperty( node.ID, "blockly_blockCount", blockCount );
-        self.kernel.setProperty( node.ID, "blockly_topBlockCount", topBlockCount );      
+        self.kernel.setProperty( node.ID, "blockly_topBlockCount", topBlockCount );   
+
+        handleChangedEvents = true;   
     }
 
     function getBlockXML( node ) {
@@ -244,10 +354,65 @@ define( [ "module", "vwf/view", "jquery" ], function( module, view, $ ) {
 
 
     function setBlocklyUIVisibility( node, show ) {
-        var div = document.getElementById( self.options.divParent ); {
-            div.style.visibility = show ? 'visible' : 'hidden';
+        var div = document.getElementById( self.options.divParent );
+        
+        div.style.visibility = show ? 'visible' : 'hidden';
+        div.style.pointerEvents = show ? 'all' : 'none';
+
+        if ( self.delayedProperties !== undefined ) {
+            for ( var prop in self.delayedProperties ) {
+                if ( self.delayedProperties[ prop ] !== undefined ) {
+                    self.satProperty( self.kernel.application(), prop, self.delayedProperties[ prop ] );
+                }
+            }
+            self.delayedProperties = undefined;
         }
+
         self.kernel.fireEvent( node.ID, "blocklyVisibleChanged", [ show ] );
+    }
+
+    function loadToolbox( toolboxDef ) {
+        // check the 'Changing the Toolbox' section at
+        // https://code.google.com/p/blockly/wiki/Toolbox 
+        // for more information on this function call        
+        if ( Blockly && Blockly.mainWorkspace ) {
+            var len = toolboxDef.length;
+            if ( toolboxDef.indexOf( '.xml' ) === ( len - 4 ) ) {
+                $.ajax( {
+                    url: toolboxDef,
+                    type: 'GET',
+                    dataType: 'text',
+                    timeout: 1000,
+                    error: function() {
+                        alert( 'Error loading XML document: ' + toolboxDef );
+                    },
+                    success: function( xml ) {
+                        Blockly.updateToolbox( xml );
+                    }
+                } );
+            } else if ( toolboxDef.indexOf( '<xml' ) !== -1 ){
+                Blockly.updateToolbox( toolboxDef );
+            } else {
+                var element = document.getElementById( toolboxDef );
+                if ( element ) {
+                    Blockly.updateToolbox( element );    
+                } else {
+                    self.logger.warnx( "Unable to load Blockly toolbox: " + toolboxDef );
+                }
+            }
+        } else {
+            self.delayedProperties.blockly_toolbox = toolboxDef;
+            self.logger.warnx( "Blockly not initilized unable to set the toolbox: " + toolboxDef );
+        }        
+    }
+
+    function loadDefaultXml( xml ) {
+        if ( Blockly && Blockly.mainWorkspace ) {
+            BlocklyApps.loadBlocks( xml );
+        } else {
+            self.delayedProperties.defaultXml = toolboxDef;
+            self.logger.warnx( "Blockly not initilized unable to load default xml: " + xml );
+        }        
     }
 
 } );
