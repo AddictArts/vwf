@@ -21,11 +21,10 @@ var routes = {
 	ROOT: '/',
 	ROOTANY: '/*',
 	ACTION: '/M4clear/action',
-	QUERY: '/M4clear/query',
-	setup: start
+	QUERY: '/M4clear/query'
 };
 
-routes.setup();
+start(routes); // construct or initialize the routes object
 routes.get(routes.ROOT, function(req, res) {
 	log('...handling route GET ' + routes.ROOT);
 	var data = "/";
@@ -99,22 +98,26 @@ routes.post(routes.ACTION, function(req, res) {
 var	JSONt = 'application/json',
 	HTMLt = 'text/html',
 	XMLt = 'text/xml',
-	PLAINt = 'text/plain';
+	PLAINt = 'text/plain',
+	fileTypes = {
+		'.htm':  HTMLt,
+		'.html': HTMLt,
+		'.txt':  PLAINt,
+		'.json': JSONt,
+		'.s3d':  XMLt,
+		'.ssg':  XMLt,
+		'.xml':  XMLt
+	};
 
 // create the route handlers and dispatch
-function start() {
+function start(routes) {
 	if (process.argv.length > 2) {
 		var ndx = 2;
 
-		// Check for flags
-		while (process.argv[ndx] && process.argv[ndx].charAt(0) === '-') {
-			var flag = process.argv[ndx++];
-
-			switch (flag) {
-			default:
-				console.log('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[1]));
-				process.exit(0);
-			}
+		// Check for any flag
+		if (process.argv[ndx] && process.argv[ndx].charAt(0) == '-') {
+			console.log('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[1]));
+			process.exit(0);
 		}
 	}
 
@@ -190,29 +193,9 @@ function getTheQueryString(url) {
 function req2ContentType(urlLessQueryString, headerContentType) {
 	var at = urlLessQueryString.lastIndexOf('.'),
 		fileType = urlLessQueryString.slice(at),
-		contentType = PLAINt;
+		contentType = fileTypes.hasOwnProperty(fileType)? fileTypes[fileType] : PLAINt;
 
-	if (at === -1) fileType = "default";
-
-	switch (fileType) {
-	case '.htm':
-	case '.html':
-		contentType = HTMLt;
-		break;
-	case '.txt':
-		contentType = PLAINt;
-		break;
-	case '.json':
-		contentType = JSONt;
-		break;
-	case '.s3d':
-	case '.ssg':
-	case '.xml':
-		contentType = XMLt;
-		break;
-	default:
-		contentType = headerContentType;
-	}
+	if (at === -1) contentType = headerContentType;
 
 	return contentType;
 }
@@ -238,6 +221,7 @@ var app = http.createServer(function (hreq, hres) {
 				this.httpRes.end(data);
 			}
 		};
+
 	hreq.on('data', function (data) {
 			req.body += data;
 	});
