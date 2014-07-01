@@ -1,8 +1,8 @@
 --- 
 extends: http://vwf.example.com/scene.vwf
 implements:
-# - begin.eui
-- activity.ux
+- begin.eui
+- reasonertxrx.ux
 methods:
   initializeCamera:
   zoom:
@@ -10,6 +10,7 @@ methods:
   lookAt:
   clearLookAt:
   instance:
+  initInstance:
 properties:
   zoomedValue:
   scaling:
@@ -41,9 +42,8 @@ scripts:
 - |
   var vwf_M4_node3 = {
     extends: "http://vwf.example.com/node3.vwf",
-    source: "models/xyzbar.dae",
     type: "model/vnd.collada+xml",
-    implements: [ "M4_Carbine.ux", "activity.ux" ],
+    implements: [ "M4_Carbine.ux", "reasonertxrx.ux" ],
     properties: {
       translation: [ 0.0, 0.0, 2.0 ],
       rotation: [ 0.0, 0.0, -1.0, 90.0 ],
@@ -52,6 +52,7 @@ scripts:
     children: {
       M4_Carbine: {
         extends: "http://vwf.example.com/node3.vwf",
+        // implements: [ "togglevis.ux" ],
         children: {
           Selector_Lever: {
             extends: "http://vwf.example.com/node3.vwf",
@@ -156,14 +157,15 @@ scripts:
     console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
   };
 
+  this.initInstance = function() {
+    this.children.M4_Carbine_dae.init();
+  };
+
   this.instance = function() {
-    console.info('instancing tool tray item ' + arguments[ 0 ] + ', ' + arguments[ 1 ]);
-
-    var msg = "The M4 is ready, select your next action";
-    $('#actionMsg').text(msg);
-
-    vwf_M4_node3.source = arguments[ 1 ];
-    this.children.create(arguments[ 0 ], vwf_M4_node3);
-    this.camTarget = arguments[ 0 ];
-    this.activity('INSTANCE'); //XXX change this!!!!
+    console.info('instancing tool tray item');
+    vwf_M4_node3.source = 'models/M4_lowPoly_06.dae';
+    this.children.create('M4_Carbine_dae', vwf_M4_node3);
+    this.camTarget = 'M4_Carbine_dae';
+    this.future(0).initInstance();
+    // this.ask({ type: 'Instance', parent: null, query: [ 'M4_Carbine' ] }); // not ready for instance queries yet!
   }; //@ sourceURL=index.vwf

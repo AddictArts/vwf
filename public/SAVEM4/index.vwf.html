@@ -15,13 +15,12 @@
         tray: undefined,
         guiref: { },
         Tooltray: function() {
-          this.activityMsg = true;
+          this.reasonertxrxMsg = true;
           this.cameraOrbit = 90.0;
-          this.cameraYaw = 90.0;
           this.cameraZoom = 0.0;
           this.m4Carbine = function() {
             M4.gui.remove(M4.guiref.m4c);
-            vwf_view.kernel.callMethod(vwf.appID, 'instance', ['M4_Carbine_dae', 'models/M4_lowPoly_06.dae']);
+            vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
             M4.tray.positionWeapon = M4.positionWeapon;
             M4.gui.add(M4.tray, 'positionWeapon').name('Position Weapon');
             M4.tray.selectorLever = M4.selectorLever;
@@ -73,23 +72,10 @@
         init: function() {
           this.tray = new this.Tooltray();
           this.gui = new dat.GUI();
-          this.gui.add(this.tray, 'activityMsg').name('Messages');
-          this.gui.add(this.tray, 'cameraOrbit', 0.0, 180.0).name('Orbit').onChange(function(value) {
+          this.gui.add(this.tray, 'reasonertxrxMsg').name('Messages');
+          this.gui.add(this.tray, 'cameraOrbit', 0.0, 360.0).name('Orbit').onChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value ]); // really we start at -90 behind the target, so we multiply by -1.0
           });
-          // this.gui.add(this.tray, 'cameraYaw', 0.0, 180.0).name('Cam Yaw').onChange(function(value) {
-          //   vwf.cameraID = vwf.cameraID || vwf_view.kernel.find(vwf.appID, "//camera");
-          //   vwf_view.kernel.setProperty(vwf.cameraID, "rotation", [ 0.0, 0.0, 1.0, -value ]);
-          // }).onFinishChange(function() {
-          //   M4.tray.cameraYaw = 90.0;
-
-          //   for (var i in M4.gui.__controllers) {
-          //     M4.gui.__controllers[i].updateDisplay();
-          //   }
-
-          //   vwf.cameraID = vwf.cameraID || vwf_view.kernel.find(vwf.appID, "//camera");
-          //   vwf_view.kernel.setProperty(vwf.cameraID, "rotation", [ 0.0, 0.0, 1.0, -90.0 ]);
-          // });
           this.gui.add(this.tray, 'cameraZoom', 0.0, 90.0).step(1.0).name('Zoom').onFinishChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
           });
@@ -111,7 +97,7 @@
   </head>
 <body>
   <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;">
-    <div id="actionMsg"></div>
+    <div id="reasonertxrxMsg"></div>
   </div>
   <script type="text/javascript">
     $('#wrapper').appendTo('#vwf-root');

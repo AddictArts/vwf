@@ -1,0 +1,82 @@
+---
+properties:
+  activityServerAddress:
+  queryServerAddress:
+methods:
+  checkServerAddress:
+  activity:
+  ask:
+events:
+  pointerUp:
+scripts:
+- |
+  this.initialize = function() {
+    if (!this.__initializeStep) return; // begin.eui added property, used to prevent double initialization at the root component
+
+    this.future(0).checkServerAddress();
+  };
+
+  this.checkServerAddress = function() {
+    if (!this.activityServerAddress || !this.queryServerAddress) {
+      var msg = "The activity server address is undefined, check the eui.json setting " + this.id;
+
+      $('#reasonertxrxMsg').text(msg);
+      console.warn(msg);
+    } else {
+      console.info(this.id + " reasonertxrx.ux activityServerAddress:" + this.activityServerAddress);
+    }
+  };
+
+  this.ask = function(query, done /* callback */) {
+    console.info("reasonertxrx.ux ask " + query);
+
+    var url = (this.queryServerAddress == null)? this.parent.queryServerAddress : this.queryServerAddress;
+    var queryJSON = JSON.stringify(query);
+    var response = { KbId: 'unknown' };
+
+    $('#reasonertxrxMsg').text(queryJSON);
+    $.ajax({
+      url: url,
+      type: 'post',
+      cache: false,
+      data: { query: queryJSON }
+    })
+    .done(done)
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.info('using queryServerAddress:' + this.queryServerAddress);
+      console.warn("error:" + textStatus);
+    });
+  };
+
+  this.activity = function(activity, done /* callback */) {
+    console.info("reasonertxrx.ux activity " + activity);
+
+    var url = (this.activityServerAddress == null)? this.parent.activityServerAddress : this.activityServerAddress;
+    var activityJSON = JSON.stringify(activity);
+
+    $('#reasonertxrxMsg').text(activityJSON);
+    $.ajax({
+      url: url,
+      type: 'post',
+      cache: false,
+      data: { activity: activityJSON }
+    })
+    .done(done)
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.info('using activityServerAddress:' + this.activityServerAddress);
+      console.warn("error:" + textStatus);
+    });
+  };
+
+  this.pointerUp = function(pointerInfo, pickInfo) {
+    console.info("reasonertxrx.ux pointerUp");
+
+    this.activity('SCENE_CLICK');
+  }; //@ sourceURL=reasonertxrx.ux
+
+  // http://www.html5rocks.com/en/tutorials/cors/
+  // response['Access-Control-Allow-Origin'] = '*'
+  // response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  // response['Access-Control-Max-Age'] = 1000
+  // # note that '*' is not valid for Access-Control-Allow-Headers
+  // response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
