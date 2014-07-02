@@ -45,7 +45,7 @@ scripts:
 
   this.positionWeapon = function() {
     console.info('positioning weapon facing down range');
-    this.rotation = [ 0.0, 0.0, 1.0, 0.0 ];
+    this.rotation = [ 0, 0, 1, 0 ];
     this.activity({ action: 'Position', arguments: [ this.M4_Carbine_KbId ] });
   };
 
@@ -56,26 +56,26 @@ scripts:
 
   this.selectorLeverSemi = function() {
     console.info('selector lever to semi');
-    this.M4_Carbine.Selector_Lever.rotation = [ 0.0, 1.0, 0.0, 0.0 ];
+    this.M4_Carbine.Selector_Lever.rotation = [ 0, 1, 0, 0 ];
     this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, this.Selector_Lever_KbId, 'Semi' ] });
   };
 
   this.selectorLeverSafe = function() {
     console.info('selector lever to safe');
-    this.M4_Carbine.Selector_Lever.rotation = [ 0.0, 1.0, 0.0, 90.0 ];
+    this.M4_Carbine.Selector_Lever.rotation = [ 0, 1, 0, 90 ];
     this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, this.Selector_Lever_KbId, 'Safe' ] });
   };
 
   this.selectorLeverBurst = function() {
     console.info('selector lever to burst');
-    this.M4_Carbine.Selector_Lever.rotation = [ 0.0, -1.0, 0.0, 90.0 ];
+    this.M4_Carbine.Selector_Lever.rotation = [ 0, -1, 0, 90 ];
     this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, this.Selector_Lever_KbId, 'Burst' ] });
   };
 
   this.magazineCatch = function() {
     console.info('magazine catch pushed');
-    this.M4_Carbine.Magazine_Catch.translateTo([ 0.0, 0.00395, 0.0 ], 0.125);
-    this.M4_Carbine.Magazine_Catch_Button.translateTo([ 0.0, 0.00395, 0.0 ], 0.125);
+    this.M4_Carbine.Magazine_Catch.translateTo([ 0, 0.00395, 0 ], 0.125);
+    this.M4_Carbine.Magazine_Catch_Button.translateTo([ 0, 0.00395, 0 ], 0.125);
     this.magReleased = true;
     this.activity({ action: 'Select', arguments: [ this.M4_Carbine_KbId, this.Magazine_Catch_KbId ] });
   };
@@ -83,10 +83,10 @@ scripts:
   this.magazine = function() {
     if (this.magReleased) {
       console.info('magazine removed');
-      this.M4_Carbine.Magazine_Catch.translateTo([ 0.0, 0.0, 0.0 ], 0.125); // back to world origin since object has no local coordinates
-      this.M4_Carbine.Magazine_Catch_Button.translateTo([ 0.0, 0.0, 0.0 ], 0.125); // back to world origin since object has no local coordinates
-      this.M4_Carbine.Tube.translateTo([ 0.0, 0.0, -0.125 ], 0.25);
-      this.M4_Carbine.Base.translateTo([ 0.0, 0.0, -0.125 ], 0.25);
+      this.M4_Carbine.Magazine_Catch.translateTo([ 0, 0, 0 ], 0.125); // back to world origin since object has no local coordinates
+      this.M4_Carbine.Magazine_Catch_Button.translateTo([ 0, 0, 0 ], 0.125); // back to world origin since object has no local coordinates
+      this.M4_Carbine.Tube.translateTo([ 0, 0, -0.125 ], 0.25);
+      this.M4_Carbine.Base.translateTo([ 0, 0, -0.125 ], 0.25);
     }
 
     this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId, this.Tube_KbId ] });

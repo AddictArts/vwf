@@ -21,20 +21,20 @@ children:
     source: models/M4_Environment_01.dae
     type: model/vnd.collada+xml
     properties:
-      scale: [ 1.0, 1.0, 1.0 ]
-      translation: [ 0.0, 0.0, 0.0 ]
+      scale: [ 1, 1, 1 ]
+      translation: [ 0, 0, 0 ]
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
-      translation: [ 0.0, 5.0, 5.0 ]
-      rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+      translation: [ 0, 5, 5 ]
+      rotation: [ 1, 1, 0, 36 ]
   light2:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
-      translation: [ 0.0, -5.0, 5.0 ]
-      rotation: [ 1.0, 1.0, 0.0, 36.0 ]
+      translation: [ 0, -5, 5 ]
+      rotation: [ 1, 1, 0, 36 ]
   camera:
     extends: "http://vwf.example.com/camera.vwf"
     properties:
@@ -45,9 +45,9 @@ scripts:
     type: "model/vnd.collada+xml",
     implements: [ "M4_Carbine.ux", "reasonertxrx.ux" ],
     properties: {
-      translation: [ 0.0, 0.0, 2.0 ],
-      rotation: [ 0.0, 0.0, -1.0, 90.0 ],
-      scale: [ 1.0, 1.0, 1.0 ]
+      translation: [ 0, 0, 2 ],
+      rotation: [ 0, 0, -1, 90 ],
+      scale: [ 1, 1, 1 ]
     },
     children: {
       M4_Carbine: {
@@ -75,30 +75,30 @@ scripts:
   };
 
   this.initialize = function() {
-    this.zoomedValue = 0.0;
-    this.scaled = 0.0;
+    this.zoomedValue = 0;
+    this.scaled = 0;
     this.future(0).initializeCamera();
   };
 
   this.initializeCamera = function() {
-    this.camera.translation = [ -1.25, 0.0, 2.0 ];
-    this.camera.rotation = [ 0.0, 0.0, 1.0, -90.0 ];
+    this.camera.translation = [ -1.25, 0, 2 ];
+    this.camera.rotation = [ 0, 0, 1, -90 ];
   };
 
   this.zoom = function(value) {
     console.info('zoom ' + value);
 
     var EPS = 0.00001;
-    var scale = 1.0 - value / 100.0; // normalize the value
+    var scale = 1 - value / 100; // normalize the value
     var tmp = scale;
 
-    if (this.zoomedValue > 0.0) {
+    if (this.zoomedValue > 0) {
       if (value < EPS) {
-        scale = (1.0 / this.scaling);
-        this.scaling = 0.0;
-        value = 0.0;
+        scale = (1 / this.scaling);
+        this.scaling = 0;
+        value = 0;
       } else {
-        scale = (1.0 / this.scaling) * tmp;
+        scale = (1 / this.scaling) * tmp;
         this.scaling = tmp;
       }
     } else {
@@ -112,7 +112,7 @@ scripts:
     var y = this.camera.translation[1];
     var z = this.camera.translation[2]; // we keep the z as the target z
     var theta = Math.atan2(x, y); // radians
-    var phi = Math.atan2(Math.sqrt(x * x + y * y), 0.0); // radians
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), 0); // radians
     var radius = Math.sqrt(x * x + y * y) * scale;
 
     console.info('radius: ' + radius);
@@ -130,7 +130,7 @@ scripts:
     var x = this.camera.translation[0];
     var y = this.camera.translation[1];
     var z = this.camera.translation[2];
-    var theta = theta * (Math.PI / 180.0);
+    var theta = theta * (Math.PI / 180);
 
     console.info('offset x ' + x + ', y ' + y + ', z ' + z);
     var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
@@ -142,7 +142,7 @@ scripts:
     z = radius * Math.cos(phi);
     console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
     this.camera.translation = [ x, y, z ];
-    console.info('target theta ' + theta * (180.0 / Math.PI));
+    console.info('target theta ' + theta * (180 / Math.PI));
     console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
     this.future(0).lookAt(this.camTarget);
   };
