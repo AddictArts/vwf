@@ -1,0 +1,6 @@
+{
+	"activityServerAddress": "http://localhost:3001/M4clear/action",
+	"queryServerAddress": "http://localhost:3001/M4clear/query",
+	"M4_Carbine": "myM4",
+	"toolTrayObjects": [ "M4_Carbine" ]
+}

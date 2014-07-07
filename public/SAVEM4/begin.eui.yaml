@@ -1,0 +1,30 @@
+---
+properties:
+  __initializeStep: 0
+  __m4KbId:
+scripts:
+- |
+  this.initialize = function() {
+    if (this.__initializeStep++ === 0) return; // triple equal for 0 case
+
+    var self = this;
+
+  	console.info("Configure the exercise begin.eui");
+    $.getJSON("eui.json")
+    .done(function(data) {
+      console.info("data:" + data);
+
+      // bootstrap what is in the tray and its KbId
+      var rootComponentName = data.toolTrayObjects[0];
+
+      self.__m4KbId = data[rootComponentName];
+      console.info("the root vwf component name for the tool tray item is " + rootComponentName);
+      console.info("the root vwf component's KbId is " + self.__m4KbId);
+
+      if (self['activityServerAddress'] == null) self.activityServerAddress = data.activityServerAddress;
+      if (self['queryServerAddress'] == null) self.queryServerAddress = data.queryServerAddress;
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.error("error:" + textStatus);
+    });
+  }; //@ sourceURL=begin.eui

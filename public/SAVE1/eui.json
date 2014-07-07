@@ -1,5 +1,5 @@
 {
-	"activityServerAddress": "http://localhost:3001/action",
+	"activityServerAddress": "http://localhost:3001/HelloWorld/action",
 	"floorKBID" : "kbfile#S1",
 	"wallKBID" : "kbfile#W",
 	"doorWoodKBID" : "kbfile#D2",
