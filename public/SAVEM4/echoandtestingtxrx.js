@@ -68,9 +68,13 @@ routes.post(routes.QUERY, function(req, res) {
 	}
 
 	res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-	res.send(JSON.stringify({
-		KbIds: kbids
-	}), 200, JSONt);
+
+	var resp_int_test = {"KbIds":["\u0027_$_$_flora\u0027\u0027newoid4|_21\u0027\u00271\u0027",null,"myMag"]};
+	res.send(JSON.stringify(resp_int_test), 200, JSONt);
+
+	// res.send(JSON.stringify({
+	// 	KbIds: kbids
+	// }), 200, JSONt);
 });
 routes.post(routes.ACTION, function(req, res) {
 	log('...handling route POST ' + routes.ACTION);

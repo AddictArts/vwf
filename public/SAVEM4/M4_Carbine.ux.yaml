@@ -36,6 +36,8 @@ scripts:
     self.ask(
       { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
       function(data) {
+        console.info("init ask received data " + JSON.stringify(data));
+
         for (var i = 0; i < data.KbIds.length; i++) {
           self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
         }
