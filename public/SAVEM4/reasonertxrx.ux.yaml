@@ -49,7 +49,7 @@ scripts:
   };
 
   this.activity = function(activity, done /* callback */) {
-    console.info("reasonertxrx.ux activity " + activity);
+    console.info("reasonertxrx.ux activity " + JSON.stringify(activity));
 
     var url = (this.activityServerAddress == null)? this.parent.activityServerAddress : this.activityServerAddress;
     var activityJSON = JSON.stringify(activity);
@@ -71,7 +71,7 @@ scripts:
   this.pointerUp = function(pointerInfo, pickInfo) {
     console.info("reasonertxrx.ux pointerUp");
 
-    this.activity('SCENE_CLICK');
+    // this.activity('SCENE_CLICK');
   }; //@ sourceURL=reasonertxrx.ux
 
   // http://www.html5rocks.com/en/tutorials/cors/
