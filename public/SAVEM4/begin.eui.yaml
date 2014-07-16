@@ -23,6 +23,8 @@ scripts:
 
       if (self['activityServerAddress'] == null) self.activityServerAddress = data.activityServerAddress;
       if (self['queryServerAddress'] == null) self.queryServerAddress = data.queryServerAddress;
+
+      this.__initializeStep++;
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       console.error("error:" + textStatus);

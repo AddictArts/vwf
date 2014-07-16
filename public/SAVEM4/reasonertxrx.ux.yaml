@@ -17,6 +17,8 @@ scripts:
   };
 
   this.checkServerAddress = function() {
+    if (this.__initializeStep < 2) this.future(0).checkServerAddress(); // step 2 is the eui.json completed loading and init
+
     if (!this.activityServerAddress || !this.queryServerAddress) {
       var msg = "The activity server address is undefined, check the eui.json setting " + this.id;
 
@@ -24,11 +26,13 @@ scripts:
       console.warn(msg);
     } else {
       console.info(this.id + " reasonertxrx.ux activityServerAddress:" + this.activityServerAddress);
+      console.info(this.id + " reasonertxrx.ux queryServerAddress:" + this.queryServerAddress);
+      $('#reasonertxrxMsg').text('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress);
     }
   };
 
   this.ask = function(query, done /* callback */) {
-    console.info("reasonertxrx.ux ask " + query);
+    console.info("reasonertxrx.ux ask " + JSON.stringify(query));
 
     var url = (this.queryServerAddress == null)? this.parent.queryServerAddress : this.queryServerAddress;
     var queryJSON = JSON.stringify(query);
