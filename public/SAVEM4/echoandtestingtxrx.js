@@ -21,7 +21,8 @@ var routes = {
 	ROOT: '/',
 	ROOTANY: '/*',
 	ACTION: '/M4clear/action',
-	QUERY: '/M4clear/query'
+	QUERY: '/M4clear/query',
+	ASSESSMENT: '/M4clear/assessment'
 };
 
 start(routes); // construct or initialize the routes object
@@ -42,6 +43,23 @@ routes.get(routes.ROOTANY, function(req, res) {
 	}
 
 	res.send(data, status, req.contentType);
+});
+routes.get(routes.ASSESSMENT, function(req, res) {
+	res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul>\
+           <li>Pull and hold charging handle </li>\
+           <li>Push and hold bottom of bolt catch </li>\
+           <li>Release charging handle to cock rifle </li>\
+           <li>Let go of bolt catch bottom </li>\
+           <li>Return charging handle to forward position </li>\
+           <li>Check chamber for ammo </li>\
+           <li>Select <i>Safe</i> mode </li>\
+           <li>Release bolt by pushing bolt catch top </li>\
+           <li>Select <i>Semi</i> mode </li>\
+           <li>Pull trigger to fire the weapon </li>\
+           <li>Pull and hold charging handle </li>\
+           <li>Release charging handle to cock rifle </li>\
+           <li>Select <i>Safe</i> mode </li>\
+         </ul></p></div></body></html>', 200, HTMLt);
 });
 routes.post(routes.QUERY, function(req, res) {
 	log('...handling route POST ' + routes.QUERY);
