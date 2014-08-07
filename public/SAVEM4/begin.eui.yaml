@@ -1,32 +1,33 @@
 ---
 properties:
-  __initializeStep: 0
+  __initializeStep: -1
   __m4KbId:
 scripts:
 - |
   this.initialize = function() {
-    if (this.__initializeStep++ === 0) return; // triple equal for 0 case
+    if (this.__initializeStep++ == -1) return; // triple equal for 0 case
 
     var self = this;
 
   	console.info("Configure the exercise begin.eui");
     $.getJSON("eui.json")
-    .done(function(data) {
-      console.info("data:" + data);
+      .done(function(data) {
+        console.info("begin.eui eui.json request data:" + JSON.stringify(data));
 
-      // bootstrap what is in the tray and its KbId
-      var rootComponentName = data.toolTrayObjects[0];
+        // bootstrap what is in the tray and its KbId
+        var rootComponentName = data.toolTrayObjects[0];
 
-      self.__m4KbId = data[rootComponentName];
-      console.info("the root vwf component name for the tool tray item is " + rootComponentName);
-      console.info("the root vwf component's KbId is " + self.__m4KbId);
+        self.__m4KbId = data[rootComponentName];
+        console.info("the root vwf component name for the tool tray item is " + rootComponentName);
+        console.info("the root vwf component's KbId is " + self.__m4KbId);
 
-      if (self['activityServerAddress'] == null) self.activityServerAddress = data.activityServerAddress;
-      if (self['queryServerAddress'] == null) self.queryServerAddress = data.queryServerAddress;
+        if (self['activityServerAddress'] == null) self.activityServerAddress = data.activityServerAddress;
+        if (self['queryServerAddress'] == null) self.queryServerAddress = data.queryServerAddress;
 
-      this.__initializeStep++;
-    })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      console.error("error:" + textStatus);
-    });
+        self.__initializeStep = 2;
+        console.info("begin.eui completed move on to initialize step " + self.__initializeStep);
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("error:" + textStatus);
+      });
   }; //@ sourceURL=begin.eui
