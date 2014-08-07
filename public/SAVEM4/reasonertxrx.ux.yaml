@@ -13,14 +13,20 @@ scripts:
   this.initialize = function() {
     if (!this.__initializeStep) return; // begin.eui added property, used to prevent double initialization at the root component
 
-    this.future(0).checkServerAddress();
+    this.checkServerAddress(); // we depend on config eui.json loaded by begin.eui, so we handle that inialize with a method we can future check
   };
 
   this.checkServerAddress = function() {
-    if (this.__initializeStep < 2) this.future(0).checkServerAddress(); // step 2 is the eui.json completed loading and init
+    if (this.__initializeStep !== 2) {
+      this.future(0).checkServerAddress(); // step 2 is the eui.json completed loading and init
+      return;
+    }
 
     if (!this.activityServerAddress || !this.queryServerAddress) {
-      var msg = "The activity server address is undefined, check the eui.json setting " + this.id;
+      var msg;
+
+      if (!this.activityServerAddress) msg = "The activity server address is undefined, check the eui.json setting " + this.id;
+      else if (!this.queryServerAddress) msg = "The query server address is undefined, check the eui.json setting " + this.id;
 
       $('#reasonertxrxMsg').text(msg);
       console.warn(msg);
