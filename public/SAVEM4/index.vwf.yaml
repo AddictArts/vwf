@@ -9,8 +9,9 @@ methods:
   orbit:
   lookAt:
   clearLookAt:
-  instance:
+  removeInstance:
   initInstance:
+  instance:
 properties:
   zoomedValue:
   scaling:
@@ -51,7 +52,7 @@ scripts:
     implements: [ "M4_Carbine.ux", "reasonertxrx.ux" ],
     properties: {
       translation: [ 0, 0, 2 ],
-      rotation: [ 0, 0, -1, 90 ],
+      rotation: [ 0, 0, 1, 90 ],
       scale: [ 1, 1, 1 ]
     },
     children: {
@@ -85,7 +86,7 @@ scripts:
   };
 
   this.zoom = function(value) {
-    console.info('zoom ' + value);
+    //console.info('zoom ' + value);
 
     var EPS = 0.00001;
     var scale = 1 - value / 100; // normalize the value
@@ -114,7 +115,7 @@ scripts:
     var phi = Math.atan2(Math.sqrt(x * x + y * y), 0); // radians
     var radius = Math.sqrt(x * x + y * y) * scale;
 
-    console.info('radius: ' + radius);
+    //console.info('radius: ' + radius);
     x = radius * Math.sin(phi) * Math.sin(theta);
     y = radius * Math.sin(phi) * Math.cos(theta);
     //console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
@@ -123,7 +124,7 @@ scripts:
   };
 
   this.orbit = function(theta) {
-    console.info('orbit ' + theta + ' degrees');
+    //console.info('orbit ' + theta + ' degrees');
 
     // Note: assuming target is the origin for now!
     var x = this.camera.translation[0];
@@ -153,7 +154,12 @@ scripts:
   this.lookAt = function(what) {
     this.camera.lookAt = this[what].id;
     this.future(0).clearLookAt();
-    console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+    //console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+  };
+
+  this.removeInstance = function() {
+    console.info('reset');
+    this.children.delete(this.children.M4_Carbine_dae);
   };
 
   this.initInstance = function() {
