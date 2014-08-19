@@ -4,7 +4,6 @@ properties:
   Selector_Lever_KbId: 'unknown'
   Magazine_Catch_KbId: 'unknown'
   Tube_KbId: 'unknown'
-  magReleased: false
 methods:
   init:
   positionWeapon:
@@ -13,7 +12,10 @@ methods:
   selectorLeverSafe:
   selectorLeverBurst:
   magazineCatch:
-  magazine:
+  PullAndHoldChargingHandle:
+  PushAndHoldBoltCatchBottom:
+  ReleaseChargingHandle:
+  assessment:
 scripts:
 - |
   // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
@@ -75,22 +77,35 @@ scripts:
   };
 
   this.magazineCatch = function() {
-    console.info('magazine catch pushed');
-    this.Magazine_Catch.translateTo([ 0, 0.00395, 0 ], 0.125);
-    this.Magazine_Catch_Button.translateTo([ 0, 0.00395, 0 ], 0.125);
-    this.magReleased = true;
+    console.info('magazine catch pushed and released');
+    this.Magazine_Catch.translateTo([ 0, 0.0026, 0 ], 0.125); // back to world origin since object has no local pivot
+    this.Magazine_Catch_Button.translateTo([ 0, 0.0026, 0 ], 0.125); // back to world origin since object has no local pivot
+    this.Tube.translateTo([ 0, 0, -0.125 ], 0.25);
+    this.Base.translateTo([ 0, 0, -0.125 ], 0.25);
+    this.Clip_Spring.translateTo([ 0, 0, -0.125 ], 0.25);
+    this.Clip_Spring1.translateTo([ 0, 0, -0.125 ], 0.25);
     this.activity({ action: 'PushMagazineReleaseButton', arguments: [ this.M4_Carbine_KbId ] });
   };
 
-  this.magazine = function() {
-    if (this.magReleased) {
-      console.info('magazine removed');
-      this.Magazine_Catch.translateTo([ 0, 0, 0 ], 0.125); // back to world origin since object has no local coordinates
-      this.Magazine_Catch_Button.translateTo([ 0, 0, 0 ], 0.125); // back to world origin since object has no local coordinates
-      this.Tube.translateTo([ 0, 0, -0.125 ], 0.25);
-      this.Base.translateTo([ 0, 0, -0.125 ], 0.25);
-    }
+  this.PullAndHoldChargingHandle = function() {
+    console.info('PullAndHoldChargingHandle pulled');
+    this.Charging_Handle.translateTo([ -0.005, 0, 0 ], 0.25);
+    this.activity({ action: 'PullAndHoldChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
+  };
 
+  this.PushAndHoldBoltCatchBottom = function() {
+    console.info('PushAndHoldBoltCatchBottom pushed');
+    this.Bolt_Catch.rotation = [ 1, 0, 0, 12 ];
+    this.activity({ action: 'PushAndHoldBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
+  };
+
+  this.ReleaseChargingHandle = function() {
+    console.info('ReleaseChargingHandle released');
+    this.Charging_Handle.translateTo([ 0., 0, 0 ], 0.25);
+    this.activity({ action: 'ReleaseChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
+  };
+
+  this.assessment = function() {
     jQuery('<iframe/>', {
       name: 'assessment',
       id:   'assessmentIFrame',
