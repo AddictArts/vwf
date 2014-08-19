@@ -6,8 +6,6 @@ methods:
   checkServerAddress:
   activity:
   ask:
-events:
-  pointerUp:
 scripts:
 - |
   this.initialize = function() {
@@ -76,12 +74,6 @@ scripts:
       console.info('using activityServerAddress:' + this.activityServerAddress);
       console.warn("error:" + textStatus);
     });
-  };
-
-  this.pointerUp = function(pointerInfo, pickInfo) {
-    console.info("backendtxrx.ux pointerUp");
-
-    // this.activity('SCENE_CLICK');
   }; //@ sourceURL=backendtxrx.ux
 
   // http://www.html5rocks.com/en/tutorials/cors/

@@ -19,18 +19,13 @@
           this.cameraOrbit = 90.0;
           this.cameraZoom = 0.0;
           this.reset = M4.reset;
+
           this.m4Carbine = function() {
             M4.gui.remove(M4.guiref.m4c);
             vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
             M4.tray.positionWeapon = M4.positionWeapon;
             M4.gui.add(M4.tray, 'positionWeapon').name('Position Weapon');
-
-
-            //M4.tray.selectorLever = M4.selectorLever;
-            //M4.guiref.sl = M4.gui.add(M4.tray, 'selectorLever').name('Selector Lever').onFinishChange(M4.addSelectorLeverActionGroup);
             M4.addSelectorLeverActionGroup();
-
-
             M4.tray.magazineCatch = M4.magazineCatch;
             M4.gui.add(M4.tray, 'magazineCatch').name('Magazine Catch');
 
@@ -55,14 +50,9 @@
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'positionWeapon');
         },
-        selectorLever: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLever');
-        },
         addSelectorLeverActionGroup: function() {
           var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
 
-          //M4.gui.remove(M4.guiref.sl);
           M4.tray.semi = M4.semi;
           selectorLeverFolder.add(M4.tray, 'semi').name('SEMI');
           M4.tray.safe = M4.safe;

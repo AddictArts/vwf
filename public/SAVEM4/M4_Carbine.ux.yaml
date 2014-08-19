@@ -1,9 +1,11 @@
 --- 
 properties:
   M4_Carbine_KbId: 'unknown'
-  Selector_Lever_KbId: 'unknown'
-  Magazine_Catch_KbId: 'unknown'
-  Tube_KbId: 'unknown'
+  __idToMethod:
+events:
+  pointerUp:
+  pointerDown:
+  pointerMove:
 methods:
   init:
   positionWeapon:
@@ -45,6 +47,34 @@ scripts:
         }
       }
     );
+
+    this.__idToMethod = { };
+  };
+
+  this.pointerUp = function(pointerInfo, pickInfo) {
+    console.info("M4_Carbine.ux pointerUp");
+  };
+
+  this.pointerDown = function(pointerInfo, pickInfo) {
+    console.info("M4_Carbine.ux pointerDown");
+    console.log(pickInfo);
+
+    // M4_Carbine.ux pointerDown M4_Carbine.ux:38
+    // Object {pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever", pointerVector: Array[3], position: Array[16], normal: Array[3], source: Array[3]…}
+    // distance: 0.5202645488640165
+    // globalNormal: Array[3]
+    // globalPosition: Array[3]
+    // globalSource: Array[3]
+    // normal: Array[3]
+    // pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever"
+    // pointerVector: Array[3]
+    // position: Array[16]
+    // source: Array[3]
+    // __proto__: Object
+  };
+
+  this.pointerMove = function(pointerInfo, pickInfo) {
+    console.info("M4_Carbine.ux pointerMove, just for drag, should be pointerDrag");
   };
 
   this.positionWeapon = function() {
