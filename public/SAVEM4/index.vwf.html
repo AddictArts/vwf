@@ -15,26 +15,28 @@
         tray: undefined,
         guiref: { },
         Tooltray: function() {
-          this.backendtxrxMsg = true;
-          this.cameraOrbit = 90.0;
-          this.cameraZoom = 0.0;
+          this.backendtxrxMsg = false;
+          this.cameraOrbit = 0;
+          this.cameraZoom = 0;
           this.reset = M4.reset;
 
           this.m4Carbine = function() {
             M4.gui.remove(M4.guiref.m4c);
             vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
-            M4.tray.positionWeapon = M4.positionWeapon;
-            M4.gui.add(M4.tray, 'positionWeapon').name('Position Weapon');
+            M4.tray.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
+            M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
             M4.addSelectorLeverActionGroup();
-            M4.tray.magazineCatch = M4.magazineCatch;
-            M4.gui.add(M4.tray, 'magazineCatch').name('Magazine Catch');
+            M4.tray.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
+            M4.gui.add(M4.tray, 'PushMagazineReleaseButton').name('Magazine Catch');
 
             M4.tray.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
-            M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('PullAndHoldChargingHandle');
+            M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
             M4.tray.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
-            M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('PushAndHoldBoltCatchBottom');
+            M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
             M4.tray.ReleaseChargingHandle = M4.ReleaseChargingHandle;
-            M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('ReleaseChargingHandle');
+            M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('Release Charging Handle');
+            M4.tray.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
+            M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
 
             M4.tray.assessment = M4.assessment;
             M4.gui.add(M4.tray, 'assessment').name('Assessment');
@@ -46,9 +48,9 @@
           window.location.reload(true);
           //window.location.href=window.location.href;
         },
-        positionWeapon: function() {
+        PointWeaponInSafeDirection: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'positionWeapon');
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PointWeaponInSafeDirection');
         },
         addSelectorLeverActionGroup: function() {
           var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
@@ -62,19 +64,19 @@
         },
         semi: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverSemi');
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'SelectModeSemi');
         },
         safe: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverSafe');
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'SelectModeSafe');
         },
         burst: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverBurst');
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'SelectModeBurst');
         },
-        magazineCatch: function() {
+        PushMagazineReleaseButton: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazineCatch');
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushMagazineReleaseButton');
         },
         PullAndHoldChargingHandle: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
@@ -88,20 +90,27 @@
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'ReleaseChargingHandle');
         },
+        LetGoOfBoltCatchBottom: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'LetGoOfBoltCatchBottom');
+        },
         assessment: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'assessment');
         },
-
         init: function() {
+          $('#backendtxrxMsg').hide();
           this.tray = new this.Tooltray();
           this.gui = new dat.GUI();
           this.gui.add(this.tray, 'reset').name('Reset');
-          this.gui.add(this.tray, 'backendtxrxMsg').name('Messages');
-          this.gui.add(this.tray, 'cameraOrbit', 0.0, 360.0).name('Orbit').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value ]); // really we start at -90 behind the target, so we multiply by -1.0
+          this.gui.add(this.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+            if (value) $('#backendtxrxMsg').show('easing');
+            else $('#backendtxrxMsg').hide('easing');
           });
-          this.gui.add(this.tray, 'cameraZoom', 0.0, 90.0).step(1.0).name('Zoom').onFinishChange(function(value) {
+          this.gui.add(this.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+          });
+          this.gui.add(this.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
           });
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
@@ -110,6 +119,29 @@
 
       function SceneInitialize() {
         M4.init();
+
+        vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
+          if (nodeId == vwf_view.kernel.application()) {
+            switch (propertyName) {
+            case "zoomedValue":
+              console.log('Observing zoomedValue ' + propertyValue + ' in the html');
+              break;
+            }
+          }
+        }
+
+        vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
+          //console.log('firedEvent arg len:' + arguments.length + ' arg0:' + arguments[ 0 ] + ' arg1:' + arguments[ 1 ] + ' arg2:' + arguments[ 2 ]);
+
+          if (nodeId == vwf_view.kernel.application()) {
+            switch (eventName) {
+            case "pointerDown":
+              console.log('Observing pointerDown in the html');
+              break;
+            }
+          }
+        }
+
         $(window).unload(function() { SceneDestroy(); });
       }
 
