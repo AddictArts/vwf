@@ -1,15 +1,15 @@
 --- 
 properties:
   M4_Carbine_KbId: 'unknown'
-  __idToMethod:
+  __idToName:
 events:
   pointerUp:
   pointerDown:
   pointerMove:
 methods:
   init:
+  dispatchPick:
   positionWeapon:
-  selectorLever:
   selectorLeverSemi:
   selectorLeverSafe:
   selectorLeverBurst:
@@ -26,16 +26,24 @@ scripts:
   this.init = function() {
     console.info('M4_Carbine init');
     this.M4_Carbine_KbId = this.parent.__m4KbId;
+    this.__idToName = { };
+    this.__idToName[ this.id ] = this.name;
 
     var self = this;
     var count = self.children.length;
     var comps = [ ];
 
     for (var i = 0; i < count; i++) {
-      var name = self.children[i].name;
+      var child = self.children[ i ]; 
+      var name = child.name;
+      var id = child.id;
+
+      self.__idToName[ id ] = name;
 
       if (self[ name + '_KbId' ]) comps.push(name);
     }
+
+    console.log(self.__idToName);
 
     self.ask(
       { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
@@ -47,8 +55,24 @@ scripts:
         }
       }
     );
+  };
 
-    this.__idToMethod = { };
+  this.dispatchPick = function(who) {
+    switch(who) {
+    case 'M4_Carbine_dae':
+      console.info('M4_Carbine_dae pick');
+      this.positionWeapon();
+      break;
+    case 'Selector_Lever':
+      console.info('Selector_Lever pick');
+      // XXX this.selectorLever...();
+      break;
+    case 'Magazine_Catch':
+    case 'Magazine_Catch_Button':
+      console.info('Magazine_Catch pick');
+      this.magazineCatch();
+      break;
+    };
   };
 
   this.pointerUp = function(pointerInfo, pickInfo) {
@@ -58,7 +82,7 @@ scripts:
   this.pointerDown = function(pointerInfo, pickInfo) {
     console.info("M4_Carbine.ux pointerDown");
     console.log(pickInfo);
-
+    this.dispatchPick(this.__idToName[ pickInfo.pickID ]);
     // M4_Carbine.ux pointerDown M4_Carbine.ux:38
     // Object {pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever", pointerVector: Array[3], position: Array[16], normal: Array[3], source: Array[3]…}
     // distance: 0.5202645488640165
@@ -77,35 +101,35 @@ scripts:
     console.info("M4_Carbine.ux pointerMove, just for drag, should be pointerDrag");
   };
 
+  // PointWeaponInSafeDirection
   this.positionWeapon = function() {
     console.info('positioning weapon facing down range');
     this.rotation = [ 0, 0, 1, 0 ];
     this.activity({ action: 'PointWeaponInSafeDirection', arguments: [ this.M4_Carbine_KbId ] });
   };
 
-  this.selectorLever = function() {
-    console.info('selector lever activated');
-    // this.activity({ action: 'Select', arguments: [ this.M4_Carbine_KbId, this.Selector_Lever_KbId ] });
-  };
-
+  // SelectMode
   this.selectorLeverSemi = function() {
     console.info('selector lever to semi');
     this.Selector_Lever.rotation = [ 0, 1, 0, 0 ];
     this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Semi' ] });
   };
 
+  // SelectMode
   this.selectorLeverSafe = function() {
     console.info('selector lever to safe');
     this.Selector_Lever.rotation = [ 0, 1, 0, 90 ];
     this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Safe' ] });
   };
 
+  // SelectMode
   this.selectorLeverBurst = function() {
     console.info('selector lever to burst');
     this.Selector_Lever.rotation = [ 0, -1, 0, 90 ];
     this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Burst' ] });
   };
 
+  // PushMagazineReleaseButton
   this.magazineCatch = function() {
     console.info('magazine catch pushed and released');
     this.Magazine_Catch.translateTo([ 0, 0.0026, 0 ], 0.125); // back to world origin since object has no local pivot
@@ -134,6 +158,45 @@ scripts:
     this.Charging_Handle.translateTo([ 0., 0, 0 ], 0.25);
     this.activity({ action: 'ReleaseChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
   };
+
+
+
+  // this.LetGoOfBoltCatchBottom = function() {
+  //   console.info('LetGoOfBoltCatchBottom let go');
+  //   this.Bolt_Catch.rotation = [ 1, 0, 0, 0 ];
+  //   this.activity({ action: 'LetGoOfBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
+  // };
+
+  // this.PushChargingHandleForward = function() {
+  //   console.info('PushChargingHandleForward ');
+  //   this..rotation = [ 1, 0, 0, 12 ];
+  //   this..translateTo([ 0., 0, 0 ], 0.25);
+  //   this.activity({ action: 'PushChargingHandleForward', arguments: [ this.M4_Carbine_KbId ] });
+  // };
+
+  // this.CheckChamberAndReceiverForAmmo = function() {
+  //   console.info('CheckChamberAndReceiverForAmmo ');
+  //   this..rotation = [ 1, 0, 0, 12 ];
+  //   this..translateTo([ 0., 0, 0 ], 0.25);
+  //   this.activity({ action: 'CheckChamberAndReceiverForAmmo', arguments: [ this.M4_Carbine_KbId ] });
+  // };
+
+  // this.PushBoltCatchTop = function() {
+  //   console.info('PushBoltCatchTop ');
+  //   this..rotation = [ 1, 0, 0, 12 ];
+  //   this..translateTo([ 0., 0, 0 ], 0.25);
+  //   this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
+  // };
+
+  // this.PullTrigger = function() {
+  //   console.info('PullTrigger ');
+  //   this..rotation = [ 1, 0, 0, 12 ];
+  //   this..translateTo([ 0., 0, 0 ], 0.25);
+  //   this.activity({ action: 'PullTrigger', arguments: [ this.M4_Carbine_KbId ] });
+  // };
+
+
+
 
   this.assessment = function() {
     jQuery('<iframe/>', {
