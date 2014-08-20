@@ -15,35 +15,44 @@
         tray: undefined,
         guiref: { },
         Tooltray: function() {
-          this.reasonertxrxMsg = true;
+          this.backendtxrxMsg = true;
           this.cameraOrbit = 90.0;
           this.cameraZoom = 0.0;
+          this.reset = M4.reset;
+
           this.m4Carbine = function() {
             M4.gui.remove(M4.guiref.m4c);
             vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
             M4.tray.positionWeapon = M4.positionWeapon;
             M4.gui.add(M4.tray, 'positionWeapon').name('Position Weapon');
-            M4.tray.selectorLever = M4.selectorLever;
-            M4.guiref.sl = M4.gui.add(M4.tray, 'selectorLever').name('Selector Lever').onFinishChange(M4.addSelectorLeverActionGroup);
-
+            M4.addSelectorLeverActionGroup();
             M4.tray.magazineCatch = M4.magazineCatch;
             M4.gui.add(M4.tray, 'magazineCatch').name('Magazine Catch');
-            M4.tray.magazine = M4.magazine;
-            M4.gui.add(M4.tray, 'magazine').name('Magazine');
+
+            M4.tray.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
+            M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('PullAndHoldChargingHandle');
+            M4.tray.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
+            M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('PushAndHoldBoltCatchBottom');
+            M4.tray.ReleaseChargingHandle = M4.ReleaseChargingHandle;
+            M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('ReleaseChargingHandle');
+
+            M4.tray.assessment = M4.assessment;
+            M4.gui.add(M4.tray, 'assessment').name('Assessment');
           };
+        },
+        reset: function() {
+          //vwf_view.kernel.callMethod(vwf.appID, 'removeInstance');
+          //window.location.reload();
+          window.location.reload(true);
+          //window.location.href=window.location.href;
         },
         positionWeapon: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'positionWeapon');
         },
-        selectorLever: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLever');
-        },
         addSelectorLeverActionGroup: function() {
           var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
 
-          M4.gui.remove(M4.guiref.sl);
           M4.tray.semi = M4.semi;
           selectorLeverFolder.add(M4.tray, 'semi').name('SEMI');
           M4.tray.safe = M4.safe;
@@ -52,27 +61,43 @@
           selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
         },
         semi: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverSemi');
         },
         safe: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverSafe');
         },
         burst: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'selectorLeverBurst');
         },
         magazineCatch: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazineCatch');
         },
-        magazine: function() {
+        PullAndHoldChargingHandle: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'magazine');
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PullAndHoldChargingHandle');
+        },
+        PushAndHoldBoltCatchBottom: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushAndHoldBoltCatchBottom');
+        },
+        ReleaseChargingHandle: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'ReleaseChargingHandle');
+        },
+        assessment: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'assessment');
         },
 
         init: function() {
           this.tray = new this.Tooltray();
           this.gui = new dat.GUI();
-          this.gui.add(this.tray, 'reasonertxrxMsg').name('Messages');
+          this.gui.add(this.tray, 'reset').name('Reset');
+          this.gui.add(this.tray, 'backendtxrxMsg').name('Messages');
           this.gui.add(this.tray, 'cameraOrbit', 0.0, 360.0).name('Orbit').onChange(function(value) {
             vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value ]); // really we start at -90 behind the target, so we multiply by -1.0
           });
@@ -97,7 +122,7 @@
   </head>
 <body>
   <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;color:white;">
-    <div id="reasonertxrxMsg"></div>
+    <div id="backendtxrxMsg"></div>
     <div id="assessment"></div>
   </div>
   <script type="text/javascript">

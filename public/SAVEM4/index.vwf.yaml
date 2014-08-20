@@ -2,15 +2,16 @@
 extends: http://vwf.example.com/scene.vwf
 implements:
 - begin.eui
-- reasonertxrx.ux
+- backendtxrx.ux
 methods:
   initializeCamera:
   zoom:
   orbit:
   lookAt:
   clearLookAt:
-  instance:
+  removeInstance:
   initInstance:
+  instance:
 properties:
   zoomedValue:
   scaling:
@@ -48,15 +49,27 @@ scripts:
   var vwf_M4_node3 = {
     extends: "http://vwf.example.com/node3.vwf",
     type: "model/vnd.collada+xml",
-    implements: [ "M4_Carbine.ux", "reasonertxrx.ux" ],
+    implements: [ "M4_Carbine.ux", "backendtxrx.ux" ],
     properties: {
       translation: [ 0, 0, 2 ],
-      rotation: [ 0, 0, -1, 90 ],
+      rotation: [ 0, 0, 1, 90 ],
       scale: [ 1, 1, 1 ]
     },
     children: {
-      Selector_Lever: {
-        extends: "http://vwf.example.com/node3.vwf",
+      Base: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Charging_Handle: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Clip_Spring: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Clip_Spring1: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Bolt_Catch: {
+        extends: "http://vwf.example.com/node3.vwf"
       },
       Magazine_Catch: {
         extends: "http://vwf.example.com/node3.vwf"
@@ -64,10 +77,10 @@ scripts:
       Magazine_Catch_Button: {
         extends: "http://vwf.example.com/node3.vwf"
       },
-      Tube: {
-        extends: "http://vwf.example.com/node3.vwf"
+      Selector_Lever: {
+        extends: "http://vwf.example.com/node3.vwf",
       },
-      Base: {
+      Tube: {
         extends: "http://vwf.example.com/node3.vwf"
       }
     }
@@ -85,7 +98,7 @@ scripts:
   };
 
   this.zoom = function(value) {
-    console.info('zoom ' + value);
+    //console.info('zoom ' + value);
 
     var EPS = 0.00001;
     var scale = 1 - value / 100; // normalize the value
@@ -114,7 +127,7 @@ scripts:
     var phi = Math.atan2(Math.sqrt(x * x + y * y), 0); // radians
     var radius = Math.sqrt(x * x + y * y) * scale;
 
-    console.info('radius: ' + radius);
+    //console.info('radius: ' + radius);
     x = radius * Math.sin(phi) * Math.sin(theta);
     y = radius * Math.sin(phi) * Math.cos(theta);
     //console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
@@ -123,7 +136,7 @@ scripts:
   };
 
   this.orbit = function(theta) {
-    console.info('orbit ' + theta + ' degrees');
+    //console.info('orbit ' + theta + ' degrees');
 
     // Note: assuming target is the origin for now!
     var x = this.camera.translation[0];
@@ -153,7 +166,12 @@ scripts:
   this.lookAt = function(what) {
     this.camera.lookAt = this[what].id;
     this.future(0).clearLookAt();
-    console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+    //console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+  };
+
+  this.removeInstance = function() {
+    console.info('reset');
+    this.children.delete(this.children.M4_Carbine_dae);
   };
 
   this.initInstance = function() {
