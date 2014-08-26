@@ -40,7 +40,6 @@ scripts:
 
     var url = (this.queryServerAddress == null)? this.parent.queryServerAddress : this.queryServerAddress;
     var queryJSON = JSON.stringify(query);
-    var response = { KbId: 'unknown' };
 
     $('#backendtxrxMsg').text(queryJSON);
     $.ajax({
@@ -51,7 +50,7 @@ scripts:
     })
     .done(done)
     .fail(function(jqXHR, textStatus, errorThrown) {
-      console.info('using queryServerAddress:' + this.queryServerAddress);
+      console.info('using queryServerAddress:' + url);
       console.warn("error:" + textStatus);
     });
   };
@@ -71,7 +70,7 @@ scripts:
     })
     .done(done)
     .fail(function(jqXHR, textStatus, errorThrown) {
-      console.info('using activityServerAddress:' + this.activityServerAddress);
+      console.info('using activityServerAddress:' + url);
       console.warn("error:" + textStatus);
     });
   }; //@ sourceURL=backendtxrx.ux
