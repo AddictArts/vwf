@@ -80,6 +80,9 @@ routes.post(routes.QUERY, function(req, res) {
 		for (var i = 0; i < q.query.length; i++) kbids.push(q.query[i] + Date.now());
 
 		break;
+	case 'Reset':
+		// don't need to do anything usefull to test reset query type at this point of the backends life...
+		break;
 	default:
 		log('no handling for query type ' + q.type + ' request');
 		kbid = undefined;

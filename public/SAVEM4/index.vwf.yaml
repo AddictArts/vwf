@@ -10,12 +10,14 @@ methods:
   lookAt:
   clearLookAt:
   removeInstance:
+  resetBackend:
   initInstance:
   instance:
 properties:
   zoomedValue:
   scaling:
   camTarget:
+  backendResetSent:
 children:
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
@@ -89,6 +91,7 @@ scripts:
   this.initialize = function() {
     this.zoomedValue = 0;
     this.scaled = 0;
+    this.backendResetSent = false;
     this.future(0).initializeCamera();
   };
 
@@ -170,8 +173,19 @@ scripts:
   };
 
   this.removeInstance = function() {
-    console.info('reset');
+    console.info('removeInstance M4_Carbine_dae');
     this.children.delete(this.children.M4_Carbine_dae);
+  };
+
+  this.resetBackend = function() {
+    var self = this;
+
+    this.ask({ type: 'Reset' },
+      function() {
+        console.log('RESET!!!!!');
+        self.backendResetSent = true;
+      }
+    );
   };
 
   this.initInstance = function() {

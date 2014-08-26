@@ -2,6 +2,104 @@
   <head>
     <title>Exercise UI</title>
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
+
+<!--
+https://dat-gui.googlecode.com/git-history/dbb4fa0ef0428380044e825470e788dec1e37b86/index.html
+You can instantiate multiple DAT.GUI objects and name them however you'd like.
+
+var gui1 = new DAT.GUI();
+var gui2 = new DAT.GUI();
+
+// The name function overwrites the 'Show Controls' text.
+gui1.name('Utilities');
+gui2.name('Camera Placement');
+By default, DAT.GUI panels will be automatically added to the HTML document and fixed to the top of the screen from right to left. You can disable this behavior and append the gui DOM element to a container of your choosing.
+
+// Notice this belongs to the DAT.GUI class (uppercase)
+// and not an instance thereof.
+DAT.GUI.autoPlace = false;
+
+var gui = new DAT.GUI();
+
+// Do some custom styles ...
+gui.domElement.style.position = 'absolute';
+gui.domElement.style.top = '20px';
+gui.domElement.style.left = '20px';
+
+document.getElementById('my-gui-container').appendChild( gui.domElement );
+
+========
+
+http://brm.io/dat-gui-light-theme/
+https://github.com/liabru/dat-gui-light-theme
+
+.dg.main.taller-than-window .close-button {
+    border-top: 1px solid #ddd;
+}
+
+.dg.main .close-button {
+    background-color: #ccc;
+}
+ 
+.dg.main .close-button:hover {
+    background-color: #ddd;
+}
+
+.dg {
+    color: #555;
+    text-shadow: none !important;
+}
+
+.dg.main::-webkit-scrollbar {
+    background: #fafafa;
+}
+
+.dg.main::-webkit-scrollbar-thumb {
+    background: #bbb;
+}
+ 
+.dg li:not(.folder) {
+    background: #fafafa;
+    border-bottom: 1px solid #ddd;
+}
+ 
+.dg li.save-row .button {
+    text-shadow: none !important;
+}
+
+.dg li.title {
+    background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
+}
+
+.dg .cr.function:hover,.dg .cr.boolean:hover {
+    background: #fff;
+}
+ 
+.dg .c input[type=text] {
+    background: #e9e9e9;
+}
+ 
+.dg .c input[type=text]:hover {
+    background: #eee;
+}
+ 
+.dg .c input[type=text]:focus {
+    background: #eee;
+    color: #555;
+}
+ 
+.dg .c .slider {
+    background: #e9e9e9;
+}
+
+.dg .c .slider:hover {
+    background: #eee;
+}
+
+
+-->
+
+
     <script type="text/javascript">
       (function() {
       var vwf = {
@@ -44,9 +142,9 @@
         },
         reset: function() {
           //vwf_view.kernel.callMethod(vwf.appID, 'removeInstance');
-          //window.location.reload();
-          window.location.reload(true);
           //window.location.href=window.location.href;
+          //window.location.reload();
+          vwf_view.kernel.callMethod(vwf.appID, 'resetBackend');
         },
         PointWeaponInSafeDirection: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
@@ -120,27 +218,27 @@
       function SceneInitialize() {
         M4.init();
 
+        // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
-          if (nodeId == vwf_view.kernel.application()) {
-            switch (propertyName) {
-            case "zoomedValue":
-              console.log('Observing zoomedValue ' + propertyValue + ' in the html');
-              break;
+          if (nodeId == vwf.appID) {
+            if (propertyName == 'backendResetSent') {
+              if (propertyValue) window.location.reload(true);
             }
           }
-        }
+        };
 
+        // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
           //console.log('firedEvent arg len:' + arguments.length + ' arg0:' + arguments[ 0 ] + ' arg1:' + arguments[ 1 ] + ' arg2:' + arguments[ 2 ]);
 
-          if (nodeId == vwf_view.kernel.application()) {
+          if (nodeId == vwf.appID) {
             switch (eventName) {
             case "pointerDown":
               console.log('Observing pointerDown in the html');
               break;
             }
           }
-        }
+        };
 
         $(window).unload(function() { SceneDestroy(); });
       }
