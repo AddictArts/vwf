@@ -1,0 +1,1480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=1;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_v08_zUp.ma</source_data>
+    </contributor>
+    <created>2014-08-11T17:35:19</created>
+    <modified>2014-08-11T17:35:19</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_v08_zUp">
+      <node id="Lower_Receiver" name="Lower_Receiver" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Lower_Receiver.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Lower_Receiver</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Upper_Receiver" name="Upper_Receiver" type="NODE">
+        <translate sid="translate">-0.01739972 0 -0.020893</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Upper_Receiver.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Upper_Receiver</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Charging_Handle" name="Charging_Handle" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Charging_Handle.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Charging_Handle</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Plunger_Assembly" name="Plunger_Assembly" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Plunger_Assembly.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Plunger_Assembly</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Cover_Pin" name="Cover_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Cover_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Cover_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Gun_Carrying_Handle" name="Gun_Carrying_Handle" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Gun_Carrying_Handle.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Gun_Carrying_Handle</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Barrel_Assembly" name="Barrel_Assembly" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Barrel_Assembly.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Barrel_Assembly</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buttstock" name="Buttstock" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">-0.218556 -3.7733e-4 1.56636e-4</translate>
+        <translate sid="rotatePivotInverse">0.218556 3.7733e-4 -1.56636e-4</translate>
+        <translate sid="scalePivot">-0.218556 -3.7733e-4 1.56636e-4</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0.218556 3.7733e-4 -1.56636e-4</translate>
+        <instance_geometry url="parts/Buttstock.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Guard" name="Trigger_Guard" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Guard.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Guard</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Guard_Spring_Pin_Retaining_Pin" name="Trigger_Guard_Spring_Pin_Retaining_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Guard_Spring_Pin_Retaining_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Guard_Spring_Pin_Retaining_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Guard_Detent" name="Trigger_Guard_Detent" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Guard_Detent.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Guard_Detent</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Guard_Detent_Springf" name="Trigger_Guard_Detent_Springf" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Guard_Detent_Springf.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Guard_Detent_Springf</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pistol_Grip" name="Pistol_Grip" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pistol_Grip.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pistol_Grip</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pistol_Grip_Screw" name="Pistol_Grip_Screw" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pistol_Grip_Screw.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pistol_Grip_Screw</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pistol_Grip_Lock_Washer" name="Pistol_Grip_Lock_Washer" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pistol_Grip_Lock_Washer.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pistol_Grip_Lock_Washer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Catch" name="Bolt_Catch" type="NODE">
+        <translate sid="translate">-0.09157444 0.01496068 -0.01932142</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Catch.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Catch</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Catch_Spring_Pin" name="Bolt_Catch_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Catch_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Catch_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Catch_Plunger" name="Bolt_Catch_Plunger" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Catch_Plunger.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Catch_Plunger</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Catch_Spring" name="Bolt_Catch_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Catch_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Catch_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger" name="Trigger" type="NODE">
+        <translate sid="translate">-0.127447 0 -0.03789536</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Spring" name="Trigger_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Disconnector_Spring__OOBurst__CC" name="Disconnector_Spring__OOBurst__CC" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Disconnector_Spring__OOBurst__CC.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Disconnector_Spring__OOBurst__CC</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Disconnector_Spring__OOSemi__CC" name="Disconnector_Spring__OOSemi__CC" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Disconnector_Spring__OOSemi__CC.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Disconnector_Spring__OOSemi__CC</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Spring1" name="Trigger_Spring1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Spring1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Spring1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Trigger_Pin" name="Trigger_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Trigger_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Trigger_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Disconnector__Burst" name="Disconnector__Burst" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Disconnector__Burst.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Disconnector__Burst</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Disconnector__Semi" name="Disconnector__Semi" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Disconnector__Semi.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Disconnector__Semi</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Magazine_Catch" name="Magazine_Catch" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Magazine_Catch.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Magazine_Catch</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Magazine_Catch_Springh" name="Magazine_Catch_Springh" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Magazine_Catch_Springh.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Magazine_Catch_Springh</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Magazine_Catch_Button" name="Magazine_Catch_Button" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Magazine_Catch_Button.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Magazine_Catch_Button</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pivot_Pin" name="Pivot_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pivot_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pivot_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pivot_Pin_Detent" name="Pivot_Pin_Detent" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pivot_Pin_Detent.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pivot_Pin_Detent</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pivot_Pin_Spring" name="Pivot_Pin_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pivot_Pin_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pivot_Pin_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Takedown_Pin" name="Takedown_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Takedown_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Takedown_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Takedown_Pin_Detent" name="Takedown_Pin_Detent" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Takedown_Pin_Detent.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Takedown_Pin_Detent</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Takedown_Pin_Detent_Spring" name="Takedown_Pin_Detent_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Takedown_Pin_Detent_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Takedown_Pin_Detent_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Selector_Lever" name="Selector_Lever" type="NODE">
+        <translate sid="translate">-0.1552785 0.01111029 -0.03238004</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Selector_Lever.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Selector_Lever</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Safety_Detent__OOSelector_Lever__CC" name="Safety_Detent__OOSelector_Lever__CC" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Safety_Detent__OOSelector_Lever__CC.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Safety_Detent__OOSelector_Lever__CC</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Safety_Spring__OOSelector_Lever__CC" name="Safety_Spring__OOSelector_Lever__CC" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Safety_Spring__OOSelector_Lever__CC.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Safety_Spring__OOSelector_Lever__CC</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Automatic_Sear" name="Automatic_Sear" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Automatic_Sear.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Automatic_Sear</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Automatic_Sear_Spring" name="Automatic_Sear_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Automatic_Sear_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Automatic_Sear_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Sear_Pin" name="Sear_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Sear_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Sear_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Hammer" name="Hammer" type="NODE">
+        <translate sid="translate">-0.1065728 0 -0.03009335</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Hammer.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Hammer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Hammer_Spring1" name="Hammer_Spring1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Hammer_Spring1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Hammer_Spring1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Hammer_Pin" name="Hammer_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Hammer_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Hammer_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Burst_Cam" name="Burst_Cam" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Burst_Cam.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Burst_Cam</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Burst_Cam_Clutch_Spring" name="Burst_Cam_Clutch_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Burst_Cam_Clutch_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Burst_Cam_Clutch_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Hammer_Spring" name="Hammer_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Hammer_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Hammer_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Lower_Receiver_Extension" name="Lower_Receiver_Extension" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Lower_Receiver_Extension.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Lower_Receiver_Extension</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buffer" name="Buffer" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Buffer.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buffer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Action_Spring" name="Action_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Action_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Action_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Plain_Round_Nut" name="Plain_Round_Nut" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Plain_Round_Nut.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Plain_Round_Nut</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Receiver_End_Plate" name="Receiver_End_Plate" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Receiver_End_Plate.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Receiver_End_Plate</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buffer_Retainer" name="Buffer_Retainer" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Buffer_Retainer.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buffer_Retainer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buffer_Retainer_Spring" name="Buffer_Retainer_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Buffer_Retainer_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buffer_Retainer_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Charging_Handle_Latch" name="Charging_Handle_Latch" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Charging_Handle_Latch.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Charging_Handle_Latch</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Charging_Handle_Spring" name="Charging_Handle_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Charging_Handle_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Charging_Handle_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Charging_Handle_Spring_Pin" name="Charging_Handle_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Charging_Handle_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Charging_Handle_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Key_and_Bolt_Carrier_Assembly" name="Key_and_Bolt_Carrier_Assembly" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Key_and_Bolt_Carrier_Assembly.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Key_and_Bolt_Carrier_Assembly</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Firing_Pin_Retaining_Pin" name="Firing_Pin_Retaining_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Firing_Pin_Retaining_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Firing_Pin_Retaining_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Firing_Pin" name="Firing_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Firing_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Firing_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt" name="Bolt" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Cam_Pin" name="Bolt_Cam_Pin" type="NODE">
+        <translate sid="translate">-0.04835536 -3.91168e-4 8.88747e-4</translate>
+        <rotate sid="rotateX">1 0 0 -20.96136</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Cam_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Cam_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ejector_Spring_Pin" name="Ejector_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ejector_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ejector_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Ring" name="Bolt_Ring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Ring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Ring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Ring2" name="Bolt_Ring2" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Ring2.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Ring2</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Bolt_Ring1" name="Bolt_Ring1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Bolt_Ring1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Ring1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ejector" name="Ejector" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ejector.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ejector</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ejector_Spring" name="Ejector_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ejector_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ejector_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Extractor" name="Extractor" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Extractor.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Extractor</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Extractor_Spring" name="Extractor_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Extractor_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Extractor_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Extractor_Pin" name="Extractor_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Extractor_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Extractor_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pawl__Forward_Assist" name="Pawl__Forward_Assist" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pawl__Forward_Assist.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pawl__Forward_Assist</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Forward_Assist_Spring" name="Forward_Assist_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Forward_Assist_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Forward_Assist_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Forward_Assist_Spring1" name="Forward_Assist_Spring1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Forward_Assist_Spring1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Forward_Assist_Spring1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pawl_Spring_Pin" name="Pawl_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pawl_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pawl_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pawl_Detent" name="Pawl_Detent" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pawl_Detent.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pawl_Detent</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pawl_Spring" name="Pawl_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pawl_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pawl_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ejection_Port_Cover" name="Ejection_Port_Cover" type="NODE">
+        <translate sid="translate">-0.024992 -0.01672403 -0.005854817</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ejection_Port_Cover.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ejection_Port_Cover</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Cover_Spring" name="Cover_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Cover_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Cover_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Cover_Retaining_Ring__OOC_Clip__CC" name="Cover_Retaining_Ring__OOC_Clip__CC" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Cover_Retaining_Ring__OOC_Clip__CC.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Cover_Retaining_Ring__OOC_Clip__CC</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Windage_Spring_Pin" name="Windage_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Windage_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Windage_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Screw__Externally_Re" name="Screw__Externally_Re" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Screw__Externally_Re.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Screw__Externally_Re</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Flat_Rear_Sight_Spring" name="Flat_Rear_Sight_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Flat_Rear_Sight_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Flat_Rear_Sight_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Rear_Sight_Base" name="Rear_Sight_Base" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Rear_Sight_Base.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Rear_Sight_Base</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Sight_Aperture" name="Sight_Aperture" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Sight_Aperture.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Sight_Aperture</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Windage_Knob" name="Windage_Knob" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Windage_Knob.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Windage_Knob</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring__Helical__Compression" name="Spring__Helical__Compression" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring__Helical__Compression.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring__Helical__Compression</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Knob" name="Knob" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Knob.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Knob</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ball_Bearing1" name="Ball_Bearing1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ball_Bearing1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ball_Bearing1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Elevating_Mechanism" name="Elevating_Mechanism" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Elevating_Mechanism.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Elevating_Mechanism</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring2" name="Spring2" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring2.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring2</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring1" name="Spring1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Index_Screw" name="Index_Screw" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Index_Screw.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Index_Screw</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ball_Bearing" name="Ball_Bearing" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ball_Bearing.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ball_Bearing</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Pin_Spring" name="Pin_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Pin_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Pin_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring" name="Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Ball_Bearing2" name="Ball_Bearing2" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Ball_Bearing2.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ball_Bearing2</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Round_Nut1" name="Round_Nut1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Round_Nut1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Round_Nut1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Washer1" name="Washer1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Washer1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Washer1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Washer" name="Washer" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Washer.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Washer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Clamping_Bar" name="Clamping_Bar" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Clamping_Bar.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Clamping_Bar</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Round_Nut" name="Round_Nut" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Round_Nut.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Round_Nut</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Tube" name="Tube" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">-0.05549206 0 -0.01355531</translate>
+        <translate sid="rotatePivotInverse">0.05549206 0 0.01355531</translate>
+        <translate sid="scalePivot">-0.05549206 0 -0.01355531</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0.05549206 0 0.01355531</translate>
+        <instance_geometry url="parts/Tube.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Tube</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Clip_Spring1" name="Clip_Spring1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Clip_Spring1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Clip_Spring1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Base" name="Base" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Base.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Base</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Clip_Spring" name="Clip_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Clip_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Clip_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Follower" name="Follower" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Follower.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Follower</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Upper_Handguard" name="Upper_Handguard" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Upper_Handguard.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Upper_Handguard</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Lower_Handguard" name="Lower_Handguard" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Lower_Handguard.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Lower_Handguard</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Small_Sling_Swivel" name="Small_Sling_Swivel" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Small_Sling_Swivel.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Small_Sling_Swivel</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Front_Sight_Post" name="Front_Sight_Post" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Front_Sight_Post.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Front_Sight_Post</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Headless_Shoulder_Pin" name="Headless_Shoulder_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Headless_Shoulder_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Headless_Shoulder_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring3" name="Spring3" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring3.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring3</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Tubular_Rivet" name="Tubular_Rivet" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Tubular_Rivet.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Tubular_Rivet</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Synchro_Clamp" name="Synchro_Clamp" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Synchro_Clamp.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Synchro_Clamp</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring_Pin1" name="Spring_Pin1" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring_Pin1.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring_Pin1</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring_Pin" name="Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Swivel_Mount" name="Swivel_Mount" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Swivel_Mount.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Swivel_Mount</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Flat_Spring" name="Flat_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Flat_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Flat_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Special_Shaped_Spacer" name="Special_Shaped_Spacer" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Special_Shaped_Spacer.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Special_Shaped_Spacer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Compensator" name="Compensator" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Compensator.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Compensator</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Recessed_Washer__OOCompensator" name="Recessed_Washer__OOCompensator" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Recessed_Washer__OOCompensator.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Recessed_Washer__OOCompensator</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring_Pin2" name="Spring_Pin2" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring_Pin2.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring_Pin2</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Spring_Pin3" name="Spring_Pin3" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Spring_Pin3.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Spring_Pin3</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Rear_Handguard_Clamp" name="Rear_Handguard_Clamp" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Rear_Handguard_Clamp.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Rear_Handguard_Clamp</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Screw" name="Screw" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Screw.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Screw</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Gas_Tube_Spring_Pin" name="Gas_Tube_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Gas_Tube_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Gas_Tube_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Gas_Tube" name="Gas_Tube" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Gas_Tube.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Gas_Tube</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Handguard_Slip_Ring_Spring" name="Handguard_Slip_Ring_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Handguard_Slip_Ring_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Handguard_Slip_Ring_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Handguard_Slip_Ring_Retaining_Ring" name="Handguard_Slip_Ring_Retaining_Ring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="parts/Handguard_Slip_Ring_Retaining_Ring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Handguard_Slip_Ring_Retaining_Ring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Handguard_Slip_Ring_LAMA918813252" name="Handguard_Slip_Ring_LAMA918813252" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">-4.47298e-4 -4.19698e-4 8.61465e-4</translate>
+        <translate sid="rotatePivotInverse">4.47298e-4 4.19698e-4 -8.61465e-4</translate>
+        <translate sid="scalePivot">-4.47298e-4 -4.19698e-4 8.61465e-4</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">4.47298e-4 4.19698e-4 -8.61465e-4</translate>
+        <instance_geometry url="parts/Handguard_Slip_Ring_LAMA918813252.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Handguard_Slip_Ring_LAMA918813252</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Swivel_LAMA1259863095" name="Swivel_LAMA1259863095" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Swivel_LAMA1259863095.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Swivel_LAMA1259863095</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Machine_Screw" name="Machine_Screw" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Machine_Screw.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Machine_Screw</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buttstock_Release_Lever_Nut" name="Buttstock_Release_Lever_Nut" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">-0.2756916 -3.6195e-4 -0.04898064</translate>
+        <translate sid="rotatePivotInverse">0.2756916 3.6195e-4 0.04898064</translate>
+        <translate sid="scalePivot">-0.2756916 -3.6195e-4 -0.04898064</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0.2756916 3.6195e-4 0.04898064</translate>
+        <instance_geometry url="parts/Buttstock_Release_Lever_Nut.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock_Release_Lever_Nut</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buttstock_Release_Lever_Screw_LAMA1417807796" name="Buttstock_Release_Lever_Screw_LAMA1417807796" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Buttstock_Release_Lever_Screw_LAMA1417807796.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock_Release_Lever_Screw_LAMA1417807796</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buttstock_Release_Lever_Spring_Pin" name="Buttstock_Release_Lever_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Buttstock_Release_Lever_Spring_Pin.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock_Release_Lever_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buttstock_Release_Lever_Spring" name="Buttstock_Release_Lever_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Buttstock_Release_Lever_Spring.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock_Release_Lever_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+      <node id="Buttstock_Release_Lever" name="Buttstock_Release_Lever" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <translate sid="rotatePivot">0 0 0</translate>
+        <translate sid="rotatePivotInverse">0 0 0</translate>
+        <translate sid="scalePivot">0 0 0</translate>
+        <scale sid="scale">1 1 1</scale>
+        <translate sid="scalePivotInverse">0 0 0</translate>
+        <instance_geometry url="parts/Buttstock_Release_Lever.dae" />
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock_Release_Lever</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
