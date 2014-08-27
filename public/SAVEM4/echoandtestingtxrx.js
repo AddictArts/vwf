@@ -89,10 +89,7 @@ routes.post(routes.QUERY, function(req, res) {
 	}
 
 	res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-
-	// var resp_int_test = {"KbIds":["\u0027_$_$_flora\u0027\u0027newoid4|_21\u0027\u00271\u0027",null,"myMag"]};
-	// res.send(JSON.stringify(resp_int_test), 200, JSONt);
-	// return;
+	//res.send("", 200, HTMLt);
 
 	res.send(JSON.stringify({
 		KbIds: kbids
