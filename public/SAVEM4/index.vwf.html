@@ -4,6 +4,65 @@
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
 
 <!--
+vwf html view initialization event, you don't have window.onload and document.ready is not good enough.
+
+NOTE: THe callMethod and other kernel or view methods are async, so we have to work with it that way
+
+From the radio example index.vwf.html, this would be for getting return value
+      vwf_view.calledMethod = function (nodeId, methodName, methodParameters, methodValue) {
+        switch(methodName) {
+          case "playStatic":
+            $('#static')[0].play();
+            // Used to set volume, 0.0 - 1.0 (low - high, 1.0 default)           
+            $('#static')[0].volume = methodParameters[0];
+            break;
+          case "stopStatic":
+            $('#static')[0].pause();
+            break;
+        }
+      }
+
+
+The hidden gotProperty, we had docs on satProperty, from events.js bzflag example
+vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
+    if (nodeId == sceneNode) {
+        switch (propertyName) {
+            case "scoreBoard": 
+                updateScoreboard(propertyValue);
+                break;
+        }
+    }
+    else if (nodeId == playerNode) {
+        switch (propertyName) {
+            case "score":
+                $("#userScore").text(propertyValue); 
+                break;
+        }
+    }
+}
+vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
+
+
+Initialization, yes it can be done this way... from tile-puzzle-2D example
+
+      vwf_view.initializedNode = function( nodeID, childID, childExtendsID, childImplementsIDs,
+          childSource, childType, childIndex, childName ) {
+        if ( childID == vwf_view.kernel.application() ) {
+          gameID = vwf_view.kernel.find("", "/game")[0];
+          initializeBoard();
+        }
+      }
+
+and some getProperty from that same examople
+        var curPos = vwf.getProperty(gameID, "currentTile"+tile);
+        var pos = vwf.getProperty(gameID, curPos);
+        var openPos = vwf.getProperty(gameID, "openPosition");
+        var new_pos = vwf.getProperty(gameID, openPos);
+
+
+
+-=-=-=-=-=-=-=-=-=-=-=-
+
 https://dat-gui.googlecode.com/git-history/dbb4fa0ef0428380044e825470e788dec1e37b86/index.html
 You can instantiate multiple DAT.GUI objects and name them however you'd like.
 
