@@ -23,6 +23,7 @@ scripts:
 
         if (self['activityServerAddress'] == null) self.activityServerAddress = data.activityServerAddress;
         if (self['queryServerAddress'] == null) self.queryServerAddress = data.queryServerAddress;
+        if (self['assessmentServerAddress'] == null) self.assessmentServerAddress = data.assessmentServerAddress;
 
         self.__initializeStep = 2;
         console.info("begin.eui completed move on to initialize step " + self.__initializeStep);

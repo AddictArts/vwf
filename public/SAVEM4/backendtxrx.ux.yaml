@@ -2,6 +2,7 @@
 properties:
   activityServerAddress:
   queryServerAddress:
+  assessmentServerAddress:
 methods:
   checkServerAddress:
   activity:
@@ -20,18 +21,20 @@ scripts:
       return;
     }
 
-    if (!this.activityServerAddress || !this.queryServerAddress) {
+    if (!this.activityServerAddress || !this.queryServerAddress || !this.assessmentServerAddress) {
       var msg;
 
       if (!this.activityServerAddress) msg = "The activity server address is undefined, check the eui.json setting " + this.id;
       else if (!this.queryServerAddress) msg = "The query server address is undefined, check the eui.json setting " + this.id;
+      else if (!this.assessmentServerAddress) msg = "The assessmentServerAddress server address is undefined, check the eui.json setting " + this.id;
 
       $('#reasonertxrxMsg').text(msg);
       console.warn(msg);
     } else {
       console.info(this.id + " backendtxrx.ux activityServerAddress:" + this.activityServerAddress);
       console.info(this.id + " backendtxrx.ux queryServerAddress:" + this.queryServerAddress);
-      $('#backendtxrxMsg').text('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress);
+      console.info(this.id + " backendtxrx.ux assessmentServerAddress:" + this.assessmentServerAddress);
+      $('#backendtxrxMsg').text('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress + ', ' + this.assessmentServerAddress);
     }
   };
 

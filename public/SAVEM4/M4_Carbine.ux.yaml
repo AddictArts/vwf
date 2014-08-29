@@ -196,7 +196,7 @@ scripts:
     jQuery('<iframe/>', {
       name: 'assessment',
       id:   'assessmentIFrame',
-      src: 'http://localhost:3001/M4clear/assessment'
+      src: this.parent.assessmentServerAddress
     }).appendTo('#assessment');
     //jQuery('#assessment').html("<h1>Assessment</h1>");
     // this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId ] });
