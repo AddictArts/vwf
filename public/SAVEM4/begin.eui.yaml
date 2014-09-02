@@ -1,45 +1,17 @@
 ---
 properties:
   __initializeStep: -1
-  __failedEuiJson: false
-  __data:
   __m4KbId:
 methods:
-  lookforData:
   processEuiDotJson:
 scripts:
 - |
   this.initialize = function() {
     if (this.__initializeStep++ == -1) return; // VWF scene is the first initialize call, then our scene component additions are next, so -1, then 0
-
-    var self = this;
-
-    console.info("Configure the exercise using eui.json or eui-defaults.json");
-    $.ajax({
-      url: "eui.json",
-      cache: false,
-      dataType: "json"
-    }).done(function(data) { self.__data = data; });
-    $.ajax({
-      url: "eui-defaults.json",
-      cache: false,
-      dataType: "json"
-    }).done(function(data) {
-      if (!self.__data) self.__data = data;
-    });
-    self.lookforData();
   };
 
-  this.lookforData = function() {
-    if (!this.__data) {
-      this.future(0).lookforData();
-      return;
-    }
-
-    this.processEuiDotJson(this.__data);
-  }
-
   this.processEuiDotJson = function(data) {
+    this.__initializeStep == 1; // processing the eui config json data is step 1
     console.info("begin.eui json data:" + JSON.stringify(data));
 
     // bootstrap what is in the tray and its KbId
@@ -53,6 +25,7 @@ scripts:
     if (this['queryServerAddress'] == null) this.queryServerAddress = data.queryServerAddress;
     if (this['assessmentServerAddress'] == null) this.assessmentServerAddress = data.assessmentServerAddress;
 
+    console.info('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress + ', ' + this.assessmentServerAddress);
     this.__initializeStep = 2;
     console.info("begin.eui completed move on to initialize step " + this.__initializeStep);
   };//@ sourceURL=begin.eui

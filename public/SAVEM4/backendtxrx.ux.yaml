@@ -9,16 +9,19 @@ methods:
   ask:
 scripts:
 - |
+  // NOTE: Called once even if multiple things implement this behavior
   this.initialize = function() {
     if (!this.__initializeStep) return; // begin.eui added property, used to prevent double initialization at the root component
 
-    this.checkServerAddress(); // we depend on config eui.json loaded by begin.eui, so we handle that inialize with a method we can future check
+    // we depend on config eui.json or eui-defaults.json via <script/> in index.vwf.html
   };
 
   this.checkServerAddress = function() {
-    if (this.__initializeStep !== 2) {
-      this.future(0).checkServerAddress(); // step 2 is the eui.json completed loading and init
-      return;
+    if (this.parent) {
+      console.info('backendtxrx.ux Setting the servers using the parent properties...');
+      this.activityServerAddress = this.parent.activityServerAddress;
+      this.queryServerAddress = this.parent.queryServerAddress;
+      this.assessmentServerAddress = this.parent.assessmentServerAddress;
     }
 
     if (!this.activityServerAddress || !this.queryServerAddress || !this.assessmentServerAddress) {
@@ -41,7 +44,7 @@ scripts:
   this.ask = function(query, done /* callback */) {
     console.info("backendtxrx.ux ask " + JSON.stringify(query));
 
-    var url = (this.queryServerAddress == null)? this.parent.queryServerAddress : this.queryServerAddress;
+    var url = this.queryServerAddress;
     var queryJSON = JSON.stringify(query);
 
     $('#backendtxrxMsg').text(queryJSON);

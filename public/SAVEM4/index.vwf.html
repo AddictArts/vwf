@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Exercise UI</title>
+    <script type="text/javascript" src="../eui.json.js"></script>
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
 
 <!--
@@ -158,8 +159,9 @@ https://github.com/liabru/dat-gui-light-theme
 
 -->
 
-
     <script type="text/javascript">
+      var __EUI;
+
       (function() {
       var vwf = {
         m4_CarbineID: undefined,
@@ -276,6 +278,7 @@ https://github.com/liabru/dat-gui-light-theme
 
       function SceneInitialize() {
         M4.init();
+        vwf_view.kernel.callMethod(vwf.appID, "processEuiDotJson", [ __EUI ]);
 
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {

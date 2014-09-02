@@ -45,6 +45,7 @@ scripts:
     }
 
     console.log(self.__idToName);
+    self.checkServerAddress(); // set the server address for the interfaces and set from parent if we need to
 
     self.ask(
       { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
