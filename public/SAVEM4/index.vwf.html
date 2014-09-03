@@ -270,7 +270,9 @@ https://github.com/liabru/dat-gui-light-theme
             vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
           });
           this.gui.add(this.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
+            vwf_view.kernel.callMethod(vwf.appID, 'zoom', [ value ]);
+          }).onFinishChange(function(value) {
+            vwf_view.kernel.callMethod(vwf.appID, 'lookAt', [ null ]);
           });
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
         }
