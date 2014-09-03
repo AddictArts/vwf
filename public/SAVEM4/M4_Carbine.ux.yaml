@@ -45,6 +45,7 @@ scripts:
     }
 
     console.log(self.__idToName);
+    self.checkServerAddress(); // set the server address for the interfaces and set from parent if we need to
 
     self.ask(
       { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
@@ -196,7 +197,7 @@ scripts:
     jQuery('<iframe/>', {
       name: 'assessment',
       id:   'assessmentIFrame',
-      src: 'http://localhost:3001/M4clear/assessment'
+      src: this.parent.assessmentServerAddress
     }).appendTo('#assessment');
     //jQuery('#assessment').html("<h1>Assessment</h1>");
     // this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId ] });
