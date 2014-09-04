@@ -201,6 +201,7 @@ scripts:
   };
 
   this.initInstance = function() {
+    this.lookAt(this.camTarget);
     this.children.M4_Carbine_dae.init();
   };
 
