@@ -1,0 +1,48 @@
+{
+  "extends": "http://vwf.example.com/node3.vwf",
+  "type": "model/vnd.collada+xml",
+  "implements": [ "M4_Carbine.ux", "backendtxrx.ux" ],
+  "properties": {
+    "translation": [ 0, 0, 2 ],
+    "rotation": [ 0, 0, 1, 90 ],
+    "scale": [ 1, 1, 1 ]
+  },
+  "children": {
+    "Base": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Charging_Handle": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Clip_Spring": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Clip_Spring1": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Bolt_Catch": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Ejection_Port_Cover": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Key_and_Bolt_Carrier_Assembly": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Magazine_Catch": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Magazine_Catch_Button": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Selector_Lever": {
+      "extends": "http://vwf.example.com/node3.vwf",
+    },
+    "Trigger": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    },
+    "Tube": {
+      "extends": "http://vwf.example.com/node3.vwf"
+    }
+  }
+}
