@@ -31,13 +31,13 @@ scripts:
       else if (!this.queryServerAddress) msg = "The query server address is undefined, check the eui.json setting " + this.id;
       else if (!this.assessmentServerAddress) msg = "The assessmentServerAddress server address is undefined, check the eui.json setting " + this.id;
 
-      $('#reasonertxrxMsg').text(msg);
+      jQuery('#reasonertxrxMsg').text(msg);
       console.warn(msg);
     } else {
       console.info(this.id + " backendtxrx.ux activityServerAddress:" + this.activityServerAddress);
       console.info(this.id + " backendtxrx.ux queryServerAddress:" + this.queryServerAddress);
       console.info(this.id + " backendtxrx.ux assessmentServerAddress:" + this.assessmentServerAddress);
-      $('#backendtxrxMsg').text('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress + ', ' + this.assessmentServerAddress);
+      jQuery('#backendtxrxMsg').text('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress + ', ' + this.assessmentServerAddress);
     }
   };
 
@@ -47,8 +47,8 @@ scripts:
     var url = this.queryServerAddress;
     var queryJSON = JSON.stringify(query);
 
-    $('#backendtxrxMsg').text(queryJSON);
-    $.ajax({
+    jQuery('#backendtxrxMsg').text(queryJSON);
+    jQuery.ajax({
       url: url,
       type: 'post',
       cache: false,
@@ -67,8 +67,8 @@ scripts:
     var url = (this.activityServerAddress == null)? this.parent.activityServerAddress : this.activityServerAddress;
     var activityJSON = JSON.stringify(activity);
 
-    $('#backendtxrxMsg').text(activityJSON);
-    $.ajax({
+    jQuery('#backendtxrxMsg').text(activityJSON);
+    jQuery.ajax({
       url: url,
       type: 'post',
       cache: false,

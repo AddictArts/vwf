@@ -165,8 +165,8 @@ https://github.com/liabru/dat-gui-light-theme
           this.reset = M4.reset;
 
           this.m4Carbine = function() {
-            M4.gui.remove(M4.guiref.m4c);
             Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+            M4.gui.remove(M4.guiref.m4c);
 
             vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
 
@@ -211,7 +211,7 @@ https://github.com/liabru/dat-gui-light-theme
         },
         reset: function() {
           //vwf_view.kernel.callMethod(vwf.appID, 'removeInstance');
-          //window.location.href=window.location.href;
+          //window.location.href = window.location.href;
           //window.location.reload();
           vwf_view.kernel.callMethod(vwf.appID, 'resetBackend');
         },
@@ -228,6 +228,7 @@ https://github.com/liabru/dat-gui-light-theme
           selectorLeverFolder.add(M4.tray, 'safe').name('SAFE');
           M4.tray.burst = M4.burst;
           selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
+          $('div.dg ul li.title').click();
         },
         semi: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
@@ -308,6 +309,13 @@ https://github.com/liabru/dat-gui-light-theme
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
             $('div.dg div.main, div.close-button').css('width', '550px');
+          } else if (methodName == 'assessment') {
+            $('#assessmentIFrame').css({
+              'border': 'none',
+              'width': '800px',
+              'height': '600px',
+              'background-color': 'rgba(255, 0, 0, 0.33)'
+            });
           }
         }
 
@@ -335,7 +343,7 @@ https://github.com/liabru/dat-gui-light-theme
     </script>
   </head>
 <body>
-  <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;color:white;">
+  <div id="wrapper" class="wrapper" style="position: absolute; left: 25px; top: 25px; color: white;">
     <div id="backendtxrxMsg"></div>
     <div id="assessment"></div>
   </div>
