@@ -197,6 +197,16 @@ https://github.com/liabru/dat-gui-light-theme
             M4.tray.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
             M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
 
+            M4.tray.PushChargingHandleForward = M4.PushChargingHandleForward;
+            M4.gui.add(M4.tray, 'PushChargingHandleForward').name('Push Charging Handle Forward');
+            M4.tray.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
+            M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
+
+            M4.tray.PullTrigger = M4.PullTrigger;
+            M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
+
+
+
             M4.tray.assessment = M4.assessment;
             M4.gui.add(M4.tray, 'assessment').name('Assessment');
           };
@@ -252,6 +262,18 @@ https://github.com/liabru/dat-gui-light-theme
         LetGoOfBoltCatchBottom: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'LetGoOfBoltCatchBottom');
+        },
+        PushChargingHandleForward: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushChargingHandleForward');
+        },
+        CheckChamberAndReceiverForAmmo: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'CheckChamberAndReceiverForAmmo');
+        },
+        PullTrigger: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PullTrigger');
         },
         assessment: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");

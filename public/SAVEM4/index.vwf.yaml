@@ -73,6 +73,12 @@ scripts:
       Bolt_Catch: {
         extends: "http://vwf.example.com/node3.vwf"
       },
+      Ejection_Port_Cover: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Key_and_Bolt_Carrier_Assembly: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
       Magazine_Catch: {
         extends: "http://vwf.example.com/node3.vwf"
       },
@@ -81,6 +87,9 @@ scripts:
       },
       Selector_Lever: {
         extends: "http://vwf.example.com/node3.vwf",
+      },
+      Trigger: {
+        extends: "http://vwf.example.com/node3.vwf"
       },
       Tube: {
         extends: "http://vwf.example.com/node3.vwf"
