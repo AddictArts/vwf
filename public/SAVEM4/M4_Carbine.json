@@ -1,6 +1,7 @@
 {
   "extends": "http://vwf.example.com/node3.vwf",
   "type": "model/vnd.collada+xml",
+  "source": "models/M4_v09.dae",
   "implements": [ "M4_Carbine.ux", "backendtxrx.ux" ],
   "properties": {
     "translation": [ 0, 0, 2 ],

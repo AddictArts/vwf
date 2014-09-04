@@ -202,7 +202,7 @@ scripts:
   };
 
   this.releaseTrigger = function() {
-    this.Trigger.rotateTo([ 0, 1, 0, 0 ], 0.5);
+    this.Trigger.rotateTo([ 0, 1, 0, 0 ], 0.125);
   };
 
   this.assessment = function() {
