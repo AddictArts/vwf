@@ -1,0 +1,804 @@
+{
+  "extends": "http://vwf.example.com/node3.vwf",
+  "properties": {
+    "translation": [ 0, 0, 2 ],
+    "rotation": [ 0, 0, 1, 90 ],
+    "scale": [ 1, 1, 1 ]
+  },
+  "children": {
+    "M4": {
+      "extends": "http://vwf.example.com/node3.vwf",
+      "children": {
+        "Buttstock": {
+          "extends": "http://vwf.example.com/node3.vwf",
+          "type": "model/vnd.collada+xml",
+          "source": "parts/Buttstock.dae",
+          "children": {
+            "Swivel_LAMA1259863095": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Swivel_LAMA1259863095.dae",
+              "children": {
+                "Machine_Screw": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Machine_Screw.dae"
+                }
+              }
+            }
+            "Buttstock_Release_Lever_Nut": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Buttstock_Release_Lever_Nut.dae",
+              "children": {
+                "Buttstock_Release_Lever_Screw_LAMA1417807796": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Buttstock_Release_Lever_Screw_LAMA1417807796.dae",
+                  "children": {
+                    "Buttstock_Release_Lever_Spring_Pin": {
+                      "extends": "http://vwf.example.com/node3.vwf",
+                      "type": "model/vnd.collada+xml",
+                      "source": "parts/Buttstock_Release_Lever_Spring_Pin.dae"
+                    }
+                    "Buttstock_Release_Lever_Spring": {
+                      "extends": "http://vwf.example.com/node3.vwf",
+                      "type": "model/vnd.collada+xml",
+                      "source": "parts/Buttstock_Release_Lever_Spring.dae"
+                    }
+                  }
+                }
+                "Buttstock_Release_Lever": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Buttstock_Release_Lever.dae"
+                }
+              }
+            }
+          }
+        }
+        "Barrel_Assembly": {
+          "extends": "http://vwf.example.com/node3.vwf",
+          "type": "model/vnd.collada+xml",
+          "source": "parts/Barrel_Assembly.dae",
+          "children": {
+            "Upper_Handguard": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Upper_Handguard.dae"
+            }
+            "Lower_Handguard": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Lower_Handguard.dae"
+            }
+            "Small_Sling_Swivel": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Small_Sling_Swivel.dae"
+            }
+            "Front_Sight_Post": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Front_Sight_Post.dae",
+              "children": {
+                "Headless_Shoulder_Pin": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Headless_Shoulder_Pin.dae"
+                }
+                "Spring3": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring3.dae"
+                }
+                "Tubular_Rivet": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Tubular_Rivet.dae"
+                }
+                "Synchro_Clamp": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Synchro_Clamp.dae"
+                }
+                "Spring_Pin1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring_Pin1.dae"
+                }
+                "Spring_Pin": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring_Pin.dae"
+                }
+                "Swivel_Mount": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Swivel_Mount.dae"
+                }
+                "Flat_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Flat_Spring.dae"
+                }
+                "Special_Shaped_Spacer": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Special_Shaped_Spacer.dae"
+                }
+              }
+            }
+            "Compensator": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Compensator.dae"
+            }
+            "Recessed_Washer__OOCompensator": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Recessed_Washer__OOCompensator.dae"
+            }
+            "Spring_Pin2": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Spring_Pin2.dae"
+            }
+            "Spring_Pin3": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Spring_Pin3.dae"
+            }
+            "Rear_Handguard_Clamp": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Rear_Handguard_Clamp.dae"
+            }
+            "Screw": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Screw.dae"
+            }
+            "Gas_Tube_Spring_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Gas_Tube_Spring_Pin.dae"
+            }
+            "Gas_Tube": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Gas_Tube.dae"
+            }
+            "Handguard_Slip_Ring_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Handguard_Slip_Ring_Spring.dae"
+            }
+            "Handguard_Slip_Ring_Retaining_Ring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Handguard_Slip_Ring_Retaining_Ring.dae"
+            }
+            "Handguard_Slip_Ring_LAMA918813252": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Handguard_Slip_Ring_LAMA918813252.dae"
+            }
+          }
+        }
+        "Magazine_g": {
+          "extends": "http://vwf.example.com/node3.vwf",
+          "children": {
+            "Tube": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Tube.dae",
+              "children": {
+                "Clip_Spring1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Clip_Spring1.dae"
+                }
+                "Base": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Base.dae"
+                }
+                "Clip_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Clip_Spring.dae"
+                }
+                "Follower": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Follower.dae"
+                }
+              }
+            }
+            "Casing1": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Casing1.dae",
+              "children": {
+                "Projectile1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Projectile1.dae"
+                }
+              }
+            }
+            "Casing2": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Casing2.dae",
+              "children": {
+                "Projectile2": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Projectile2.dae"
+                }
+              }
+            }
+            "Casing3": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Casing3.dae",
+              "children": {
+                "Projectile3": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Projectile3.dae"
+                }
+              }
+            }
+          }
+        }
+        "Sling": {
+          "extends": "http://vwf.example.com/node3.vwf",
+          "type": "model/vnd.collada+xml",
+          "source": "parts/Sling.dae"
+        }
+        "Lower_Receiver": {
+          "extends": "http://vwf.example.com/node3.vwf",
+          "type": "model/vnd.collada+xml",
+          "source": "parts/Lower_Receiver.dae",
+          "children": {
+            "Trigger_Guard": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Trigger_Guard.dae",
+              "children": {
+                "Trigger_Guard_Spring_Pin_Retaining_Pin": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Trigger_Guard_Spring_Pin_Retaining_Pin.dae"
+                }
+                "Trigger_Guard_Detent": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Trigger_Guard_Detent.dae"
+                }
+                "Trigger_Guard_Detent_Springf": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Trigger_Guard_Detent_Springf.dae"
+                }
+              }
+            }
+            "Pistol_Grip": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Pistol_Grip.dae",
+              "children": {
+                "Pistol_Grip_Screw": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pistol_Grip_Screw.dae"
+                }
+                "Pistol_Grip_Lock_Washer": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pistol_Grip_Lock_Washer.dae"
+                }
+              }
+            }
+            "Bolt_Catch": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Bolt_Catch.dae"
+            }
+            "Bolt_Catch_Spring_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Bolt_Catch_Spring_Pin.dae"
+            }
+            "Bolt_Catch_Plunger": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Bolt_Catch_Plunger.dae"
+            }
+            "Bolt_Catch_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Bolt_Catch_Spring.dae"
+            }
+            "Trigger": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Trigger.dae"
+            }
+            "Trigger_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Trigger_Spring.dae"
+            }
+            "Disconnector_Spring__OOBurst__CC": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Disconnector_Spring__OOBurst__CC.dae"
+            }
+            "Disconnector_Spring__OOSemi__CC": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Disconnector_Spring__OOSemi__CC.dae"
+            }
+            "Trigger_Spring1": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Trigger_Spring1.dae"
+            }
+            "Trigger_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Trigger_Pin.dae"
+            }
+            "Disconnector__Burst": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Disconnector__Burst.dae"
+            }
+            "Disconnector__Semi": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Disconnector__Semi.dae"
+            }
+            "Magazine_Catch": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Magazine_Catch.dae"
+            }
+            "Magazine_Catch_Springh": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Magazine_Catch_Springh.dae"
+            }
+            "Magazine_Catch_Button": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Magazine_Catch_Button.dae"
+            }
+            "Pivot_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Pivot_Pin.dae"
+            }
+            "Pivot_Pin_Detent": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Pivot_Pin_Detent.dae"
+            }
+            "Pivot_Pin_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Pivot_Pin_Spring.dae"
+            }
+            "Takedown_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Takedown_Pin.dae"
+            }
+            "Takedown_Pin_Detent": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Takedown_Pin_Detent.dae"
+            }
+            "Takedown_Pin_Detent_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Takedown_Pin_Detent_Spring.dae"
+            }
+            "Selector_Lever": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Selector_Lever.dae"
+            }
+            "Safety_Detent__OOSelector_Lever__CC": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Safety_Detent__OOSelector_Lever__CC.dae"
+            }
+            "Safety_Spring__OOSelector_Lever__CC": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Safety_Spring__OOSelector_Lever__CC.dae"
+            }
+            "Automatic_Sear": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Automatic_Sear.dae"
+            }
+            "Automatic_Sear_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Automatic_Sear_Spring.dae"
+            }
+            "Sear_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Sear_Pin.dae"
+            }
+            "Hammer": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Hammer.dae"
+            }
+            "Hammer_Spring1": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Hammer_Spring1.dae"
+            }
+            "Hammer_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Hammer_Pin.dae"
+            }
+            "Burst_Cam": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Burst_Cam.dae"
+            }
+            "Burst_Cam_Clutch_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Burst_Cam_Clutch_Spring.dae"
+            }
+            "Hammer_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Hammer_Spring.dae"
+            }
+            "Lower_Receiver_Extension": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Lower_Receiver_Extension.dae"
+            }
+            "Buffer": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Buffer.dae"
+            }
+            "Action_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Action_Spring.dae"
+            }
+            "Plain_Round_Nut": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Plain_Round_Nut.dae"
+            }
+            "Receiver_End_Plate": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Receiver_End_Plate.dae"
+            }
+            "Buffer_Retainer": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Buffer_Retainer.dae"
+            }
+            "Buffer_Retainer_Spring": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Buffer_Retainer_Spring.dae"
+            }
+          }
+        }
+        "Upper_Receiver": {
+          "extends": "http://vwf.example.com/node3.vwf",
+          "type": "model/vnd.collada+xml",
+          "source": "parts/Upper_Receiver.dae",
+          "children": {
+            "Charging_Handle": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Charging_Handle.dae",
+              "children": {
+                "Charging_Handle_Latch": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Charging_Handle_Latch.dae"
+                }
+                "Charging_Handle_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Charging_Handle_Spring.dae"
+                }
+                "Charging_Handle_Spring_Pin": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Charging_Handle_Spring_Pin.dae"
+                }
+                "Key_and_Bolt_Carrier_Assembly": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Key_and_Bolt_Carrier_Assembly.dae",
+                  "children": {
+                    "Firing_Pin_Retaining_Pin": {
+                      "extends": "http://vwf.example.com/node3.vwf",
+                      "type": "model/vnd.collada+xml",
+                      "source": "parts/Firing_Pin_Retaining_Pin.dae"
+                    }
+                    "Firing_Pin": {
+                      "extends": "http://vwf.example.com/node3.vwf",
+                      "type": "model/vnd.collada+xml",
+                      "source": "parts/Firing_Pin.dae"
+                    }
+                    "Bolt": {
+                      "extends": "http://vwf.example.com/node3.vwf",
+                      "type": "model/vnd.collada+xml",
+                      "source": "parts/Bolt.dae",
+                      "children": {
+                        "Bolt_Cam_Pin": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Bolt_Cam_Pin.dae"
+                        }
+                        "Ejector_Spring_Pin": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Ejector_Spring_Pin.dae"
+                        }
+                        "Bolt_Ring": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Bolt_Ring.dae"
+                        }
+                        "Bolt_Ring2": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Bolt_Ring2.dae"
+                        }
+                        "Bolt_Ring1": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Bolt_Ring1.dae"
+                        }
+                        "Ejector": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Ejector.dae",
+                          "children": {
+                            "Ejector_Spring": {
+                              "extends": "http://vwf.example.com/node3.vwf",
+                              "type": "model/vnd.collada+xml",
+                              "source": "parts/Ejector_Spring.dae"
+                            }
+                          }
+                        }
+                        "Extractor": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Extractor.dae",
+                          "children": {
+                            "Extractor_Spring": {
+                              "extends": "http://vwf.example.com/node3.vwf",
+                              "type": "model/vnd.collada+xml",
+                              "source": "parts/Extractor_Spring.dae"
+                            }
+                            "Extractor_Pin": {
+                              "extends": "http://vwf.example.com/node3.vwf",
+                              "type": "model/vnd.collada+xml",
+                              "source": "parts/Extractor_Pin.dae"
+                            }
+                          }
+                        }
+                        "Casing4": {
+                          "extends": "http://vwf.example.com/node3.vwf",
+                          "type": "model/vnd.collada+xml",
+                          "source": "parts/Casing4.dae",
+                          "children": {
+                            "Projectile4": {
+                              "extends": "http://vwf.example.com/node3.vwf",
+                              "type": "model/vnd.collada+xml",
+                              "source": "parts/Projectile4.dae"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            "Plunger_Assembly": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Plunger_Assembly.dae",
+              "children": {
+                "Pawl__Forward_Assist": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pawl__Forward_Assist.dae"
+                }
+                "Forward_Assist_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Forward_Assist_Spring.dae"
+                }
+                "Forward_Assist_Spring1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Forward_Assist_Spring1.dae"
+                }
+                "Pawl_Spring_Pin": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pawl_Spring_Pin.dae"
+                }
+                "Pawl_Detent": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pawl_Detent.dae"
+                }
+                "Pawl_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pawl_Spring.dae"
+                }
+              }
+            }
+            "Cover_Pin": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Cover_Pin.dae",
+              "children": {
+                "Ejection_Port_Cover": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Ejection_Port_Cover.dae"
+                }
+                "Cover_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Cover_Spring.dae"
+                }
+                "Cover_Retaining_Ring__OOC_Clip__CC": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Cover_Retaining_Ring__OOC_Clip__CC.dae"
+                }
+              }
+            }
+            "Gun_Carrying_Handle": {
+              "extends": "http://vwf.example.com/node3.vwf",
+              "type": "model/vnd.collada+xml",
+              "source": "parts/Gun_Carrying_Handle.dae",
+              "children": {
+                "Windage_Spring_Pin": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Windage_Spring_Pin.dae"
+                }
+                "Screw__Externally_Re": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Screw__Externally_Re.dae"
+                }
+                "Flat_Rear_Sight_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Flat_Rear_Sight_Spring.dae"
+                }
+                "Rear_Sight_Base": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Rear_Sight_Base.dae"
+                }
+                "Sight_Aperture": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Sight_Aperture.dae"
+                }
+                "Windage_Knob": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Windage_Knob.dae"
+                }
+                "Spring__Helical__Compression": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring__Helical__Compression.dae"
+                }
+                "Knob": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Knob.dae"
+                }
+                "Ball_Bearing1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Ball_Bearing1.dae"
+                }
+                "Elevating_Mechanism": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Elevating_Mechanism.dae"
+                }
+                "Spring2": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring2.dae"
+                }
+                "Spring1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring1.dae"
+                }
+                "Index_Screw": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Index_Screw.dae"
+                }
+                "Ball_Bearing": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Ball_Bearing.dae"
+                }
+                "Pin_Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Pin_Spring.dae"
+                }
+                "Spring": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Spring.dae"
+                }
+                "Ball_Bearing2": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Ball_Bearing2.dae"
+                }
+                "Round_Nut1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Round_Nut1.dae"
+                }
+                "Washer1": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Washer1.dae"
+                }
+                "Washer": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Washer.dae"
+                }
+                "Clamping_Bar": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Clamping_Bar.dae"
+                }
+                "Round_Nut": {
+                  "extends": "http://vwf.example.com/node3.vwf",
+                  "type": "model/vnd.collada+xml",
+                  "source": "parts/Round_Nut.dae"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
