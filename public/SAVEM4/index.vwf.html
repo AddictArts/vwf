@@ -128,62 +128,6 @@ https://github.com/liabru/dat-gui-light-theme
         guiref: { },
         contextMenu: undefined,
         contextGUI: undefined,
-        Tooltray: function() {
-          this.backendtxrxMsg = false;
-          this.cameraOrbit = 0;
-          this.cameraZoom = 0;
-          this.reset = M4.reset;
-          // this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
-          // this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
-
-          this.m4Carbine = function() {
-            Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-            M4.gui.remove(M4.guiref.m4c);
-
-            vwf_view.kernel.callMethod(vwfapp.appID, 'instance', [ ]);
-
-            M4.gui.add(M4.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
-              if (value) $('#backendtxrxMsg').show('easing');
-              else $('#backendtxrxMsg').hide('easing');
-            });
-            M4.gui.add(M4.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
-              vwf_view.kernel.callMethod(vwfapp.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
-            });
-            M4.gui.add(M4.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-              vwf_view.kernel.callMethod(vwfapp.appID, 'zoom', [ value ]);
-            }).onFinishChange(function(value) {
-              vwf_view.kernel.callMethod(vwfapp.appID, 'lookAt', [ null ]);
-            });
-
-            M4.tray.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
-            M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
-            M4.addSelectorLeverActionGroup();
-            M4.tray.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
-            M4.gui.add(M4.tray, 'PushMagazineReleaseButton').name('Magazine Catch');
-            M4.tray.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
-            M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
-            M4.tray.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
-            M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
-            M4.tray.ReleaseChargingHandle = M4.ReleaseChargingHandle;
-            M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('Release Charging Handle');
-            M4.tray.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
-            M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
-            M4.tray.PushChargingHandleForward = M4.PushChargingHandleForward;
-            M4.gui.add(M4.tray, 'PushChargingHandleForward').name('Push Charging Handle Forward');
-            M4.tray.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
-            M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
-            M4.tray.PushBoltCatchTop = M4.PushBoltCatchTop;
-            M4.gui.add(M4.tray, 'PushBoltCatchTop').name('Push Bolt Catch Top');
-            M4.tray.PullTrigger = M4.PullTrigger;
-            M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
-
-            M4.tray.assessment = M4.assessment;
-            M4.gui.add(M4.tray, 'assessment').name('Assessment');
-          };
-        },
-        ContextMenu: function() {
-          // this.picked = true;
-        },
         reset: function() {
           //vwf_view.kernel.callMethod(vwfapp.appID, 'removeInstance');
           //window.location.href = window.location.href;
@@ -245,15 +189,13 @@ https://github.com/liabru/dat-gui-light-theme
         },
         init: function() {
           $('#backendtxrxMsg').hide();
-          this.tray = new this.Tooltray();
+          this.tray = new Tooltray();
           this.gui = new dat.GUI();
           this.gui.name = 'Tool Tray';
           this.gui.add(this.tray, 'reset').name('Reset');
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
 
-
-
-          this.contextMenu = new this.ContextMenu();
+          this.contextMenu = new ContextMenu();
           this.contextGUI = new dat.GUI();
           this.contextGUI.name = 'Context Menu';
           this.contextGUI.autoPlace = false;
@@ -266,6 +208,62 @@ https://github.com/liabru/dat-gui-light-theme
           // this.contextGUI.domElement.style.right = '20px';
           $('body').append(this.contextGUI.domElement);
         }
+      };
+
+      var Tooltray = function() {
+        this.backendtxrxMsg = false;
+        this.cameraOrbit = 0;
+        this.cameraZoom = 0;
+        this.reset = M4.reset;
+        this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
+        this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
+        this.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
+        this.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
+        this.ReleaseChargingHandle = M4.ReleaseChargingHandle;
+        this.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
+        this.PushChargingHandleForward = M4.PushChargingHandleForward;
+        this.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
+        this.PushBoltCatchTop = M4.PushBoltCatchTop;
+        this.PullTrigger = M4.PullTrigger;
+        this.assessment = M4.assessment;
+
+        this.m4Carbine = function() {
+          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+          M4.gui.remove(M4.guiref.m4c);
+
+          vwf_view.kernel.callMethod(vwfapp.appID, 'instance', [ ]);
+
+          M4.gui.add(M4.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+            if (value) $('#backendtxrxMsg').show('easing');
+            else $('#backendtxrxMsg').hide('easing');
+          });
+          M4.gui.add(M4.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+          });
+          M4.gui.add(M4.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appID, 'zoom', [ value ]);
+          }).onFinishChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appID, 'lookAt', [ null ]);
+          });
+
+          M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
+          M4.addSelectorLeverActionGroup();
+          M4.gui.add(M4.tray, 'PushMagazineReleaseButton').name('Magazine Catch');
+          M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
+          M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
+          M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('Release Charging Handle');
+          M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
+          M4.gui.add(M4.tray, 'PushChargingHandleForward').name('Push Charging Handle Forward');
+          M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
+          M4.gui.add(M4.tray, 'PushBoltCatchTop').name('Push Bolt Catch Top');
+          M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
+
+          M4.gui.add(M4.tray, 'assessment').name('Assessment');
+        };
+      };
+      var ContextMenu = function() {
+        // this.picked = true;
+        this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
       };
 
       function SceneInitialize() {
@@ -315,8 +313,7 @@ https://github.com/liabru/dat-gui-light-theme
 
               // M4.contextGUI.add(M4.contextMenu, 'picked');
 
-              M4.ContextMenu.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
-              M4.contextGUI.add(M4.ContextMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
+              M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
 
               // vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'vpick', [ eventArgs[ 1 ].pickID ]);
 
