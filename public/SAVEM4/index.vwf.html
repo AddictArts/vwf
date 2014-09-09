@@ -140,11 +140,8 @@ https://github.com/liabru/dat-gui-light-theme
         addSelectorLeverActionGroup: function() {
           var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
 
-          M4.tray.semi = M4.semi;
           selectorLeverFolder.add(M4.tray, 'semi').name('SEMI');
-          M4.tray.safe = M4.safe;
           selectorLeverFolder.add(M4.tray, 'safe').name('SAFE');
-          M4.tray.burst = M4.burst;
           selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
           $('div.dg ul li.title').click();
         },
@@ -216,6 +213,9 @@ https://github.com/liabru/dat-gui-light-theme
         this.cameraZoom = 0;
         this.reset = M4.reset;
         this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
+        this.semi = M4.semi;
+        this.safe = M4.safe;
+        this.burst = M4.burst;
         this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
         this.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
         this.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
