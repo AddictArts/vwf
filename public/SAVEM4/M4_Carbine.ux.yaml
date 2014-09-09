@@ -9,6 +9,7 @@ events:
 methods:
   init:
   dispatchPick:
+  vpick:
   PointWeaponInSafeDirection:
   SelectModeSemi:
   SelectModeSafe:
@@ -49,7 +50,7 @@ scripts:
       if (self[ name + '_KbId' ]) comps.push(name);
     }
 
-    console.log(self.__idToName);
+    // console.log(self.__idToName);
     self.checkServerAddress(); // set the server address for the interfaces and set from parent if we need to
 
     self.ask(
@@ -86,10 +87,16 @@ scripts:
     console.info("M4_Carbine.ux pointerUp");
   };
 
+  this.vpick = function(pickId) {
+    console.info("M4_Carbine.ux vpick");
+    this.dispatchPick(this.__idToName[ pickId ]);
+  };
+
   this.pointerDown = function(pointerInfo, pickInfo) {
     console.info("M4_Carbine.ux pointerDown");
-    console.log(pickInfo);
-    this.dispatchPick(this.__idToName[ pickInfo.pickID ]);
+    // console.log(pickInfo);
+    // this.dispatchPick(this.__idToName[ pickInfo.pickID ]);
+
     // M4_Carbine.ux pointerDown M4_Carbine.ux:38
     // Object {pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever", pointerVector: Array[3], position: Array[16], normal: Array[3], source: Array[3]…}
     // distance: 0.5202645488640165
