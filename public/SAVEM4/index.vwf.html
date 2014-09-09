@@ -7,22 +7,7 @@
 <!--
 vwf html view initialization event, you don't have window.onload and document.ready is not good enough.
 
-NOTE: THe callMethod and other kernel or view methods are async, so we have to work with it that way
-
-From the radio example index.vwf.html, this would be for getting return value
-      vwf_view.calledMethod = function (nodeId, methodName, methodParameters, methodValue) {
-        switch(methodName) {
-          case "playStatic":
-            $('#static')[0].play();
-            // Used to set volume, 0.0 - 1.0 (low - high, 1.0 default)           
-            $('#static')[0].volume = methodParameters[0];
-            break;
-          case "stopStatic":
-            $('#static')[0].pause();
-            break;
-        }
-      }
-
+NOTE: The callMethod and other kernel or view methods are async, so we have to work with it that way
 
 The hidden gotProperty, we had docs on satProperty, from events.js bzflag example
 vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
@@ -180,14 +165,29 @@ https://github.com/liabru/dat-gui-light-theme
           this.reset = M4.reset;
 
           this.m4Carbine = function() {
+            Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
             M4.gui.remove(M4.guiref.m4c);
+
             vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
+
+            M4.gui.add(M4.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+              if (value) $('#backendtxrxMsg').show('easing');
+              else $('#backendtxrxMsg').hide('easing');
+            });
+            M4.gui.add(M4.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+              vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+            });
+            M4.gui.add(M4.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+              vwf_view.kernel.callMethod(vwf.appID, 'zoom', [ value ]);
+            }).onFinishChange(function(value) {
+              vwf_view.kernel.callMethod(vwf.appID, 'lookAt', [ null ]);
+            });
+
             M4.tray.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
             M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
             M4.addSelectorLeverActionGroup();
             M4.tray.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
             M4.gui.add(M4.tray, 'PushMagazineReleaseButton').name('Magazine Catch');
-
             M4.tray.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
             M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
             M4.tray.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
@@ -196,6 +196,14 @@ https://github.com/liabru/dat-gui-light-theme
             M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('Release Charging Handle');
             M4.tray.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
             M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
+            M4.tray.PushChargingHandleForward = M4.PushChargingHandleForward;
+            M4.gui.add(M4.tray, 'PushChargingHandleForward').name('Push Charging Handle Forward');
+            M4.tray.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
+            M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
+            M4.tray.PushBoltCatchTop = M4.PushBoltCatchTop;
+            M4.gui.add(M4.tray, 'PushBoltCatchTop').name('Push Bolt Catch Top');
+            M4.tray.PullTrigger = M4.PullTrigger;
+            M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
 
             M4.tray.assessment = M4.assessment;
             M4.gui.add(M4.tray, 'assessment').name('Assessment');
@@ -203,7 +211,7 @@ https://github.com/liabru/dat-gui-light-theme
         },
         reset: function() {
           //vwf_view.kernel.callMethod(vwf.appID, 'removeInstance');
-          //window.location.href=window.location.href;
+          //window.location.href = window.location.href;
           //window.location.reload();
           vwf_view.kernel.callMethod(vwf.appID, 'resetBackend');
         },
@@ -220,6 +228,7 @@ https://github.com/liabru/dat-gui-light-theme
           selectorLeverFolder.add(M4.tray, 'safe').name('SAFE');
           M4.tray.burst = M4.burst;
           selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
+          $('div.dg ul li.title').click();
         },
         semi: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
@@ -253,6 +262,22 @@ https://github.com/liabru/dat-gui-light-theme
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'LetGoOfBoltCatchBottom');
         },
+        PushChargingHandleForward: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushChargingHandleForward');
+        },
+        CheckChamberAndReceiverForAmmo: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'CheckChamberAndReceiverForAmmo');
+        },
+        PushBoltCatchTop: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushBoltCatchTop');
+        },
+        PullTrigger: function() {
+          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
+          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PullTrigger');
+        },
         assessment: function() {
           vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
           vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'assessment');
@@ -262,16 +287,6 @@ https://github.com/liabru/dat-gui-light-theme
           this.tray = new this.Tooltray();
           this.gui = new dat.GUI();
           this.gui.add(this.tray, 'reset').name('Reset');
-          this.gui.add(this.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
-            if (value) $('#backendtxrxMsg').show('easing');
-            else $('#backendtxrxMsg').hide('easing');
-          });
-          this.gui.add(this.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
-          });
-          this.gui.add(this.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwf.appID, "zoom", [ value ]);
-          });
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
         }
       };
@@ -289,6 +304,21 @@ https://github.com/liabru/dat-gui-light-theme
           }
         };
 
+        // notice the methodValue for the function return value as needed...
+        vwf_view.calledMethod = function (nodeId, methodName, methodParameters, methodValue) {
+          if (methodName == 'initInstance') {
+            Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
+            $('div.dg div.main, div.close-button').css('width', '550px');
+          } else if (methodName == 'assessment') {
+            $('#assessmentIFrame').css({
+              'border': '1px outset #999999',
+              'width': '450px',
+              'height': '600px',
+              'background-color': 'rgba(228, 228, 228, 0.8)'
+            });
+          }
+        }
+
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
           //console.log('firedEvent arg len:' + arguments.length + ' arg0:' + arguments[ 0 ] + ' arg1:' + arguments[ 1 ] + ' arg2:' + arguments[ 2 ]);
@@ -296,7 +326,7 @@ https://github.com/liabru/dat-gui-light-theme
           if (nodeId == vwf.appID) {
             switch (eventName) {
             case "pointerDown":
-              console.log('Observing pointerDown in the html');
+              console.log('Observing pointerDown in the html view');
               break;
             }
           }
@@ -313,7 +343,7 @@ https://github.com/liabru/dat-gui-light-theme
     </script>
   </head>
 <body>
-  <div id="wrapper" class="wrapper" style="position:absolute;left:25px;top:25px;color:white;">
+  <div id="wrapper" class="wrapper" style="position: absolute; left: 25px; top: 25px; color: white;">
     <div id="backendtxrxMsg"></div>
     <div id="assessment"></div>
   </div>

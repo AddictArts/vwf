@@ -51,6 +51,7 @@ scripts:
   var vwf_M4_node3 = {
     extends: "http://vwf.example.com/node3.vwf",
     type: "model/vnd.collada+xml",
+    source: 'models/M4_v09.dae',
     implements: [ "M4_Carbine.ux", "backendtxrx.ux" ],
     properties: {
       translation: [ 0, 0, 2 ],
@@ -73,6 +74,12 @@ scripts:
       Bolt_Catch: {
         extends: "http://vwf.example.com/node3.vwf"
       },
+      Ejection_Port_Cover: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Key_and_Bolt_Carrier_Assembly: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
       Magazine_Catch: {
         extends: "http://vwf.example.com/node3.vwf"
       },
@@ -81,6 +88,9 @@ scripts:
       },
       Selector_Lever: {
         extends: "http://vwf.example.com/node3.vwf",
+      },
+      Trigger: {
+        extends: "http://vwf.example.com/node3.vwf"
       },
       Tube: {
         extends: "http://vwf.example.com/node3.vwf"
@@ -96,7 +106,7 @@ scripts:
   };
 
   this.initializeCamera = function() {
-    this.camera.translation = [ -1.25, 0, 2 ];
+    this.camera.translation = [ -1.25, 0, 2.2 ];
     this.camera.rotation = [ 0, 0, 1, -90 ];
   };
 
@@ -167,7 +177,11 @@ scripts:
   };
 
   this.lookAt = function(what) {
-    this.camera.lookAt = this[what].id;
+    what = what || this.camTarget;
+
+    var lookAt = (what != null)? this[ what ].id : this.id;
+
+    this.camera.lookAt = lookAt;
     this.future(0).clearLookAt();
     //console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
   };
@@ -188,12 +202,12 @@ scripts:
   };
 
   this.initInstance = function() {
+    this.lookAt(this.camTarget);
     this.children.M4_Carbine_dae.init();
   };
 
   this.instance = function() {
     console.info('instancing tool tray item');
-    vwf_M4_node3.source = 'models/M4_v09.dae';
     this.children.create('M4_Carbine_dae', vwf_M4_node3);
     this.camTarget = 'M4_Carbine_dae';
     this.future(0).initInstance();

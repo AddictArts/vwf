@@ -18,6 +18,11 @@ methods:
   PushAndHoldBoltCatchBottom:
   ReleaseChargingHandle:
   LetGoOfBoltCatchBottom:
+  PushChargingHandleForward:
+  CheckChamberAndReceiverForAmmo:
+  PushBoltCatchTop:
+  PullTrigger:
+  releaseTrigger:
   assessment:
 scripts:
 - |
@@ -162,36 +167,43 @@ scripts:
     this.activity({ action: 'LetGoOfBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
   };
 
-  // this.PushChargingHandleForward = function() {
-  //   console.info('PushChargingHandleForward ');
+  this.PushChargingHandleForward = function() {
+    console.info('PushChargingHandleForward');
+    this.Charging_Handle.translateTo([ 0.005, 0, 0 ], 0.25);
+    this.activity({ action: 'PushChargingHandleForward', arguments: [ this.M4_Carbine_KbId ] });
+  };
+
+  this.CheckChamberAndReceiverForAmmo = function() {
+    console.info('CheckChamberAndReceiverForAmmo');
+    // this.Key_and_Bolt_Carrier_Assembly.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Ejection_Port_Cover.rotation = [ 1, 0, 0, 130 ];
+    this.Ejection_Port_Cover.rotateTo([ 1, 0, 0, 130 ], 0.5);
+    // this.Ejection_Port_Cover.translateTo([ 0, 0, 0 ], 0.25);
+    // this..translateTo([ 0, 0, 0 ], 0.25);
+    // this..translateTo([ 0, 0, 0 ], 0.25);
+    // this..translateTo([ 0, 0, 0 ], 0.25);
+    // this.Extractor.translateTo([ 0, 0, 0 ], 0.25);
+    // this..translateTo([ 0, 0, 0 ], 0.25);
+    this.activity({ action: 'CheckChamberAndReceiverForAmmo', arguments: [ this.M4_Carbine_KbId ] });
+  };
+
+  this.PushBoltCatchTop = function() {
+    console.info('PushBoltCatchTop');
   //   this..rotation = [ 1, 0, 0, 12 ];
-  //   this..translateTo([ 0., 0, 0 ], 0.25);
-  //   this.activity({ action: 'PushChargingHandleForward', arguments: [ this.M4_Carbine_KbId ] });
-  // };
+  //   this..translateTo([ 0, 0, 0 ], 0.25);
+    this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
+  };
 
-  // this.CheckChamberAndReceiverForAmmo = function() {
-  //   console.info('CheckChamberAndReceiverForAmmo ');
-  //   this..rotation = [ 1, 0, 0, 12 ];
-  //   this..translateTo([ 0., 0, 0 ], 0.25);
-  //   this.activity({ action: 'CheckChamberAndReceiverForAmmo', arguments: [ this.M4_Carbine_KbId ] });
-  // };
+  this.PullTrigger = function() {
+    console.info('PullTrigger ');
+    this.Trigger.rotateTo([ 0, 1, 0, 15 ], 0.5);
+    this.activity({ action: 'PullTrigger', arguments: [ this.M4_Carbine_KbId ] });
+    this.future(1).releaseTrigger();
+  };
 
-  // this.PushBoltCatchTop = function() {
-  //   console.info('PushBoltCatchTop ');
-  //   this..rotation = [ 1, 0, 0, 12 ];
-  //   this..translateTo([ 0., 0, 0 ], 0.25);
-  //   this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
-  // };
-
-  // this.PullTrigger = function() {
-  //   console.info('PullTrigger ');
-  //   this..rotation = [ 1, 0, 0, 12 ];
-  //   this..translateTo([ 0., 0, 0 ], 0.25);
-  //   this.activity({ action: 'PullTrigger', arguments: [ this.M4_Carbine_KbId ] });
-  // };
-
-
-
+  this.releaseTrigger = function() {
+    this.Trigger.rotateTo([ 0, 1, 0, 0 ], 0.125);
+  };
 
   this.assessment = function() {
     jQuery('<iframe/>', {
