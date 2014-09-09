@@ -128,6 +128,7 @@ https://github.com/liabru/dat-gui-light-theme
         guiref: { },
         contextMenu: undefined,
         contextGUI: undefined,
+        contextActive: false,
         reset: function() {
           //vwf_view.kernel.callMethod(vwfapp.appID, 'removeInstance');
           //window.location.href = window.location.href;
@@ -136,6 +137,11 @@ https://github.com/liabru/dat-gui-light-theme
         },
         PointWeaponInSafeDirection: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PointWeaponInSafeDirection');
+
+          if (M4.contextActive) {
+            M4.contextGUI.remove(M4.guiref.ctx);
+            M4.contextActive = false;
+          }
         },
         addSelectorLeverActionGroup: function() {
           var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
@@ -197,12 +203,6 @@ https://github.com/liabru/dat-gui-light-theme
           this.contextGUI.name = 'Context Menu';
           this.contextGUI.autoPlace = false;
           this.contextGUI.domElement.style.position = 'absolute';
-          // this.contextGUI.domElement.style.position = 'fixed';
-          // this.contextGUI.domElement.style.top = '20px';
-          // this.contextGUI.domElement.style.float = 'right';
-          // this.contextGUI.domElement.style.float = 'left';
-          // this.contextGUI.domElement.style.left = '20px';
-          // this.contextGUI.domElement.style.right = '20px';
           $('body').append(this.contextGUI.domElement);
         }
       };
@@ -262,8 +262,11 @@ https://github.com/liabru/dat-gui-light-theme
         };
       };
       var ContextMenu = function() {
-        // this.picked = true;
         this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
+        this.semi = M4.semi;
+        this.safe = M4.safe;
+        this.burst = M4.burst;
+        this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
       };
 
       function SceneInitialize() {
@@ -283,7 +286,7 @@ https://github.com/liabru/dat-gui-light-theme
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
-            $('div.dg div.main, div.close-button').css('width', '550px');
+            $('div.dg div.main').css('width', '550px');
             vwfapp.M4_CarbineID = vwfapp.M4_CarbineID || vwf_view.kernel.find(vwfapp.appID, "//M4_Carbine_dae");
             vwfapp.idToName = vwf.getProperty(vwfapp.M4_CarbineID, "__idToName");
             // console.log(vwfapp.idToName);
@@ -299,25 +302,30 @@ https://github.com/liabru/dat-gui-light-theme
 
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
-          //console.log('firedEvent arg len:' + arguments.length + ' arg0:' + arguments[ 0 ] + ' arg1:' + arguments[ 1 ] + ' arg2:' + arguments[ 2 ]);
+          if (eventName != 'pointerDown' || M4.contextActive) return;
 
-          if (nodeId == vwfapp.appID) {
-            switch (eventName) {
-            case "pointerDown":
+          if (nodeId == vwfapp.M4_CarbineID) {
+            if (eventName == 'pointerDown') {
               console.log('Observing pointerDown in the html view');
-              // console.log(eventArgs);
-              // console.log(eventArgs[ 0 ].screenPosition[ 0 ] + 'px');
-              // console.log(eventArgs[ 0 ].screenPosition[ 1 ] + 'px');
+              M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
               M4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
               M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+              // console.log(vwfapp.idToName[ eventArgs[ 1 ].pickID ]);
 
-              // M4.contextGUI.add(M4.contextMenu, 'picked');
-
-              M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
-
-              // vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'vpick', [ eventArgs[ 1 ].pickID ]);
-
-              break;
+              switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
+              case 'Magazine_Catch':
+              case 'Magazine_Catch_Button':
+                M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Magazine Catch');
+                break;
+              case 'Selector_Lever':
+                M4.contextGUI.add(M4.contextMenu, 'semi').name('SEMI');
+                M4.contextGUI.add(M4.contextMenu, 'safe').name('SAFE');
+                M4.contextGUI.add(M4.contextMenu, 'burst').name('BURST');
+                break;
+              default:
+                M4.guiref.ctx = M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
+                break;
+              }
             }
           }
         };

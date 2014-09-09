@@ -8,8 +8,6 @@ events:
   pointerMove:
 methods:
   init:
-  dispatchPick:
-  vpick:
   PointWeaponInSafeDirection:
   SelectModeSemi:
   SelectModeSafe:
@@ -65,38 +63,12 @@ scripts:
     );
   };
 
-  this.dispatchPick = function(who) {
-    switch(who) {
-    case 'M4_Carbine_dae':
-      console.info('M4_Carbine_dae pick');
-      this.PointWeaponInSafeDirection();
-      break;
-    case 'Selector_Lever':
-      console.info('Selector_Lever pick');
-      // XXX this.SelectMode...();
-      break;
-    case 'Magazine_Catch':
-    case 'Magazine_Catch_Button':
-      console.info('Magazine_Catch pick');
-      this.PushMagazineReleaseButton();
-      break;
-    };
-  };
-
   this.pointerUp = function(pointerInfo, pickInfo) {
     console.info("M4_Carbine.ux pointerUp");
   };
 
-  this.vpick = function(pickId) {
-    console.info("M4_Carbine.ux vpick");
-    this.dispatchPick(this.__idToName[ pickId ]);
-  };
-
   this.pointerDown = function(pointerInfo, pickInfo) {
     console.info("M4_Carbine.ux pointerDown");
-    // console.log(pickInfo);
-    // this.dispatchPick(this.__idToName[ pickInfo.pickID ]);
-
     // M4_Carbine.ux pointerDown M4_Carbine.ux:38
     // Object {pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever", pointerVector: Array[3], position: Array[16], normal: Array[3], source: Array[3]…}
     // distance: 0.5202645488640165
