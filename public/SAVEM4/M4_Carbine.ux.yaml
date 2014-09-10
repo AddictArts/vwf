@@ -159,8 +159,8 @@ scripts:
     jQuery('<iframe/>', {
       name: 'assessment',
       id:   'assessmentIFrame',
-      src: this.parent.assessmentServerAddress
+      src: this.assessmentServerAddress
     }).appendTo('#assessment');
-    //jQuery('#assessment').html("<h1>Assessment</h1>");
+    // jQuery('#assessment').html("<h1>Assessment</h1>");
     // this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId ] });
   }; //@ sourceURL=M4_Carbine.ux

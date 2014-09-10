@@ -44,6 +44,17 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
 
 -->
     <style type="text/css">
+      #wrapper {
+        position: absolute;
+        left: 350px;
+        top: 25px;
+        color: black;
+      }
+
+      #assessment {
+        display: none;
+      }
+
       // dat.GUI style inspired by ...
       // http://brm.io/dat-gui-light-theme/
       // https://github.com/liabru/dat-gui-light-theme
@@ -136,6 +147,7 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
         contextMenu: undefined,
         contextGUI: undefined,
         contextActive: false,
+        assessmentActive: false,
         PointWeaponInSafeDirection: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PointWeaponInSafeDirection');
           handleContextMenu();
@@ -230,7 +242,10 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
           vwf_view.kernel.callMethod(vwfapp.appID, 'resetBackend');
         };
         this.assessment = function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'assessment');
+          if (!M4.assessmentActive) {
+            vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'assessment');
+            M4.assessmentActive = true;
+          }
         };
       };
       var Tooltray = function() {
@@ -256,8 +271,8 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
 
           M4.cameraGUI.add(M4.cameraMenu, 'reset').name('Reset');
           M4.cameraGUI.add(M4.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
-            if (value) $('#backendtxrxMsg').show('easing');
-            else $('#backendtxrxMsg').hide('easing');
+            if (value) $('#backendtxrxMsg').show();
+            else $('#backendtxrxMsg').hide();
           });
           M4.cameraGUI.add(M4.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
             vwf_view.kernel.callMethod(vwfapp.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
@@ -317,6 +332,7 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
       function SceneInitialize() {
         M4.init();
         vwf_view.kernel.callMethod(vwfapp.appID, "processEuiDotJson", [ __EUI ]);
+        Pace.stop(); // We should not need to do this, but sometimes the Pace progress just hangs around too long...
 
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
@@ -343,7 +359,8 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
               'width': '450px',
               'height': '600px',
               'background-color': 'rgba(228, 228, 228, 0.8)'
-            });
+            })
+            $('#assessment').fadeIn();
           }
         }
 
@@ -418,7 +435,7 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
     </script>
   </head>
 <body>
-  <div id="wrapper" class="wrapper" style="position: absolute; left: 350px; top: 25px; color: black;">
+  <div id="wrapper" class="wrapper">
     <div id="backendtxrxMsg"></div>
     <div id="assessment"></div>
   </div>
