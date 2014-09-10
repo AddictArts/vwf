@@ -331,10 +331,8 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
             M4.cameraGUI.domElement.style.visibility = 'visible';
-            vwfapp.M4_Carbine_daeId = vwfapp.M4_Carbine_daeId || vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
+            vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
             vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
-            // console.log(vwfapp.M4_Carbine_daeId);
-            // console.log(vwfapp.idToName);
           } else if (methodName == 'assessment') {
             $('#assessmentIFrame').css(cssIFrame);
             $('#assessment').fadeIn();
@@ -355,12 +353,9 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
           if (nodeId == vwfapp.M4_Carbine_daeId) {
-            handleContextMenu();
-
             M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
             M4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
             M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
-            // console.log(vwfapp.idToName[ eventArgs[ 1 ].pickID ]);
 
             switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
             case 'Magazine_Catch':
