@@ -3,12 +3,7 @@
     <title>Exercise UI</title>
     <script type="text/javascript" src="../eui.json.js"></script>
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
-
 <!--
-vwf html view initialization event, you don't have window.onload and document.ready is not good enough.
-
-NOTE: The callMethod and other kernel or view methods are async, so we have to work with it that way
-
 The hidden gotProperty, we had docs on satProperty but not got, from events.js bzflag example
 vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
     if (nodeId == sceneNode) {
@@ -26,21 +21,6 @@ vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
     }
 }
 vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
-
-
-Initialization, yes it can be done this way... from tile-puzzle-2D example
-
-      vwf_view.initializedNode = function( nodeID, childID, childExtendsID, childImplementsIDs,
-          childSource, childType, childIndex, childName ) {
-        if ( childID == vwf_view.kernel.application() ) {
-          gameID = vwf_view.kernel.find("", "/game")[0];
-          initializeBoard();
-        }
-      }
-
-
--=-=-=-=-=-=-=-=-=-=-=-
-
 -->
     <style type="text/css">
       #wrapper {
@@ -59,41 +39,41 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
       // https://github.com/liabru/dat-gui-light-theme
 
       .dg.main.taller-than-window .close-button {
-          border-top: 1px solid #ddd;
+        border-top: 1px solid #ddd;
       }
 
       .dg.main .close-button {
-          background-color: #ccc;
+        background-color: #ccc;
       }
        
       .dg.main .close-button:hover {
-          background-color: #ddd;
+        background-color: #ddd;
       }
 
       .dg {
-          color: #555;
-          text-shadow: none !important;
+        color: #555;
+        text-shadow: none !important;
       }
 
       .dg.main::-webkit-scrollbar {
-          background: #fafafa;
+        background: #fafafa;
       }
 
       .dg.main::-webkit-scrollbar-thumb {
-          background: #bbb;
+        background: #bbb;
       }
        
       .dg li:not(.folder) {
-          background: #fafafa;
-          border-bottom: 1px solid #ddd;
+        background: #fafafa;
+        border-bottom: 1px solid #ddd;
       }
        
       .dg li.save-row .button {
-          text-shadow: none !important;
+        text-shadow: none !important;
       }
 
       .dg li.title {
-          background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
+        background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
       }
 
       .dg .cr.function .property-name {
@@ -101,38 +81,43 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
       }
 
       .dg .cr.function:hover,.dg .cr.boolean:hover {
-          background: #fff;
+        background: #fff;
       }
        
       .dg .c input[type=text] {
-          background: #e9e9e9;
+        background: #e9e9e9;
       }
        
       .dg .c input[type=text]:hover {
-          background: #eee;
+        background: #eee;
       }
        
       .dg .c input[type=text]:focus {
-          background: #eee;
-          color: #555;
+        background: #eee;
+        color: #555;
       }
        
       .dg .c .slider {
-          background: #e9e9e9;
+        background: #e9e9e9;
       }
 
       .dg .c .slider:hover {
-          background: #eee;
+        background: #eee;
       }
     </style>
     <script type="text/javascript">
-      var __EUI;
+      var __EUI; // resist doing "= undefined, or = null" we just need it named and an async event will bind it!
 
       (function() {
+      var cssIFrame = {
+        'border': '1px outset #999999',
+        'width': '450px',
+        'height': '600px',
+        'background-color': 'rgba(228, 228, 228, 0.8)'
+      };
       var vwfapp = {
-        appID: vwf_view.kernel.application(),
-        M4_CarbineID: undefined,
-        cameraID: undefined,
+        appId: vwf_view.kernel.application(),
+        M4_Carbine_daeId: undefined,
         idToName: undefined
       };
       var M4 = {
@@ -148,7 +133,7 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
         contextActive: false,
         assessmentActive: false,
         PointWeaponInSafeDirection: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PointWeaponInSafeDirection');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PointWeaponInSafeDirection');
           handleContextMenu();
         },
         addSelectorLeverActionGroup: function() {
@@ -160,51 +145,51 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
           $('div.dg ul li.title').click();
         },
         semi: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'SelectModeSemi');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSemi');
           handleContextMenu();
         },
         safe: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'SelectModeSafe');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSafe');
           handleContextMenu();
         },
         burst: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'SelectModeBurst');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeBurst');
           handleContextMenu();
         },
         PushMagazineReleaseButton: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushMagazineReleaseButton');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
           handleContextMenu();
         },
         PullAndHoldChargingHandle: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PullAndHoldChargingHandle');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
           handleContextMenu();
         },
         PushAndHoldBoltCatchBottom: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushAndHoldBoltCatchBottom');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushAndHoldBoltCatchBottom');
           handleContextMenu();
         },
         ReleaseChargingHandle: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'ReleaseChargingHandle');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseChargingHandle');
           handleContextMenu();
         },
         LetGoOfBoltCatchBottom: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'LetGoOfBoltCatchBottom');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'LetGoOfBoltCatchBottom');
           handleContextMenu();
         },
         PushChargingHandleForward: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushChargingHandleForward');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandleForward');
           handleContextMenu();
         },
         CheckChamberAndReceiverForAmmo: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'CheckChamberAndReceiverForAmmo');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'CheckChamberAndReceiverForAmmo');
           handleContextMenu();
         },
         PushBoltCatchTop: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushBoltCatchTop');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushBoltCatchTop');
           handleContextMenu();
         },
         PullTrigger: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PullTrigger');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');
           handleContextMenu();
         },
         init: function() {
@@ -238,12 +223,13 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
         this.cameraOrbit = 0;
         this.cameraZoom = 0;
         this.reset = function() {
-          vwf_view.kernel.callMethod(vwfapp.appID, 'resetBackend');
+          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         };
         this.assessment = function() {
           if (!M4.assessmentActive) {
-            vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'assessment');
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'assessment');
             M4.assessmentActive = true;
+            $('.dg.ac').toggle();
           }
         };
       };
@@ -266,7 +252,7 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           M4.gui.remove(M4.guiref.m4c);
 
-          vwf_view.kernel.callMethod(vwfapp.appID, 'instance', [ ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ ]);
 
           M4.cameraGUI.add(M4.cameraMenu, 'reset').name('Reset');
           M4.cameraGUI.add(M4.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
@@ -274,12 +260,12 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
             else $('#backendtxrxMsg').hide();
           });
           M4.cameraGUI.add(M4.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+            vwf_view.kernel.callMethod(vwfapp.appId, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
           });
           M4.cameraGUI.add(M4.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appID, 'zoom', [ value ]);
+            vwf_view.kernel.callMethod(vwfapp.appId, 'zoom', [ value ]);
           }).onFinishChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appID, 'lookAt', [ null ]);
+            vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
           });
           M4.cameraGUI.add(M4.cameraMenu, 'assessment').name('Assessment');
 
@@ -328,14 +314,14 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
         }
       }
 
-      function SceneInitialize() {
+      function sceneInitialize() {
         M4.init();
-        vwf_view.kernel.callMethod(vwfapp.appID, "processEuiDotJson", [ __EUI ]);
+        vwf_view.kernel.callMethod(vwfapp.appId, "processEuiDotJson", [ __EUI ]);
         Pace.stop(); // We should not need to do this, but sometimes the Pace progress just hangs around too long...
 
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
-          if (nodeId == vwfapp.appID) {
+          if (nodeId == vwfapp.appId) {
             if (propertyName == 'backendResetSent') {
               if (propertyValue) window.location.reload(true); // window.location.href = window.location.href;
             }
@@ -347,17 +333,12 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
             M4.cameraGUI.domElement.style.visibility = 'visible';
-            vwfapp.M4_CarbineID = vwfapp.M4_CarbineID || vwf_view.kernel.find(vwfapp.appID, "//M4_Carbine_dae")[ 0 ];
-            vwfapp.idToName = vwf.getProperty(vwfapp.M4_CarbineID, "__idToName");
-            // console.log(vwfapp.M4_CarbineID);
+            vwfapp.M4_Carbine_daeId = vwfapp.M4_Carbine_daeId || vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
+            vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+            // console.log(vwfapp.M4_Carbine_daeId);
             // console.log(vwfapp.idToName);
           } else if (methodName == 'assessment') {
-            $('#assessmentIFrame').css({
-              'border': '1px outset #999999',
-              'width': '450px',
-              'height': '600px',
-              'background-color': 'rgba(228, 228, 228, 0.8)'
-            })
+            $('#assessmentIFrame').css(cssIFrame);
             $('#assessment').fadeIn();
           }
         }
@@ -375,7 +356,7 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
 
           console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
-          if (nodeId == vwfapp.M4_CarbineID) {
+          if (nodeId == vwfapp.M4_Carbine_daeId) {
             handleContextMenu();
 
             M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
@@ -422,13 +403,17 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
           }
         };
 
-        $(window).unload(function() { SceneDestroy(); });
+        $(window).unload(function() { sceneDestroy(); });
       }
 
-      function SceneDestroy() {
+      function sceneDestroy() {
       }
 
-      $(document).ready(function() { SceneInitialize(); });
+      // vwf html view initialization event, you don't have window.onload and document.ready is not good enough...
+      // initialization, yes it can be done this way... from tile-puzzle-2D example
+      vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
+        if (childID == vwfapp.appId) sceneInitialize();
+      }
       })(); //@ sourceURL=index.vwf.html
     </script>
   </head>
