@@ -42,75 +42,75 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
 
 -=-=-=-=-=-=-=-=-=-=-=-
 
-http://brm.io/dat-gui-light-theme/
-https://github.com/liabru/dat-gui-light-theme
-
-.dg.main.taller-than-window .close-button {
-    border-top: 1px solid #ddd;
-}
-
-.dg.main .close-button {
-    background-color: #ccc;
-}
- 
-.dg.main .close-button:hover {
-    background-color: #ddd;
-}
-
-.dg {
-    color: #555;
-    text-shadow: none !important;
-}
-
-.dg.main::-webkit-scrollbar {
-    background: #fafafa;
-}
-
-.dg.main::-webkit-scrollbar-thumb {
-    background: #bbb;
-}
- 
-.dg li:not(.folder) {
-    background: #fafafa;
-    border-bottom: 1px solid #ddd;
-}
- 
-.dg li.save-row .button {
-    text-shadow: none !important;
-}
-
-.dg li.title {
-    background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
-}
-
-.dg .cr.function:hover,.dg .cr.boolean:hover {
-    background: #fff;
-}
- 
-.dg .c input[type=text] {
-    background: #e9e9e9;
-}
- 
-.dg .c input[type=text]:hover {
-    background: #eee;
-}
- 
-.dg .c input[type=text]:focus {
-    background: #eee;
-    color: #555;
-}
- 
-.dg .c .slider {
-    background: #e9e9e9;
-}
-
-.dg .c .slider:hover {
-    background: #eee;
-}
-
-
 -->
+    <style type="text/css">
+      // dat.GUI style inspired by ...
+      // http://brm.io/dat-gui-light-theme/
+      // https://github.com/liabru/dat-gui-light-theme
 
+      .dg.main.taller-than-window .close-button {
+          border-top: 1px solid #ddd;
+      }
+
+      .dg.main .close-button {
+          background-color: #ccc;
+      }
+       
+      .dg.main .close-button:hover {
+          background-color: #ddd;
+      }
+
+      .dg {
+          color: #555;
+          text-shadow: none !important;
+      }
+
+      .dg.main::-webkit-scrollbar {
+          background: #fafafa;
+      }
+
+      .dg.main::-webkit-scrollbar-thumb {
+          background: #bbb;
+      }
+       
+      .dg li:not(.folder) {
+          background: #fafafa;
+          border-bottom: 1px solid #ddd;
+      }
+       
+      .dg li.save-row .button {
+          text-shadow: none !important;
+      }
+
+      .dg li.title {
+          background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
+      }
+
+      .dg .cr.function:hover,.dg .cr.boolean:hover {
+          background: #fff;
+      }
+       
+      .dg .c input[type=text] {
+          background: #e9e9e9;
+      }
+       
+      .dg .c input[type=text]:hover {
+          background: #eee;
+      }
+       
+      .dg .c input[type=text]:focus {
+          background: #eee;
+          color: #555;
+      }
+       
+      .dg .c .slider {
+          background: #e9e9e9;
+      }
+
+      .dg .c .slider:hover {
+          background: #eee;
+      }
+    </style>
     <script type="text/javascript">
       var __EUI;
 
@@ -121,27 +121,20 @@ https://github.com/liabru/dat-gui-light-theme
         appID: vwf_view.kernel.application(),
         idToName: undefined
       };
-
       var M4 = {
         gui: undefined,
         tray: undefined,
-        guiref: { },
+        guiref: {
+          ctx: [ ]
+        },
+        cameraMenu: undefined,
+        cameraGUI: undefined,
         contextMenu: undefined,
         contextGUI: undefined,
         contextActive: false,
-        reset: function() {
-          //vwf_view.kernel.callMethod(vwfapp.appID, 'removeInstance');
-          //window.location.href = window.location.href;
-          //window.location.reload();
-          vwf_view.kernel.callMethod(vwfapp.appID, 'resetBackend');
-        },
         PointWeaponInSafeDirection: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PointWeaponInSafeDirection');
-
-          if (M4.contextActive) {
-            M4.contextGUI.remove(M4.guiref.ctx);
-            M4.contextActive = false;
-          }
+          handleContextMenu();
         },
         addSelectorLeverActionGroup: function() {
           var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
@@ -153,50 +146,67 @@ https://github.com/liabru/dat-gui-light-theme
         },
         semi: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'SelectModeSemi');
+          handleContextMenu();
         },
         safe: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'SelectModeSafe');
+          handleContextMenu();
         },
         burst: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'SelectModeBurst');
+          handleContextMenu();
         },
         PushMagazineReleaseButton: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushMagazineReleaseButton');
+          handleContextMenu();
         },
         PullAndHoldChargingHandle: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PullAndHoldChargingHandle');
+          handleContextMenu();
         },
         PushAndHoldBoltCatchBottom: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushAndHoldBoltCatchBottom');
+          handleContextMenu();
         },
         ReleaseChargingHandle: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'ReleaseChargingHandle');
+          handleContextMenu();
         },
         LetGoOfBoltCatchBottom: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'LetGoOfBoltCatchBottom');
+          handleContextMenu();
         },
         PushChargingHandleForward: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushChargingHandleForward');
+          handleContextMenu();
         },
         CheckChamberAndReceiverForAmmo: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'CheckChamberAndReceiverForAmmo');
+          handleContextMenu();
         },
         PushBoltCatchTop: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PushBoltCatchTop');
+          handleContextMenu();
         },
         PullTrigger: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'PullTrigger');
-        },
-        assessment: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'assessment');
+          handleContextMenu();
         },
         init: function() {
           $('#backendtxrxMsg').hide();
           this.tray = new Tooltray();
           this.gui = new dat.GUI();
           this.gui.name = 'Tool Tray';
-          this.gui.add(this.tray, 'reset').name('Reset');
           M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
+
+          this.cameraMenu = new CameraMenu();
+          this.cameraGUI = new dat.GUI();
+          this.cameraGUI.name = 'Camera Menu';
+          this.cameraGUI.autoPlace = false;
+          this.cameraGUI.domElement.style.position = 'fixed';
+          this.cameraGUI.domElement.style.float = 'left';
+          this.cameraGUI.domElement.style.left = '15px';
+          $('body').append(this.cameraGUI.domElement);
 
           this.contextMenu = new ContextMenu();
           this.contextGUI = new dat.GUI();
@@ -206,12 +216,18 @@ https://github.com/liabru/dat-gui-light-theme
           $('body').append(this.contextGUI.domElement);
         }
       };
-
-      var Tooltray = function() {
+      var CameraMenu = function() {
         this.backendtxrxMsg = false;
         this.cameraOrbit = 0;
         this.cameraZoom = 0;
-        this.reset = M4.reset;
+        this.reset = function() {
+          vwf_view.kernel.callMethod(vwfapp.appID, 'resetBackend');
+        };
+        this.assessment = function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_CarbineID, 'assessment');
+        };
+      };
+      var Tooltray = function() {
         this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
         this.semi = M4.semi;
         this.safe = M4.safe;
@@ -225,7 +241,6 @@ https://github.com/liabru/dat-gui-light-theme
         this.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
         this.PushBoltCatchTop = M4.PushBoltCatchTop;
         this.PullTrigger = M4.PullTrigger;
-        this.assessment = M4.assessment;
 
         this.m4Carbine = function() {
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
@@ -233,18 +248,20 @@ https://github.com/liabru/dat-gui-light-theme
 
           vwf_view.kernel.callMethod(vwfapp.appID, 'instance', [ ]);
 
-          M4.gui.add(M4.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+          M4.cameraGUI.add(M4.cameraMenu, 'reset').name('Reset');
+          M4.cameraGUI.add(M4.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
             if (value) $('#backendtxrxMsg').show('easing');
             else $('#backendtxrxMsg').hide('easing');
           });
-          M4.gui.add(M4.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+          M4.cameraGUI.add(M4.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
             vwf_view.kernel.callMethod(vwfapp.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
           });
-          M4.gui.add(M4.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+          M4.cameraGUI.add(M4.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
             vwf_view.kernel.callMethod(vwfapp.appID, 'zoom', [ value ]);
           }).onFinishChange(function(value) {
             vwf_view.kernel.callMethod(vwfapp.appID, 'lookAt', [ null ]);
           });
+          M4.cameraGUI.add(M4.cameraMenu, 'assessment').name('Assessment');
 
           M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
           M4.addSelectorLeverActionGroup();
@@ -257,17 +274,39 @@ https://github.com/liabru/dat-gui-light-theme
           M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
           M4.gui.add(M4.tray, 'PushBoltCatchTop').name('Push Bolt Catch Top');
           M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
-
-          M4.gui.add(M4.tray, 'assessment').name('Assessment');
         };
       };
       var ContextMenu = function() {
+        this.close = function() {
+          handleContextMenu();
+        };
         this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
         this.semi = M4.semi;
         this.safe = M4.safe;
         this.burst = M4.burst;
         this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
+        this.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
+        this.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
+        this.ReleaseChargingHandle = M4.ReleaseChargingHandle;
+        this.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
+        this.PushChargingHandleForward = M4.PushChargingHandleForward;
+        this.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
+        this.PushBoltCatchTop = M4.PushBoltCatchTop;
+        this.PullTrigger = M4.PullTrigger;
       };
+
+      function handleContextMenu() {
+        if (M4.contextActive) {
+          var l = M4.guiref.ctx.length;
+
+          for (var i = 0; i < l; i++) {
+            M4.contextGUI.remove(M4.guiref.ctx[ i ]);
+          }
+
+          M4.guiref.ctx = [ ];
+          M4.contextActive = false;
+        }
+      }
 
       function SceneInitialize() {
         M4.init();
@@ -277,7 +316,7 @@ https://github.com/liabru/dat-gui-light-theme
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
           if (nodeId == vwfapp.appID) {
             if (propertyName == 'backendResetSent') {
-              if (propertyValue) window.location.reload(true);
+              if (propertyValue) window.location.reload(true); // window.location.href = window.location.href;
             }
           }
         };
@@ -287,8 +326,9 @@ https://github.com/liabru/dat-gui-light-theme
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
             $('div.dg div.main').css('width', '550px');
-            vwfapp.M4_CarbineID = vwfapp.M4_CarbineID || vwf_view.kernel.find(vwfapp.appID, "//M4_Carbine_dae");
+            vwfapp.M4_CarbineID = vwfapp.M4_CarbineID || vwf_view.kernel.find(vwfapp.appID, "//M4_Carbine_dae")[ 0 ];
             vwfapp.idToName = vwf.getProperty(vwfapp.M4_CarbineID, "__idToName");
+            // console.log(vwfapp.M4_CarbineID);
             // console.log(vwfapp.idToName);
           } else if (methodName == 'assessment') {
             $('#assessmentIFrame').css({
@@ -302,30 +342,60 @@ https://github.com/liabru/dat-gui-light-theme
 
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
-          if (eventName != 'pointerDown' || M4.contextActive) return;
+          if (eventName != 'pointerDown') return;
+
+          // console.log(nodeId);
+          // index-vwf:6-98-M4_Carbine_dae:10-80-Selector_Lever
+          // index-vwf:6-98-M4_Carbine_dae
+          // index-vwf 
+
+          if (M4.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
+
+          console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
           if (nodeId == vwfapp.M4_CarbineID) {
-            if (eventName == 'pointerDown') {
-              console.log('Observing pointerDown in the html view');
-              M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
-              M4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
-              M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
-              // console.log(vwfapp.idToName[ eventArgs[ 1 ].pickID ]);
+            handleContextMenu();
 
-              switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
-              case 'Magazine_Catch':
-              case 'Magazine_Catch_Button':
-                M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Magazine Catch');
-                break;
-              case 'Selector_Lever':
-                M4.contextGUI.add(M4.contextMenu, 'semi').name('SEMI');
-                M4.contextGUI.add(M4.contextMenu, 'safe').name('SAFE');
-                M4.contextGUI.add(M4.contextMenu, 'burst').name('BURST');
-                break;
-              default:
-                M4.guiref.ctx = M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
-                break;
-              }
+            M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
+            M4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
+            M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+            // console.log(vwfapp.idToName[ eventArgs[ 1 ].pickID ]);
+
+            switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
+            case 'Magazine_Catch':
+            case 'Magazine_Catch_Button':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Magazine Catch'));
+              break;
+            case 'Selector_Lever':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'semi').name('SEMI'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'safe').name('SAFE'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'burst').name('BURST'));
+              break;
+            case 'Charging_Handle':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
+              break;
+            case 'Bolt_Catch':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushBoltCatchTop').name('Push Bolt Catch Top'));
+              break;
+            case 'Ejection_Port_Cover':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'CheckChamberAndReceiverForAmmo').name('Check Chamber And Receiver For Ammo'));
+              break;
+            case 'Trigger':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullTrigger').name('Pull Trigger'));
+              break;
+            default: // Everything else, barrel, stock, etc, is position the weapon...
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
+              break;
             }
           }
         };
