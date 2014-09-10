@@ -200,6 +200,20 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           this.cameraMenu = new CameraMenu();
           this.cameraGUI = new dat.GUI();
           this.cameraGUI.name = 'Camera Menu';
+          this.cameraGUI.add(this.cameraMenu, 'reset').name('Reset');
+          this.cameraGUI.add(this.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+            if (value) $('#backendtxrxMsg').show();
+            else $('#backendtxrxMsg').hide();
+          });
+          this.cameraGUI.add(this.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+          });
+          this.cameraGUI.add(this.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'zoom', [ value ]);
+          }).onFinishChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
+          });
+          this.cameraGUI.add(this.cameraMenu, 'assessment').name('Assessment');
           this.cameraGUI.autoPlace = false;
           this.cameraGUI.domElement.style.position = 'fixed';
           this.cameraGUI.domElement.style.float = 'left';
@@ -214,6 +228,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           this.contextGUI.autoPlace = false;
           this.contextGUI.domElement.style.position = 'absolute';
           $('body').append(this.contextGUI.domElement);
+          $('div.close-button:last').css('display', 'none');
         }
       };
       var CameraMenu = function() {
@@ -249,24 +264,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
         this.m4Carbine = function() {
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           M4.toolTrayGUI.remove(M4.guiref.m4c);
-
           vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ ]);
-
-          M4.cameraGUI.add(M4.cameraMenu, 'reset').name('Reset');
-          M4.cameraGUI.add(M4.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
-            if (value) $('#backendtxrxMsg').show();
-            else $('#backendtxrxMsg').hide();
-          });
-          M4.cameraGUI.add(M4.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appId, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
-          });
-          M4.cameraGUI.add(M4.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appId, 'zoom', [ value ]);
-          }).onFinishChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
-          });
-          M4.cameraGUI.add(M4.cameraMenu, 'assessment').name('Assessment');
-
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
           M4.addSelectorLeverActionGroup();
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushMagazineReleaseButton').name('Magazine Catch');
