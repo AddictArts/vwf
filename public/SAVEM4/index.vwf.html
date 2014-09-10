@@ -121,27 +121,25 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
         idToName: undefined
       };
       var M4 = {
-        gui: undefined,
-        tray: undefined,
-        guiref: {
-          ctx: [ ]
-        },
+        toolTrayGUI: undefined,
+        toolTrayMenu: undefined,
         cameraMenu: undefined,
         cameraGUI: undefined,
         contextMenu: undefined,
         contextGUI: undefined,
         contextActive: false,
+        guiref: { ctx: [ ] },
         assessmentActive: false,
         PointWeaponInSafeDirection: function() {
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PointWeaponInSafeDirection');
           handleContextMenu();
         },
         addSelectorLeverActionGroup: function() {
-          var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
+          var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selecctor Lever");
 
-          selectorLeverFolder.add(M4.tray, 'semi').name('SEMI');
-          selectorLeverFolder.add(M4.tray, 'safe').name('SAFE');
-          selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
+          selectorLeverFolder.add(M4.toolTrayMenu, 'semi').name('SEMI');
+          selectorLeverFolder.add(M4.toolTrayMenu, 'safe').name('SAFE');
+          selectorLeverFolder.add(M4.toolTrayMenu, 'burst').name('BURST');
           $('div.dg ul li.title').click();
         },
         semi: function() {
@@ -194,10 +192,10 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
         },
         init: function() {
           $('#backendtxrxMsg').hide();
-          this.tray = new Tooltray();
-          this.gui = new dat.GUI();
-          this.gui.name = 'Tool Tray';
-          M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
+          this.toolTrayMenu = new ToolTrayMenu();
+          this.toolTrayGUI = new dat.GUI();
+          this.toolTrayGUI.name = 'Tool Tray';
+          M4.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name('M4 Carbine');
 
           this.cameraMenu = new CameraMenu();
           this.cameraGUI = new dat.GUI();
@@ -233,7 +231,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           }
         };
       };
-      var Tooltray = function() {
+      var ToolTrayMenu = function() {
         this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
         this.semi = M4.semi;
         this.safe = M4.safe;
@@ -250,7 +248,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
 
         this.m4Carbine = function() {
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-          M4.gui.remove(M4.guiref.m4c);
+          M4.toolTrayGUI.remove(M4.guiref.m4c);
 
           vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ ]);
 
@@ -269,17 +267,17 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           });
           M4.cameraGUI.add(M4.cameraMenu, 'assessment').name('Assessment');
 
-          M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
           M4.addSelectorLeverActionGroup();
-          M4.gui.add(M4.tray, 'PushMagazineReleaseButton').name('Magazine Catch');
-          M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
-          M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
-          M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('Release Charging Handle');
-          M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
-          M4.gui.add(M4.tray, 'PushChargingHandleForward').name('Push Charging Handle Forward');
-          M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
-          M4.gui.add(M4.tray, 'PushBoltCatchTop').name('Push Bolt Catch Top');
-          M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushMagazineReleaseButton').name('Magazine Catch');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'ReleaseChargingHandle').name('Release Charging Handle');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushChargingHandleForward').name('Push Charging Handle Forward');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushBoltCatchTop').name('Push Bolt Catch Top');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PullTrigger').name('Pull Trigger');
         };
       };
       var ContextMenu = function() {
