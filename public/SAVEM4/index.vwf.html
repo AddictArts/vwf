@@ -3,13 +3,8 @@
     <title>Exercise UI</title>
     <script type="text/javascript" src="../eui.json.js"></script>
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
-
 <!--
-vwf html view initialization event, you don't have window.onload and document.ready is not good enough.
-
-NOTE: The callMethod and other kernel or view methods are async, so we have to work with it that way
-
-The hidden gotProperty, we had docs on satProperty, from events.js bzflag example
+The hidden gotProperty, we had docs on satProperty but not got, from events.js bzflag example
 vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
     if (nodeId == sceneNode) {
         switch (propertyName) {
@@ -17,8 +12,7 @@ vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
                 updateScoreboard(propertyValue);
                 break;
         }
-    }
-    else if (nodeId == playerNode) {
+    } else if (nodeId == playerNode) {
         switch (propertyName) {
             case "score":
                 $("#userScore").text(propertyValue); 
@@ -27,323 +21,395 @@ vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
     }
 }
 vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
-
-
-Initialization, yes it can be done this way... from tile-puzzle-2D example
-
-      vwf_view.initializedNode = function( nodeID, childID, childExtendsID, childImplementsIDs,
-          childSource, childType, childIndex, childName ) {
-        if ( childID == vwf_view.kernel.application() ) {
-          gameID = vwf_view.kernel.find("", "/game")[0];
-          initializeBoard();
-        }
+-->
+    <style type="text/css">
+      #wrapper {
+        position: absolute;
+        left: 350px;
+        top: 25px;
+        color: black;
       }
 
-and some getProperty from that same examople
-        var curPos = vwf.getProperty(gameID, "currentTile"+tile);
-        var pos = vwf.getProperty(gameID, curPos);
-        var openPos = vwf.getProperty(gameID, "openPosition");
-        var new_pos = vwf.getProperty(gameID, openPos);
+      #assessment {
+        display: none;
+      }
 
+      // dat.GUI style inspired by ...
+      // http://brm.io/dat-gui-light-theme/
+      // https://github.com/liabru/dat-gui-light-theme
 
+      .dg.main.taller-than-window .close-button {
+        border-top: 1px solid #ddd;
+      }
 
--=-=-=-=-=-=-=-=-=-=-=-
+      .dg.main .close-button {
+        background-color: #ccc;
+      }
+       
+      .dg.main .close-button:hover {
+        background-color: #ddd;
+      }
 
-https://dat-gui.googlecode.com/git-history/dbb4fa0ef0428380044e825470e788dec1e37b86/index.html
-You can instantiate multiple DAT.GUI objects and name them however you'd like.
+      .dg {
+        color: #555;
+        text-shadow: none !important;
+      }
 
-var gui1 = new DAT.GUI();
-var gui2 = new DAT.GUI();
+      .dg.main::-webkit-scrollbar {
+        background: #fafafa;
+      }
 
-// The name function overwrites the 'Show Controls' text.
-gui1.name('Utilities');
-gui2.name('Camera Placement');
-By default, DAT.GUI panels will be automatically added to the HTML document and fixed to the top of the screen from right to left. You can disable this behavior and append the gui DOM element to a container of your choosing.
+      .dg.main::-webkit-scrollbar-thumb {
+        background: #bbb;
+      }
+       
+      .dg li:not(.folder) {
+        background: #fafafa;
+        border-bottom: 1px solid #ddd;
+      }
+       
+      .dg li.save-row .button {
+        text-shadow: none !important;
+      }
 
-// Notice this belongs to the DAT.GUI class (uppercase)
-// and not an instance thereof.
-DAT.GUI.autoPlace = false;
+      .dg li.title {
+        background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
+      }
 
-var gui = new DAT.GUI();
+      .dg .cr.function .property-name {
+        width: inherit;
+      }
 
-// Do some custom styles ...
-gui.domElement.style.position = 'absolute';
-gui.domElement.style.top = '20px';
-gui.domElement.style.left = '20px';
+      .dg .cr.function:hover,.dg .cr.boolean:hover {
+        background: #fff;
+      }
+       
+      .dg .c input[type=text] {
+        background: #e9e9e9;
+      }
+       
+      .dg .c input[type=text]:hover {
+        background: #eee;
+      }
+       
+      .dg .c input[type=text]:focus {
+        background: #eee;
+        color: #555;
+      }
+       
+      .dg .c .slider {
+        background: #e9e9e9;
+      }
 
-document.getElementById('my-gui-container').appendChild( gui.domElement );
-
-========
-
-http://brm.io/dat-gui-light-theme/
-https://github.com/liabru/dat-gui-light-theme
-
-.dg.main.taller-than-window .close-button {
-    border-top: 1px solid #ddd;
-}
-
-.dg.main .close-button {
-    background-color: #ccc;
-}
- 
-.dg.main .close-button:hover {
-    background-color: #ddd;
-}
-
-.dg {
-    color: #555;
-    text-shadow: none !important;
-}
-
-.dg.main::-webkit-scrollbar {
-    background: #fafafa;
-}
-
-.dg.main::-webkit-scrollbar-thumb {
-    background: #bbb;
-}
- 
-.dg li:not(.folder) {
-    background: #fafafa;
-    border-bottom: 1px solid #ddd;
-}
- 
-.dg li.save-row .button {
-    text-shadow: none !important;
-}
-
-.dg li.title {
-    background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
-}
-
-.dg .cr.function:hover,.dg .cr.boolean:hover {
-    background: #fff;
-}
- 
-.dg .c input[type=text] {
-    background: #e9e9e9;
-}
- 
-.dg .c input[type=text]:hover {
-    background: #eee;
-}
- 
-.dg .c input[type=text]:focus {
-    background: #eee;
-    color: #555;
-}
- 
-.dg .c .slider {
-    background: #e9e9e9;
-}
-
-.dg .c .slider:hover {
-    background: #eee;
-}
-
-
--->
-
+      .dg .c .slider:hover {
+        background: #eee;
+      }
+    </style>
     <script type="text/javascript">
-      var __EUI;
+      var __EUI; // resist doing "= undefined, or = null" we just need it named and an async event will bind it!
 
       (function() {
-      var vwf = {
-        m4_CarbineID: undefined,
-        cameraID: undefined,
-        appID: vwf_view.kernel.application()
+      var cssIFrame = {
+        'border': '1px outset #999999',
+        'width': '450px',
+        'height': '600px',
+        'background-color': 'rgba(228, 228, 228, 0.8)'
       };
-
+      var vwfapp = {
+        appId: vwf_view.kernel.application(),
+        M4_Carbine_daeId: undefined,
+        idToName: undefined
+      };
       var M4 = {
-        gui: undefined,
-        tray: undefined,
-        guiref: { },
-        Tooltray: function() {
-          this.backendtxrxMsg = false;
-          this.cameraOrbit = 0;
-          this.cameraZoom = 0;
-          this.reset = M4.reset;
-
-          this.m4Carbine = function() {
-            Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-            M4.gui.remove(M4.guiref.m4c);
-
-            vwf_view.kernel.callMethod(vwf.appID, 'instance', [ ]);
-
-            M4.gui.add(M4.tray, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
-              if (value) $('#backendtxrxMsg').show('easing');
-              else $('#backendtxrxMsg').hide('easing');
-            });
-            M4.gui.add(M4.tray, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
-              vwf_view.kernel.callMethod(vwf.appID, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
-            });
-            M4.gui.add(M4.tray, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-              vwf_view.kernel.callMethod(vwf.appID, 'zoom', [ value ]);
-            }).onFinishChange(function(value) {
-              vwf_view.kernel.callMethod(vwf.appID, 'lookAt', [ null ]);
-            });
-
-            M4.tray.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
-            M4.gui.add(M4.tray, 'PointWeaponInSafeDirection').name('Position Weapon');
-            M4.addSelectorLeverActionGroup();
-            M4.tray.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
-            M4.gui.add(M4.tray, 'PushMagazineReleaseButton').name('Magazine Catch');
-            M4.tray.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
-            M4.gui.add(M4.tray, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
-            M4.tray.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
-            M4.gui.add(M4.tray, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
-            M4.tray.ReleaseChargingHandle = M4.ReleaseChargingHandle;
-            M4.gui.add(M4.tray, 'ReleaseChargingHandle').name('Release Charging Handle');
-            M4.tray.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
-            M4.gui.add(M4.tray, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
-            M4.tray.PushChargingHandleForward = M4.PushChargingHandleForward;
-            M4.gui.add(M4.tray, 'PushChargingHandleForward').name('Push Charging Handle Forward');
-            M4.tray.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
-            M4.gui.add(M4.tray, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
-            M4.tray.PushBoltCatchTop = M4.PushBoltCatchTop;
-            M4.gui.add(M4.tray, 'PushBoltCatchTop').name('Push Bolt Catch Top');
-            M4.tray.PullTrigger = M4.PullTrigger;
-            M4.gui.add(M4.tray, 'PullTrigger').name('Pull Trigger');
-
-            M4.tray.assessment = M4.assessment;
-            M4.gui.add(M4.tray, 'assessment').name('Assessment');
-          };
-        },
-        reset: function() {
-          //vwf_view.kernel.callMethod(vwf.appID, 'removeInstance');
-          //window.location.href = window.location.href;
-          //window.location.reload();
-          vwf_view.kernel.callMethod(vwf.appID, 'resetBackend');
-        },
+        toolTrayGUI: undefined,
+        toolTrayMenu: undefined,
+        cameraMenu: undefined,
+        cameraGUI: undefined,
+        contextMenu: undefined,
+        contextGUI: undefined,
+        contextActive: false,
+        guiref: { ctx: [ ] },
+        assessmentActive: false,
         PointWeaponInSafeDirection: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PointWeaponInSafeDirection');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PointWeaponInSafeDirection');
+          handleContextMenu();
         },
         addSelectorLeverActionGroup: function() {
-          var selectorLeverFolder = M4.gui.addFolder("Selecctor Lever");
+          var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selecctor Lever");
 
-          M4.tray.semi = M4.semi;
-          selectorLeverFolder.add(M4.tray, 'semi').name('SEMI');
-          M4.tray.safe = M4.safe;
-          selectorLeverFolder.add(M4.tray, 'safe').name('SAFE');
-          M4.tray.burst = M4.burst;
-          selectorLeverFolder.add(M4.tray, 'burst').name('BURST');
+          selectorLeverFolder.add(M4.toolTrayMenu, 'semi').name('SEMI');
+          selectorLeverFolder.add(M4.toolTrayMenu, 'safe').name('SAFE');
+          selectorLeverFolder.add(M4.toolTrayMenu, 'burst').name('BURST');
           $('div.dg ul li.title').click();
         },
         semi: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'SelectModeSemi');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSemi');
+          handleContextMenu();
         },
         safe: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'SelectModeSafe');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSafe');
+          handleContextMenu();
         },
         burst: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'SelectModeBurst');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeBurst');
+          handleContextMenu();
         },
         PushMagazineReleaseButton: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushMagazineReleaseButton');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
+          handleContextMenu();
         },
         PullAndHoldChargingHandle: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PullAndHoldChargingHandle');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
+          handleContextMenu();
         },
         PushAndHoldBoltCatchBottom: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushAndHoldBoltCatchBottom');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushAndHoldBoltCatchBottom');
+          handleContextMenu();
         },
         ReleaseChargingHandle: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'ReleaseChargingHandle');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseChargingHandle');
+          handleContextMenu();
         },
         LetGoOfBoltCatchBottom: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'LetGoOfBoltCatchBottom');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'LetGoOfBoltCatchBottom');
+          handleContextMenu();
         },
         PushChargingHandleForward: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushChargingHandleForward');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandleForward');
+          handleContextMenu();
         },
         CheckChamberAndReceiverForAmmo: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'CheckChamberAndReceiverForAmmo');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'CheckChamberAndReceiverForAmmo');
+          handleContextMenu();
         },
         PushBoltCatchTop: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PushBoltCatchTop');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushBoltCatchTop');
+          handleContextMenu();
         },
         PullTrigger: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'PullTrigger');
-        },
-        assessment: function() {
-          vwf.m4_CarbineID = vwf.m4_CarbineID || vwf_view.kernel.find(vwf.appID, "//M4_Carbine_dae");
-          vwf_view.kernel.callMethod(vwf.m4_CarbineID, 'assessment');
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');
+          handleContextMenu();
         },
         init: function() {
           $('#backendtxrxMsg').hide();
-          this.tray = new this.Tooltray();
-          this.gui = new dat.GUI();
-          this.gui.add(this.tray, 'reset').name('Reset');
-          M4.guiref.m4c = this.gui.add(this.tray, 'm4Carbine').name('M4 Carbine');
+          this.toolTrayMenu = new ToolTrayMenu();
+          this.toolTrayGUI = new dat.GUI();
+          this.toolTrayGUI.name = 'Tool Tray';
+          M4.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name('M4 Carbine');
+
+          this.cameraMenu = new CameraMenu();
+          this.cameraGUI = new dat.GUI();
+          this.cameraGUI.name = 'Camera Menu';
+          this.cameraGUI.add(this.cameraMenu, 'reset').name('Reset');
+          this.cameraGUI.add(this.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+            if (value) $('#backendtxrxMsg').show();
+            else $('#backendtxrxMsg').hide();
+          });
+          this.cameraGUI.add(this.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+          });
+          this.cameraGUI.add(this.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'zoom', [ value ]);
+          }).onFinishChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
+          });
+          this.cameraGUI.add(this.cameraMenu, 'assessment').name('Assessment');
+          this.cameraGUI.autoPlace = false;
+          this.cameraGUI.domElement.style.position = 'fixed';
+          this.cameraGUI.domElement.style.float = 'left';
+          this.cameraGUI.domElement.style.left = '15px';
+          this.cameraGUI.domElement.style.overflowX = 'visible';
+          this.cameraGUI.domElement.style.visibility = 'hidden';
+          $('body').append(this.cameraGUI.domElement);
+
+          this.contextMenu = new ContextMenu();
+          this.contextGUI = new dat.GUI();
+          this.contextGUI.name = 'Context Menu';
+          this.contextGUI.autoPlace = false;
+          this.contextGUI.domElement.style.position = 'absolute';
+          $('body').append(this.contextGUI.domElement);
+          $('div.close-button:last').css('display', 'none');
         }
       };
+      var CameraMenu = function() {
+        this.backendtxrxMsg = false;
+        this.cameraOrbit = 0;
+        this.cameraZoom = 0;
+        this.reset = function() {
+          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+        };
+        this.assessment = function() {
+          if (!M4.assessmentActive) {
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'assessment');
+            M4.assessmentActive = true;
+            $('.dg.ac').toggle();
+          }
+        };
+      };
+      var ToolTrayMenu = function() {
+        this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
+        this.semi = M4.semi;
+        this.safe = M4.safe;
+        this.burst = M4.burst;
+        this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
+        this.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
+        this.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
+        this.ReleaseChargingHandle = M4.ReleaseChargingHandle;
+        this.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
+        this.PushChargingHandleForward = M4.PushChargingHandleForward;
+        this.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
+        this.PushBoltCatchTop = M4.PushBoltCatchTop;
+        this.PullTrigger = M4.PullTrigger;
 
-      function SceneInitialize() {
+        this.m4Carbine = function() {
+          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+          M4.toolTrayGUI.remove(M4.guiref.m4c);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ ]);
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
+          M4.addSelectorLeverActionGroup();
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushMagazineReleaseButton').name('Magazine Catch');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'ReleaseChargingHandle').name('Release Charging Handle');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushChargingHandleForward').name('Push Charging Handle Forward');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'CheckChamberAndReceiverForAmmo').name('Check Chamber and Receiver For Ammo');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushBoltCatchTop').name('Push Bolt Catch Top');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PullTrigger').name('Pull Trigger');
+        };
+      };
+      var ContextMenu = function() {
+        this.close = function() {
+          handleContextMenu();
+        };
+        this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
+        this.semi = M4.semi;
+        this.safe = M4.safe;
+        this.burst = M4.burst;
+        this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
+        this.PullAndHoldChargingHandle = M4.PullAndHoldChargingHandle;
+        this.PushAndHoldBoltCatchBottom = M4.PushAndHoldBoltCatchBottom;
+        this.ReleaseChargingHandle = M4.ReleaseChargingHandle;
+        this.LetGoOfBoltCatchBottom = M4.LetGoOfBoltCatchBottom;
+        this.PushChargingHandleForward = M4.PushChargingHandleForward;
+        this.CheckChamberAndReceiverForAmmo = M4.CheckChamberAndReceiverForAmmo;
+        this.PushBoltCatchTop = M4.PushBoltCatchTop;
+        this.PullTrigger = M4.PullTrigger;
+      };
+
+      function handleContextMenu() {
+        if (M4.contextActive) {
+          var l = M4.guiref.ctx.length;
+
+          for (var i = 0; i < l; i++) {
+            M4.contextGUI.remove(M4.guiref.ctx[ i ]);
+          }
+
+          M4.guiref.ctx = [ ];
+          M4.contextActive = false;
+        }
+      }
+
+      function sceneInitialize() {
         M4.init();
-        vwf_view.kernel.callMethod(vwf.appID, "processEuiDotJson", [ __EUI ]);
+        vwf_view.kernel.callMethod(vwfapp.appId, "processEuiDotJson", [ __EUI ]);
+        Pace.stop(); // We should not need to do this, but sometimes the Pace progress just hangs around too long...
 
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
-          if (nodeId == vwf.appID) {
+          if (nodeId == vwfapp.appId) {
             if (propertyName == 'backendResetSent') {
-              if (propertyValue) window.location.reload(true);
+              if (propertyValue) window.location.reload(true); // window.location.href = window.location.href;
             }
           }
         };
 
         // notice the methodValue for the function return value as needed...
-        vwf_view.calledMethod = function (nodeId, methodName, methodParameters, methodValue) {
+        vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
-            $('div.dg div.main, div.close-button').css('width', '550px');
+            M4.cameraGUI.domElement.style.visibility = 'visible';
+            vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
+            vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
           } else if (methodName == 'assessment') {
-            $('#assessmentIFrame').css({
-              'border': '1px outset #999999',
-              'width': '450px',
-              'height': '600px',
-              'background-color': 'rgba(228, 228, 228, 0.8)'
-            });
+            $('#assessmentIFrame').css(cssIFrame);
+            $('#assessment').fadeIn();
           }
         }
 
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
-          //console.log('firedEvent arg len:' + arguments.length + ' arg0:' + arguments[ 0 ] + ' arg1:' + arguments[ 1 ] + ' arg2:' + arguments[ 2 ]);
+          if (eventName != 'pointerDown') return;
 
-          if (nodeId == vwf.appID) {
-            switch (eventName) {
-            case "pointerDown":
-              console.log('Observing pointerDown in the html view');
+          // console.log(nodeId); /* Example: */
+          //   index-vwf:6-98-M4_Carbine_dae:10-80-Selector_Lever
+          //   index-vwf:6-98-M4_Carbine_dae
+          //   index-vwf 
+
+          if (M4.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
+
+          console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
+
+          if (nodeId == vwfapp.M4_Carbine_daeId) {
+            M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
+            M4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
+            M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+
+            switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
+            case 'Magazine_Catch':
+            case 'Magazine_Catch_Button':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Magazine Catch'));
+              break;
+            case 'Selector_Lever':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'semi').name('SEMI'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'safe').name('SAFE'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'burst').name('BURST'));
+              break;
+            case 'Charging_Handle':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
+              break;
+            case 'Bolt_Catch':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushBoltCatchTop').name('Push Bolt Catch Top'));
+              break;
+            case 'Ejection_Port_Cover':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'CheckChamberAndReceiverForAmmo').name('Check Chamber And Receiver For Ammo'));
+              break;
+            case 'Trigger':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullTrigger').name('Pull Trigger'));
+              break;
+            default: // Everything else, barrel, stock, etc, is position the weapon...
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
               break;
             }
           }
         };
 
-        $(window).unload(function() { SceneDestroy(); });
+        $(window).unload(function() { sceneDestroy(); });
       }
 
-      function SceneDestroy() {
+      function sceneDestroy() {
       }
 
-      $(document).ready(function() { SceneInitialize(); });
+      // vwf html view initialization event, you don't have window.onload and document.ready is not good enough...
+      // initialization, yes it can be done this way... from tile-puzzle-2D example
+      vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
+        if (childID == vwfapp.appId) sceneInitialize();
+      }
       })(); //@ sourceURL=index.vwf.html
     </script>
   </head>
 <body>
-  <div id="wrapper" class="wrapper" style="position: absolute; left: 25px; top: 25px; color: white;">
+  <div id="wrapper" class="wrapper">
     <div id="backendtxrxMsg"></div>
     <div id="assessment"></div>
   </div>

@@ -64,7 +64,7 @@ scripts:
   this.activity = function(activity, done /* callback */) {
     console.info("backendtxrx.ux activity " + JSON.stringify(activity));
 
-    var url = (this.activityServerAddress == null)? this.parent.activityServerAddress : this.activityServerAddress;
+    var url = this.activityServerAddress;
     var activityJSON = JSON.stringify(activity);
 
     jQuery('#backendtxrxMsg').text(activityJSON);

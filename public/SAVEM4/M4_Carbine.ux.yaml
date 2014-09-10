@@ -2,13 +2,8 @@
 properties:
   M4_Carbine_KbId: 'unknown'
   __idToName:
-events:
-  pointerUp:
-  pointerDown:
-  pointerMove:
 methods:
   init:
-  dispatchPick:
   PointWeaponInSafeDirection:
   SelectModeSemi:
   SelectModeSafe:
@@ -49,7 +44,7 @@ scripts:
       if (self[ name + '_KbId' ]) comps.push(name);
     }
 
-    console.log(self.__idToName);
+    // console.log(self.__idToName);
     self.checkServerAddress(); // set the server address for the interfaces and set from parent if we need to
 
     self.ask(
@@ -62,50 +57,6 @@ scripts:
         }
       }
     );
-  };
-
-  this.dispatchPick = function(who) {
-    switch(who) {
-    case 'M4_Carbine_dae':
-      console.info('M4_Carbine_dae pick');
-      this.PointWeaponInSafeDirection();
-      break;
-    case 'Selector_Lever':
-      console.info('Selector_Lever pick');
-      // XXX this.SelectMode...();
-      break;
-    case 'Magazine_Catch':
-    case 'Magazine_Catch_Button':
-      console.info('Magazine_Catch pick');
-      this.PushMagazineReleaseButton();
-      break;
-    };
-  };
-
-  this.pointerUp = function(pointerInfo, pickInfo) {
-    console.info("M4_Carbine.ux pointerUp");
-  };
-
-  this.pointerDown = function(pointerInfo, pickInfo) {
-    console.info("M4_Carbine.ux pointerDown");
-    console.log(pickInfo);
-    this.dispatchPick(this.__idToName[ pickInfo.pickID ]);
-    // M4_Carbine.ux pointerDown M4_Carbine.ux:38
-    // Object {pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever", pointerVector: Array[3], position: Array[16], normal: Array[3], source: Array[3]…}
-    // distance: 0.5202645488640165
-    // globalNormal: Array[3]
-    // globalPosition: Array[3]
-    // globalSource: Array[3]
-    // normal: Array[3]
-    // pickID: "index-vwf:6-80-M4_Carbine_dae:8-76-Selector_Lever"
-    // pointerVector: Array[3]
-    // position: Array[16]
-    // source: Array[3]
-    // __proto__: Object
-  };
-
-  this.pointerMove = function(pointerInfo, pickInfo) {
-    console.info("M4_Carbine.ux pointerMove, just for drag, should be pointerDrag");
   };
 
   this.PointWeaponInSafeDirection = function() {
@@ -151,7 +102,7 @@ scripts:
 
   this.PushAndHoldBoltCatchBottom = function() {
     console.info('PushAndHoldBoltCatchBottom pushed');
-    this.Bolt_Catch.rotation = [ 1, 0, 0, 12 ];
+    this.Bolt_Catch.rotation = [ 1, 0, 0, -12 ];
     this.activity({ action: 'PushAndHoldBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
   };
 
@@ -189,8 +140,7 @@ scripts:
 
   this.PushBoltCatchTop = function() {
     console.info('PushBoltCatchTop');
-  //   this..rotation = [ 1, 0, 0, 12 ];
-  //   this..translateTo([ 0, 0, 0 ], 0.25);
+    this.Bolt_Catch.rotation = [ 1, 0, 0, 12 ];
     this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
   };
 
@@ -209,8 +159,8 @@ scripts:
     jQuery('<iframe/>', {
       name: 'assessment',
       id:   'assessmentIFrame',
-      src: this.parent.assessmentServerAddress
+      src: this.assessmentServerAddress
     }).appendTo('#assessment');
-    //jQuery('#assessment').html("<h1>Assessment</h1>");
+    // jQuery('#assessment').html("<h1>Assessment</h1>");
     // this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId ] });
   }; //@ sourceURL=M4_Carbine.ux
