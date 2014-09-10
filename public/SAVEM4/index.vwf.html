@@ -9,7 +9,7 @@ vwf html view initialization event, you don't have window.onload and document.re
 
 NOTE: The callMethod and other kernel or view methods are async, so we have to work with it that way
 
-The hidden gotProperty, we had docs on satProperty, from events.js bzflag example
+The hidden gotProperty, we had docs on satProperty but not got, from events.js bzflag example
 vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
     if (nodeId == sceneNode) {
         switch (propertyName) {
@@ -17,8 +17,7 @@ vwf_view.gotProperty = function (nodeId, propertyName, propertyValue) {
                 updateScoreboard(propertyValue);
                 break;
         }
-    }
-    else if (nodeId == playerNode) {
+    } else if (nodeId == playerNode) {
         switch (propertyName) {
             case "score":
                 $("#userScore").text(propertyValue); 
@@ -131,9 +130,9 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
 
       (function() {
       var vwfapp = {
+        appID: vwf_view.kernel.application(),
         M4_CarbineID: undefined,
         cameraID: undefined,
-        appID: vwf_view.kernel.application(),
         idToName: undefined
       };
       var M4 = {
@@ -348,7 +347,6 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
           if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
             M4.cameraGUI.domElement.style.visibility = 'visible';
-            // M4.gui.domElement.style.width = '550px';
             vwfapp.M4_CarbineID = vwfapp.M4_CarbineID || vwf_view.kernel.find(vwfapp.appID, "//M4_Carbine_dae")[ 0 ];
             vwfapp.idToName = vwf.getProperty(vwfapp.M4_CarbineID, "__idToName");
             // console.log(vwfapp.M4_CarbineID);
@@ -368,10 +366,10 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
           if (eventName != 'pointerDown') return;
 
-          // console.log(nodeId);
-          // index-vwf:6-98-M4_Carbine_dae:10-80-Selector_Lever
-          // index-vwf:6-98-M4_Carbine_dae
-          // index-vwf 
+          // console.log(nodeId); /* Example: */
+          //   index-vwf:6-98-M4_Carbine_dae:10-80-Selector_Lever
+          //   index-vwf:6-98-M4_Carbine_dae
+          //   index-vwf 
 
           if (M4.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
 
@@ -388,36 +386,36 @@ Initialization, yes it can be done this way... from tile-puzzle-2D example
             switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
             case 'Magazine_Catch':
             case 'Magazine_Catch_Button':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Magazine Catch'));
               break;
             case 'Selector_Lever':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'semi').name('SEMI'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'safe').name('SAFE'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'burst').name('BURST'));
               break;
             case 'Charging_Handle':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
               break;
             case 'Bolt_Catch':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'LetGoOfBoltCatchBottom').name('Let Go Of Bolt Catch Bottom'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushBoltCatchTop').name('Push Bolt Catch Top'));
               break;
             case 'Ejection_Port_Cover':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'CheckChamberAndReceiverForAmmo').name('Check Chamber And Receiver For Ammo'));
               break;
             case 'Trigger':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullTrigger').name('Pull Trigger'));
               break;
             default: // Everything else, barrel, stock, etc, is position the weapon...
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('Close (X)'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
               break;
             }
