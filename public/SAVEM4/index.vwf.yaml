@@ -62,6 +62,29 @@ scripts:
       Base: {
         extends: "http://vwf.example.com/node3.vwf"
       },
+      Bolt: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Catch: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Bolt_Ring: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Ring1: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Ring2: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Cam_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
       Charging_Handle: {
         extends: "http://vwf.example.com/node3.vwf"
       },
@@ -71,14 +94,36 @@ scripts:
       Clip_Spring1: {
         extends: "http://vwf.example.com/node3.vwf"
       },
-      Bolt_Catch: {
-        extends: "http://vwf.example.com/node3.vwf"
+      Extractor: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Extractor_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Extractor_Spring: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
       },
       Ejection_Port_Cover: {
         extends: "http://vwf.example.com/node3.vwf"
       },
+      Ejector_Spring_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Firing_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Firing_Pin_Retaining_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
       Key_and_Bolt_Carrier_Assembly: {
-        extends: "http://vwf.example.com/node3.vwf"
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
       },
       Magazine_Catch: {
         extends: "http://vwf.example.com/node3.vwf"
