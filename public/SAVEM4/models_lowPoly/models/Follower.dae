@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:14:33</created>
+    <modified>2014-09-18T11:14:33</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="FollowerShape" name="FollowerShape">
+      <mesh>
+        <source id="FollowerShape-positions" name="FollowerShape-positions">
+          <float_array id="FollowerShape-positions-array" count="168">-0.086768 -0.009483 -0.037653 -0.02924 -0.009483 -0.037653 -0.086768 -0.009483 -0.032675 -0.02924 -0.009483 -0.032675 -0.086768 0.008745 -0.032675 -0.02924 0.008745 -0.032675 -0.086768 0.008745 -0.037653 -0.02924 0.008745 -0.037653 -0.083575 -0.009095 -0.032684 -0.053388 -0.009095 -0.032684 -0.083575 -0.009095 -0.028393 -0.053388 -0.009095 -0.028393 -0.083575 7.2e-4 -0.028393 -0.053388 7.2e-4 -0.028393 -0.083575 7.2e-4 -0.032684 -0.053388 7.2e-4 -0.032684 -0.032626 -0.00582 -0.061035 -0.030017 -0.00582 -0.061035 -0.033179 -0.006839 -0.037652 -0.029614 -0.006839 -0.037652 -0.033179 0.006101 -0.037652 -0.029614 0.006101 -0.037652 -0.032626 0.005082 -0.061035 -0.030017 0.005082 -0.061035 -0.068921 -0.001936 -0.061035 -0.063017 -0.001936 -0.061035 -0.069736 -0.0022 -0.037652 -0.062202 -0.0022 -0.037652 -0.069736 0.001159 -0.037652 -0.062202 0.001159 -0.037652 -0.068921 8.94e-4 -0.061035 -0.063017 8.94e-4 -0.061035 -0.084141 -0.007657 -0.041231 -0.082051 -0.007657 -0.041231 -0.084138 -0.00899 -0.037652 -0.081779 -0.00899 -0.037652 -0.084138 0.007949 -0.037652 -0.081779 0.007949 -0.037652 -0.084141 0.006615 -0.041231 -0.082051 0.006615 -0.041231 -0.086228 -0.003982 -0.046617 -0.084139 -0.003982 -0.046606 -0.0865 -0.004629 -0.037652 -0.084141 -0.004629 -0.037652 -0.0865 0.003588 -0.037652 -0.084141 0.003588 -0.037652 -0.086228 0.002941 -0.046617 -0.084139 0.002941 -0.046606 -0.053335 -0.006799 -0.032684 -0.035734 -0.006799 -0.032684 -0.053335 -0.006799 -0.030174 -0.035734 -0.006799 -0.030174 -0.053335 -0.001575 -0.030174 -0.035734 -0.001575 -0.030174 -0.053335 -0.001575 -0.032684 -0.035734 -0.001575 -0.032684</float_array>
+          <technique_common>
+            <accessor source="#FollowerShape-positions-array" count="56" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FollowerShape-normals" name="FollowerShape-normals">
+          <float_array id="FollowerShape-normals-array" count="432">0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 -0.9990522 -0.04353001 0 -0.9990522 -0.04353001 0 -0.9990522 -0.04353001 0 -0.9990522 -0.04353001 0 0.9990522 -0.04353001 0 0.9990522 -0.04353001 0 0.9990522 -0.04353001 0 0.9990522 -0.04353001 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0.9998511 0 -0.017256 0.9998511 0 -0.017256 0.9998511 0 -0.017256 0.9998511 0 -0.017256 -0.9997202 0 -0.02365401 -0.9997202 0 -0.02365401 -0.9997202 0 -0.02365401 -0.9997202 0 -0.02365401 0 -0.9999361 -0.011309 0 -0.9999361 -0.011309 0 -0.9999361 -0.011309 0 -0.9999361 -0.011309 0 0.9999361 -0.011309 0 0.9999361 -0.011309 0 0.9999361 -0.011309 0 0.9999361 -0.011309 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0.9993927 0 -0.03484699 0.9993927 0 -0.03484699 0.9993927 0 -0.03484699 0.9993927 0 -0.03484699 -0.9993927 0 -0.03484699 -0.9993927 0 -0.03484699 -0.9993927 0 -0.03484699 -0.9993927 0 -0.03484699 0 -0.937036 -0.349233 0 -0.937036 -0.349233 0 -0.937036 -0.349233 0 -0.937036 -0.349233 0 0.937036 -0.349233 0 0.937036 -0.349233 0 0.937036 -0.349233 0 0.937036 -0.349233 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0.9971342 0 -0.07565401 0.9971342 0 -0.07565401 0.9971342 0 -0.07565401 0.9971342 0 -0.07565401 -0.9999999 0 6.21e-4 -0.9999999 0 6.21e-4 -0.9999999 0 6.21e-4 -0.9999999 0 6.21e-4 1.88e-4 -0.9974028 -0.07202499 1.88e-4 -0.9974028 -0.07202499 1.88e-4 -0.9974028 -0.07202499 1.88e-4 -0.9974028 -0.07202499 1.88e-4 0.9974028 -0.07202499 1.88e-4 0.9974028 -0.07202499 1.88e-4 0.9974028 -0.07202499 1.88e-4 0.9974028 -0.07202499 0.005558998 0 -0.9999846 0.005558998 0 -0.9999846 0.005558998 0 -0.9999846 0.005558998 0 -0.9999846 1 0 2.45e-4 1 0 2.45e-4 1 0 2.45e-4 1 0 2.45e-4 -0.9995418 0 -0.03027199 -0.9995418 0 -0.03027199 -0.9995418 0 -0.03027199 -0.9995418 0 -0.03027199 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0</float_array>
+          <technique_common>
+            <accessor source="#FollowerShape-normals-array" count="144" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FollowerShape-FollowerShape-FollowerShape-map1" name="FollowerShape-FollowerShape-FollowerShape-map1">
+          <float_array id="FollowerShape-FollowerShape-FollowerShape-map1-array" count="188">0.33 0 0.663333 0 0.33 0.25 0.663333 0.25 0.33 0.5 0.663333 0.5 0.33 0.75 0.663333 0.75 0.33 1 0.663333 1 1 0 1 0.25 0 0 0 0.25 0.33 0 0.663333 0 0.663333 0.25 0.33 0.25 0.663333 0.5 0.33 0.5 0.663333 0.75 0.33 0.75 1 0 1 0.25 0 0 0 0.25 0.33 0 0.663333 0 0.663333 0.25 0.33 0.25 0.663333 0.5 0.33 0.5 0.663333 0.75 0.33 0.75 0.663333 1 0.33 1 1 0 1 0.25 0 0 0 0.25 0.33 0 0.663333 0 0.663333 0.25 0.33 0.25 0.663333 0.5 0.33 0.5 0.663333 0.75 0.33 0.75 0.663333 1 0.33 1 1 0 1 0.25 0 0 0 0.25 0.33 0 0.663333 0 0.663333 0.25 0.33 0.25 0.663333 0.5 0.33 0.5 0.663333 0.75 0.33 0.75 0.663333 1 0.33 1 1 0 1 0.25 0 0 0 0.25 0.33 0 0.663333 0 0.663333 0.25 0.33 0.25 0.663333 0.5 0.33 0.5 0.663333 0.75 0.33 0.75 0.663333 1 0.33 1 1 0 1 0.25 0 0 0 0.25 0.33 0 0.663333 0 0.663333 0.25 0.33 0.25 0.663333 0.5 0.33 0.5 0.663333 0.75 0.33 0.75 1 0 1 0.25 0 0 0 0.25</float_array>
+          <technique_common>
+            <accessor source="#FollowerShape-FollowerShape-FollowerShape-map1-array" count="94" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="FollowerShape-vertices" name="FollowerShape-vertices">
+          <input semantic="POSITION" source="#FollowerShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="36">
+          <input semantic="VERTEX" source="#FollowerShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#FollowerShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#FollowerShape-FollowerShape-FollowerShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>0 0 0 1 1 1 3 2 3 2 3 2 2 4 2 3 5 3 5 6 5 4 7 4 4 8 4 5 9 5 7 10 7 6 11 6 6 12 6 7 13 7 1 14 9 0 15 8 1 16 1 7 17 10 5 18 11 3 19 3 6 20 12 0 21 0 2 22 2 4 23 13 8 24 14 9 25 15 11 26 16 10 27 17 10 28 17 11 29 16 13 30 18 12 31 19 12 32 19 13 33 18 15 34 20 14 35 21 9 36 15 15 37 22 13 38 23 11 39 16 14 40 24 8 41 14 10 42 17 12 43 25 16 44 26 17 45 27 19 46 28 18 47 29 20 48 31 21 49 30 23 50 32 22 51 33 22 52 33 23 53 32 17 54 34 16 55 35 17 56 27 23 57 36 21 58 37 19 59 28 22 60 38 16 61 26 18 62 29 20 63 39 24 64 40 25 65 41 27 66 42 26 67 43 28 68 45 29 69 44 31 70 46 30 71 47 30 72 47 31 73 46 25 74 48 24 75 49 25 76 41 31 77 50 29 78 51 27 79 42 30 80 52 24 81 40 26 82 43 28 83 53 32 84 54 33 85 55 35 86 56 34 87 57 36 88 59 37 89 58 39 90 60 38 91 61 38 92 61 39 93 60 33 94 62 32 95 63 33 96 55 39 97 64 37 98 65 35 99 56 38 100 66 32 101 54 34 102 57 36 103 67 40 104 68 41 105 69 43 106 70 42 107 71 44 108 73 45 109 72 47 110 74 46 111 75 46 112 75 47 113 74 41 114 76 40 115 77 41 116 69 47 117 78 45 118 79 43 119 70 46 120 80 40 121 68 42 122 71 44 123 81 48 124 82 49 125 83 51 126 84 50 127 85 50 128 85 51 129 84 53 130 86 52 131 87 52 132 87 53 133 86 55 134 88 54 135 89 49 136 83 55 137 90 53 138 91 51 139 84 54 140 92 48 141 82 50 142 85 52 143 93</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>FollowerShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Follower" name="Follower" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#FollowerShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Follower</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>

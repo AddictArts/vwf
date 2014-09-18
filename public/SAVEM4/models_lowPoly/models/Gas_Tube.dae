@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:12:43</created>
+    <modified>2014-09-18T11:12:43</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Gas_TubeShape" name="Gas_TubeShape">
+      <mesh>
+        <source id="Gas_TubeShape-positions" name="Gas_TubeShape-positions">
+          <float_array id="Gas_TubeShape-positions-array" count="162">0.192037 3.38e-4 0.017639 0.192037 9.06e-4 0.017135 0.192037 0.001176 0.016424 0.192037 0.001084 0.01567 0.192037 6.53e-4 0.015045 0.192037 -2e-5 0.014691 0.192037 -7.8e-4 0.014691 0.192037 -0.001453 0.015045 0.192037 -0.001885 0.01567 0.192037 -0.001976 0.016424 0.192037 -0.001707 0.017135 0.192037 -0.001138 0.017639 0.192037 -4e-4 0.017821 0.073912 3.38e-4 0.017647 0.073912 9.06e-4 0.017143 0.073912 0.001176 0.016432 0.073912 0.001084 0.015678 0.073912 6.53e-4 0.015052 0.073912 -2e-5 0.014699 0.073912 -7.8e-4 0.014699 0.073912 -0.001453 0.015052 0.073912 -0.001885 0.015678 0.073912 -0.001976 0.016432 0.073912 -0.001707 0.017143 0.073912 -0.001138 0.017647 0.073912 -4e-4 0.017829 0.192037 -4e-4 0.016233 0.018648 3.38e-4 0.021331 0.018648 9.06e-4 0.020827 0.018648 0.001176 0.020117 0.018648 0.001084 0.019362 0.018648 6.53e-4 0.018737 0.018648 -2e-5 0.018384 0.018648 -7.8e-4 0.018384 0.018648 -0.001453 0.018737 0.018648 -0.001885 0.019362 0.018648 -0.001976 0.020117 0.018648 -0.001707 0.020827 0.018648 -0.001138 0.021331 0.018648 -4e-4 0.021513 -0.050664 3.38e-4 0.021483 -0.050664 9.06e-4 0.020979 -0.050664 -4e-4 0.020077 -0.050664 0.001176 0.020268 -0.050664 0.001084 0.019514 -0.050664 6.53e-4 0.018888 -0.050664 -2e-5 0.018535 -0.050664 -7.8e-4 0.018535 -0.050664 -0.001453 0.018888 -0.050664 -0.001885 0.019514 -0.050664 -0.001976 0.020268 -0.050664 -0.001707 0.020979 -0.050664 -0.001138 0.021483 -0.050664 -4e-4 0.021665</float_array>
+          <technique_common>
+            <accessor source="#Gas_TubeShape-positions-array" count="54" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Gas_TubeShape-normals" name="Gas_TubeShape-normals">
+          <float_array id="Gas_TubeShape-normals-array" count="702">0 0.464727 0.885454 0 0.8229887 0.5680578 0.01199699 0.8244266 0.5658417 0.01892001 0.4659622 0.8846023 0 0.8229887 0.5680578 0 0.9927099 0.120529 0.002356999 0.9930866 0.11736 0.01199699 0.8244266 0.5658417 0 0.9927099 0.120529 0 0.9350132 -0.3546131 -0.007720998 0.9339138 -0.3574149 0.002356999 0.9930866 0.11736 0 0.9350132 -0.3546131 0 0.6631169 -0.748516 -0.01594899 0.6614318 -0.7498358 -0.007720998 0.9339138 -0.3574149 0 0.6631169 -0.748516 0 0.2393119 -0.9709427 -0.020545 0.238513 -0.970922 -0.01594899 0.6614318 -0.7498358 0 0.2393119 -0.9709427 0 -0.2393119 -0.9709427 -0.020545 -0.238513 -0.970922 -0.020545 0.238513 -0.970922 0 -0.2393119 -0.9709427 0 -0.6631174 -0.7485154 -0.01594899 -0.6614318 -0.7498358 -0.020545 -0.238513 -0.970922 0 -0.6631174 -0.7485154 0 -0.9350132 -0.3546131 -0.007720998 -0.9339138 -0.3574149 -0.01594899 -0.6614318 -0.7498358 0 -0.9350132 -0.3546131 0 -0.9927102 0.120526 0.002357 -0.9930869 0.117358 -0.007720998 -0.9339138 -0.3574149 0 -0.9927102 0.120526 0 -0.8229879 0.568059 0.011997 -0.8244263 0.5658422 0.002357 -0.9930869 0.117358 0 -0.8229879 0.568059 0 -0.464727 0.885454 0.01892 -0.4659629 0.8846019 0.011997 -0.8244263 0.5658422 0 -0.464727 0.885454 0 0 1 0.02143601 0 0.9997702 0.01892 -0.4659629 0.8846019 0 0 1 0 0.464727 0.885454 0.01892001 0.4659622 0.8846023 0.02143601 0 0.9997702 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0.01892001 0.4659622 0.8846023 0.01199699 0.8244266 0.5658417 0.01763899 0.8208296 0.5709007 0.02719 0.4627709 0.8860609 0.01199699 0.8244266 0.5658417 0.002356999 0.9930866 0.11736 0.004005001 0.9921752 0.124789 0.01763899 0.8208296 0.5709007 0.002356999 0.9930866 0.11736 -0.007720998 0.9339138 -0.3574149 -0.010678 0.9363832 -0.3508171 0.004005001 0.9921752 0.124789 -0.007720998 0.9339138 -0.3574149 -0.01594899 0.6614318 -0.7498358 -0.02300501 0.6650772 -0.7464203 -0.010678 0.9363832 -0.3508171 -0.01594899 0.6614318 -0.7498358 -0.020545 0.238513 -0.970922 -0.03002399 0.2402049 -0.9702578 -0.02300501 0.6650772 -0.7464203 -0.020545 0.238513 -0.970922 -0.020545 -0.238513 -0.970922 -0.03002399 -0.2402049 -0.9702578 -0.03002399 0.2402049 -0.9702578 -0.020545 -0.238513 -0.970922 -0.01594899 -0.6614318 -0.7498358 -0.023005 -0.6650762 -0.7464212 -0.03002399 -0.2402049 -0.9702578 -0.01594899 -0.6614318 -0.7498358 -0.007720998 -0.9339138 -0.3574149 -0.010678 -0.9363832 -0.3508171 -0.023005 -0.6650762 -0.7464212 -0.007720998 -0.9339138 -0.3574149 0.002357 -0.9930869 0.117358 0.004005001 -0.9921753 0.124788 -0.010678 -0.9363832 -0.3508171 0.002357 -0.9930869 0.117358 0.011997 -0.8244263 0.5658422 0.017639 -0.8208309 0.570899 0.004005001 -0.9921753 0.124788 0.011997 -0.8244263 0.5658422 0.01892 -0.4659629 0.8846019 0.02719001 -0.4627721 0.8860602 0.017639 -0.8208309 0.570899 0.01892 -0.4659629 0.8846019 0.02143601 0 0.9997702 0.03061201 0 0.9995313 0.02719001 -0.4627721 0.8860602 0.02143601 0 0.9997702 0.01892001 0.4659622 0.8846023 0.02719 0.4627709 0.8860609 0.03061201 0 0.9995313 0.02719 0.4627709 0.8860609 0.01763899 0.8208296 0.5709007 0.001244 0.8228268 0.5682909 0.001938 0.4645859 0.8855259 0.01763899 0.8208296 0.5709007 0.004005001 0.9921752 0.124789 2.65e-4 0.9926689 0.120866 0.001244 0.8228268 0.5682909 0.004005001 0.9921752 0.124789 -0.010678 0.9363832 -0.3508171 -7.76e-4 0.9351265 -0.3543132 2.65e-4 0.9926689 0.120866 -0.010678 0.9363832 -0.3508171 -0.02300501 0.6650772 -0.7464203 -0.001638 0.6632872 -0.7483632 -7.76e-4 0.9351265 -0.3543132 -0.02300501 0.6650772 -0.7464203 -0.03002399 0.2402049 -0.9702578 -0.002124999 0.2393929 -0.9709205 -0.001638 0.6632872 -0.7483632 -0.03002399 0.2402049 -0.9702578 -0.03002399 -0.2402049 -0.9702578 -0.002124999 -0.2393929 -0.9709205 -0.002124999 0.2393929 -0.9709205 -0.03002399 -0.2402049 -0.9702578 -0.023005 -0.6650762 -0.7464212 -0.001638 -0.6632861 -0.7483642 -0.002124999 -0.2393929 -0.9709205 -0.023005 -0.6650762 -0.7464212 -0.010678 -0.9363832 -0.3508171 -7.76e-4 -0.9351265 -0.3543132 -0.001638 -0.6632861 -0.7483642 -0.010678 -0.9363832 -0.3508171 0.004005001 -0.9921753 0.124788 2.65e-4 -0.992669 0.120865 -7.76e-4 -0.9351265 -0.3543132 0.004005001 -0.9921753 0.124788 0.017639 -0.8208309 0.570899 0.001244 -0.8228281 0.568289 2.65e-4 -0.992669 0.120865 0.017639 -0.8208309 0.570899 0.02719001 -0.4627721 0.8860602 0.001938 -0.4645879 0.8855249 0.001244 -0.8228281 0.568289 0.02719001 -0.4627721 0.8860602 0.03061201 0 0.9995313 0.002188999 0 0.9999976 0.001938 -0.4645879 0.8855249 0.03061201 0 0.9995313 0.02719 0.4627709 0.8860609 0.001938 0.4645859 0.8855259 0.002188999 0 0.9999976</float_array>
+          <technique_common>
+            <accessor source="#Gas_TubeShape-normals-array" count="234" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Gas_TubeShape-Gas_TubeShape-Gas_TubeShape-map1" name="Gas_TubeShape-Gas_TubeShape-Gas_TubeShape-map1">
+          <float_array id="Gas_TubeShape-Gas_TubeShape-Gas_TubeShape-map1-array" count="164">0.944608 0.06691 0.785912 0.022127 0.562148 9.11e-4 0.324577 0.008123 0.127624 0.04211 0.016409 0.095086 0.016409 0.154914 0.127624 0.20789 0.324577 0.241877 0.562148 0.249089 0.785912 0.227873 0.944608 0.18309 1.00188 0.125 0 0.25 0.076923 0.25 0.153846 0.25 0.230769 0.25 0.307692 0.25 0.384615 0.25 0.461538 0.25 0.538462 0.25 0.615385 0.25 0.692308 0.25 0.769231 0.25 0.846154 0.25 0.923077 0.25 1 0.25 0 0.75 0.076923 0.75 0.153846 0.75 0.230769 0.75 0.307692 0.75 0.384615 0.75 0.461538 0.75 0.538462 0.75 0.615385 0.75 0.692308 0.75 0.769231 0.75 0.846154 0.75 0.923077 0.75 1 0.75 0.944608 0.81691 0.785912 0.772127 0.562148 0.750911 0.324577 0.758123 0.127624 0.79211 0.016409 0.845086 0.016409 0.904914 0.127624 0.95789 0.324577 0.991877 0.562148 0.999089 0.785912 0.977873 0.944608 0.93309 1.00188 0.875 0.50188 0.125 0.50188 0.875 0.944608 0.93309 0.785912 0.977873 0.562148 0.999089 0.324577 0.991877 0.127624 0.95789 0.016409 0.904914 0.016409 0.845086 0.127624 0.79211 0.324577 0.758123 0.562148 0.750911 0.785912 0.772127 0.944608 0.81691 1.00188 0.875 0.944608 0.93309 0.785912 0.977873 0.562148 0.999089 0.324577 0.991877 0.127624 0.95789 0.016409 0.904914 0.016409 0.845086 0.127624 0.79211 0.324577 0.758123 0.562148 0.750911 0.785912 0.772127 0.944608 0.81691 1.00188 0.875</float_array>
+          <technique_common>
+            <accessor source="#Gas_TubeShape-Gas_TubeShape-Gas_TubeShape-map1-array" count="82" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Gas_TubeShape-vertices" name="Gas_TubeShape-vertices">
+          <input semantic="POSITION" source="#Gas_TubeShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="65">
+          <input semantic="VERTEX" source="#Gas_TubeShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Gas_TubeShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Gas_TubeShape-Gas_TubeShape-Gas_TubeShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>0 0 13 1 1 14 14 2 28 13 3 27 1 4 14 2 5 15 15 6 29 14 7 28 2 8 15 3 9 16 16 10 30 15 11 29 3 12 16 4 13 17 17 14 31 16 15 30 4 16 17 5 17 18 18 18 32 17 19 31 5 20 18 6 21 19 19 22 33 18 23 32 6 24 19 7 25 20 20 26 34 19 27 33 7 28 20 8 29 21 21 30 35 20 31 34 8 32 21 9 33 22 22 34 36 21 35 35 9 36 22 10 37 23 23 38 37 22 39 36 10 40 23 11 41 24 24 42 38 23 43 37 11 44 24 12 45 25 25 46 39 24 47 38 12 48 25 0 49 26 13 50 40 25 51 39 1 52 1 0 53 0 26 54 54 2 55 2 1 56 1 26 57 54 3 58 3 2 59 2 26 60 54 4 61 4 3 62 3 26 63 54 5 64 5 4 65 4 26 66 54 6 67 6 5 68 5 26 69 54 7 70 7 6 71 6 26 72 54 8 73 8 7 74 7 26 75 54 9 76 9 8 77 8 26 78 54 10 79 10 9 80 9 26 81 54 11 82 11 10 83 10 26 84 54 12 85 12 11 86 11 26 87 54 0 88 0 12 89 12 26 90 54 40 91 69 41 92 70 42 93 55 41 94 70 43 95 71 42 96 55 43 97 71 44 98 72 42 99 55 44 100 72 45 101 73 42 102 55 45 103 73 46 104 74 42 105 55 46 106 74 47 107 75 42 108 55 47 109 75 48 110 76 42 111 55 48 112 76 49 113 77 42 114 55 49 115 77 50 116 78 42 117 55 50 118 78 51 119 79 42 120 55 51 121 79 52 122 80 42 123 55 52 124 80 53 125 81 42 126 55 53 127 81 40 128 69 42 129 55 13 130 52 14 131 51 28 132 57 27 133 56 14 134 51 15 135 50 29 136 58 28 137 57 15 138 50 16 139 49 30 140 59 29 141 58 16 142 49 17 143 48 31 144 60 30 145 59 17 146 48 18 147 47 32 148 61 31 149 60 18 150 47 19 151 46 33 152 62 32 153 61 19 154 46 20 155 45 34 156 63 33 157 62 20 158 45 21 159 44 35 160 64 34 161 63 21 162 44 22 163 43 36 164 65 35 165 64 22 166 43 23 167 42 37 168 66 36 169 65 23 170 42 24 171 41 38 172 67 37 173 66 24 174 41 25 175 53 39 176 68 38 177 67 25 178 53 13 179 52 27 180 56 39 181 68 27 182 56 28 183 57 41 184 70 40 185 69 28 186 57 29 187 58 43 188 71 41 189 70 29 190 58 30 191 59 44 192 72 43 193 71 30 194 59 31 195 60 45 196 73 44 197 72 31 198 60 32 199 61 46 200 74 45 201 73 32 202 61 33 203 62 47 204 75 46 205 74 33 206 62 34 207 63 48 208 76 47 209 75 34 210 63 35 211 64 49 212 77 48 213 76 35 214 64 36 215 65 50 216 78 49 217 77 36 218 65 37 219 66 51 220 79 50 221 78 37 222 66 38 223 67 52 224 80 51 225 79 38 226 67 39 227 68 53 228 81 52 229 80 39 230 68 27 231 56 40 232 69 53 233 81</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Gas_TubeShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Gas_Tube" name="Gas_Tube" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Gas_TubeShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Gas_Tube</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>

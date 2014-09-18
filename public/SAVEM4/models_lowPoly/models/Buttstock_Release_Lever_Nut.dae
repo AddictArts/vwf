@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:13:06</created>
+    <modified>2014-09-18T11:13:06</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Buttstock_Release_Lever_NutShape" name="Buttstock_Release_Lever_NutShape">
+      <mesh>
+        <source id="Buttstock_Release_Lever_NutShape-positions" name="Buttstock_Release_Lever_NutShape-positions">
+          <float_array id="Buttstock_Release_Lever_NutShape-positions-array" count="156">-0.273093 -4.88e-4 -0.056804 -0.273398 7.54e-4 -0.056804 -0.274246 0.001711 -0.056804 -0.275442 0.002164 -0.056804 -0.276711 0.00201 -0.056804 -0.277764 0.001284 -0.056804 -0.278358 1.51e-4 -0.056804 -0.278358 -0.001127 -0.056804 -0.277764 -0.00226 -0.056804 -0.276711 -0.002986 -0.056804 -0.275442 -0.00314 -0.056804 -0.274246 -0.002687 -0.056804 -0.273398 -0.001729 -0.056804 -0.273093 -4.88e-4 -0.04738 -0.273398 7.54e-4 -0.04738 -0.274246 0.001711 -0.04738 -0.275442 0.002164 -0.04738 -0.276711 0.00201 -0.04738 -0.277764 0.001284 -0.04738 -0.278358 1.51e-4 -0.04738 -0.278358 -0.001127 -0.04738 -0.277764 -0.00226 -0.04738 -0.276711 -0.002986 -0.04738 -0.275442 -0.00314 -0.04738 -0.274246 -0.002687 -0.04738 -0.273398 -0.001729 -0.04738 -0.270421 -4.88e-4 -0.04738 -0.271033 0.001995 -0.04738 -0.272729 0.003909 -0.04738 -0.27512 0.004816 -0.04738 -0.277659 0.004508 -0.04738 -0.279764 0.003055 -0.04738 -0.280952 7.91e-4 -0.04738 -0.280952 -0.001767 -0.04738 -0.279764 -0.004031 -0.04738 -0.277659 -0.005484 -0.04738 -0.27512 -0.005792 -0.04738 -0.272729 -0.004885 -0.04738 -0.271033 -0.002971 -0.04738 -0.270421 -4.88e-4 -0.056804 -0.271033 0.001995 -0.056804 -0.272729 0.003909 -0.056804 -0.27512 0.004816 -0.056804 -0.277659 0.004508 -0.056804 -0.279764 0.003055 -0.056804 -0.280952 7.91e-4 -0.056804 -0.280952 -0.001767 -0.056804 -0.279764 -0.004031 -0.056804 -0.277659 -0.005484 -0.056804 -0.27512 -0.005792 -0.056804 -0.272729 -0.004885 -0.056804 -0.271033 -0.002971 -0.056804</float_array>
+          <technique_common>
+            <accessor source="#Buttstock_Release_Lever_NutShape-positions-array" count="52" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Buttstock_Release_Lever_NutShape-normals" name="Buttstock_Release_Lever_NutShape-normals">
+          <float_array id="Buttstock_Release_Lever_NutShape-normals-array" count="624">-0.8854572 -0.4647211 0 -1 0 0 -1 0 0 -0.8854572 -0.4647211 0 -0.568066 -0.822983 0 -0.8854572 -0.4647211 0 -0.8854572 -0.4647211 0 -0.568066 -0.822983 0 -0.120536 -0.992709 0 -0.568066 -0.822983 0 -0.568066 -0.822983 0 -0.120536 -0.992709 0 0.354603 -0.935017 0 -0.120536 -0.992709 0 -0.120536 -0.992709 0 0.354603 -0.935017 0 0.7485107 -0.6631227 0 0.354603 -0.935017 0 0.354603 -0.935017 0 0.7485107 -0.6631227 0 0.9709435 -0.2393089 0 0.7485107 -0.6631227 0 0.7485107 -0.6631227 0 0.9709435 -0.2393089 0 0.9709435 0.2393089 0 0.9709435 -0.2393089 0 0.9709435 -0.2393089 0 0.9709435 0.2393089 0 0.7485107 0.6631227 0 0.9709435 0.2393089 0 0.9709435 0.2393089 0 0.7485107 0.6631227 0 0.354603 0.935017 0 0.7485107 0.6631227 0 0.7485107 0.6631227 0 0.354603 0.935017 0 -0.120538 0.9927087 0 0.354603 0.935017 0 0.354603 0.935017 0 -0.120538 0.9927087 0 -0.568066 0.822983 0 -0.120538 0.9927087 0 -0.120538 0.9927087 0 -0.568066 0.822983 0 -0.8854567 0.4647219 0 -0.568066 0.822983 0 -0.568066 0.822983 0 -0.8854567 0.4647219 0 -1 0 0 -0.8854567 0.4647219 0 -0.8854567 0.4647219 0 -1 0 0 0.8854555 0.4647243 0 1 0 0 1 0 0 0.8854555 0.4647243 0 0.5680649 0.8229838 0 0.8854555 0.4647243 0 0.8854555 0.4647243 0 0.5680649 0.8229838 0 0.120536 0.992709 0 0.5680649 0.8229838 0 0.5680649 0.8229838 0 0.120536 0.992709 0 -0.3546039 0.9350166 0 0.120536 0.992709 0 0.120536 0.992709 0 -0.3546039 0.9350166 0 -0.7485102 0.6631233 0 -0.3546039 0.9350166 0 -0.3546039 0.9350166 0 -0.7485102 0.6631233 0 -0.9709418 0.2393159 0 -0.7485102 0.6631233 0 -0.7485102 0.6631233 0 -0.9709418 0.2393159 0 -0.9709418 -0.2393159 0 -0.9709418 0.2393159 0 -0.9709418 0.2393159 0 -0.9709418 -0.2393159 0 -0.7485102 -0.6631233 0 -0.9709418 -0.2393159 0 -0.9709418 -0.2393159 0 -0.7485102 -0.6631233 0 -0.3546039 -0.9350166 0 -0.7485102 -0.6631233 0 -0.7485102 -0.6631233 0 -0.3546039 -0.9350166 0 0.120537 -0.9927089 0 -0.3546039 -0.9350166 0 -0.3546039 -0.9350166 0 0.120537 -0.9927089 0 0.568066 -0.822983 0 0.120537 -0.9927089 0 0.120537 -0.9927089 0 0.568066 -0.822983 0 0.8854551 -0.464725 0 0.568066 -0.822983 0 0.568066 -0.822983 0 0.8854551 -0.464725 0 1 0 0 0.8854551 -0.464725 0 0.8854551 -0.464725 0 1 0 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</float_array>
+          <technique_common>
+            <accessor source="#Buttstock_Release_Lever_NutShape-normals-array" count="208" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-map1" name="Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-map1">
+          <float_array id="Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-map1-array" count="244">0.076923 1 0 1 0 0.75 0.076923 0.75 0.153846 1 0.153846 0.75 0.230769 1 0.230769 0.75 0.307692 1 0.307692 0.75 0.384615 1 0.384615 0.75 0.461538 1 0.461538 0.75 0.538462 1 0.538462 0.75 0.615385 1 0.615385 0.75 0.692308 1 0.692308 0.75 0.769231 1 0.769231 0.75 0.846154 1 0.846154 0.75 0.923077 1 0.923077 0.75 1 1 1 0.75 0.076923 0.5 0 0.5 0 0.25 0.076923 0.25 0.153846 0.5 0.153846 0.25 0.230769 0.5 0.230769 0.25 0.307692 0.5 0.307692 0.25 0.384615 0.5 0.384615 0.25 0.461538 0.5 0.461538 0.25 0.538462 0.5 0.538462 0.25 0.615385 0.5 0.615385 0.25 0.692308 0.5 0.692308 0.25 0.769231 0.5 0.769231 0.25 0.846154 0.5 0.846154 0.25 0.923077 0.5 0.923077 0.25 1 0.5 1 0.25 0 0 0.076923 0 0.153846 0 0.230769 0 0.307692 0 0.384615 0 0.461538 0 0.538462 0 0.615385 0 0.692308 0 0.769231 0 0.846154 0 0.923077 0 1 0 0.246462 0 0.739416 0 0.985904 0.999986 0 1 0 0 0.985907 0 0.739432 0.999993 0.246477 1 0.24647 0 0.739419 0 0.985908 0.999989 0 1 0 0 0.985912 0 0.739438 1 0.246482 1 0.246473 0 0.73943 0 0.985913 1 0 1 0.246466 0 0.739424 0 0.985905 0.999992 0 1 0 0 0.985909 0 0.739433 0.999993 0.246481 1 0 0 0.985907 0 0.73943 1 0.246477 1 0.246468 0 0.739417 0 0.985906 0.999987 0 1 0.24648 0 0.739439 0 0.985905 1 0 0.999992 0.246483 0 0.739439 0 0.985913 1 0 1 0.246482 0 0.739438 0 0.985912 1 0 1 0 0 0.98591 0 0.739432 0.999994 0.246482 1</float_array>
+          <technique_common>
+            <accessor source="#Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-map1-array" count="122" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Buttstock_Release_Lever_NutShape-vertices" name="Buttstock_Release_Lever_NutShape-vertices">
+          <input semantic="POSITION" source="#Buttstock_Release_Lever_NutShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="52">
+          <input semantic="VERTEX" source="#Buttstock_Release_Lever_NutShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Buttstock_Release_Lever_NutShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-Buttstock_Release_Lever_NutShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>1 0 0 0 1 1 13 2 2 14 3 3 2 4 4 1 5 0 14 6 3 15 7 5 3 8 6 2 9 4 15 10 5 16 11 7 4 12 8 3 13 6 16 14 7 17 15 9 5 16 10 4 17 8 17 18 9 18 19 11 6 20 12 5 21 10 18 22 11 19 23 13 7 24 14 6 25 12 19 26 13 20 27 15 8 28 16 7 29 14 20 30 15 21 31 17 9 32 18 8 33 16 21 34 17 22 35 19 10 36 20 9 37 18 22 38 19 23 39 21 11 40 22 10 41 20 23 42 21 24 43 23 12 44 24 11 45 22 24 46 23 25 47 25 0 48 26 12 49 24 25 50 25 13 51 27 27 52 28 26 53 29 39 54 30 40 55 31 28 56 32 27 57 28 40 58 31 41 59 33 29 60 34 28 61 32 41 62 33 42 63 35 30 64 36 29 65 34 42 66 35 43 67 37 31 68 38 30 69 36 43 70 37 44 71 39 32 72 40 31 73 38 44 74 39 45 75 41 33 76 42 32 77 40 45 78 41 46 79 43 34 80 44 33 81 42 46 82 43 47 83 45 35 84 46 34 85 44 47 86 45 48 87 47 36 88 48 35 89 46 48 90 47 49 91 49 37 92 50 36 93 48 49 94 49 50 95 51 38 96 52 37 97 50 50 98 51 51 99 53 26 100 54 38 101 52 51 102 53 39 103 55 40 104 31 39 105 30 0 106 56 1 107 57 41 108 33 40 109 31 1 110 57 2 111 58 42 112 35 41 113 33 2 114 58 3 115 59 43 116 37 42 117 35 3 118 59 4 119 60 44 120 39 43 121 37 4 122 60 5 123 61 45 124 41 44 125 39 5 126 61 6 127 62 46 128 43 45 129 41 6 130 62 7 131 63 47 132 45 46 133 43 7 134 63 8 135 64 48 136 47 47 137 45 8 138 64 9 139 65 49 140 49 48 141 47 9 142 65 10 143 66 50 144 51 49 145 49 10 146 66 11 147 67 51 148 53 50 149 51 11 150 67 12 151 68 39 152 55 51 153 53 12 154 68 0 155 69 14 156 70 13 157 71 26 158 72 27 159 73 38 160 74 26 161 75 13 162 76 25 163 77 25 164 78 24 165 79 37 166 80 38 167 81 36 168 82 37 169 83 24 170 84 23 171 85 23 172 86 22 173 87 35 174 88 36 175 89 22 176 90 21 177 91 34 178 92 35 179 93 33 180 94 34 181 95 21 182 96 20 183 97 32 184 98 33 185 99 20 186 100 19 187 101 19 188 102 18 189 103 31 190 104 32 191 105 18 192 106 17 193 107 30 194 108 31 195 109 17 196 110 16 197 111 29 198 112 30 199 113 16 200 114 15 201 115 28 202 116 29 203 117 27 204 118 28 205 119 15 206 120 14 207 121</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Buttstock_Release_Lever_NutShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Buttstock_Release_Lever_Nut" name="Buttstock_Release_Lever_Nut" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Buttstock_Release_Lever_NutShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Buttstock_Release_Lever_Nut</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
