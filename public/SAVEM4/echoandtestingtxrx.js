@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// Copyright 2014, SRI International
+
 var qs = require('querystring'),
 	http = require('http'),
 	fs = require('fs'),

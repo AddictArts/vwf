@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// Copyright 2014, SRI International
+
 /*
  * Simple web server to test activity streams with the EUI. 
  *

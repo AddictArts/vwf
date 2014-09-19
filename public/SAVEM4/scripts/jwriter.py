@@ -1,3 +1,4 @@
+# Copyright 2014, SRI International
 
 '''
 reads what would be a "master" collada file and writes out 
