@@ -135,7 +135,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           handleContextMenu();
         },
         addSelectorLeverActionGroup: function() {
-          var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selecctor Lever");
+          var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selector Lever");
 
           selectorLeverFolder.add(M4.toolTrayMenu, 'semi').name('SEMI');
           selectorLeverFolder.add(M4.toolTrayMenu, 'safe').name('SAFE');
@@ -267,7 +267,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
           vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ ]);
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
           M4.addSelectorLeverActionGroup();
-          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushMagazineReleaseButton').name('Magazine Catch');
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushMagazineReleaseButton').name('Push Magazine Release Button');
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle');
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushAndHoldBoltCatchBottom').name('Push And Hold Bolt Catch Bottom');
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'ReleaseChargingHandle').name('Release Charging Handle');
@@ -359,7 +359,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
             case 'Magazine_Catch':
             case 'Magazine_Catch_Button':
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Magazine Catch'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Push Magazine Release Button'));
               break;
             case 'Selector_Lever':
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
@@ -371,6 +371,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushChargingHandleForward').name('Push Charging Handle Forward'));
               break;
             case 'Bolt_Catch':
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));

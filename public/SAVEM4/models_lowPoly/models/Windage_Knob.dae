@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:13:45</created>
+    <modified>2014-09-18T11:13:45</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Windage_KnobShape" name="Windage_KnobShape">
+      <mesh>
+        <source id="Windage_KnobShape-positions" name="Windage_KnobShape-positions">
+          <float_array id="Windage_KnobShape-positions-array" count="195">-0.155924 -0.011099 0.062749 -0.15879 -0.011099 0.065983 -0.162829 -0.011099 0.067515 -0.167118 -0.011099 0.066994 -0.170674 -0.011099 0.06454 -0.172682 -0.011099 0.060714 -0.172682 -0.011099 0.056393 -0.170674 -0.011099 0.052568 -0.167118 -0.011099 0.050114 -0.162829 -0.011099 0.049593 -0.15879 -0.011099 0.051125 -0.155924 -0.011099 0.054359 -0.154891 -0.011099 0.058554 -0.155924 -0.01587 0.062749 -0.15879 -0.015869 0.065983 -0.162829 -0.015869 0.067515 -0.167118 -0.01587 0.066994 -0.170674 -0.015869 0.06454 -0.172682 -0.01587 0.060714 -0.172682 -0.01587 0.056393 -0.170674 -0.01587 0.052568 -0.167118 -0.01587 0.050114 -0.162829 -0.01587 0.049593 -0.15879 -0.01587 0.051125 -0.155924 -0.01587 0.054359 -0.154891 -0.01587 0.058554 -0.158498 -0.018423 0.061375 -0.160425 -0.018423 0.06355 -0.163143 -0.018423 0.064581 -0.166027 -0.018423 0.064231 -0.168419 -0.018423 0.06258 -0.169769 -0.018423 0.060007 -0.169769 -0.018423 0.057101 -0.168419 -0.018423 0.054528 -0.166027 -0.018423 0.052877 -0.163143 -0.018423 0.052526 -0.160425 -0.018423 0.053557 -0.158498 -0.018423 0.055732 -0.157803 -0.018423 0.058554 -0.161704 -0.018423 0.059665 -0.162463 -0.018423 0.060522 -0.163533 -0.018423 0.060927 -0.164669 -0.018423 0.060789 -0.165611 -0.018423 0.060139 -0.166142 -0.018423 0.059126 -0.166142 -0.018423 0.057981 -0.165611 -0.018423 0.056968 -0.164669 -0.018423 0.056318 -0.163533 -0.018423 0.05618 -0.162463 -0.018423 0.056586 -0.161704 -0.018423 0.057443 -0.16143 -0.018423 0.058554 -0.161704 -0.011099 0.059665 -0.162463 -0.011099 0.060522 -0.163533 -0.011099 0.060927 -0.164669 -0.011099 0.060789 -0.165611 -0.011099 0.060139 -0.166142 -0.011099 0.059126 -0.166142 -0.011099 0.057981 -0.165611 -0.011099 0.056968 -0.164669 -0.011099 0.056318 -0.163533 -0.011099 0.05618 -0.162463 -0.011099 0.056586 -0.161704 -0.011099 0.057443 -0.16143 -0.011099 0.058554</float_array>
+          <technique_common>
+            <accessor source="#Windage_KnobShape-positions-array" count="65" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Windage_KnobShape-normals" name="Windage_KnobShape-normals">
+          <float_array id="Windage_KnobShape-normals-array" count="780">0.8854561 0 0.4647231 0.5680649 0 0.8229838 0.5680649 0 0.8229838 0.8854561 0 0.4647231 0.5680649 0 0.8229838 0.120538 0 0.9927087 0.120538 0 0.9927087 0.5680649 0 0.8229838 0.120538 0 0.9927087 -0.354606 0 0.9350159 -0.3546051 0 0.9350162 0.120538 0 0.9927087 -0.354606 0 0.9350159 -0.748513 0 0.66312 -0.748513 0 0.66312 -0.3546051 0 0.9350162 -0.748513 0 0.66312 -0.9709415 0 0.2393171 -0.9709415 0 0.2393171 -0.748513 0 0.66312 -0.9709415 0 0.2393171 -0.9709412 0 -0.2393181 -0.9709412 0 -0.2393181 -0.9709415 0 0.2393171 -0.9709412 0 -0.2393181 -0.7485122 0 -0.6631212 -0.7485122 0 -0.6631212 -0.9709412 0 -0.2393181 -0.7485122 0 -0.6631212 -0.3546072 0 -0.9350154 -0.3546072 0 -0.9350154 -0.7485122 0 -0.6631212 -0.3546072 0 -0.9350154 0.120536 0 -0.992709 0.120536 0 -0.992709 -0.3546072 0 -0.9350154 0.120536 0 -0.992709 0.5680631 0 -0.8229851 0.5680631 0 -0.8229851 0.120536 0 -0.992709 0.5680631 0 -0.8229851 0.8854567 0 -0.4647219 0.8854567 0 -0.4647219 0.5680631 0 -0.8229851 0.8854567 0 -0.4647219 1 0 0 1 0 0 0.8854567 0 -0.4647219 1 0 0 0.8854561 0 0.4647231 0.8854561 0 0.4647231 1 0 0 0.5829611 -0.7524182 0.3066321 0.3723239 -0.7539408 0.5412469 0.3738752 -0.7539295 0.5401923 0.5834597 -0.7524147 0.3056909 0.3723239 -0.7539408 0.5412469 0.07764696 -0.7560657 0.6498737 0.07987902 -0.7560502 0.6496212 0.3738752 -0.7539295 0.5401923 0.07764696 -0.7560657 0.6498737 -0.2322681 -0.7582914 0.6091353 -0.2303111 -0.7582774 0.6098953 0.07987902 -0.7560502 0.6496212 -0.2322681 -0.7582914 0.6091353 -0.486923 -0.760112 0.430274 -0.48595 -0.760105 0.431385 -0.2303111 -0.7582774 0.6098953 -0.486923 -0.760112 0.430274 -0.6298198 -0.7611327 0.1549319 -0.6296937 -0.7611317 0.1554489 -0.48595 -0.760105 0.431385 -0.6298198 -0.7611327 0.1549319 -0.6298209 -0.7611319 -0.154932 -0.6296938 -0.7611318 -0.155448 -0.6296937 -0.7611317 0.1554489 -0.6298209 -0.7611319 -0.154932 -0.486924 -0.760112 -0.430273 -0.48595 -0.760105 -0.431385 -0.6296938 -0.7611318 -0.155448 -0.486924 -0.760112 -0.430273 -0.2322689 -0.7582907 -0.6091357 -0.2303119 -0.7582767 -0.6098958 -0.48595 -0.760105 -0.431385 -0.2322689 -0.7582907 -0.6091357 0.07764701 -0.7560661 -0.6498731 0.07987802 -0.7560502 -0.6496212 -0.2303119 -0.7582767 -0.6098958 0.07764701 -0.7560661 -0.6498731 0.3723239 -0.7539408 -0.5412469 0.373875 -0.7539299 -0.5401919 0.07987802 -0.7560502 -0.6496212 0.3723239 -0.7539408 -0.5412469 0.5829618 -0.7524177 -0.3066319 0.5834602 -0.7524143 -0.3056911 0.373875 -0.7539299 -0.5401919 0.5829618 -0.7524177 -0.3066319 0.6593171 -0.7518651 0 0.6593171 -0.7518651 0 0.5834602 -0.7524143 -0.3056911 0.6593171 -0.7518651 0 0.5829611 -0.7524182 0.3066321 0.5834597 -0.7524147 0.3056909 0.6593171 -0.7518651 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 -0.8854592 0 -0.4647171 -0.5680649 0 -0.8229838 -0.568066 0 -0.822983 -0.8854592 0 -0.4647171 -0.5680649 0 -0.8229838 -0.120538 0 -0.9927087 -0.120538 0 -0.9927087 -0.568066 0 -0.822983 -0.120538 0 -0.9927087 0.3546072 0 -0.9350154 0.3546072 0 -0.9350154 -0.120538 0 -0.9927087 0.3546072 0 -0.9350154 0.7485051 0 -0.663129 0.7485051 0 -0.663129 0.3546072 0 -0.9350154 0.7485051 0 -0.663129 0.9709425 0 -0.2393131 0.9709425 0 -0.2393131 0.7485051 0 -0.663129 0.9709425 0 -0.2393131 0.9709425 0 0.2393131 0.9709425 0 0.2393131 0.9709425 0 -0.2393131 0.9709425 0 0.2393131 0.7485042 0 0.6631302 0.7485042 0 0.6631302 0.9709425 0 0.2393131 0.7485042 0 0.6631302 0.3546039 0 0.9350166 0.3546051 0 0.9350162 0.7485042 0 0.6631302 0.3546039 0 0.9350166 -0.120536 0 0.992709 -0.120536 0 0.992709 0.3546051 0 0.9350162 -0.120536 0 0.992709 -0.5680612 0 0.8229863 -0.5680619 0 0.8229858 -0.120536 0 0.992709 -0.5680612 0 0.8229863 -0.8854599 0 0.4647159 -0.8854599 0 0.4647159 -0.5680619 0 0.8229858 -0.8854599 0 0.4647159 -1 0 0 -1 0 0 -0.8854599 0 0.4647159 -1 0 0 -0.8854592 0 -0.4647171 -0.8854592 0 -0.4647171 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+          <technique_common>
+            <accessor source="#Windage_KnobShape-normals-array" count="260" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Windage_KnobShape-Windage_KnobShape-Windage_KnobShape-map1" name="Windage_KnobShape-Windage_KnobShape-Windage_KnobShape-map1">
+          <float_array id="Windage_KnobShape-Windage_KnobShape-Windage_KnobShape-map1-array" count="264">0 0.25 0.076923 0.25 0.153846 0.25 0.230769 0.25 0.307692 0.25 0.384615 0.25 0.461538 0.25 0.538462 0.25 0.615385 0.25 0.692308 0.25 0.769231 0.25 0.846154 0.25 0.923077 0.25 1 0.25 0 0.75 0.076923 0.75 0.153846 0.75 0.230769 0.75 0.307692 0.75 0.384615 0.75 0.461538 0.75 0.538462 0.75 0.615385 0.75 0.692308 0.75 0.769231 0.75 0.846154 0.75 0.923077 0.75 1 0.75 0.944608 0.81691 0.785912 0.772127 0.562148 0.750911 0.324577 0.758123 0.127624 0.79211 0.016409 0.845086 0.016409 0.904914 0.127624 0.95789 0.324577 0.991877 0.562148 0.999089 0.785912 0.977873 0.944608 0.93309 1.00188 0.875 0.944608 0.93309 0.785912 0.977873 0.562148 0.999089 0.324577 0.991877 0.127624 0.95789 0.016409 0.904914 0.016409 0.845086 0.127624 0.79211 0.324577 0.758123 0.562148 0.750911 0.785912 0.772127 0.944608 0.81691 1.00188 0.875 0.944608 0.93309 0.785912 0.977873 0.562148 0.999089 0.324577 0.991877 0.127624 0.95789 0.016409 0.904914 0.016409 0.845086 0.127624 0.79211 0.324577 0.758123 0.562148 0.750911 0.785912 0.772127 0.944608 0.81691 1.00188 0.875 0.944608 0.93309 0.785912 0.977873 0.562148 0.999089 0.324577 0.991877 0.127624 0.95789 0.016409 0.904914 0.016409 0.845086 0.127624 0.79211 0.324577 0.758123 0.562148 0.750911 0.785912 0.772127 0.944608 0.81691 1.00188 0.875 0.23121 0 0.408518 0 0.669379 1 0 0.999996 0.232174 0 0.408309 0 0.664923 0.999989 0 1 0.236403 0 0.411709 0 0.661818 1 0 0.999993 0.242844 0 0.417856 0 0.6607 1 0 1 0.250111 0 0.425416 0 0.661819 0.999993 0 1 0 0 0.664926 0 0.408327 0.999997 0.232192 1 0.260866 0 0.438174 0 0.669378 1 0 1 0 0 0.674165 0 0.412303 1 0.233724 1 0.259313 0 0.438954 0 0.678182 1 0 0.999996 0.253755 0 0.434004 0 0.680472 1 0 0.999997 0.24647 0 0.426718 0 0.680471 0.999998 0 1 0 0 0.678183 0 0.438948 1 0.259306 0.999998 0.233722 0 0.412301 0 0.674163 1 0 1</float_array>
+          <technique_common>
+            <accessor source="#Windage_KnobShape-Windage_KnobShape-Windage_KnobShape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Windage_KnobShape-vertices" name="Windage_KnobShape-vertices">
+          <input semantic="POSITION" source="#Windage_KnobShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="65">
+          <input semantic="VERTEX" source="#Windage_KnobShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Windage_KnobShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Windage_KnobShape-Windage_KnobShape-Windage_KnobShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>0 0 0 1 1 1 14 2 15 13 3 14 1 4 1 2 5 2 15 6 16 14 7 15 2 8 2 3 9 3 16 10 17 15 11 16 3 12 3 4 13 4 17 14 18 16 15 17 4 16 4 5 17 5 18 18 19 17 19 18 5 20 5 6 21 6 19 22 20 18 23 19 6 24 6 7 25 7 20 26 21 19 27 20 7 28 7 8 29 8 21 30 22 20 31 21 8 32 8 9 33 9 22 34 23 21 35 22 9 36 9 10 37 10 23 38 24 22 39 23 10 40 10 11 41 11 24 42 25 23 43 24 11 44 11 12 45 12 25 46 26 24 47 25 12 48 12 0 49 13 13 50 27 25 51 26 13 52 39 14 53 38 27 54 42 26 55 41 14 56 38 15 57 37 28 58 43 27 59 42 15 60 37 16 61 36 29 62 44 28 63 43 16 64 36 17 65 35 30 66 45 29 67 44 17 68 35 18 69 34 31 70 46 30 71 45 18 72 34 19 73 33 32 74 47 31 75 46 19 76 33 20 77 32 33 78 48 32 79 47 20 80 32 21 81 31 34 82 49 33 83 48 21 84 31 22 85 30 35 86 50 34 87 49 22 88 30 23 89 29 36 90 51 35 91 50 23 92 29 24 93 28 37 94 52 36 95 51 24 96 28 25 97 40 38 98 53 37 99 52 25 100 40 13 101 39 26 102 41 38 103 53 26 104 41 27 105 42 40 106 55 39 107 54 27 108 42 28 109 43 41 110 56 40 111 55 28 112 43 29 113 44 42 114 57 41 115 56 29 116 44 30 117 45 43 118 58 42 119 57 30 120 45 31 121 46 44 122 59 43 123 58 31 124 46 32 125 47 45 126 60 44 127 59 32 128 47 33 129 48 46 130 61 45 131 60 33 132 48 34 133 49 47 134 62 46 135 61 34 136 49 35 137 50 48 138 63 47 139 62 35 140 50 36 141 51 49 142 64 48 143 63 36 144 51 37 145 52 50 146 65 49 147 64 37 148 52 38 149 53 51 150 66 50 151 65 38 152 53 26 153 41 39 154 54 51 155 66 39 156 54 40 157 55 53 158 68 52 159 67 40 160 55 41 161 56 54 162 69 53 163 68 41 164 56 42 165 57 55 166 70 54 167 69 42 168 57 43 169 58 56 170 71 55 171 70 43 172 58 44 173 59 57 174 72 56 175 71 44 176 59 45 177 60 58 178 73 57 179 72 45 180 60 46 181 61 59 182 74 58 183 73 46 184 61 47 185 62 60 186 75 59 187 74 47 188 62 48 189 63 61 190 76 60 191 75 48 192 63 49 193 64 62 194 77 61 195 76 49 196 64 50 197 65 63 198 78 62 199 77 50 200 65 51 201 66 64 202 79 63 203 78 51 204 66 39 205 54 52 206 67 64 207 79 54 208 80 55 209 81 3 210 82 2 211 83 55 212 84 56 213 85 4 214 86 3 215 87 56 216 88 57 217 89 5 218 90 4 219 91 57 220 92 58 221 93 6 222 94 5 223 95 58 224 96 59 225 97 7 226 98 6 227 99 8 228 100 7 229 101 59 230 102 60 231 103 60 232 104 61 233 105 9 234 106 8 235 107 10 236 108 9 237 109 61 238 110 62 239 111 62 240 112 63 241 113 11 242 114 10 243 115 63 244 116 64 245 117 12 246 118 11 247 119 64 248 120 52 249 121 0 250 122 12 251 123 1 252 124 0 253 125 52 254 126 53 255 127 53 256 128 54 257 129 2 258 130 1 259 131</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Windage_KnobShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Windage_Knob" name="Windage_Knob" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Windage_KnobShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Windage_Knob</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
