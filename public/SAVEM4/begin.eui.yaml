@@ -22,11 +22,11 @@ scripts:
     console.info("the root vwf component name for the tool tray item is " + rootComponentName);
     console.info("the root vwf component's KbId is " + this.__m4KbId);
 
-    if (this['activityServerAddress'] == null) this.activityServerAddress = data.activityServerAddress;
-    if (this['queryServerAddress'] == null) this.queryServerAddress = data.queryServerAddress;
-    if (this['assessmentServerAddress'] == null) this.assessmentServerAddress = data.assessmentServerAddress;
+    if (this['activityServerAddress'] == null) this.activityServerAddress = data.baseServerAddress + '/action';
+    if (this['queryServerAddress'] == null) this.queryServerAddress = data.baseServerAddress + '/query';
+    if (this['assessmentServerAddress'] == null) this.assessmentServerAddress = data.baseServerAddress + '/assessment';
 
     console.info('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress + ', ' + this.assessmentServerAddress);
     this.__initializeStep = 2;
     console.info("begin.eui completed move on to initialize step " + this.__initializeStep);
-  };//@ sourceURL=begin.eui
+  };//# sourceURL=begin.eui

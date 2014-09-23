@@ -258,4 +258,4 @@ scripts:
     this.camTarget = 'M4_Carbine_dae';
     this.future(0).initInstance();
     // this.ask({ type: 'Instance', parent: null, query: [ 'M4_Carbine' ] }); // not ready for instance queries yet!
-  }; //@ sourceURL=index.vwf
+  }; //# sourceURL=index.vwf

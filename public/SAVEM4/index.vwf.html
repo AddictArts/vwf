@@ -119,7 +119,8 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
       var vwfapp = {
         appId: vwf_view.kernel.application(),
         M4_Carbine_daeId: undefined,
-        idToName: undefined
+        idToName: undefined,
+        assessmentServerAddress: undefined
       };
       var M4 = {
         toolTrayGUI: undefined,
@@ -241,7 +242,13 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
         };
         this.assessment = function() {
           if (!M4.assessmentActive) {
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'assessment');
+            // vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'assessment');
+            $('<iframe/>', {
+              name: 'assessment',
+              id:   'assessmentIFrame',
+              src:  vwfapp.assessmentServerAddress
+            }).appendTo('#assessment').css(cssIFrame);
+            $('#assessment').fadeIn();
             M4.assessmentActive = true;
             $('.dg.ac').toggle();
           }
@@ -332,9 +339,7 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
             M4.cameraGUI.domElement.style.visibility = 'visible';
             vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
             vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
-          } else if (methodName == 'assessment') {
-            $('#assessmentIFrame').css(cssIFrame);
-            $('#assessment').fadeIn();
+            vwfapp.assessmentServerAddress = vwf.getProperty(vwfapp.M4_Carbine_daeId, 'assessmentServerAddress');
           }
         }
 
@@ -402,12 +407,237 @@ vwf_view.kernel.getProperty(vwf_view.kernel.find("","/")[0], 'scoreBoard');
       function sceneDestroy() {
       }
 
+
+// scene       = null
+// normal      = null
+// outline     = null
+// outScene    = null
+// maskScene   = null
+// light       = null
+// renderer    = null
+// composer    = null
+// camera1     = null
+// camera2     = null
+// camera3     = null
+// mesh1       = null
+// mesh2       = null
+// mesh3       = null
+// renderTarget = null
+
+// screenWidth  = window.innerWidth
+// screenHeight = window.innerHeight
+
+// clock = new THREE.Clock
+
+// elapsedTime = 0
+// frameCount  = 0
+
+// shader =
+//     'outline' :
+//         vertex_shader: [
+//             "uniform float offset;",
+//             "void main() {",
+//                 "vec4 pos = modelViewMatrix * vec4( position + normal * offset, 1.0 );",
+//                 "gl_Position = projectionMatrix * pos;",
+//             "}"
+//         ].join("\n"),
+
+//         fragment_shader: [
+//             "void main(){",
+//                 "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
+//             "}"
+//         ].join("\n")
+
+
+// init = () ->
+
+//     # SCENE
+
+//     scene     = new THREE.Scene
+//     maskScene = new THREE.Scene
+//     outScene  = new THREE.Scene
+//     setModel()
+
+//     # SCENE CAMERA
+
+//     camera1 = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
+//     camera1.position.set 0, 0, 400
+//     scene.add camera1
+
+//     camera2 = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
+//     camera2.position.set 0, 0, 400
+//     outScene.add camera2
+
+//     camera3 = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
+//     camera3.position.set 0, 0, 400
+//     maskScene.add camera3
+
+//     # LIGHTS
+
+//     light = new THREE.DirectionalLight 0xffffff
+//     light.position.set 1, 1, 1
+//     scene.add light
+
+//     # RENDERER
+
+//     renderer = new THREE.WebGLRenderer
+//         width: screenWidth
+//         height: screenHeight
+//         antialias: true
+
+//     renderer.setSize screenWidth, screenHeight
+//     renderer.setClearColor 0x666666
+//     renderer.autoClear = false
+//     renderer.gammaInput = true
+//     renderer.gammaOutput = true
+
+//     document.body.appendChild renderer.domElement
+
+//     # POSTPROCESSING
+
+//     renderTargetParameters = 
+//         minFilter:      THREE.LinearFilter
+//         magFilter:      THREE.LinearFilter
+//         format:         THREE.RGBAFormat
+//         stencilBuffer:  true
+    
+//     renderTarget = new THREE.WebGLRenderTarget window.innerWidth, window.innerHeight, renderTargetParameters
+
+//     composer    = new THREE.EffectComposer renderer
+//     composer.renderTarget1.stencilBuffer = true
+//     composer.renderTarget2.stencilBuffer = true
+
+//     normal      = new THREE.RenderPass scene, camera1
+//     outline     = new THREE.RenderPass outScene, camera2
+//     outline.clear = false
+    
+//     mask        = new THREE.MaskPass maskScene, camera3
+//     mask.inverse = true
+//     clearMask   = new THREE.ClearMaskPass
+//     copyPass    = new THREE.ShaderPass THREE.CopyShader
+//     copyPass.renderToScreen = true
+
+//     composer.addPass normal
+//     composer.addPass mask
+//     composer.addPass outline
+//     composer.addPass clearMask
+//     composer.addPass copyPass
+
+//     # EVENTS
+
+//     window.addEventListener 'resize', onWindowResize, false
+
+// setModel = ->
+
+//     geometry = new THREE.TorusKnotGeometry 50, 10, 50, 20
+
+//     # shaded model
+//     matColor = new THREE.MeshPhongMaterial 0xffffff
+//     mesh1 = new THREE.Mesh geometry, matColor
+//     scene.add mesh1
+
+//     # flat mask
+//     matFlat = new THREE.MeshBasicMaterial
+//         color: 0x000000
+//     mesh2 = new THREE.Mesh geometry, matFlat
+//     maskScene.add mesh2
+
+//     # shader
+//     uniforms = offset:
+//         type: "f"
+//         value: 1
+
+//     outShader = shader['outline']
+    
+//     matShader = new THREE.ShaderMaterial
+//         uniforms: uniforms,
+//         vertexShader: outShader.vertex_shader,
+//         fragmentShader: outShader.fragment_shader
+
+//     mesh3 = new THREE.Mesh geometry, matShader
+//     outScene.add mesh3
+
+// onWindowResize = ->
+
+//     screenWidth  = window.innerWidth
+//     screenHeight = window.innerHeight
+
+//     camera1.aspect = screenWidth / screenHeight
+//     camera2.aspect = camera1.aspect
+//     camera3.aspect = camera1.aspect
+
+//     camera1.updateProjectionMatrix()
+//     camera2.updateProjectionMatrix()
+//     camera3.updateProjectionMatrix()
+
+//     renderer.setSize screenWidth, screenHeight
+
+// animate = ->
+
+//     updateFps()
+// #    requestAnimationFrame animate
+//     render()
+
+// render = ->
+
+//     now = Date.now()
+//     delta = clock.getDelta()
+
+//     if mesh1
+//         mesh1.rotation.y += 0.01
+//         mesh2.rotation.y = mesh1.rotation.y
+//         mesh3.rotation.y = mesh1.rotation.y
+    
+//     composer.render()
+
+// updateFps = ->
+
+//     elapsedTime += clock.getDelta()
+//     frameCount++
+
+//     if elapsedTime >= 1
+//         $('#fps').html frameCount
+//         frameCount  = 0
+//         elapsedTime = 0
+
+// init()
+// animate()
+
+
+
+
+
+
+var outline_vertex_shader = [
+    "uniform float offset;",
+    "void main() {",
+        "vec4 pos = modelViewMatrix * vec4( position + normal * offset, 1.0 );",
+        "gl_Position = projectionMatrix * pos;",
+    "}"
+].join("\n");
+var outline_fragment_shader = [
+    "void main(){",
+        "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
+    "}"
+].join("\n");
+
+
+
+
+
+// From vwf/support/client/lib/vwf/view/threejs.js
+// var scene = sceneNode.threeScene;
+// window._dScene = scene;
+// _dRenderer
+//   THREE.WebGLRenderer {domElement: canvas#index-vwf.vwf-scene, context: WebGLRenderingContext, devicePixelRatio: 1, autoClear: true, autoClearColor: true…}
+
+
       // vwf html view initialization event, you don't have window.onload and document.ready is not good enough...
       // initialization, yes it can be done this way... from tile-puzzle-2D example
       vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
         if (childID == vwfapp.appId) sceneInitialize();
       }
-      })(); //@ sourceURL=index.vwf.html
+      })(); //# sourceURL=index.vwf.html
     </script>
   </head>
 <body>

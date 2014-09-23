@@ -5,4 +5,3 @@ model:
 view:
   vwf/view/threejs: "#vwf-root"
   # vwf/view/editor:
-  # view/OrbitCamera:

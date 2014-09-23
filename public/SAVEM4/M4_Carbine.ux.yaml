@@ -42,7 +42,6 @@ methods:
   PushBoltCatchTop:
   PullTrigger:
   releaseTrigger:
-  assessment:
 scripts:
 - |
   // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
@@ -195,14 +194,4 @@ scripts:
 
   this.releaseTrigger = function() {
     this.Trigger.rotateTo([ 0, 1, 0, 0 ], 0.125);
-  };
-
-  this.assessment = function() {
-    jQuery('<iframe/>', {
-      name: 'assessment',
-      id:   'assessmentIFrame',
-      src: this.assessmentServerAddress
-    }).appendTo('#assessment');
-    // jQuery('#assessment').html("<h1>Assessment</h1>");
-    // this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId ] });
-  }; //@ sourceURL=M4_Carbine.ux
+  }; //# sourceURL=M4_Carbine.ux
