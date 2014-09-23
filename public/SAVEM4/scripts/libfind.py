@@ -1,3 +1,4 @@
+# Copyright 2014, SRI International
 
 def findtags(glob, lib, endtag):
 	inmark = 0

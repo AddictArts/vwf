@@ -1,3 +1,5 @@
+# Copyright 2014, SRI International
+
 # Be sure to make the material node a child like so (example of COLLADA scene geometry node 'box'):
 #
 # children:

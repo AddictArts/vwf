@@ -1,3 +1,4 @@
+# Copyright 2014, SRI International
 --- 
 extends: http://vwf.example.com/scene.vwf
 implements:

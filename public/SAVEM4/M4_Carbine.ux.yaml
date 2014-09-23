@@ -1,7 +1,31 @@
+# Copyright 2014, SRI International
 --- 
 properties:
-  M4_Carbine_KbId: 'unknown'
   __idToName:
+  M4_Carbine_KbId: 'unknown'
+  Base_KbId: 'unknown'
+  Bolt_KbId: 'unknown'
+  Bolt_Catch_KbId: 'unknown'
+  Bolt_Ring_KbId: 'unknown'
+  Bolt_Ring1_KbId: 'unknown'
+  Bolt_Ring2_KbId: 'unknown'
+  Bolt_Cam_Pin_KbId: 'unknown'
+  Charging_Handle_KbId: 'unknown'
+  Clip_Spring_KbId: 'unknown'
+  Clip_Spring1_KbId: 'unknown'
+  Extractor_KbId: 'unknown'
+  Extractor_Pin_KbId: 'unknown'
+  Extractor_Spring_KbId: 'unknown'
+  Ejection_Port_Cover_KbId: 'unknown'
+  Ejector_Spring_Pin_KbId: 'unknown'
+  Firing_Pin_KbId: 'unknown'
+  Firing_Pin_Retaining_Pin_KbId: 'unknown'
+  Key_and_Bolt_Carrier_Assembly_KbId: 'unknown'
+  Magazine_Catch_KbId: 'unknown'
+  Magazine_Catch_Button_KbId: 'unknown'
+  Selector_Lever_KbId: 'unknown'
+  Trigger_KbId: 'unknown'
+  Tube_KbId: 'unknown'
 methods:
   init:
   PointWeaponInSafeDirection:
@@ -62,25 +86,29 @@ scripts:
   this.PointWeaponInSafeDirection = function() {
     console.info('PointWeaponInSafeDirection facing down range');
     this.rotation = [ 0, 0, 1, 0 ];
-    this.activity({ action: 'PointWeaponInSafeDirection', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PointWeaponInSafeDirection', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Point', arguments: [ this.M4_Carbine_KbId, 'unknown' ] });
   };
 
   this.SelectModeSemi = function() {
     console.info('SelectMode semi');
     this.Selector_Lever.rotation = [ 0, 1, 0, 0 ];
-    this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Semi' ] });
+    // this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Semi' ] });
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Semi', 'Selector_Lever' ] });
   };
 
   this.SelectModeSafe = function() {
     console.info('SelectMode safe');
     this.Selector_Lever.rotation = [ 0, 1, 0, 90 ];
-    this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Safe' ] });
+    // this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Safe' ] });
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Safe', 'Selector_Lever' ] });
   };
 
   this.SelectModeBurst = function() {
     console.info('SelectMode burst');
     this.Selector_Lever.rotation = [ 0, -1, 0, 90 ];
-    this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Burst' ] });
+    // this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Burst' ] });
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Burst', 'Selector_Lever' ] });
   };
 
   this.PushMagazineReleaseButton = function() {
@@ -91,37 +119,43 @@ scripts:
     this.Base.translateTo([ 0, 0, -0.125 ], 0.25);
     this.Clip_Spring.translateTo([ 0, 0, -0.125 ], 0.25);
     this.Clip_Spring1.translateTo([ 0, 0, -0.125 ], 0.25);
-    this.activity({ action: 'PushMagazineReleaseButton', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PushMagazineReleaseButton', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_KbId ] });
   };
 
   this.PullAndHoldChargingHandle = function() {
     console.info('PullAndHoldChargingHandle pulled');
     this.Charging_Handle.translateTo([ -0.005, 0, 0 ], 0.25);
-    this.activity({ action: 'PullAndHoldChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PullAndHoldChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'PullAndHold', arguments: [ this.Charging_Handle_KbId ] });
   };
 
   this.PushAndHoldBoltCatchBottom = function() {
     console.info('PushAndHoldBoltCatchBottom pushed');
     this.Bolt_Catch.rotation = [ 1, 0, 0, -12 ];
-    this.activity({ action: 'PushAndHoldBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PushAndHoldBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'PullAndHold', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.ReleaseChargingHandle = function() {
     console.info('ReleaseChargingHandle released');
     this.Charging_Handle.translateTo([ 0., 0, 0 ], 0.25);
-    this.activity({ action: 'ReleaseChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'ReleaseChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Release', arguments: [ this.Charging_Handle_KbId ] });
   };
 
   this.LetGoOfBoltCatchBottom = function() {
     console.info('LetGoOfBoltCatchBottom let go');
     this.Bolt_Catch.rotation = [ 1, 0, 0, 0 ];
-    this.activity({ action: 'LetGoOfBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'LetGoOfBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Release', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.PushChargingHandleForward = function() {
     console.info('PushChargingHandleForward');
     this.Charging_Handle.translateTo([ 0.005, 0, 0 ], 0.25);
-    this.activity({ action: 'PushChargingHandleForward', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PushChargingHandleForward', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Push', arguments: [ this.Charging_Handle_KbId ] });
   };
 
   this.CheckChamberAndReceiverForAmmo = function() {
@@ -140,19 +174,22 @@ scripts:
     // this.Firing_Pin_Retaining_Pin.translateTo([ 0, 0, 0 ], 0.25);
     // this.Ejector_Spring_Pin.translateTo([ 0, 0, 0 ], 0.25);
     // this.Ejector_Spring.translateTo([ 0, 0, 0 ], 0.25);
-    this.activity({ action: 'CheckChamberAndReceiverForAmmo', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'CheckChamberAndReceiverForAmmo', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Inspect', arguments: [ this.Bolt_KbId ] });
   };
 
   this.PushBoltCatchTop = function() {
     console.info('PushBoltCatchTop');
     this.Bolt_Catch.rotation = [ 1, 0, 0, 12 ];
-    this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Push', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.PullTrigger = function() {
     console.info('PullTrigger ');
     this.Trigger.rotateTo([ 0, 1, 0, 15 ], 0.5);
-    this.activity({ action: 'PullTrigger', arguments: [ this.M4_Carbine_KbId ] });
+    // this.activity({ action: 'PullTrigger', arguments: [ this.M4_Carbine_KbId ] });
+    this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
     this.future(1).releaseTrigger();
   };
 
