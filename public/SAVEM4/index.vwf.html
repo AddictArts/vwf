@@ -547,59 +547,59 @@
           sceneInitialize();
           vwf_view.kernel.callMethod(vwfapp.appId, 'processEuiDotJson', [ __EUI ]);
 
-          // var scene = null,
-          //     light = null,
-          //     renderer = null,
-          //     camera = null,
-          //     mesh = null;
-          // var container = document.getElementById('ctx2');
-          // var containerWidth  = 320; //window.innerWidth;
-          // var containerHeight = 180; //window.innerHeight;
+          var scene = null,
+              light = null,
+              renderer = null,
+              camera = null,
+              mesh = null;
+          var container = document.getElementById('ctx2');
+          var containerWidth  = 320; //window.innerWidth;
+          var containerHeight = 180; //window.innerHeight;
 
-          // var init = function() {
-          //     // THREE.Scene
-          //     scene = new THREE.Scene();
-          //     setModel();
-          //     // THREE.Camera
-          //     camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 50, 10000);
-          //     camera.position.set(0, 0, 400);
-          //     // THREE.Lights
-          //     light = new THREE.DirectionalLight(0xffffff);
-          //     light.position.set(1, 1, 1);
-          //     scene.add(light);
-          //     // THREE.WebGLRenderer
-          //     renderer = new THREE.WebGLRenderer({
-          //         width: containerWidth,
-          //         height: containerHeight,
-          //         antialias: true
-          //     });
-          //     renderer.setSize(containerWidth, containerHeight);
-          //     renderer.setClearColor(0x666666);
-          //     renderer.autoClear = false;
-          //     renderer.gammaInput = true;
-          //     renderer.gammaOutput = true;
-          //     container.appendChild(renderer.domElement);
-          // };
-          // var setModel = function() {
-          //     var geometry = new THREE.TorusKnotGeometry(50, 10, 128, 16);
-          //     var matColor = new THREE.MeshPhongMaterial(0xffffff);
-          //     mesh = new THREE.Mesh(geometry, matColor);
-          //     scene.add(mesh);
-          // };
-          // var animate = function() {
-          //     requestAnimationFrame(animate);
-          //     render();
-          // };
-          // var render = function() {
-          //     mesh.rotation.y += 0.01;
-          //     renderer.render(scene, camera);
-          // };
+          var init = function() {
+              // THREE.Scene
+              scene = new THREE.Scene();
+              setModel();
+              // THREE.Camera
+              camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 50, 10000);
+              camera.position.set(0, 0, 400);
+              // THREE.Lights
+              light = new THREE.DirectionalLight(0xffffff);
+              light.position.set(1, 1, 1);
+              scene.add(light);
+              // THREE.WebGLRenderer
+              renderer = new THREE.WebGLRenderer({
+                  width: containerWidth,
+                  height: containerHeight,
+                  antialias: true
+              });
+              renderer.setSize(containerWidth, containerHeight);
+              renderer.setClearColor(0x666666);
+              renderer.autoClear = false;
+              renderer.gammaInput = true;
+              renderer.gammaOutput = true;
+              container.appendChild(renderer.domElement);
+          };
+          var setModel = function() {
+              var geometry = new THREE.TorusKnotGeometry(50, 10, 128, 16);
+              var matColor = new THREE.MeshPhongMaterial(0xffffff);
+              mesh = new THREE.Mesh(geometry, matColor);
+              scene.add(mesh);
+          };
+          var animate = function() {
+              requestAnimationFrame(animate);
+              render();
+          };
+          var render = function() {
+              mesh.rotation.y += 0.01;
+              renderer.render(scene, camera);
+          };
 
-          // init();
-          // // hide gl.getProgramInfoLog() WARNING: Could not find vertex shader attribute 'position' ...
-          // renderer.context.getProgramInfoLog = function() { return ''; };
-          // // render();
-          // animate();
+          init();
+          // hide gl.getProgramInfoLog() WARNING: Could not find vertex shader attribute 'position' ...
+          renderer.context.getProgramInfoLog = function() { return ''; };
+          // render();
+          animate();
 
 
         }
