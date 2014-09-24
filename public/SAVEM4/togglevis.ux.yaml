@@ -10,4 +10,4 @@ scripts:
 
   this.toggle = function() {
     this.visible = !this.visible;
-  }; //@ sourceURL=togglevis.ux
+  }; //# sourceURL=togglevis.ux

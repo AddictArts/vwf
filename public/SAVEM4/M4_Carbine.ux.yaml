@@ -42,15 +42,14 @@ methods:
   PushBoltCatchTop:
   PullTrigger:
   releaseTrigger:
-  assessment:
 scripts:
 - |
   // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
   // Since this init depends on another implemented behavior that could be loaded before this and may fix the
   // undefined reference error, I will just handle init myself. I did not test the order in the array of implements theory.
   this.init = function() {
-    console.info('M4_Carbine init');
-    this.M4_Carbine_KbId = this.parent.__m4KbId;
+    console.info(this.id + ' ' + this.name + ' init');
+    this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
     this.__idToName = { };
     this.__idToName[ this.id ] = this.name;
 
@@ -69,12 +68,11 @@ scripts:
     }
 
     // console.log(self.__idToName);
-    self.checkServerAddress(); // set the server address for the interfaces and set from parent if we need to
 
-    self.ask(
+    self.query(
       { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
       function(data) {
-        console.info("init ask received data " + JSON.stringify(data));
+        console.info(self.id + " init query received data " + JSON.stringify(data));
 
         for (var i = 0; i < data.KbIds.length; i++) {
           self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
@@ -86,28 +84,24 @@ scripts:
   this.PointWeaponInSafeDirection = function() {
     console.info('PointWeaponInSafeDirection facing down range');
     this.rotation = [ 0, 0, 1, 0 ];
-    // this.activity({ action: 'PointWeaponInSafeDirection', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Point', arguments: [ this.M4_Carbine_KbId, 'unknown' ] });
   };
 
   this.SelectModeSemi = function() {
     console.info('SelectMode semi');
     this.Selector_Lever.rotation = [ 0, 1, 0, 0 ];
-    // this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Semi' ] });
     this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Semi', 'Selector_Lever' ] });
   };
 
   this.SelectModeSafe = function() {
     console.info('SelectMode safe');
     this.Selector_Lever.rotation = [ 0, 1, 0, 90 ];
-    // this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Safe' ] });
     this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Safe', 'Selector_Lever' ] });
   };
 
   this.SelectModeBurst = function() {
     console.info('SelectMode burst');
     this.Selector_Lever.rotation = [ 0, -1, 0, 90 ];
-    // this.activity({ action: 'SelectMode', arguments: [ this.M4_Carbine_KbId, 'Burst' ] });
     this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Burst', 'Selector_Lever' ] });
   };
 
@@ -119,42 +113,36 @@ scripts:
     this.Base.translateTo([ 0, 0, -0.125 ], 0.25);
     this.Clip_Spring.translateTo([ 0, 0, -0.125 ], 0.25);
     this.Clip_Spring1.translateTo([ 0, 0, -0.125 ], 0.25);
-    // this.activity({ action: 'PushMagazineReleaseButton', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_KbId ] });
   };
 
   this.PullAndHoldChargingHandle = function() {
     console.info('PullAndHoldChargingHandle pulled');
     this.Charging_Handle.translateTo([ -0.005, 0, 0 ], 0.25);
-    // this.activity({ action: 'PullAndHoldChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'PullAndHold', arguments: [ this.Charging_Handle_KbId ] });
   };
 
   this.PushAndHoldBoltCatchBottom = function() {
     console.info('PushAndHoldBoltCatchBottom pushed');
     this.Bolt_Catch.rotation = [ 1, 0, 0, -12 ];
-    // this.activity({ action: 'PushAndHoldBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'PullAndHold', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.ReleaseChargingHandle = function() {
     console.info('ReleaseChargingHandle released');
     this.Charging_Handle.translateTo([ 0., 0, 0 ], 0.25);
-    // this.activity({ action: 'ReleaseChargingHandle', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Release', arguments: [ this.Charging_Handle_KbId ] });
   };
 
   this.LetGoOfBoltCatchBottom = function() {
     console.info('LetGoOfBoltCatchBottom let go');
     this.Bolt_Catch.rotation = [ 1, 0, 0, 0 ];
-    // this.activity({ action: 'LetGoOfBoltCatchBottom', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Release', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.PushChargingHandleForward = function() {
     console.info('PushChargingHandleForward');
     this.Charging_Handle.translateTo([ 0.005, 0, 0 ], 0.25);
-    // this.activity({ action: 'PushChargingHandleForward', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Push', arguments: [ this.Charging_Handle_KbId ] });
   };
 
@@ -174,35 +162,22 @@ scripts:
     // this.Firing_Pin_Retaining_Pin.translateTo([ 0, 0, 0 ], 0.25);
     // this.Ejector_Spring_Pin.translateTo([ 0, 0, 0 ], 0.25);
     // this.Ejector_Spring.translateTo([ 0, 0, 0 ], 0.25);
-    // this.activity({ action: 'CheckChamberAndReceiverForAmmo', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Inspect', arguments: [ this.Bolt_KbId ] });
   };
 
   this.PushBoltCatchTop = function() {
     console.info('PushBoltCatchTop');
     this.Bolt_Catch.rotation = [ 1, 0, 0, 12 ];
-    // this.activity({ action: 'PushBoltCatchTop', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Push', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.PullTrigger = function() {
     console.info('PullTrigger ');
     this.Trigger.rotateTo([ 0, 1, 0, 15 ], 0.5);
-    // this.activity({ action: 'PullTrigger', arguments: [ this.M4_Carbine_KbId ] });
     this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
     this.future(1).releaseTrigger();
   };
 
   this.releaseTrigger = function() {
     this.Trigger.rotateTo([ 0, 1, 0, 0 ], 0.125);
-  };
-
-  this.assessment = function() {
-    jQuery('<iframe/>', {
-      name: 'assessment',
-      id:   'assessmentIFrame',
-      src: this.assessmentServerAddress
-    }).appendTo('#assessment');
-    // jQuery('#assessment').html("<h1>Assessment</h1>");
-    // this.activity({ action: 'Remove', arguments: [ this.M4_Carbine_KbId ] });
-  }; //@ sourceURL=M4_Carbine.ux
+  }; //# sourceURL=M4_Carbine.ux
