@@ -1,13 +1,16 @@
 # Copyright 2014, SRI International
 ---
 properties:
-  activityServerAddress:
+  objectServerAddress:
   queryServerAddress:
+  activityServerAddress:
   assessmentServerAddress:
 methods:
-  checkServerAddress:
+  checkForServerProperty:
+  obj:
+  query:
   activity:
-  ask:
+  post:
 scripts:
 - |
   // NOTE: Called once even if multiple things implement this behavior
@@ -17,67 +20,59 @@ scripts:
     // we depend on config eui.json or eui-defaults.json via <script/> in index.vwf.html
   };
 
-  this.checkServerAddress = function() {
+  this.checkForServerProperty = function() {
     if (this.parent) {
       console.info('backendtxrx.ux Setting the servers using the parent properties...');
       this.activityServerAddress = this.parent.activityServerAddress;
       this.queryServerAddress = this.parent.queryServerAddress;
       this.assessmentServerAddress = this.parent.assessmentServerAddress;
-    }
+      this.objectServerAddress = this.parent.objectServerAddress;
 
-    if (!this.activityServerAddress || !this.queryServerAddress || !this.assessmentServerAddress) {
-      var msg;
+      if (!this.parent.baseServerAddress) {
+        var msg = "The baseServerAddress server address is undefined, check the eui.json setting " + this.id;
 
-      if (!this.activityServerAddress) msg = "The activity server address is undefined, check the eui.json setting " + this.id;
-      else if (!this.queryServerAddress) msg = "The query server address is undefined, check the eui.json setting " + this.id;
-      else if (!this.assessmentServerAddress) msg = "The assessmentServerAddress server address is undefined, check the eui.json setting " + this.id;
-
-      jQuery('#reasonertxrxMsg').text(msg);
-      console.warn(msg);
-    } else {
-      console.info(this.id + " backendtxrx.ux activityServerAddress:" + this.activityServerAddress);
-      console.info(this.id + " backendtxrx.ux queryServerAddress:" + this.queryServerAddress);
-      console.info(this.id + " backendtxrx.ux assessmentServerAddress:" + this.assessmentServerAddress);
-      jQuery('#backendtxrxMsg').text('Servers ' + this.activityServerAddress + ', ' + this.queryServerAddress + ', ' + this.assessmentServerAddress);
+        jQuery('#reasonertxrxMsg').text(msg);
+        console.warn(msg);
+      } else {
+        console.info(this.id + " backendtxrx.ux objectServerAddress:" + this.objectServerAddress);
+        console.info(this.id + " backendtxrx.ux queryServerAddress:" + this.queryServerAddress);
+        console.info(this.id + " backendtxrx.ux activityServerAddress:" + this.activityServerAddress);
+        console.info(this.id + " backendtxrx.ux assessmentServerAddress:" + this.assessmentServerAddress);
+        jQuery('#backendtxrxMsg').text('Servers '
+          + this.objectServerAddress + ', '
+          + this.queryServerAddress + ', '
+          + this.activityServerAddress + ', '
+          + this.assessmentServerAddress);
+      }
     }
   };
 
-  this.ask = function(query, done /* callback */) {
-    console.info("backendtxrx.ux ask " + JSON.stringify(query));
+  this.obj = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.ux object " + JSON.stringify(data));
+    this.post({ object: JSON.stringify(data) }, this.objectServerAddress, done);
+  };
 
-    var url = this.queryServerAddress;
-    var queryJSON = JSON.stringify(query);
+  this.query = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.ux query " + JSON.stringify(data));
+    this.post({ query: JSON.stringify(data) }, this.queryServerAddress, done);
+  };
 
-    jQuery('#backendtxrxMsg').text(queryJSON);
+  this.activity = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.ux activity " + JSON.stringify(data));
+    this.post({ activity: JSON.stringify(data) }, this.activityServerAddress, done);
+  };
+
+  this.post = function(json, url, done) {
+    jQuery('#backendtxrxMsg').text(JSON.stringify(json));
     jQuery.ajax({
       url: url,
       type: 'post',
       cache: false,
-      data: { query: queryJSON }
+      data: json
     })
     .done(done)
     .fail(function(jqXHR, textStatus, errorThrown) {
-      console.info('using queryServerAddress:' + url);
-      console.warn("error:" + textStatus);
-    });
-  };
-
-  this.activity = function(activity, done /* callback */) {
-    console.info("backendtxrx.ux activity " + JSON.stringify(activity));
-
-    var url = this.activityServerAddress;
-    var activityJSON = JSON.stringify(activity);
-
-    jQuery('#backendtxrxMsg').text(activityJSON);
-    jQuery.ajax({
-      url: url,
-      type: 'post',
-      cache: false,
-      data: { activity: activityJSON }
-    })
-    .done(done)
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      console.info('using activityServerAddress:' + url);
+      console.info('using serverAddress:' + url);
       console.warn("error:" + textStatus);
     });
   }; //# sourceURL=backendtxrx.ux

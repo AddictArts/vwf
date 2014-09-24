@@ -52,7 +52,6 @@ scripts:
   var vwf_M4_node3 = {
     extends: "http://vwf.example.com/node3.vwf",
     type: "model/vnd.collada+xml",
-    source: 'models/M4_v09.dae',
     implements: [ "M4_Carbine.ux", "backendtxrx.ux" ],
     properties: {
       translation: [ 0, 0, 2 ],
@@ -157,7 +156,7 @@ scripts:
   };
 
   this.zoom = function(value) {
-    //console.info('zoom ' + value);
+    // console.info('zoom ' + value);
 
     var EPS = 0.00001;
     var scale = 1 - value / 100; // normalize the value
@@ -177,7 +176,7 @@ scripts:
     }
 
     this.zoomedValue = value;
-    //console.info('scale: ' + scale + ', scaling: ' + this.scaling);
+    // console.info('scale: ' + scale + ', scaling: ' + this.scaling);
     // Note: assuming target is the origin for now!
     var x = this.camera.translation[0];
     var y = this.camera.translation[1];
@@ -195,7 +194,7 @@ scripts:
   };
 
   this.orbit = function(theta) {
-    //console.info('orbit ' + theta + ' degrees');
+    // console.info('orbit ' + theta + ' degrees');
 
     // Note: assuming target is the origin for now!
     var x = this.camera.translation[0];
@@ -211,10 +210,10 @@ scripts:
     x = radius * Math.sin(phi) * Math.sin(theta);
     y = radius * Math.sin(phi) * Math.cos(theta);
     z = radius * Math.cos(phi);
-    //console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
+    // console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
     this.camera.translation = [ x, y, z ];
-    //console.info('target theta ' + theta * (180 / Math.PI));
-    //console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+    // console.info('target theta ' + theta * (180 / Math.PI));
+    // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
     this.future(0).lookAt(this.camTarget);
   };
 
@@ -229,7 +228,7 @@ scripts:
 
     this.camera.lookAt = lookAt;
     this.future(0).clearLookAt();
-    //console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+    // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
   };
 
   this.removeInstance = function() {
@@ -240,22 +239,36 @@ scripts:
   this.resetBackend = function() {
     var self = this;
 
-    this.ask({ type: 'Reset' },
+    this.query({ type: 'Reset' },
       function() {
         self.backendResetSent = true;
       }
     );
   };
 
-  this.initInstance = function() {
-    this.lookAt(this.camTarget);
-    this.children.M4_Carbine_dae.init();
+  this.initInstance = function(name, kbid) {
+    this.children[name].M4_Carbine_KbId = kbid;
+    this.children[name].init();
   };
 
-  this.instance = function() {
-    console.info('instancing tool tray item');
-    this.children.create('M4_Carbine_dae', vwf_M4_node3);
-    this.camTarget = 'M4_Carbine_dae';
-    this.future(0).initInstance();
-    // this.ask({ type: 'Instance', parent: null, query: [ 'M4_Carbine' ] }); // not ready for instance queries yet!
+  this.instance = function(name, backEndId) {
+    console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
+
+    var self = this;
+
+    name = name.replace(' ', '_') + '_dae';
+    self.obj({ type: 'create', ID: backEndId }, function(data) {
+      console.info(self.id + ' obj request received data ' + JSON.stringify(data));
+
+      if (data.KbId == 'unknown') {
+        console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
+        return;
+      }
+
+      vwf_M4_node3.source = data.assetURL;
+      self.children.create(name, vwf_M4_node3); // vwf_M4_node3 is the only non-dynamic piece of the instance, we could get the json dynamically
+      self.camTarget = name;
+      self.future(0).initInstance(name, data.KbId);
+      self.future(0).lookAt(self.camTarget);
+    });
   }; //# sourceURL=index.vwf
