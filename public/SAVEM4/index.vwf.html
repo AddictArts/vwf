@@ -410,7 +410,7 @@
       }
 
 
-// http://jsfiddle.net/AddictArts/e81vmmgo/8/
+// http://jsfiddle.net/AddictArts/e81vmmgo/10/
 //
 // CoffeeScript
 // scene = null
@@ -466,8 +466,6 @@
 //     renderer.setSize screenWidth, screenHeight
 //     renderer.setClearColor 0x666666
 //     renderer.autoClear = false
-//     renderer.gammaInput = true
-//     renderer.gammaOutput = true
 //     document.body.appendChild renderer.domElement
 //     # EVENTS
 //     window.addEventListener 'resize', onWindowResize, false
@@ -488,7 +486,7 @@
 //     matShader = new THREE.ShaderMaterial
 //         uniforms: uniforms,
 //         vertexShader: outShader.vertex_shader,
-//         fragmentShader: outShader.fragment_shader,
+//         fragmentShader: outShader.fragment_shader
 
 //     mesh2 = new THREE.Mesh geometry, matShader
 //     mesh2.material.depthWrite = false; # <==============
@@ -547,11 +545,26 @@
           sceneInitialize();
           vwf_view.kernel.callMethod(vwfapp.appId, 'processEuiDotJson', [ __EUI ]);
 
+          // http://jsfiddle.net/AddictArts/e81vmmgo/10/
+          var outline_vertex_shader = [
+              "uniform float offset;",
+              "void main() {",
+                  "vec4 pos = modelViewMatrix * vec4( position + normal * offset, 1.0 );",
+                  "gl_Position = projectionMatrix * pos;",
+              "}"
+          ].join("\n");
+          var outline_fragment_shader = [
+              "void main(){",
+                  "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
+              "}"
+          ].join("\n");
           var scene = null,
               light = null,
               renderer = null,
               camera = null,
               mesh = null;
+              outScene = null;
+              outMesh = null;
           var container = document.getElementById('ctx2');
           var containerWidth  = 320; //window.innerWidth;
           var containerHeight = 180; //window.innerHeight;
@@ -559,6 +572,7 @@
           var init = function() {
               // THREE.Scene
               scene = new THREE.Scene();
+              outScene = new THREE.Scene();
               setModel();
               // THREE.Camera
               camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 50, 10000);
@@ -576,8 +590,6 @@
               renderer.setSize(containerWidth, containerHeight);
               renderer.setClearColor(0x666666);
               renderer.autoClear = false;
-              renderer.gammaInput = true;
-              renderer.gammaOutput = true;
               container.appendChild(renderer.domElement);
           };
           var setModel = function() {
@@ -585,6 +597,21 @@
               var matColor = new THREE.MeshPhongMaterial(0xffffff);
               mesh = new THREE.Mesh(geometry, matColor);
               scene.add(mesh);
+              var uniforms = {
+                offset: {
+                  type: "f",
+                  value: 1
+                }
+              };
+              var matShader = new THREE.ShaderMaterial({
+                  uniforms: uniforms,
+                  vertexShader: outline_vertex_shader,
+                  fragmentShader: outline_fragment_shader
+              });
+              outMesh = new THREE.Mesh(geometry, matShader);
+              outMesh.material.depthWrite = false; // note
+              outMesh.quaternion = mesh.quaternion;
+              outScene.add(outMesh);
           };
           var animate = function() {
               requestAnimationFrame(animate);
@@ -592,6 +619,7 @@
           };
           var render = function() {
               mesh.rotation.y += 0.01;
+              renderer.render(outScene, camera);
               renderer.render(scene, camera);
           };
 
