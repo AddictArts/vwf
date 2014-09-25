@@ -1,0 +1,103 @@
+<html>
+<script type="text/javascript" src="vwf/model/threejs/three.js"></script>
+<script type="text/javascript" src="vwf/model/threejs/js/loaders/ColladaLoader.js"></script>
+<body>
+<script>
+var scene = undefined;
+var renderer = undefined;
+var camera = undefined;
+
+var init = function() {
+  var containerWidth  = window.innerWidth;
+  var containerHeight = window.innerHeight;
+  var loader = new THREE.ColladaLoader();
+
+  // THREE.Scene
+  scene = new THREE.Scene();
+  loader.load('models/xyzbar.dae', function(collada) {
+    collada.scene.name = 'xyzbar_dae';
+    // collada.scene.children[0].visible = false; // X
+    // collada.scene.children[1].visible = false; // Y
+    // collada.scene.children[2].visible = false; // Z
+    // scene.add(collada.scene.children[0]); // to drop the parent scene dae transform
+    collada.scene.scale.set(0.005, 0.005, 0.005);
+    scene.add(collada.scene);
+
+    // Grid
+    var size = 14;
+    var step = 0.125;
+    var geometry = new THREE.Geometry();
+    var material = new THREE.LineBasicMaterial({ color: 0x303030 }); // 0x303030
+
+    for (var i = -size; i <= size; i += step) {
+      geometry.vertices.push(new THREE.Vector3(-size, - 0.04, i));
+      geometry.vertices.push(new THREE.Vector3(size, - 0.04, i));
+      geometry.vertices.push(new THREE.Vector3(i, - 0.04, -size));
+      geometry.vertices.push(new THREE.Vector3(i, - 0.04, size));
+    }
+
+    var line = new THREE.Line(geometry, material, THREE.LinePieces);
+
+    scene.add( line );
+
+    // THREE.Camera
+    camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 0.1, 10000);
+    camera.position.set(-0.25, 0, 0.125);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    // THREE.Lights
+    light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(-1, 0.5, 0.5);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0xffffff));
+
+    // THREE.WebGLRenderer
+    // var canvas = document.getElementById("canvasID");
+    renderer = new THREE.WebGLRenderer({
+      // canvas: canvas,
+      width: containerWidth,
+      height: containerHeight,
+      antialias: true
+    });
+    renderer.setSize(containerWidth, containerHeight);
+    document.body.appendChild(renderer.domElement);
+    loader.options.convertUpAxis = true;
+    // loader.options.upAxis = 'Z';
+    loader.load('models/M4_Environment_01.dae', function(collada) {
+      collada.scene.name = 'M4_Environment_01_dae';
+    // loader.load('models/M4_v09.dae', function(collada) {
+    //   collada.scene.name = 'M4_v09_dae';
+
+      var dae = collada.scene;
+      var mesh = undefined;
+
+      dae.traverse(function(child) {
+        console.log(child.name);
+ 
+        if (child instanceof THREE.Mesh && child.name == 'targets') {
+        // if (child instanceof THREE.Mesh && child.name == 'Trigger') {
+        // if (child instanceof THREE.Mesh && child.name == 'Selector_Lever') {
+          mesh = child;
+        } else {
+          child.visible = false;
+        }
+      });
+
+      // dae.rotation.x = Math.PI;
+      // dae.scale.x = dae.scale.y = dae.scale.z = 1;
+      scene.add(dae);
+      THREE.SceneUtils.detach(mesh, mesh.parent, scene);
+      mesh.position.add(THREE.GeometryUtils.center(mesh.geometry.clone())); //XXX add or sub, need to pick
+      render();
+    });
+  });
+};
+var render = function(t) {
+  requestAnimationFrame(render);
+  renderer.render(scene, camera);
+};
+
+init();
+</script>
+</body>
+</html>
