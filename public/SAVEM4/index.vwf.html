@@ -427,42 +427,31 @@
           vwf_view.kernel.callMethod(vwfapp.appId, 'processEuiDotJson', [ __EUI ]);
 
           // http://jsfiddle.net/AddictArts/e81vmmgo/11/
-          var outline_vertex_shader = [
-              "uniform float offset;",
-              "void main() {",
-                  "vec4 pos = modelViewMatrix * vec4( position + normal * offset, 1.0 );",
-                  "gl_Position = projectionMatrix * pos;",
-              "}"
-          ].join("\n");
-          var outline_fragment_shader = [
-              "void main(){",
-                  "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
-              "}"
-          ].join("\n");
-          var scene = null,
-              light = null,
-              renderer = null,
-              camera = null,
-              mesh = null;
-              outScene = null;
-              outMesh = null;
-          var container = document.getElementById('ctx2');
-          var containerWidth  = 320; //window.innerWidth;
-          var containerHeight = 180; //window.innerHeight;
+          var scene = undefined;
+          var renderer = undefined;
+          var camera = undefined;
+          var mesh = undefined;
+          var outScene = undefined;
 
           var init = function() {
-            THREE.Scene
+            var container = document.getElementById('ctx2');
+            var containerWidth  = 320;
+            var containerHeight = 180;
+
+            // THREE.Scene
             scene = new THREE.Scene();
             outScene = new THREE.Scene();
             setModel();
-            THREE.Camera
+            // THREE.Camera (Y-UP)
             camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 50, 10000);
             camera.position.set(0, 0, 400);
-            THREE.Lights
-            light = new THREE.DirectionalLight(0xffffff);
+
+            // THREE.Lights
+            var light = new THREE.DirectionalLight(0xffffff);
+
             light.position.set(1, 1, 1);
             scene.add(light);
-            THREE.WebGLRenderer
+            // THREE.WebGLRenderer
             // var canvas = document.getElementById("canvasID");
             renderer = new THREE.WebGLRenderer({
               // canvas: canvas,
@@ -476,10 +465,22 @@
           };
           var setModel = function() {
             var geometry = new THREE.TorusKnotGeometry(50, 10, 128, 16);
-            var matColor = new THREE.MeshPhongMaterial(0xffffff);
-            mesh = new THREE.Mesh(geometry, matColor);
+
+            mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial(0xffffff));
             scene.add(mesh);
 
+            var outline_vertex_shader = [
+              "uniform float offset;",
+              "void main() {",
+                "vec4 pos = modelViewMatrix * vec4( position + normal * offset, 1.0 );",
+                "gl_Position = projectionMatrix * pos;",
+              "}"
+            ].join("\n");
+            var outline_fragment_shader = [
+              "void main(){",
+                "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
+              "}"
+            ].join("\n");
             var uniforms = {
               offset: {
                 type: "f",
@@ -487,18 +488,19 @@
               }
             };
             var matShader = new THREE.ShaderMaterial({
-                uniforms: uniforms,
-                vertexShader: outline_vertex_shader,
-                fragmentShader: outline_fragment_shader
+              uniforms: uniforms,
+              vertexShader: outline_vertex_shader,
+              fragmentShader: outline_fragment_shader
             });
-            outMesh = new THREE.Mesh(geometry, matShader);
+            var outMesh = new THREE.Mesh(geometry, matShader);
+
             outMesh.material.depthWrite = false; // note
             outMesh.quaternion = mesh.quaternion;
             outScene.add(outMesh);
           };
           var animate = function() {
-              requestAnimationFrame(animate);
-              render();
+            requestAnimationFrame(animate);
+            render();
           };
           var render = function() {
             mesh.rotation.y += 0.01;
