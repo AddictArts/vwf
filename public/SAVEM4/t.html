@@ -6,6 +6,7 @@
 var scene = undefined;
 var renderer = undefined;
 var camera = undefined;
+var mesh = undefined;
 
 var init = function() {
   var containerWidth  = window.innerWidth;
@@ -28,6 +29,7 @@ var init = function() {
     var step = 0.125;
     var geometry = new THREE.Geometry();
     var material = new THREE.LineBasicMaterial({ color: 0x303030 }); // 0x303030
+    var line = new THREE.Line(geometry, material, THREE.LinePieces);
 
     for (var i = -size; i <= size; i += step) {
       geometry.vertices.push(new THREE.Vector3(-size, - 0.04, i));
@@ -35,8 +37,6 @@ var init = function() {
       geometry.vertices.push(new THREE.Vector3(i, - 0.04, -size));
       geometry.vertices.push(new THREE.Vector3(i, - 0.04, size));
     }
-
-    var line = new THREE.Line(geometry, material, THREE.LinePieces);
 
     scene.add( line );
 
@@ -62,14 +62,12 @@ var init = function() {
     renderer.setSize(containerWidth, containerHeight);
     document.body.appendChild(renderer.domElement);
     loader.options.convertUpAxis = true;
-    // loader.options.upAxis = 'Z';
     loader.load('models/M4_Environment_01.dae', function(collada) {
       collada.scene.name = 'M4_Environment_01_dae';
     // loader.load('models/M4_v09.dae', function(collada) {
     //   collada.scene.name = 'M4_v09_dae';
 
       var dae = collada.scene;
-      var mesh = undefined;
 
       dae.traverse(function(child) {
         console.log(child.name);
@@ -87,12 +85,24 @@ var init = function() {
       // dae.scale.x = dae.scale.y = dae.scale.z = 1;
       scene.add(dae);
       THREE.SceneUtils.detach(mesh, mesh.parent, scene);
-      mesh.position.add(THREE.GeometryUtils.center(mesh.geometry.clone())); //XXX add or sub, need to pick
+      var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
+      console.log(delta);
+      mesh.geometry.applyMatrix(new THREE.Matrix4().setPosition(delta));
+
+      // ???
+      // mesh.position.y = 10;
+      // var pivot = new THREE.Object3D();
+      // pivot.add( mesh );
+      // scene.add( pivot );
+
+      // THREE.SceneUtils.detach(mesh, mesh.parent, scene);
+      // mesh.position.add(THREE.GeometryUtils.center(mesh.geometry.clone())); //XXX add or sub, need to pick
       render();
     });
   });
 };
 var render = function(t) {
+  mesh.rotation.y += 0.005;
   requestAnimationFrame(render);
   renderer.render(scene, camera);
 };
