@@ -410,27 +410,20 @@
       }
 
 
-// scene       = null
-// normal      = null
-// outline     = null
-// outScene    = null
-// maskScene   = null
-// light       = null
-// renderer    = null
-// composer    = null
-// camera1     = null
-// camera2     = null
-// camera3     = null
-// mesh1       = null
-// mesh2       = null
-// mesh3       = null
-// renderTarget = null
+// http://jsfiddle.net/AddictArts/e81vmmgo/8/
+//
+// CoffeeScript
+// scene = null
+// outScene = null
+// light = null
+// renderer = null
+// camera = null
+// mesh1 = null
+// mesh2 = null
 
 // screenWidth  = window.innerWidth
 // screenHeight = window.innerHeight
-
 // clock = new THREE.Clock
-
 // elapsedTime = 0
 // frameCount  = 0
 
@@ -443,45 +436,28 @@
 //                 "gl_Position = projectionMatrix * pos;",
 //             "}"
 //         ].join("\n"),
-
 //         fragment_shader: [
 //             "void main(){",
 //                 "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
 //             "}"
 //         ].join("\n")
 
-
 // init = () ->
-
 //     # SCENE
-
-//     scene     = new THREE.Scene
-//     maskScene = new THREE.Scene
-//     outScene  = new THREE.Scene
+//     scene = new THREE.Scene
+//     outScene = new THREE.Scene
 //     setModel()
 
-//     # SCENE CAMERA
-
-//     camera1 = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
-//     camera1.position.set 0, 0, 400
-//     scene.add camera1
-
-//     camera2 = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
-//     camera2.position.set 0, 0, 400
-//     outScene.add camera2
-
-//     camera3 = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
-//     camera3.position.set 0, 0, 400
-//     maskScene.add camera3
+//     # CAMERA
+//     camera = new THREE.PerspectiveCamera 40, screenWidth/screenHeight, 50, 10000
+//     camera.position.set 0, 0, 400
 
 //     # LIGHTS
-
 //     light = new THREE.DirectionalLight 0xffffff
 //     light.position.set 1, 1, 1
 //     scene.add light
 
 //     # RENDERER
-
 //     renderer = new THREE.WebGLRenderer
 //         width: screenWidth
 //         height: screenHeight
@@ -492,108 +468,53 @@
 //     renderer.autoClear = false
 //     renderer.gammaInput = true
 //     renderer.gammaOutput = true
-
 //     document.body.appendChild renderer.domElement
-
-//     # POSTPROCESSING
-
-//     renderTargetParameters = 
-//         minFilter:      THREE.LinearFilter
-//         magFilter:      THREE.LinearFilter
-//         format:         THREE.RGBAFormat
-//         stencilBuffer:  true
-    
-//     renderTarget = new THREE.WebGLRenderTarget window.innerWidth, window.innerHeight, renderTargetParameters
-
-//     composer    = new THREE.EffectComposer renderer
-//     composer.renderTarget1.stencilBuffer = true
-//     composer.renderTarget2.stencilBuffer = true
-
-//     normal      = new THREE.RenderPass scene, camera1
-//     outline     = new THREE.RenderPass outScene, camera2
-//     outline.clear = false
-    
-//     mask        = new THREE.MaskPass maskScene, camera3
-//     mask.inverse = true
-//     clearMask   = new THREE.ClearMaskPass
-//     copyPass    = new THREE.ShaderPass THREE.CopyShader
-//     copyPass.renderToScreen = true
-
-//     composer.addPass normal
-//     composer.addPass mask
-//     composer.addPass outline
-//     composer.addPass clearMask
-//     composer.addPass copyPass
-
 //     # EVENTS
-
 //     window.addEventListener 'resize', onWindowResize, false
 
 // setModel = ->
-
-//     geometry = new THREE.TorusKnotGeometry 50, 10, 50, 20
-
-//     # shaded model
+//     geometry = new THREE.TorusKnotGeometry 50, 10, 128, 16
+//     # SHADED MODEL
 //     matColor = new THREE.MeshPhongMaterial 0xffffff
 //     mesh1 = new THREE.Mesh geometry, matColor
 //     scene.add mesh1
 
-//     # flat mask
-//     matFlat = new THREE.MeshBasicMaterial
-//         color: 0x000000
-//     mesh2 = new THREE.Mesh geometry, matFlat
-//     maskScene.add mesh2
-
-//     # shader
+//     # SHADER
 //     uniforms = offset:
 //         type: "f"
 //         value: 1
 
 //     outShader = shader['outline']
-    
 //     matShader = new THREE.ShaderMaterial
 //         uniforms: uniforms,
 //         vertexShader: outShader.vertex_shader,
-//         fragmentShader: outShader.fragment_shader
+//         fragmentShader: outShader.fragment_shader,
 
-//     mesh3 = new THREE.Mesh geometry, matShader
-//     outScene.add mesh3
+//     mesh2 = new THREE.Mesh geometry, matShader
+//     mesh2.material.depthWrite = false; # <==============
+//     mesh2.quaternion = mesh1.quaternion;
+//     outScene.add mesh2
 
 // onWindowResize = ->
-
 //     screenWidth  = window.innerWidth
 //     screenHeight = window.innerHeight
-
-//     camera1.aspect = screenWidth / screenHeight
-//     camera2.aspect = camera1.aspect
-//     camera3.aspect = camera1.aspect
-
-//     camera1.updateProjectionMatrix()
-//     camera2.updateProjectionMatrix()
-//     camera3.updateProjectionMatrix()
-
+//     camera.aspect = screenWidth / screenHeight
+//     camera.updateProjectionMatrix()
 //     renderer.setSize screenWidth, screenHeight
 
 // animate = ->
-
 //     updateFps()
-// #    requestAnimationFrame animate
+//     requestAnimationFrame animate
 //     render()
 
 // render = ->
-
 //     now = Date.now()
 //     delta = clock.getDelta()
-
-//     if mesh1
-//         mesh1.rotation.y += 0.01
-//         mesh2.rotation.y = mesh1.rotation.y
-//         mesh3.rotation.y = mesh1.rotation.y
-    
-//     composer.render()
+//     mesh1.rotation.y += 0.01
+//     renderer.render(outScene, camera) # <==============
+//     renderer.render(scene, camera) # <==============
 
 // updateFps = ->
-
 //     elapsedTime += clock.getDelta()
 //     frameCount++
 
@@ -603,28 +524,10 @@
 //         elapsedTime = 0
 
 // init()
+// # hide gl.getProgramInfoLog() WARNING: Could not find vertex shader attribute 'position' ...
+// renderer.context.getProgramInfoLog = () ->
+//     return ''
 // animate()
-
-
-
-
-
-
-var outline_vertex_shader = [
-    "uniform float offset;",
-    "void main() {",
-        "vec4 pos = modelViewMatrix * vec4( position + normal * offset, 1.0 );",
-        "gl_Position = projectionMatrix * pos;",
-    "}"
-].join("\n");
-var outline_fragment_shader = [
-    "void main(){",
-        "gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );",
-    "}"
-].join("\n");
-
-
-
 
 
 // From vwf/support/client/lib/vwf/view/threejs.js
@@ -632,7 +535,10 @@ var outline_fragment_shader = [
 // window._dScene = scene;
 // _dRenderer
 //   THREE.WebGLRenderer {domElement: canvas#index-vwf.vwf-scene, context: WebGLRenderingContext, devicePixelRatio: 1, autoClear: true, autoClearColor: true…}
-
+// _dScene.getObjectByName('sky', true)
+// THREE.Mesh {id: 34, uuid: "7B8740A6-DCDC-48AF-8009-A22DF0EECB46", name: "sky", parent: THREE.Object3D, children: Array[0]…}
+// _dScene.getObjectByName('targets', true)
+// THREE.Mesh {id: 35, uuid: "FA5A35F8-B909-47AD-8FDC-DE374D8FAE60", name: "targets", parent: THREE.Object3D, children: Array[0]…}
 
       // vwf html view initialization event, you don't have window.onload and document.ready is not good enough...
       // initialization, yes it can be done this way... from tile-puzzle-2D example
@@ -640,6 +546,62 @@ var outline_fragment_shader = [
         if (childID == vwfapp.appId) {
           sceneInitialize();
           vwf_view.kernel.callMethod(vwfapp.appId, 'processEuiDotJson', [ __EUI ]);
+
+          // var scene = null,
+          //     light = null,
+          //     renderer = null,
+          //     camera = null,
+          //     mesh = null;
+          // var container = document.getElementById('ctx2');
+          // var containerWidth  = 320; //window.innerWidth;
+          // var containerHeight = 180; //window.innerHeight;
+
+          // var init = function() {
+          //     // THREE.Scene
+          //     scene = new THREE.Scene();
+          //     setModel();
+          //     // THREE.Camera
+          //     camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 50, 10000);
+          //     camera.position.set(0, 0, 400);
+          //     // THREE.Lights
+          //     light = new THREE.DirectionalLight(0xffffff);
+          //     light.position.set(1, 1, 1);
+          //     scene.add(light);
+          //     // THREE.WebGLRenderer
+          //     renderer = new THREE.WebGLRenderer({
+          //         width: containerWidth,
+          //         height: containerHeight,
+          //         antialias: true
+          //     });
+          //     renderer.setSize(containerWidth, containerHeight);
+          //     renderer.setClearColor(0x666666);
+          //     renderer.autoClear = false;
+          //     renderer.gammaInput = true;
+          //     renderer.gammaOutput = true;
+          //     container.appendChild(renderer.domElement);
+          // };
+          // var setModel = function() {
+          //     var geometry = new THREE.TorusKnotGeometry(50, 10, 128, 16);
+          //     var matColor = new THREE.MeshPhongMaterial(0xffffff);
+          //     mesh = new THREE.Mesh(geometry, matColor);
+          //     scene.add(mesh);
+          // };
+          // var animate = function() {
+          //     requestAnimationFrame(animate);
+          //     render();
+          // };
+          // var render = function() {
+          //     mesh.rotation.y += 0.01;
+          //     renderer.render(scene, camera);
+          // };
+
+          // init();
+          // // hide gl.getProgramInfoLog() WARNING: Could not find vertex shader attribute 'position' ...
+          // renderer.context.getProgramInfoLog = function() { return ''; };
+          // // render();
+          // animate();
+
+
         }
       }
       })(); //# sourceURL=index.vwf.html
@@ -653,5 +615,6 @@ var outline_fragment_shader = [
   <script type="text/javascript">
     $('#wrapper').appendTo('#vwf-root');
   </script>
+  <!-- div id="ctx2" style="border: 1px solid red; float: left; width: 320px; height: 180px"></div -->
 </body>
 </html>
