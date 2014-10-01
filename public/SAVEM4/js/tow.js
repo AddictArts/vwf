@@ -109,6 +109,19 @@ TOW.centerGeometry = function(mesh) {
   mesh.position.set(0, 0, 0);
 };
 
+TOW.findAndHideMesh = function(name, scene) {
+  var mesh;
+
+  scene.traverse(function(child) {
+    if (child instanceof THREE.Mesh && child.name == name) {
+      mesh = child;
+    } else {
+      child.visible = false;
+    }
+  });
+  return mesh;
+};
+
 TOW.render = function(onRender) {
   if (TOW.Canvas === undefined) document.body.appendChild(TOW.Renderer.domElement);
 

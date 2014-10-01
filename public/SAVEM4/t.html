@@ -5,50 +5,42 @@
   <script type="text/javascript" src="js/tow.js"></script>
   <script type="text/javascript" src="js/dat.gui.min.js"></script>
   <script>
-  TOW.Camera.position.set(-0.25, 0, 0.125);
-  // TOW.Camera.position.set(-10, 5, 5);
-  TOW.Camera.lookAt(new THREE.Vector3(0, 0, 0));
-  TOW.addLight({ position: new THREE.Vector3(-1, 0.5, 0.5) });
-  TOW.addLight({ type: 'Ambient' });
-  TOW.addGrid(14, 0.125, 0x303030);
-  TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], function(obj3Ds) {
-  // TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
-    var xyzbar_dae,
-        m4_environment_01_dae,
-        m4_v09_dae,
-        mesh;
+TOW.Camera.position.set(-0.25, 0, 0.125);
+// TOW.Camera.position.set(-10, 5, 5);
+TOW.Camera.lookAt(new THREE.Vector3(0, 0, 0));
+TOW.addLight({ position: new THREE.Vector3(-1, 0.5, 0.5) });
+TOW.addLight({ type: 'Ambient' });
+TOW.addGrid(14, 0.125, 0x303030);
+TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], function(obj3Ds) {
+// TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
+// TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
+  var xyzbar_dae,
+      m4_environment_01_dae,
+      m4_v09_dae,
+      mesh;
 
-    obj3Ds.forEach(function(obj3D) {
-      switch (obj3D.name) {
-      case 'M4_v09_dae':
-        m4_v09_dae = obj3D;
-        break;
-      case 'M4_Environment_01_dae':
-        m4_environment_01_dae = obj3D;
-        break;
-      case 'xyzbar_dae':
-        xyzbar_dae = obj3D;
-        break;
-      }
-    });
-    xyzbar_dae.scale.set(0.005, 0.005, 0.005);
-    m4_environment_01_dae.traverse(function(child) {
-    // m4_v09_dae.traverse(function(child) {
-      console.log(child.name);
-
-      if (child instanceof THREE.Mesh && child.name == 'targets') {
-      // if (child instanceof THREE.Mesh && child.name == 'Trigger') {
-      // if (child instanceof THREE.Mesh && child.name == 'Selector_Lever') {
-        mesh = child;
-      } else {
-        child.visible = false;
-      }
-    });
-    TOW.centerGeometry(mesh);
-    TOW.render(function() {
-      mesh.rotation.y += 0.005;
-    });
+  obj3Ds.forEach(function(obj3D) {
+    switch (obj3D.name) {
+    case 'M4_v09_dae':
+      m4_v09_dae = obj3D;
+      break;
+    case 'M4_Environment_01_dae':
+      m4_environment_01_dae = obj3D;
+      break;
+    case 'xyzbar_dae':
+      xyzbar_dae = obj3D;
+      break;
+    }
   });
+  xyzbar_dae.scale.set(0.005, 0.005, 0.005);
+  mesh = TOW.findAndHideMesh('targets', m4_environment_01_dae);
+  // mesh = TOW.findAndHideMesh('Trigger', m4_v09_dae);
+  // mesh = TOW.findAndHideMesh('Selector_Lever', m4_v09_dae);
+  TOW.centerGeometry(mesh);
+  TOW.render(function() {
+    mesh.rotation.y += 0.005;
+  });
+});
   </script>
 <body>
 </body>
