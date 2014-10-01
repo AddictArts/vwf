@@ -33,7 +33,7 @@ TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], functi
     }
   });
   xyzbar_dae.scale.set(0.005, 0.005, 0.005);
-  mesh = TOW.findAndHideMesh('targets', m4_environment_01_dae);
+  mesh = TOW.findMeshAndHideChildren('targets', m4_environment_01_dae);
   // mesh = TOW.findAndHideMesh('Trigger', m4_v09_dae);
   // mesh = TOW.findAndHideMesh('Selector_Lever', m4_v09_dae);
   TOW.centerGeometry(mesh);

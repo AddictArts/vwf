@@ -109,7 +109,7 @@ TOW.centerGeometry = function(mesh) {
   mesh.position.set(0, 0, 0);
 };
 
-TOW.findAndHideMesh = function(name, scene) {
+TOW.findMeshAndHideChildren = function(name, scene) {
   var mesh;
 
   scene.traverse(function(child) {
@@ -120,6 +120,19 @@ TOW.findAndHideMesh = function(name, scene) {
     }
   });
   return mesh;
+};
+
+TOW.unhideSceneMesh = function(name, scene) {
+  scene = scene || TOW.Scene;
+  scene.traverse(function(child) {
+    if (child instanceof THREE.Mesh && child.name == name) child.visible = true;
+  });
+};
+
+TOW.hideSceneChildren = function(scene) {
+  scene.traverse(function(child) {
+    child.visible = false;
+  });
 };
 
 TOW.render = function(onRender) {
