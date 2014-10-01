@@ -7,6 +7,8 @@ var scene = undefined;
 var renderer = undefined;
 var camera = undefined;
 var mesh = undefined;
+// var pivot = undefined;
+// var offset = undefined;
 
 var init = function() {
   var containerWidth  = window.innerWidth;
@@ -45,6 +47,7 @@ var init = function() {
     //THREE.Camera
     camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 0.1, 10000);
     camera.position.set(-0.25, 0, 0.125);
+    // camera.position.set(-10, 5, 5);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     //THREE.Lights
@@ -83,23 +86,20 @@ var init = function() {
         }
       });
       scene.add(dae);
-      THREE.SceneUtils.detach(mesh, mesh.parent, scene); // detach it from the COLLADA hierarchy, we can safely abandon it
 
       var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
 
       console.log(delta);
+      THREE.SceneUtils.detach(mesh, mesh.parent, scene); // detach it from the COLLADA hierarchy, we can safely abandon it
       mesh.geometry.applyMatrix(new THREE.Matrix4().setPosition(delta));
-
-      // ???
-      // mesh.position.y = 10;
-      // var pivot = new THREE.Object3D();
-      // pivot.add( mesh );
-      // scene.add( pivot );
-
-      // THREE.SceneUtils.detach(mesh, mesh.parent, scene);
-      // mesh.position.add(THREE.GeometryUtils.center(mesh.geometry.clone())); //XXX add or sub, need to pick
-
       mesh.position.set(0, 0, 0);
+      // offset = new THREE.Object3D();
+      // pivot = new THREE.Object3D();
+      // offset.applyMatrix(new THREE.Matrix4().setPosition(delta));
+      // mesh.parent.remove(mesh);
+      // offset.add(mesh);
+      // pivot.add(offset);
+      // scene.add(pivot);
       render();
     });
   });
@@ -107,6 +107,7 @@ var init = function() {
 var render = function(t) {
   requestAnimationFrame(render);
   mesh.rotation.y += 0.005;
+  // pivot.rotation.y += 0.005;
   renderer.render(scene, camera);
 };
 
