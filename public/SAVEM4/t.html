@@ -1,117 +1,180 @@
+<!-- Copyright 2014, SRI International -->
 <html>
 <script type="text/javascript" src="vwf/model/threejs/three.js"></script>
 <script type="text/javascript" src="vwf/model/threejs/js/loaders/ColladaLoader.js"></script>
 <body>
 <script>
-var scene = undefined;
-var renderer = undefined;
-var camera = undefined;
-var mesh = undefined;
-// var pivot = undefined;
-// var offset = undefined;
 
-var init = function() {
-  var containerWidth  = window.innerWidth;
-  var containerHeight = window.innerHeight;
-  var loader = new THREE.ColladaLoader();
+// Copyright 2014, SRI International
+// tow.js
+var TOW = { REVISION: '0.1' };
 
-  // THREE.Scene
-  scene = new THREE.Scene();
-  loader.load('models/xyzbar.dae', function(collada) {
-    collada.scene.name = 'xyzbar_dae';
-    // collada.scene.children[0].visible = false; // X
-    // collada.scene.children[1].visible = false; // Y
-    // collada.scene.children[2].visible = false; // Z
-    // scene.add(collada.scene.children[0]); // to drop the parent scene dae transform
-    collada.scene.scale.set(0.005, 0.005, 0.005);
-    // collada.scene.rotation.x = Math.PI;
-    // collada.scene.scale.x = collada.scene.scale.y = collada.scene.scale.z = 1;
-    scene.add(collada.scene);
+TOW.Fov = 40;
+TOW.Near = 0.1;
+TOW.Far = 10000;
+TOW.ContainerWidth = window.innerWidth;
+TOW.ContainerHeight = window.innerHeight;
 
-    //Grid
-    var size = 14;
-    var step = 0.125;
-    var geometry = new THREE.Geometry();
-    var material = new THREE.LineBasicMaterial({ color: 0x303030 }); // 0x303030
-    var line = new THREE.Line(geometry, material, THREE.LinePieces);
+TOW.Canvas = undefined;
+TOW.Scene = new THREE.Scene();
+TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);;
+TOW.Renderer = new THREE.WebGLRenderer({ width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
+TOW.Loader = new THREE.ColladaLoader();
 
-    for (var i = -size; i <= size; i += step) {
-      geometry.vertices.push(new THREE.Vector3(-size, - 0.04, i));
-      geometry.vertices.push(new THREE.Vector3(size, - 0.04, i));
-      geometry.vertices.push(new THREE.Vector3(i, - 0.04, -size));
-      geometry.vertices.push(new THREE.Vector3(i, - 0.04, size));
-    }
+TOW.Loader.options.convertUpAxis = true;
+TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
+document.body.appendChild(TOW.Renderer.domElement);
 
-    scene.add(line);
+TOW.changeContainerById = function(id) {
+  var container = document.getElementById(id);
 
-    //THREE.Camera
-    camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 0.1, 10000);
-    camera.position.set(-0.25, 0, 0.125);
-    // camera.position.set(-10, 5, 5);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+  document.body.removeChild(TOW.Renderer.domElement);
+  TOW.ContainerWidth = container.style.width;
+  TOW.ContainerHeight = container.style.height;
+  TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);;
 
-    //THREE.Lights
-    light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(-1, 0.5, 0.5);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0xffffff));
+  if (container.tagName == 'CANVAS') {
+    TOW.Canvas = container;
+    TOW.Renderer = new THREE.WebGLRenderer({ canvas: TOW.Canvas, width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
+  } else {
+    TOW.Renderer = new THREE.WebGLRenderer({ width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
+    container.appendChild(renderer.domElement);
+  }
 
-    //THREE.WebGLRenderer
-    // var canvas = document.getElementById("canvasID");
-    renderer = new THREE.WebGLRenderer({
-      // canvas: canvas,
-      width: containerWidth,
-      height: containerHeight,
-      antialias: true
-    });
-    renderer.setSize(containerWidth, containerHeight);
-    document.body.appendChild(renderer.domElement);
-    loader.options.convertUpAxis = true;
-    loader.load('models/M4_Environment_01.dae', function(collada) {
-      collada.scene.name = 'M4_Environment_01_dae';
-    // loader.load('models/M4_v09.dae', function(collada) {
-    //   collada.scene.name = 'M4_v09_dae';
+  TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
+};
 
-      var dae = collada.scene;
+TOW.addGrid = function(size, step, lineColor) {
+  var geometry = new THREE.Geometry();
+  var material = new THREE.LineBasicMaterial({ color: lineColor });
+  var line = new THREE.Line(geometry, material, THREE.LinePieces);
 
-      dae.traverse(function(child) {
-        console.log(child.name);
- 
-        if (child instanceof THREE.Mesh && child.name == 'targets') {
-        // if (child instanceof THREE.Mesh && child.name == 'Trigger') {
-        // if (child instanceof THREE.Mesh && child.name == 'Selector_Lever') {
-          mesh = child;
-        } else {
-          child.visible = false;
-        }
-      });
-      scene.add(dae);
+  for (var i = -size; i <= size; i += step) {
+    geometry.vertices.push(new THREE.Vector3(-size, - 0.04, i));
+    geometry.vertices.push(new THREE.Vector3(size, - 0.04, i));
+    geometry.vertices.push(new THREE.Vector3(i, - 0.04, -size));
+    geometry.vertices.push(new THREE.Vector3(i, - 0.04, size));
+  }
 
-      var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
+  TOW.Scene.add(line);
+};
 
-      console.log(delta);
-      THREE.SceneUtils.detach(mesh, mesh.parent, scene); // detach it from the COLLADA hierarchy, we can safely abandon it
-      mesh.geometry.applyMatrix(new THREE.Matrix4().setPosition(delta));
-      mesh.position.set(0, 0, 0);
-      // offset = new THREE.Object3D();
-      // pivot = new THREE.Object3D();
-      // offset.applyMatrix(new THREE.Matrix4().setPosition(delta));
-      // mesh.parent.remove(mesh);
-      // offset.add(mesh);
-      // pivot.add(offset);
-      // scene.add(pivot);
-      render();
-    });
+TOW.addLight = function(options) {
+  options = options || { };
+
+  var color = options.color || 0xffffff;
+  var light = new THREE.DirectionalLight(color, options.intensity);
+
+  switch (options.type) {
+  case 'Ambient':
+    light = new THREE.AmbientLight(color);
+    break;
+  case 'Directional':
+    light = new THREE.DirectionalLight(color, options.intensity);
+    break;
+  case 'Point':
+    light = new THREE.PointLight(color, options.intensity, options.distance);
+    break;
+  }
+
+  if (options.type != 'ambient') light.position = options.position || new THREE.Vector3(-1, 1, -1);
+
+  TOW.Scene.add(light);
+};
+
+TOW.loadCollada = function(url, rootName, onLoad) {
+  TOW.Loader.load(url, function(collada) {
+    collada.scene.name = rootName;
+    TOW.Scene.add(collada.scene);
+
+    if (onLoad !== undefined) onLoad(collada.scene);
   });
 };
-var render = function(t) {
-  requestAnimationFrame(render);
-  mesh.rotation.y += 0.005;
-  // pivot.rotation.y += 0.005;
-  renderer.render(scene, camera);
+
+TOW.loadColladas = function(urls, onLoaded) {
+  var count = urls.length;
+  var daeObj3Ds = [ ];
+
+  var onCompleted = function(daeObj3D) {
+    daeObj3Ds.push(daeObj3D);
+
+    if (--count == 0) onLoaded(daeObj3Ds);
+  };
+
+  urls.forEach(function(url) {
+    var parts = url.split('/');
+    var name = parts[ parts.length - 1 ].replace('.', '_');
+
+    TOW.loadCollada(url, name, onCompleted);
+  });
 };
 
-init();
+TOW.centerGeometry = function(mesh) {
+  var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
+
+  console.log(delta);
+  THREE.SceneUtils.detach(mesh, mesh.parent, TOW.Scene);
+  mesh.geometry.applyMatrix(new THREE.Matrix4().setPosition(delta));
+  mesh.position.set(0, 0, 0);
+};
+
+TOW.render = function(onRender) {
+  var render = function(t) {
+    requestAnimationFrame(render);
+
+    if (onRender !== undefined) onRender();
+
+    TOW.Renderer.render(TOW.Scene, TOW.Camera);
+  };
+
+  render();
+};
+
+
+TOW.Camera.position.set(-0.25, 0, 0.125);
+// TOW.Camera.position.set(-10, 5, 5);
+TOW.Camera.lookAt(new THREE.Vector3(0, 0, 0));
+TOW.addLight({ position: new THREE.Vector3(-1, 0.5, 0.5) });
+TOW.addLight({ type: 'Ambient' });
+TOW.addGrid(14, 0.125, 0x303030);
+TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], function(obj3Ds) {
+// TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
+  var xyzbar_dae,
+      m4_environment_01_dae,
+      m4_v09_dae,
+      mesh;
+
+  obj3Ds.forEach(function(obj3D) {
+    switch (obj3D.name) {
+    case 'M4_v09_dae':
+      m4_v09_dae = obj3D;
+      break;
+    case 'M4_Environment_01_dae':
+      m4_environment_01_dae = obj3D;
+      break;
+    case 'xyzbar_dae':
+      xyzbar_dae = obj3D;
+      break;
+    }
+  });
+  xyzbar_dae.scale.set(0.005, 0.005, 0.005);
+  m4_environment_01_dae.traverse(function(child) {
+  // m4_v09_dae.traverse(function(child) {
+    console.log(child.name);
+
+    if (child instanceof THREE.Mesh && child.name == 'targets') {
+    // if (child instanceof THREE.Mesh && child.name == 'Trigger') {
+    // if (child instanceof THREE.Mesh && child.name == 'Selector_Lever') {
+      mesh = child;
+    } else {
+      child.visible = false;
+    }
+  });
+  TOW.centerGeometry(mesh);
+  TOW.render(function() {
+    mesh.rotation.y += 0.005;
+  });
+});
 </script>
 </body>
 </html>
