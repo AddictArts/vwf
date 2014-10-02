@@ -14,25 +14,27 @@ TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.Cont
 TOW.Renderer = new THREE.WebGLRenderer({ width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
 TOW.Loader = new THREE.ColladaLoader();
 
+TOW.ColladaScenes = { };
 TOW.Loader.options.convertUpAxis = true;
 TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
 
 TOW.changeContainerById = function(id) {
   var container = document.getElementById(id);
 
-  TOW.ContainerWidth = container.style.width;
-  TOW.ContainerHeight = container.style.height;
+  TOW.ContainerWidth = container.clientWidth; //style.width;
+  TOW.ContainerHeight = container.clientHeight; //style.height;
   TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);;
 
   if (container.tagName == 'CANVAS') {
-    TOW.Canvas = container;
     TOW.Renderer = new THREE.WebGLRenderer({ canvas: TOW.Canvas, width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
+    TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
   } else {
     TOW.Renderer = new THREE.WebGLRenderer({ width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
-    container.appendChild(renderer.domElement);
+    TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
+    container.appendChild(TOW.Renderer.domElement);
   }
 
-  TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
+  TOW.Canvas = container;
 };
 
 TOW.addGrid = function(size, step, lineColor) {
@@ -48,6 +50,7 @@ TOW.addGrid = function(size, step, lineColor) {
   }
 
   TOW.Scene.add(line);
+  return line;
 };
 
 TOW.addLight = function(options) {
@@ -71,12 +74,14 @@ TOW.addLight = function(options) {
   if (options.type != 'ambient') light.position = options.position || new THREE.Vector3(-1, 1, -1);
 
   TOW.Scene.add(light);
+  return light;
 };
 
 TOW.loadCollada = function(url, rootName, onLoad) {
   TOW.Loader.load(url, function(collada) {
     collada.scene.name = rootName;
     TOW.Scene.add(collada.scene);
+    TOW.ColladaScenes[ rootName ] = collada.scene;
 
     if (onLoad !== undefined) onLoad(collada.scene);
   });
@@ -103,13 +108,14 @@ TOW.loadColladas = function(urls, onLoaded) {
 TOW.centerGeometry = function(mesh) {
   var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
 
-  console.log(delta);
   THREE.SceneUtils.detach(mesh, mesh.parent, TOW.Scene);
   mesh.geometry.applyMatrix(new THREE.Matrix4().setPosition(delta));
   mesh.position.set(0, 0, 0);
 };
 
 TOW.findMeshAndHideChildren = function(name, scene) {
+  scene = scene || TOW.Scene;
+
   var mesh;
 
   scene.traverse(function(child) {
@@ -124,9 +130,16 @@ TOW.findMeshAndHideChildren = function(name, scene) {
 
 TOW.unhideSceneMesh = function(name, scene) {
   scene = scene || TOW.Scene;
+
+  var mesh;
+
   scene.traverse(function(child) {
-    if (child instanceof THREE.Mesh && child.name == name) child.visible = true;
+    if (child instanceof THREE.Mesh && child.name == name) {
+      mesh = child;
+      child.visible = true;
+    }
   });
+  return mesh;
 };
 
 TOW.hideSceneChildren = function(scene) {
@@ -148,3 +161,5 @@ TOW.render = function(onRender) {
 
   render();
 };
+
+console.log('TOW.render: ' + TOW.REVISION);
