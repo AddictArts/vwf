@@ -105,12 +105,31 @@ TOW.loadColladas = function(urls, onLoaded) {
   });
 };
 
-TOW.centerGeometry = function(mesh) {
+// XXX there is a strange bug were it works for the one mesh in a collada scene, the first, but for the next.
+// subsequent calls do not center
+TOW.centerGeometry = function(mesh, scene) {
+  scene = scene || TOW.Scene;
+  THREE.SceneUtils.detach(mesh, mesh.parent, scene);
+
   var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
 
-  THREE.SceneUtils.detach(mesh, mesh.parent, TOW.Scene);
   mesh.geometry.applyMatrix(new THREE.Matrix4().setPosition(delta));
   mesh.position.set(0, 0, 0);
+};
+
+TOW.centerGeometryOffsetPivot = function(mesh, scene) {
+  scene = scene || TOW.Scene;
+  mesh.position.set(0, 0, 0);
+
+  var offset = new THREE.Object3D();
+  var pivot = new THREE.Object3D();
+  var delta = THREE.GeometryUtils.center(mesh.geometry.clone());
+
+  offset.applyMatrix(new THREE.Matrix4().setPosition(delta));
+  mesh.parent.remove(mesh);
+  offset.add(mesh);
+  pivot.add(offset);
+  scene.add(pivot);
 };
 
 TOW.findMeshAndHideChildren = function(name, scene) {
@@ -148,18 +167,32 @@ TOW.hideSceneChildren = function(scene) {
   });
 };
 
+TOW.clearOnRenders = function() {
+  TOW._onRenders = [ ];
+};
+
 TOW.render = function(onRender) {
+  if (TOW._render !== undefined) {
+    if (onRender !== undefined) TOW._onRenders.push(onRender);
+
+    return;
+  }
+
   if (TOW.Canvas === undefined) document.body.appendChild(TOW.Renderer.domElement);
 
-  var render = function(t) {
-    requestAnimationFrame(render);
+  TOW._onRenders = [ ];
 
-    if (onRender !== undefined) onRender();
+  if (onRender !== undefined) TOW._onRenders.push(onRender);
+
+  TOW._render = function(t) {
+    requestAnimationFrame(TOW._render);
+
+    if (onRender !== undefined) TOW._onRenders.forEach(function(r) { r(); });
 
     TOW.Renderer.render(TOW.Scene, TOW.Camera);
   };
 
-  render();
+  TOW._render();
 };
 
 console.log('TOW.render: ' + TOW.REVISION);

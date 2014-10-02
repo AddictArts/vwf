@@ -8,15 +8,13 @@
 TOW.Camera.position.set(-0.25, 0, 0.125); //XXX make dat gui able to set this vector maybe
 // TOW.Camera.position.set(-10, 5, 5);
 TOW.Camera.lookAt(new THREE.Vector3(0, 0, 0));
-// TOW.addLight({ position: new THREE.Vector3(-1, 0.5, 0.5) });
 TOW.addLight().position.set(-1, 0.5, 0.5);
 TOW.addLight({ type: 'Ambient' });
 TOW.addGrid(14, 0.125, 0x303030);
 // TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
 TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], function(obj3Ds) {
   TOW.ColladaScenes.xyzbar_dae.scale.set(0.005, 0.005, 0.005);
-  // mesh = TOW.findAndHideMesh('Trigger', M4_v09_dae);
-  // mesh = TOW.findAndHideMesh('Selector_Lever', M4_v09_dae);
+  TOW.hideSceneChildren(TOW.ColladaScenes.M4_Environment_01_dae);
 });
   </script>
 
@@ -24,20 +22,34 @@ TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], functi
 var TowDatMenu = function() {
   this.cameraPosition = 0;
   this.targets = function() {
-    var mesh = TOW.findMeshAndHideChildren('targets', TOW.ColladaScenes.M4_Environment_01_dae);
+    // TOW.clearOnRenders();
 
-    TOW.centerGeometry(mesh);
+    var mesh = TOW.unhideSceneMesh('targets', TOW.ColladaScenes.M4_Environment_01_dae);
+
+    TOW.centerGeometryOffsetPivot(mesh);
+    // TOW.centerGeometry(mesh);
+    // TOW.centerGeometry(mesh, TOW.ColladaScenes.M4_Environment_01_dae);
     TOW.render(function() {
-      mesh.rotation.y += 0.005;
-      // xyzbar_dae.rotation.y -= 0.005;
+      mesh.parent.parent.rotation.y += 0.005;
+      // mesh.rotation.y += 0.005;
     });
   };
   this.ShootingRangeArea8 = function() {
-    var mesh = TOW.unhideSceneMesh('ShootingRangeArea8', TOW.ColladaScenes.M4_Environment_01_dae);
-    // var mesh = TOW.findMeshAndHideChildren('ShootingRangeArea8', TOW.ColladaScenes.M4_Environment_01_dae);
+    // TOW.clearOnRenders();
 
-    TOW.centerGeometry(mesh);
-    // TOW.render();
+    var mesh = TOW.unhideSceneMesh('ShootingRangeArea8', TOW.ColladaScenes.M4_Environment_01_dae);
+
+    TOW.centerGeometryOffsetPivot(mesh);
+    // TOW.centerGeometry(mesh);
+    // TOW.centerGeometry(mesh, TOW.ColladaScenes.M4_Environment_01_dae);
+    TOW.render(function() {
+      mesh.parent.parent.rotation.y += 0.005;
+      // mesh.rotation.y += 0.005;
+    });
+  };
+  this.Trigger = function() {
+  };
+  this.Selector_Lever = function() {
   };
 };
 
