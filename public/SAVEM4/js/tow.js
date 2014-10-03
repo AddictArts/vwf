@@ -106,7 +106,9 @@ TOW.loadColladas = function(urls, onLoaded) {
 };
 
 // XXX there is a strange bug were it works for the one mesh in a collada scene, the first, but for the next.
-// subsequent calls do not center
+// subsequent calls do not center, suspect in THREE.GeometryUtils.center it does
+//    geometry.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
+// why is clone not preventing it, need deep clone?
 TOW.centerGeometry = function(mesh, scene) {
   scene = scene || TOW.Scene;
   THREE.SceneUtils.detach(mesh, mesh.parent, scene);
@@ -147,7 +149,7 @@ TOW.findMeshAndHideChildren = function(name, scene) {
   return mesh;
 };
 
-TOW.unhideSceneMesh = function(name, scene) {
+TOW.findMeshAndUnhide = function(name, scene) {
   scene = scene || TOW.Scene;
 
   var mesh;
@@ -167,6 +169,16 @@ TOW.hideSceneChildren = function(scene) {
   });
 };
 
+TOW.findMeshUnhideAndCenterRender = function(name, scene, onRender) {
+  scene = scene || TOW.Scene;
+
+  var mesh = TOW.findMeshAndUnhide(name, scene);
+
+  TOW.centerGeometryOffsetPivot(mesh, scene);
+  TOW.render(function() { onRender(mesh); });
+  return mesh;
+};
+
 TOW.clearOnRenders = function() {
   TOW._onRenders = [ ];
 };
@@ -180,10 +192,7 @@ TOW.render = function(onRender) {
 
   if (TOW.Canvas === undefined) document.body.appendChild(TOW.Renderer.domElement);
 
-  TOW._onRenders = [ ];
-
-  if (onRender !== undefined) TOW._onRenders.push(onRender);
-
+  TOW._onRenders = onRender !== undefined? [ onRender ]: [ ];
   TOW._render = function(t) {
     requestAnimationFrame(TOW._render);
 
