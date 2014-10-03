@@ -170,8 +170,6 @@ TOW.hideSceneChildren = function(scene) {
 };
 
 TOW.findMeshUnhideAndCenterRender = function(name, scene, onRender) {
-  scene = scene || TOW.Scene;
-
   var mesh = TOW.findMeshAndUnhide(name, scene);
 
   TOW.centerGeometryOffsetPivot(mesh, scene);
