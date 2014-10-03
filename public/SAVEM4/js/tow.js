@@ -1,5 +1,7 @@
 // Copyright 2014, SRI International
 // tow.js
+// dependencies: three.js https://github.com/mrdoob/three.js
+//               tween.js https://github.com/sole/tween.js (optional)
 var TOW = { REVISION: '0.1' };
 
 TOW.Fov = 40;
@@ -7,6 +9,7 @@ TOW.Near = 0.1;
 TOW.Far = 10000;
 TOW.ContainerWidth = window.innerWidth;
 TOW.ContainerHeight = window.innerHeight;
+TOW.TWEEN = true;
 
 TOW.Canvas = undefined;
 TOW.Scene = new THREE.Scene();
@@ -180,15 +183,22 @@ TOW.findMeshVisibleAndCenterRender = function(name, scene, onRender) {
   var mesh = TOW.findMeshAndVisibleMesh(name, scene);
 
   TOW.centerGeometryOffsetPivot(mesh, scene);
-  TOW.render(function(t) { onRender(t, mesh.parent.parent); }); // pass the pivot to the offset to the mesh
+  TOW.render(function(delta) { onRender(delta, mesh.parent.parent); }); // pass the pivot to the offset to the mesh
   return mesh;
 };
 
-TOW.clearOnRenders = function() {
+TOW.cancelOnRenders = function() {
   TOW._onRenders = [ ];
 };
 
+TOW.cancelRender = function() {
+  cancelAnimationFrame(TOW._requestId);
+  TOW._render = undefined;
+};
+
 TOW.render = function(onRender) {
+  TOW._onRenders = TOW._onRenders || [ ];
+
   if (TOW._render !== undefined) {
     if (onRender !== undefined) TOW._onRenders.push(onRender);
 
@@ -196,12 +206,19 @@ TOW.render = function(onRender) {
   }
 
   if (TOW.Canvas === undefined) document.body.appendChild(TOW.Renderer.domElement);
+  if (onRender !== undefined) TOW._onRenders.push(onRender);
 
-  TOW._onRenders = onRender !== undefined? [ onRender ]: [ ];
-  TOW._render = function(t) {
-    requestAnimationFrame(TOW._render);
-    TOW._onRenders.forEach(function(r) { r(t); });
+  var clock = new THREE.Clock();
+
+  TOW._render = function(timestamp) { // timestamp indicates the current time for when requestAnimationFrame starts to fire callbacks, from mozilla
+    TOW._requestId = requestAnimationFrame(TOW._render, TOW.Canvas);
+
+    var delta = clock.getDelta();
+
+    TOW._onRenders.forEach(function(r) { r(delta); });
     TOW.Renderer.render(TOW.Scene, TOW.Camera);
+    
+    if (TOW.TWEEN) TWEEN.update();
   };
 
   TOW._render();
