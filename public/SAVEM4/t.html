@@ -11,8 +11,8 @@ TOW.Camera.lookAt(new THREE.Vector3(0, 0, 0));
 TOW.addLight().position.set(-1, 0.5, 0.5);
 TOW.addLight({ type: 'Ambient' });
 TOW.addGrid(14, 0.125, 0x303030);
-TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
 // TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], function(obj3Ds) {
+TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
   TOW.ColladaScenes.xyzbar_dae.scale.set(0.005, 0.005, 0.005);
   TOW.hideSceneChildren(TOW.ColladaScenes.M4_Environment_01_dae);
   TOW.hideSceneChildren(TOW.ColladaScenes.M4_v09_dae);
@@ -20,31 +20,45 @@ TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/
   </script>
 
   <script>
-var _dae1 = TOW.ColladaScenes.M4_Environment_01_dae;
-var _dae2 = TOW.ColladaScenes.M4_v09_dae;
-var _onRender = function(mesh) { mesh.parent.parent.rotation.y += 0.005; }
 var TowDatMenu = function() {
+  var self = this;
+  var n;
+
+  function _onRender(mesh) {
+    mesh.parent.parent.rotation.y += 0.005;
+  }
+
+  function rotateZ(mesh) {
+    mesh.parent.parent.rotation.z += 0.005;
+  }
+
+  function focusSelected(dae, onRender) {
+    onRender = onRender || _onRender;
+
+    if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshUnhideAndCenterRender(n, dae, onRender);
+  }
+
   this.cameraPosition = 0;
   this.meshCache = { }; // mesh references by name
   this.targets = function() {
-    var n = 'targets';
-
-    if (this.meshCache[ n ] === undefined) this.meshCache[ n ] = TOW.findMeshUnhideAndCenterRender(n, _dae1, _onRender);
+    n = 'targets';
+    focusSelected(TOW.ColladaScenes.M4_Environment_01_dae);
   };
   this.ShootingRangeArea8 = function() {
-    var n = 'ShootingRangeArea8';
-
-    if (this.meshCache[ n ] === undefined) this.meshCache[ n ] = TOW.findMeshUnhideAndCenterRender(n, _dae1, _onRender);
+    n = 'ShootingRangeArea8';
+    focusSelected(TOW.ColladaScenes.M4_Environment_01_dae);
   };
   this.Trigger = function() {
-    var n = 'Trigger';
-
-    if (this.meshCache[ n ] === undefined) this.meshCache[ n ] = TOW.findMeshUnhideAndCenterRender(n, _dae2, _onRender);
+    n = 'Trigger';
+    focusSelected(TOW.ColladaScenes.M4_v09_dae, rotateZ);
   };
   this.Selector_Lever = function() {
-    var n = 'Selector_Lever';
-
-    if (this.meshCache[ n ] === undefined) this.meshCache[ n ] = TOW.findMeshUnhideAndCenterRender(n, _dae2, _onRender);
+    n = 'Selector_Lever';
+    focusSelected(TOW.ColladaScenes.M4_v09_dae);
+  };
+  this.Gun_Carrying_Handle = function() {
+    n = 'Gun_Carrying_Handle';
+    focusSelected(TOW.ColladaScenes.M4_v09_dae);
   };
 };
 
@@ -57,6 +71,7 @@ window.onload = function() {
   towDatGUI.add(towDatMenu, 'ShootingRangeArea8');
   towDatGUI.add(towDatMenu, 'Trigger');
   towDatGUI.add(towDatMenu, 'Selector_Lever');
+  towDatGUI.add(towDatMenu, 'Gun_Carrying_Handle');
 }
   </script>
 <body>
