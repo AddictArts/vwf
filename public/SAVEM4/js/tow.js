@@ -179,11 +179,17 @@ TOW.visibleSceneChildren = function(scene) {
   });
 };
 
-TOW.findMeshVisibleAndCenterRender = function(name, scene, onRender) {
+TOW.findMeshVisibleAndCenter = function(name, scene) {
   var mesh = TOW.findMeshAndVisibleMesh(name, scene);
 
   TOW.centerGeometryOffsetPivot(mesh, scene);
-  TOW.render(function(delta) { onRender(delta, mesh.parent.parent); }); // pass the pivot to the offset to the mesh
+  return mesh.parent.parent; // return the pivot to the offset to the mesh
+};
+
+TOW.findMeshVisibleAndCenterRender = function(name, scene, onRender) {
+  var mesh = TOW.findMeshVisibleAndCenter(name, scene);
+
+  TOW.render(function(delta) { onRender(delta, mesh); });
   return mesh;
 };
 
