@@ -11,12 +11,12 @@ TOW.Camera.lookAt(new THREE.Vector3(0, 0, 0));
 TOW.addLight().position.set(-1, 0.5, 0.5);
 TOW.addLight({ type: 'Ambient' });
 TOW.addGrid(14, 0.125, 0x303030);
-// TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae' ], function(obj3Ds) {
-TOW.loadColladas([ 'models/xyzbar.dae', 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function(obj3Ds) {
+TOW.loadCollada('models/xyzbar.dae', 'xyzbar_dae', true, function() {
   TOW.ColladaScenes.xyzbar_dae.scale.set(0.005, 0.005, 0.005);
-  TOW.hideSceneChildren(TOW.ColladaScenes.M4_Environment_01_dae);
-  TOW.hideSceneChildren(TOW.ColladaScenes.M4_v09_dae);
+  TOW.render();
 });
+// TOW.loadColladas([ 'models/M4_Environment_01.dae' ], false);
+TOW.loadColladas([ 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], false, function() { onloadTowDatGui(); });
   </script>
 
   <script>
@@ -24,18 +24,18 @@ var TowDatMenu = function() {
   var self = this;
   var n;
 
-  function _onRender(mesh) {
+  function _onRender(t, mesh) {
     mesh.parent.parent.rotation.y += 0.005;
   }
 
-  function rotateZ(mesh) {
+  function rotateZ(t, mesh) {
     mesh.parent.parent.rotation.z += 0.005;
   }
 
   function focusSelected(dae, onRender) {
     onRender = onRender || _onRender;
 
-    if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshUnhideAndCenterRender(n, dae, onRender);
+    if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, dae, onRender);
   }
 
   this.cameraPosition = 0;
@@ -62,7 +62,8 @@ var TowDatMenu = function() {
   };
 };
 
-window.onload = function() {
+// window.onload =
+function onloadTowDatGui() {
   var towDatMenu = new TowDatMenu();
   var towDatGUI = new dat.GUI();
 

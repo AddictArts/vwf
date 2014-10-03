@@ -77,31 +77,32 @@ TOW.addLight = function(options) {
   return light;
 };
 
-TOW.loadCollada = function(url, rootName, onLoad) {
+TOW.loadCollada = function(url, rootName, visible, onLoad) {
   TOW.Loader.load(url, function(collada) {
     collada.scene.name = rootName;
     TOW.Scene.add(collada.scene);
     TOW.ColladaScenes[ rootName ] = collada.scene;
-
+    
+    if (!visible) TOW.invisibleSceneChildren(collada.scene);
     if (onLoad !== undefined) onLoad(collada.scene);
   });
 };
 
-TOW.loadColladas = function(urls, onLoaded) {
+TOW.loadColladas = function(urls, visible, onLoaded) {
   var count = urls.length;
   var daeObj3Ds = [ ];
 
   var onCompleted = function(daeObj3D) {
     daeObj3Ds.push(daeObj3D);
 
-    if (--count == 0) onLoaded(daeObj3Ds);
+    if (--count == 0 && onLoaded !== undefined) onLoaded(daeObj3Ds);
   };
 
   urls.forEach(function(url) {
     var parts = url.split('/');
     var name = parts[ parts.length - 1 ].replace('.', '_');
 
-    TOW.loadCollada(url, name, onCompleted);
+    TOW.loadCollada(url, name, visible, onCompleted);
   });
 };
 
@@ -134,7 +135,7 @@ TOW.centerGeometryOffsetPivot = function(mesh, scene) {
   scene.add(pivot);
 };
 
-TOW.findMeshAndHideChildren = function(name, scene) {
+TOW.findMeshAndInvisibleChildren = function(name, scene) {
   scene = scene || TOW.Scene;
 
   var mesh;
@@ -149,7 +150,7 @@ TOW.findMeshAndHideChildren = function(name, scene) {
   return mesh;
 };
 
-TOW.findMeshAndUnhide = function(name, scene) {
+TOW.findMeshAndVisibleMesh = function(name, scene) {
   scene = scene || TOW.Scene;
 
   var mesh;
@@ -163,17 +164,23 @@ TOW.findMeshAndUnhide = function(name, scene) {
   return mesh;
 };
 
-TOW.hideSceneChildren = function(scene) {
+TOW.invisibleSceneChildren = function(scene) {
   scene.traverse(function(child) {
     child.visible = false;
   });
 };
 
-TOW.findMeshUnhideAndCenterRender = function(name, scene, onRender) {
-  var mesh = TOW.findMeshAndUnhide(name, scene);
+TOW.visibleSceneChildren = function(scene) {
+  scene.traverse(function(child) {
+    child.visible = true;
+  });
+};
+
+TOW.findMeshVisibleAndCenterRender = function(name, scene, onRender) {
+  var mesh = TOW.findMeshAndVisibleMesh(name, scene);
 
   TOW.centerGeometryOffsetPivot(mesh, scene);
-  TOW.render(function() { onRender(mesh); });
+  TOW.render(function(t) { onRender(t, mesh); });
   return mesh;
 };
 
@@ -193,9 +200,7 @@ TOW.render = function(onRender) {
   TOW._onRenders = onRender !== undefined? [ onRender ]: [ ];
   TOW._render = function(t) {
     requestAnimationFrame(TOW._render);
-
-    if (onRender !== undefined) TOW._onRenders.forEach(function(r) { r(); });
-
+    TOW._onRenders.forEach(function(r) { r(t); });
     TOW.Renderer.render(TOW.Scene, TOW.Camera);
   };
 
