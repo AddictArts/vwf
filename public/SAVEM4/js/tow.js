@@ -180,7 +180,7 @@ TOW.findMeshVisibleAndCenterRender = function(name, scene, onRender) {
   var mesh = TOW.findMeshAndVisibleMesh(name, scene);
 
   TOW.centerGeometryOffsetPivot(mesh, scene);
-  TOW.render(function(t) { onRender(t, mesh); });
+  TOW.render(function(t) { onRender(t, mesh.parent.parent); }); // pass the pivot to the offset to the mesh
   return mesh;
 };
 

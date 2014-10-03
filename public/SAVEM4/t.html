@@ -24,21 +24,6 @@ var TowDatMenu = function() {
   var self = this;
   var n;
 
-  function _onRender(t, mesh) {
-    mesh.parent.parent.rotation.y += 0.005;
-  }
-
-  function rotateZ(t, mesh) {
-    mesh.parent.parent.rotation.z += 0.005;
-  }
-
-  function focusSelected(dae, onRender) {
-    onRender = onRender || _onRender;
-
-    if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, dae, onRender);
-  }
-
-  this.cameraPosition = 0;
   this.meshCache = { }; // mesh references by name
   this.targets = function() {
     n = 'targets';
@@ -60,6 +45,20 @@ var TowDatMenu = function() {
     n = 'Gun_Carrying_Handle';
     focusSelected(TOW.ColladaScenes.M4_v09_dae);
   };
+
+  function _onRender(t, pivot) {
+    pivot.rotation.y += 0.005;
+  }
+
+  function rotateZ(t, pivot) {
+    pivot.rotation.z += 0.005;
+  }
+
+  function focusSelected(dae, onRender) {
+    onRender = onRender || _onRender;
+
+    if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, dae, onRender);
+  }
 };
 
 // window.onload =
@@ -67,7 +66,6 @@ function onloadTowDatGui() {
   var towDatMenu = new TowDatMenu();
   var towDatGUI = new dat.GUI();
 
-  towDatGUI.add(towDatMenu, 'cameraPosition');
   towDatGUI.add(towDatMenu, 'targets');
   towDatGUI.add(towDatMenu, 'ShootingRangeArea8');
   towDatGUI.add(towDatMenu, 'Trigger');
