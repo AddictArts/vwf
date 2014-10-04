@@ -1,9 +1,10 @@
 <!-- Copyright 2014, SRI International -->
 <html>
-  <script type="text/javascript" src="vwf/model/threejs/three.js"></script>
-  <script type="text/javascript" src="vwf/model/threejs/js/loaders/ColladaLoader.js"></script>
-  <script type="text/javascript" src="js/tow.js"></script>
-  <script type="text/javascript" src="js/dat.gui.min.js"></script>
+  <script src="vwf/model/threejs/three.js"></script>
+  <script src="vwf/model/threejs/js/loaders/ColladaLoader.js"></script>
+  <script src="js/tween.min.js"></script>
+  <script src="js/tow.js"></script>
+  <script src="js/dat.gui.min.js"></script>
   <script>
 TOW.Camera.position.set(-0.25, 0, 0.125); //XXX make dat gui able to set this vector maybe
 // TOW.Camera.position.set(-10, 5, 5);
@@ -15,7 +16,7 @@ TOW.loadCollada('models/xyzbar.dae', 'xyzbar_dae', true, function() {
   TOW.ColladaScenes.xyzbar_dae.scale.set(0.005, 0.005, 0.005);
   TOW.render();
 });
-// TOW.loadColladas([ 'models/M4_Environment_01.dae' ], false);
+//TOW.loadCollada('models/M4_Environment_01.dae', 'M4_Environment_01_dae', false, function() { onloadTowDatGui(); });
 TOW.loadColladas([ 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], false, function() { onloadTowDatGui(); });
   </script>
 
@@ -35,7 +36,7 @@ var TowDatMenu = function() {
   };
   this.Trigger = function() {
     n = 'Trigger';
-    focusSelected(TOW.ColladaScenes.M4_v09_dae, rotateZ);
+    focusTriggerTween(TOW.ColladaScenes.M4_v09_dae);
   };
   this.Selector_Lever = function() {
     n = 'Selector_Lever';
@@ -46,18 +47,39 @@ var TowDatMenu = function() {
     focusSelected(TOW.ColladaScenes.M4_v09_dae);
   };
 
-  function _onRender(t, pivot) {
-    pivot.rotation.y += 0.005;
-  }
-
-  function rotateZ(t, pivot) {
-    pivot.rotation.z += 0.005;
-  }
-
   function focusSelected(dae, onRender) {
-    onRender = onRender || _onRender;
+    onRender = onRender || function(delta, pivot) { pivot.rotation.y += 0.005; };
 
     if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, dae, onRender);
+  }
+
+  function focusTriggerTween(dae) {
+    var pivot;
+
+    if (self.meshCache[ n ] === undefined) {
+      var pivot =  self.meshCache[ n ] = TOW.findMeshAndVisibleMesh(n, dae);
+
+      TOW.render(function(delta) { pivot.rotation.y += Math.PI * delta; });
+    } else {
+      return;
+    }
+
+    pivot.position.set(0, 0, 0);
+
+    var curZ = { z:  pivot.rotation.z };
+    var pull = new TWEEN.Tween(curZ)
+      .to({ z: 0.52 }, 1000) // radians and milliseconds
+      // .easing(TWEEN.Easing.Elastic.InOut)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .onUpdate(function() { curZ = pivot.rotation.z = -this.z; });
+    var release = new TWEEN.Tween(curZ)
+      .to({ z: 0 }, 500)
+      .onUpdate(function() { curZ =  pivot.rotation.z = -this.z })
+      .delay(250);
+
+    pull.chain(release);
+    release.chain(pull);
+    pull.start();
   }
 };
 
