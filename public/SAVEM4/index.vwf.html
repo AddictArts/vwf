@@ -396,21 +396,21 @@
 
               TOW.TWEEN = false;
               TOW.changeContainerById('viewSelected');
-              TOW.loadCollada('../models/xyzbar.dae', 'xyzbar_dae', function(xyzbar_dae) {
-                xyzbar_dae.scale.set(0.005, 0.005, 0.005);
+              TOW.loadCollada('../models/xyzbar.dae', function() {
+                $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
                 TOW.render();
               });
-              // TOW.loadColladas([ '../models/M4_Environment_01.dae', '../models/M4_v09.dae' ], false, function(o, Assets) {
-              TOW.loadColladas([ '../models/M4_Environment_01.dae' ], function(o, Assets) {
-                // TOW.findMeshVisibleAndCenterRender('ShootingRangeArea8', Assets.M4_Environment_01_dae, function(delta, pivot) {
-                TOW.findMeshVisibleAndCenterRender('targets', Assets.M4_Environment_01_dae, function(delta, pivot) {
+              // TOW.loadColladas([ '../models/M4_Environment_01.dae', '../models/M4_v09.dae' ], function() {
+              TOW.loadColladas([ '../models/M4_Environment_01.dae' ], function() {
+                // TOW.findMeshVisibleAndCenterRender('ShootingRangeArea8', $M4_Environment_01_dae, function(delta, pivot) {
+                TOW.findMeshVisibleAndCenterRender('targets', $M4_Environment_01_dae, function(delta, pivot) {
                   pivot.rotation.y += 0.005;
                 });
-                // TOW.findMeshVisibleAndCenterRender('Gun_Carrying_Handle', Assets.M4_v09_dae, function(delta, pivot) {
+                // TOW.findMeshVisibleAndCenterRender('Gun_Carrying_Handle', $M4_v09_dae, function(delta, pivot) {
                 //   pivot.rotation.y += 0.005;
                 // });
               });
-              TOW.quick(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0);
+              TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
 
 
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));

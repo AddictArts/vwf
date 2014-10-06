@@ -10,7 +10,6 @@ TOW.Far = 10000;
 TOW.ContainerWidth = window.innerWidth;
 TOW.ContainerHeight = window.innerHeight;
 TOW.TWEEN = true;
-TOW.ColladaScenes = { };
 TOW.Canvas = undefined;
 TOW.Light = undefined;
 TOW.Scene = new THREE.Scene();
@@ -21,7 +20,8 @@ TOW.Loader = new THREE.ColladaLoader();
 TOW.Loader.options.convertUpAxis = true;
 TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
 
-TOW.quick = function(lightX, lightY, lightZ, posX, posY, posZ, lookX, lookY, lookZ, grid) {
+// to pull or haul (a car, barge, trailer, etc.) by a rope, chain, or other device
+TOW.intow = function(lightX, lightY, lightZ, posX, posY, posZ, lookX, lookY, lookZ, grid) {
   grid = grid || true;
   TOW.Light = TOW.addLight();
   TOW.addLight({ type: 'Ambient' });
@@ -91,12 +91,19 @@ TOW.addLight = function(options) {
   return light;
 };
 
-TOW.loadCollada = function(url, rootName, onLoad, visible) {
-  visible = visible || true;
+TOW.loadCollada = function(url, onLoad, visible, rootName) {
+  function getRootName(url) {
+    var parts = url.split('/');
+
+    return parts[ parts.length - 1 ].replace('.', '_');
+  }
+
+  rootName = rootName || getRootName(url);
+  visible = visible === undefined? true : visible;
   TOW.Loader.load(url, function(collada) {
     collada.scene.name = rootName;
     TOW.Scene.add(collada.scene);
-    TOW.ColladaScenes[ rootName ] = collada.scene;
+    eval('$' + rootName + ' = collada.scene');
     
     if (!visible) TOW.invisibleSceneChildren(collada.scene);
     if (onLoad !== undefined) onLoad(collada.scene);
@@ -104,22 +111,17 @@ TOW.loadCollada = function(url, rootName, onLoad, visible) {
 };
 
 TOW.loadColladas = function(urls, onLoaded, visible) {
-  visible = visible || false;
+  visible = visible === undefined? false : visible;
 
   var count = urls.length;
   var daeObj3Ds = [ ];
   var onCompleted = function(daeObj3D) {
     daeObj3Ds.push(daeObj3D);
 
-    if (--count == 0 && onLoaded !== undefined) onLoaded(daeObj3Ds, TOW.ColladaScenes);
+    if (--count == 0 && onLoaded !== undefined) onLoaded(daeObj3Ds);
   };
 
-  urls.forEach(function(url) {
-    var parts = url.split('/');
-    var name = parts[ parts.length - 1 ].replace('.', '_');
-
-    TOW.loadCollada(url, name, onCompleted, visible);
-  });
+  urls.forEach(function(url) { TOW.loadCollada(url, onCompleted, visible); });
 };
 
 // there is a strange bug were it works for the one mesh in a collada scene, the first, but for the next.

@@ -6,14 +6,14 @@
   <script src="js/tow.js"></script>
   <script src="js/dat.gui.min.js"></script>
   <script>
-TOW.loadCollada('models/xyzbar.dae', 'xyzbar_dae', function(xyzbar_dae) {
-  xyzbar_dae.scale.set(0.005, 0.005, 0.005);
+TOW.loadCollada('models/xyzbar.dae', function() {
+  $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
   TOW.render();
 });
-TOW.loadCollada('models/M4_Environment_01.dae', 'M4_Environment_01_dae', function() { onloadTowDatGui(); }, false);
+TOW.loadCollada('models/M4_Environment_01.dae', function() { onloadTowDatGui(); }, false);
+// TOW.loadColladas([ 'models/M4_Environment_01.dae' ], function() { onloadTowDatGui(); });
 // TOW.loadColladas([ 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function() { onloadTowDatGui(); });
-//XXX make dat gui able to set the camera position vector
-TOW.quick(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0);
+TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
   </script>
 
   <script>
@@ -24,23 +24,23 @@ var TowDatMenu = function() {
   this.meshCache = { }; // mesh references by name
   this.targets = function() {
     n = 'targets';
-    focusSelected(TOW.ColladaScenes.M4_Environment_01_dae);
+    focusSelected($M4_Environment_01_dae);
   };
   this.ShootingRangeArea8 = function() {
     n = 'ShootingRangeArea8';
-    focusSelected(TOW.ColladaScenes.M4_Environment_01_dae);
+    focusSelected($M4_Environment_01_dae);
   };
   this.Trigger = function() {
     n = 'Trigger';
-    focusTriggerTween(TOW.ColladaScenes.M4_v09_dae);
+    focusTriggerTween($M4_v09_dae);
   };
   this.Selector_Lever = function() {
     n = 'Selector_Lever';
-    focusSelected(TOW.ColladaScenes.M4_v09_dae);
+    focusSelected($M4_v09_dae);
   };
   this.Gun_Carrying_Handle = function() {
     n = 'Gun_Carrying_Handle';
-    focusSelected(TOW.ColladaScenes.M4_v09_dae);
+    focusSelected($M4_v09_dae);
   };
 
   function focusSelected(dae, onRender) {
@@ -83,6 +83,14 @@ var TowDatMenu = function() {
 function onloadTowDatGui() {
   var towDatMenu = new TowDatMenu();
   var towDatGUI = new dat.GUI();
+  var lookAt = new THREE.Vector3();
+
+  towDatGUI.add(TOW.Camera.position, 'x', -10, 10).step(0.01);
+  towDatGUI.add(TOW.Camera.position, 'y', -10, 10).step(0.01);
+  towDatGUI.add(TOW.Camera.position, 'z', -10, 10).step(0.01);
+  towDatGUI.add(lookAt, 'x').name('lookX').onChange(function() { TOW.Camera.lookAt(lookAt); });
+  towDatGUI.add(lookAt, 'y').name('lookY').onChange(function() { TOW.Camera.lookAt(lookAt); });
+  towDatGUI.add(lookAt, 'z').name('lookZ').onChange(function() { TOW.Camera.lookAt(lookAt); });
 
   towDatGUI.add(towDatMenu, 'targets');
   towDatGUI.add(towDatMenu, 'ShootingRangeArea8');
