@@ -10,16 +10,27 @@ TOW.Far = 10000;
 TOW.ContainerWidth = window.innerWidth;
 TOW.ContainerHeight = window.innerHeight;
 TOW.TWEEN = true;
-
+TOW.ColladaScenes = { };
 TOW.Canvas = undefined;
+TOW.Light = undefined;
 TOW.Scene = new THREE.Scene();
-TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);;
+TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);
 TOW.Renderer = new THREE.WebGLRenderer({ width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
 TOW.Loader = new THREE.ColladaLoader();
 
-TOW.ColladaScenes = { };
 TOW.Loader.options.convertUpAxis = true;
 TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
+
+TOW.quick = function(lightX, lightY, lightZ, posX, posY, posZ, lookX, lookY, lookZ, grid) {
+  grid = grid || true;
+  TOW.Light = TOW.addLight();
+  TOW.addLight({ type: 'Ambient' });
+  TOW.Light.position.set(lightX, lightY, lightZ);
+  TOW.Camera.position.set(posX, posY, posZ);
+  TOW.Camera.lookAt(new THREE.Vector3(lookX, lookY, lookZ));
+
+  if (grid) TOW.addGrid(10, 1, 0x808080);
+};
 
 TOW.changeContainerById = function(id) {
   var container = document.getElementById(id);
@@ -46,10 +57,10 @@ TOW.addGrid = function(size, step, lineColor) {
   var line = new THREE.Line(geometry, material, THREE.LinePieces);
 
   for (var i = -size; i <= size; i += step) {
-    geometry.vertices.push(new THREE.Vector3(-size, - 0.04, i));
-    geometry.vertices.push(new THREE.Vector3(size, - 0.04, i));
-    geometry.vertices.push(new THREE.Vector3(i, - 0.04, -size));
-    geometry.vertices.push(new THREE.Vector3(i, - 0.04, size));
+    geometry.vertices.push(new THREE.Vector3(-size, - 0, i));
+    geometry.vertices.push(new THREE.Vector3(size, - 0, i));
+    geometry.vertices.push(new THREE.Vector3(i, - 0, -size));
+    geometry.vertices.push(new THREE.Vector3(i, - 0, size));
   }
 
   TOW.Scene.add(line);
@@ -80,7 +91,8 @@ TOW.addLight = function(options) {
   return light;
 };
 
-TOW.loadCollada = function(url, rootName, visible, onLoad) {
+TOW.loadCollada = function(url, rootName, onLoad, visible) {
+  visible = visible || true;
   TOW.Loader.load(url, function(collada) {
     collada.scene.name = rootName;
     TOW.Scene.add(collada.scene);
@@ -91,27 +103,28 @@ TOW.loadCollada = function(url, rootName, visible, onLoad) {
   });
 };
 
-TOW.loadColladas = function(urls, visible, onLoaded) {
+TOW.loadColladas = function(urls, onLoaded, visible) {
+  visible = visible || false;
+
   var count = urls.length;
   var daeObj3Ds = [ ];
-
   var onCompleted = function(daeObj3D) {
     daeObj3Ds.push(daeObj3D);
 
-    if (--count == 0 && onLoaded !== undefined) onLoaded(daeObj3Ds);
+    if (--count == 0 && onLoaded !== undefined) onLoaded(daeObj3Ds, TOW.ColladaScenes);
   };
 
   urls.forEach(function(url) {
     var parts = url.split('/');
     var name = parts[ parts.length - 1 ].replace('.', '_');
 
-    TOW.loadCollada(url, name, visible, onCompleted);
+    TOW.loadCollada(url, name, onCompleted, visible);
   });
 };
 
-// XXX there is a strange bug were it works for the one mesh in a collada scene, the first, but for the next.
+// there is a strange bug were it works for the one mesh in a collada scene, the first, but for the next.
 // subsequent calls do not center, suspect in THREE.GeometryUtils.center it does
-//    geometry.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
+// ... geometry.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) ); cause?
 // why is clone not preventing it, need deep clone?
 TOW.centerGeometry = function(mesh, scene) {
   scene = scene || TOW.Scene;
