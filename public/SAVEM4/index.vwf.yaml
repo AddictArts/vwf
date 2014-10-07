@@ -22,7 +22,7 @@ properties:
 children:
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: models/M4_Environment_01.dae
+    source: ../../SAVE/models/environments/range/ShootingRange.dae
     type: model/vnd.collada+xml
     properties:
       scale: [ 1, 1, 1 ]
@@ -55,7 +55,7 @@ scripts:
     implements: [ "M4_Carbine.ux", "backendtxrx.ux" ],
     properties: {
       translation: [ 0, 0, 2 ],
-      rotation: [ 0, 0, 1, 90 ],
+      rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
       scale: [ 1, 1, 1 ]
     },
     children: {
@@ -247,8 +247,8 @@ scripts:
   };
 
   this.initInstance = function(name, kbid) {
-    this.children[name].M4_Carbine_KbId = kbid;
-    this.children[name].init();
+    this.children[ name ].M4_Carbine_KbId = kbid;
+    this.children[ name ].init();
   };
 
   this.instance = function(name, backEndId) {
