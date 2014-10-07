@@ -49,6 +49,10 @@ scripts:
   // undefined reference error, I will just handle init myself. I did not test the order in the array of implements theory.
   this.init = function() {
     console.info(this.id + ' ' + this.name + ' init');
+    // Point the weapon in an unsafe direction as the initial state until the tools / backend set the initial state
+    this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90
+
+    // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
     this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
     this.__idToName = { };
     this.__idToName[ this.id ] = this.name;
@@ -83,7 +87,7 @@ scripts:
 
   this.PointWeaponInSafeDirection = function() {
     console.info('PointWeaponInSafeDirection facing down range');
-    this.rotation = [ 0, 0, 1, 0 ];
+    this.rotateBy([ 0, 0, 1, -90 ], 0.5);
     this.activity({ action: 'Point', arguments: [ this.M4_Carbine_KbId, 'unknown' ] });
   };
 
