@@ -318,7 +318,7 @@
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
               M4.init();
-              Pace.stop(); // We should not need to do this, but sometimes the Pace progress just hangs around too long...
+              //Pace.stop(); // We should not need to do this, but sometimes the Pace progress just hangs around too long...
             };
             var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
 

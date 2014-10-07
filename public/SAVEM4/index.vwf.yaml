@@ -31,19 +31,12 @@ children:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "directional"
-      translation: [ 0, 5, 5 ]
-      rotation: [ 1, 1, 0, 36 ]
+      translation: [ -0.5, 0, 2 ]
+      rotation: [ 0, 1, 0, 36 ]
   light2:
     extends: http://vwf.example.com/light.vwf
     properties:
-      lightType: "directional"
-      translation: [ 0, -5, 5 ]
-      rotation: [ 1, 1, 0, 36 ]
-  light3:
-    extends: http://vwf.example.com/light.vwf
-    properties:
-      lightType: "directional"
-      translation: [ -100, 0, 20 ]
+      lightType: "ambient"
   camera:
     extends: "http://vwf.example.com/camera.vwf"
     properties:
