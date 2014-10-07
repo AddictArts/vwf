@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:09:12</created>
+    <modified>2014-09-18T11:09:12</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Bolt_Cam_PinShape" name="Bolt_Cam_PinShape">
+      <mesh>
+        <source id="Bolt_Cam_PinShape-positions" name="Bolt_Cam_PinShape-positions">
+          <float_array id="Bolt_Cam_PinShape-positions-array" count="105">0.0041 0.004751 0.016491 0.0041 0.004697 0.014129 0.0041 -0.005278 0.014125 0.0041 -0.00528 0.016513 -0.004091 0.004751 0.016491 -0.004091 0.004697 0.014129 -0.004091 -0.005278 0.014125 -0.004091 -0.00528 0.016513 0.003469 0.001466 -0.003205 0.002208 0.00289 -0.003207 4.28e-4 0.003565 -0.003209 -0.001461 0.003336 -0.003208 -0.003027 0.002255 -0.003207 -0.003911 5.7e-4 -0.003203 -0.003911 -0.001333 -0.0032 -0.003027 -0.003018 -0.003196 -0.001461 -0.004099 -0.003195 4.28e-4 -0.004329 -0.003194 0.002208 -0.003653 -0.003195 0.003469 -0.002229 -0.003198 0.003925 -3.82e-4 -0.003201 0.003469 0.001498 0.014135 0.002208 0.002922 0.014132 4.28e-4 0.003597 0.014132 -0.001461 0.003368 0.014132 -0.003027 0.002286 0.014134 -0.003911 6.02e-4 0.014137 -0.003911 -0.001301 0.01414 -0.003027 -0.002986 0.014144 -0.001461 -0.004068 0.014146 4.28e-4 -0.004297 0.014146 0.002208 -0.003621 0.014144 0.003469 -0.002197 0.014142 0.003925 -3.5e-4 0.014138 -5.1e-5 -3.82e-4 -0.003201</float_array>
+          <technique_common>
+            <accessor source="#Bolt_Cam_PinShape-positions-array" count="35" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Bolt_Cam_PinShape-normals" name="Bolt_Cam_PinShape-normals">
+          <float_array id="Bolt_Cam_PinShape-normals-array" count="345">-1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 0.9997298 -0.02324899 0 0.9997298 -0.02324899 0 0.9997298 -0.02324899 0 0.9997298 -0.02324899 0 -0.9999999 -6.44e-4 0 -0.9999999 -6.44e-4 0 -0.9999999 -6.44e-4 0 -0.9999999 -6.44e-4 0 0.002112 0.9999979 0 0.002112 0.9999979 0 0.002112 0.9999979 0 0.002112 0.9999979 0.8854558 0.4647229 -8.64e-4 0.5680651 0.8229822 -0.00153 0.5680651 0.8229822 -0.00153 0.8854558 0.4647229 -8.64e-4 0.5680651 0.8229822 -0.00153 0.120537 0.9927071 -0.001846 0.120537 0.9927071 -0.001846 0.5680651 0.8229822 -0.00153 0.120537 0.9927071 -0.001846 -0.3546049 0.9350147 -0.001738999 -0.3546049 0.9350147 -0.001738999 0.120537 0.9927071 -0.001846 -0.3546049 0.9350147 -0.001738999 -0.7485111 0.663121 -0.001234 -0.7485111 0.663121 -0.001234 -0.3546049 0.9350147 -0.001738999 -0.7485111 0.663121 -0.001234 -0.9709417 0.2393159 -4.45e-4 -0.9709417 0.2393159 -4.45e-4 -0.7485111 0.663121 -0.001234 -0.9709417 0.2393159 -4.45e-4 -0.9709421 -0.239314 4.46e-4 -0.9709421 -0.239314 4.46e-4 -0.9709417 0.2393159 -4.45e-4 -0.9709421 -0.239314 4.46e-4 -0.7485111 -0.663121 0.001233 -0.7485111 -0.663121 0.001233 -0.9709421 -0.239314 4.46e-4 -0.7485111 -0.663121 0.001233 -0.3546049 -0.9350147 0.001738999 -0.3546049 -0.9350147 0.001738999 -0.7485111 -0.663121 0.001233 -0.3546049 -0.9350147 0.001738999 0.120536 -0.9927073 0.001846 0.120536 -0.9927073 0.001846 -0.3546049 -0.9350147 0.001738999 0.120536 -0.9927073 0.001846 0.568064 -0.822983 0.00153 0.568064 -0.822983 0.00153 0.120536 -0.9927073 0.001846 0.568064 -0.822983 0.00153 0.8854553 -0.4647241 8.64e-4 0.8854553 -0.4647241 8.64e-4 0.568064 -0.822983 0.00153 0.8854553 -0.4647241 8.64e-4 1 0 0 1 0 0 0.8854553 -0.4647241 8.64e-4 1 0 0 0.8854558 0.4647229 -8.64e-4 0.8854558 0.4647229 -8.64e-4 1 0 0 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001860001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001860001 -0.9999983 0 -0.001860001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001860001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001858001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001858001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 -0.001859001 -0.9999983 0 4.03e-4 -1 0 4.03e-4 -1 0 4.03e-4 -1 0 4.03e-4 -1</float_array>
+          <technique_common>
+            <accessor source="#Bolt_Cam_PinShape-normals-array" count="115" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Bolt_Cam_PinShape-Bolt_Cam_PinShape-Bolt_Cam_PinShape-map1" name="Bolt_Cam_PinShape-Bolt_Cam_PinShape-Bolt_Cam_PinShape-map1">
+          <float_array id="Bolt_Cam_PinShape-Bolt_Cam_PinShape-Bolt_Cam_PinShape-map1-array" count="116">0 0 0.23567 0 0.259195 0.99431 0.021144 1 0 0 0.23567 0 0.259195 0.99431 0.021144 1 0 0 0.23567 0 0.259195 0.99431 0.021144 1 0 0.25 0.076923 0.25 0.076923 0.75 0 0.75 0.153846 0.25 0.153846 0.75 0.230769 0.25 0.230769 0.75 0.307692 0.25 0.307692 0.75 0.384615 0.25 0.384615 0.75 0.461538 0.25 0.461538 0.75 0.538462 0.25 0.538462 0.75 0.615385 0.25 0.615385 0.75 0.692308 0.25 0.692308 0.75 0.769231 0.25 0.769231 0.75 0.846154 0.25 0.846154 0.75 0.923077 0.25 0.923077 0.75 1 0.25 1 0.75 0.785912 0.022127 0.944608 0.06691 0.50188 0.125 0.562148 9.11e-4 0.324577 0.008123 0.127624 0.04211 0.016409 0.095086 0.016409 0.154914 0.127624 0.20789 0.324577 0.241877 0.562148 0.249089 0.785912 0.227873 0.944608 0.18309 1.00188 0.125 0 0 0.803281 0 0.803281 1 0 1</float_array>
+          <technique_common>
+            <accessor source="#Bolt_Cam_PinShape-Bolt_Cam_PinShape-Bolt_Cam_PinShape-map1-array" count="58" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Bolt_Cam_PinShape-vertices" name="Bolt_Cam_PinShape-vertices">
+          <input semantic="POSITION" source="#Bolt_Cam_PinShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="32">
+          <input semantic="VERTEX" source="#Bolt_Cam_PinShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Bolt_Cam_PinShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Bolt_Cam_PinShape-Bolt_Cam_PinShape-Bolt_Cam_PinShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 3 3 3 3 3 3 3 3 3 3 3 3 3 4</vcount>
+          <p>4 0 8 5 1 9 6 2 10 7 3 11 0 4 4 3 5 7 2 6 6 1 7 5 0 8 0 1 9 1 5 10 9 4 11 8 2 12 2 3 13 3 7 14 11 6 15 10 3 16 3 0 17 0 4 18 8 7 19 11 8 20 12 9 21 13 22 22 14 21 23 15 9 24 13 10 25 16 23 26 17 22 27 14 10 28 16 11 29 18 24 30 19 23 31 17 11 32 18 12 33 20 25 34 21 24 35 19 12 36 20 13 37 22 26 38 23 25 39 21 13 40 22 14 41 24 27 42 25 26 43 23 14 44 24 15 45 26 28 46 27 27 47 25 15 48 26 16 49 28 29 50 29 28 51 27 16 52 28 17 53 30 30 54 31 29 55 29 17 56 30 18 57 32 31 58 33 30 59 31 18 60 32 19 61 34 32 62 35 31 63 33 19 64 34 20 65 36 33 66 37 32 67 35 20 68 36 8 69 38 21 70 39 33 71 37 9 72 40 8 73 41 34 74 42 10 75 43 9 76 40 34 77 42 11 78 44 10 79 43 34 80 42 12 81 45 11 82 44 34 83 42 13 84 46 12 85 45 34 86 42 14 87 47 13 88 46 34 89 42 15 90 48 14 91 47 34 92 42 16 93 49 15 94 48 34 95 42 17 96 50 16 97 49 34 98 42 18 99 51 17 100 50 34 101 42 19 102 52 18 103 51 34 104 42 20 105 53 19 106 52 34 107 42 8 108 41 20 109 53 34 110 42 5 111 54 1 112 55 2 113 56 6 114 57</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Bolt_Cam_PinShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Bolt_Cam_Pin" name="Bolt_Cam_Pin" type="NODE">
+        <translate sid="translate">-0.048355 -6.83e-4 0.001087</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 -20.96136</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Bolt_Cam_PinShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Bolt_Cam_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>

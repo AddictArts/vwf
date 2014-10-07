@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:13:40</created>
+    <modified>2014-09-18T11:13:40</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="WasherShape" name="WasherShape">
+      <mesh>
+        <source id="WasherShape-positions" name="WasherShape-positions">
+          <float_array id="WasherShape-positions-array" count="156">-0.13067 0.013619 0.037399 -0.133156 0.013619 0.040206 -0.136662 0.013619 0.041536 -0.140384 0.013619 0.041084 -0.14347 0.013619 0.038954 -0.145213 0.013619 0.035633 -0.145213 0.013619 0.031884 -0.14347 0.013619 0.028564 -0.140384 0.013619 0.026434 -0.136662 0.013619 0.025982 -0.133156 0.013619 0.027311 -0.13067 0.013619 0.030118 -0.129772 0.013619 0.033759 -0.134913 0.013619 0.035135 -0.135853 0.013619 0.036196 -0.137179 0.013619 0.036699 -0.138586 0.013619 0.036528 -0.139753 0.013619 0.035723 -0.140411 0.013619 0.034467 -0.140411 0.013619 0.03305 -0.139753 0.013619 0.031795 -0.138586 0.013619 0.030989 -0.137179 0.013619 0.030819 -0.135853 0.013619 0.031321 -0.134913 0.013619 0.032382 -0.134574 0.013619 0.033759 -0.13067 0.011928 0.037399 -0.133156 0.011928 0.040206 -0.134913 0.011928 0.035135 -0.135853 0.011928 0.036196 -0.136662 0.011928 0.041536 -0.137179 0.011928 0.036699 -0.140384 0.011928 0.041084 -0.138586 0.011928 0.036528 -0.14347 0.011928 0.038954 -0.139753 0.011928 0.035723 -0.145213 0.011928 0.035633 -0.140411 0.011928 0.034467 -0.145213 0.011928 0.031884 -0.140411 0.011928 0.03305 -0.14347 0.011928 0.028564 -0.139753 0.011928 0.031795 -0.140384 0.011928 0.026434 -0.138586 0.011928 0.030989 -0.136662 0.011928 0.025982 -0.137179 0.011928 0.030819 -0.133156 0.011928 0.027311 -0.135853 0.011928 0.031321 -0.13067 0.011928 0.030118 -0.134913 0.011928 0.032382 -0.129772 0.011928 0.033759 -0.134574 0.011928 0.033759</float_array>
+          <technique_common>
+            <accessor source="#WasherShape-positions-array" count="52" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="WasherShape-normals" name="WasherShape-normals">
+          <float_array id="WasherShape-normals-array" count="624">0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 -0.5680649 0 -0.8229838 -0.8854551 0 -0.464725 -0.8854551 0 -0.464725 -0.5680649 0 -0.8229838 0.8854572 0 0.4647211 0.568066 0 0.822983 0.568066 0 0.822983 0.8854572 0 0.4647211 -0.120537 0 -0.9927089 -0.5680649 0 -0.8229838 -0.5680649 0 -0.8229838 -0.120537 0 -0.9927089 0.568066 0 0.822983 0.120537 0 0.9927089 0.120537 0 0.9927089 0.568066 0 0.822983 0.3546051 0 -0.9350162 -0.120537 0 -0.9927089 -0.120537 0 -0.9927089 0.3546051 0 -0.9350162 0.120537 0 0.9927089 -0.3546039 0 0.9350166 -0.3546039 0 0.9350166 0.120537 0 0.9927089 0.7485122 0 -0.6631212 0.3546051 0 -0.9350162 0.3546051 0 -0.9350162 0.7485122 0 -0.6631212 -0.3546039 0 0.9350166 -0.7485126 0 0.6631206 -0.7485122 0 0.6631212 -0.3546039 0 0.9350166 0.9709423 0 -0.2393141 0.7485122 0 -0.6631212 0.7485122 0 -0.6631212 0.9709423 0 -0.2393141 -0.7485126 0 0.6631206 -0.970942 0 0.239315 -0.970942 0 0.239315 -0.7485122 0 0.6631212 0.9709427 0 0.2393119 0.9709423 0 -0.2393141 0.9709423 0 -0.2393141 0.9709427 0 0.2393119 -0.970942 0 0.239315 -0.970942 0 -0.239315 -0.970942 0 -0.239315 -0.970942 0 0.239315 0.7485122 0 0.6631212 0.9709427 0 0.2393119 0.9709427 0 0.2393119 0.7485122 0 0.6631212 -0.970942 0 -0.239315 -0.7485126 0 -0.6631206 -0.748513 0 -0.66312 -0.970942 0 -0.239315 0.3546051 0 0.9350162 0.7485122 0 0.6631212 0.7485122 0 0.6631212 0.3546051 0 0.9350162 -0.7485126 0 -0.6631206 -0.3546068 0 -0.9350156 -0.3546072 0 -0.9350154 -0.748513 0 -0.66312 -0.120536 0 0.992709 0.3546051 0 0.9350162 0.3546051 0 0.9350162 -0.120536 0 0.992709 -0.3546068 0 -0.9350156 0.120536 0 -0.992709 0.120536 0 -0.992709 -0.3546072 0 -0.9350154 -0.5680649 0 0.8229838 -0.120536 0 0.992709 -0.120536 0 0.992709 -0.5680649 0 0.8229838 0.120536 0 -0.992709 0.5680671 0 -0.8229822 0.5680671 0 -0.8229822 0.120536 0 -0.992709 -0.8854555 0 0.4647243 -0.5680649 0 0.8229838 -0.5680649 0 0.8229838 -0.8854555 0 0.4647243 0.5680671 0 -0.8229822 0.8854572 0 -0.4647211 0.8854572 0 -0.4647211 0.5680671 0 -0.8229822 -1 0 0 -0.8854555 0 0.4647243 -0.8854555 0 0.4647243 -1 0 0 0.8854572 0 -0.4647211 1 0 0 1 0 0 0.8854572 0 -0.4647211 -0.8854551 0 -0.464725 -1 0 0 -1 0 0 -0.8854551 0 -0.464725 1 0 0 0.8854572 0 0.4647211 0.8854572 0 0.4647211 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#WasherShape-normals-array" count="208" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="WasherShape-WasherShape-WasherShape-map1" name="WasherShape-WasherShape-WasherShape-map1">
+          <float_array id="WasherShape-WasherShape-WasherShape-map1-array" count="156">0.805693 0.544243 0.885013 0.633777 0.788199 0.685436 0.744161 0.635727 0.913639 0.749917 0.804093 0.749917 0.69385 0.501827 0.682066 0.612177 0.885013 0.866058 0.788199 0.814399 0.575106 0.516245 0.616139 0.620183 0.805693 0.955592 0.744161 0.864108 0.476664 0.584195 0.561484 0.657908 0.69385 0.998008 0.682066 0.887657 0.421075 0.690109 0.530622 0.716712 0.575106 0.98359 0.616139 0.879652 0.421075 0.809725 0.530622 0.783123 0.476664 0.91564 0.561484 0.841927 0.805693 0.544243 0.885013 0.633777 0.788199 0.685436 0.744161 0.635727 0.69385 0.501827 0.682066 0.612177 0.575106 0.516245 0.616139 0.620183 0.476664 0.584195 0.561484 0.657908 0.421075 0.690109 0.530622 0.716712 0.421075 0.809725 0.530622 0.783123 0.476664 0.91564 0.561484 0.841927 0.575106 0.98359 0.616139 0.879652 0.69385 0.998008 0.682066 0.887657 0.805693 0.955592 0.744161 0.864108 0.885013 0.866058 0.788199 0.814399 0.913639 0.749917 0.804093 0.749917 0.805693 0.544243 0.885013 0.633777 0.788199 0.685436 0.744161 0.635727 0.69385 0.501827 0.682066 0.612177 0.575106 0.516245 0.616139 0.620183 0.476664 0.584195 0.561484 0.657908 0.421075 0.690109 0.530622 0.716712 0.421075 0.809725 0.530622 0.783123 0.476664 0.91564 0.561484 0.841927 0.575106 0.98359 0.616139 0.879652 0.69385 0.998008 0.682066 0.887657 0.805693 0.955592 0.744161 0.864108 0.885013 0.866058 0.788199 0.814399 0.913639 0.749917 0.804093 0.749917</float_array>
+          <technique_common>
+            <accessor source="#WasherShape-WasherShape-WasherShape-map1-array" count="78" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="WasherShape-vertices" name="WasherShape-vertices">
+          <input semantic="POSITION" source="#WasherShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="52">
+          <input semantic="VERTEX" source="#WasherShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#WasherShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#WasherShape-WasherShape-WasherShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>27 0 52 26 1 53 28 2 54 29 3 55 30 4 56 27 5 52 29 6 55 31 7 57 32 8 58 30 9 56 31 10 57 33 11 59 34 12 60 32 13 58 33 14 59 35 15 61 36 16 62 34 17 60 35 18 61 37 19 63 38 20 64 36 21 62 37 22 63 39 23 65 40 24 66 38 25 64 39 26 65 41 27 67 42 28 68 40 29 66 41 30 67 43 31 69 44 32 70 42 33 68 43 34 69 45 35 71 46 36 72 44 37 70 45 38 71 47 39 73 48 40 74 46 41 72 47 42 73 49 43 75 50 44 76 48 45 74 49 46 75 51 47 77 26 48 53 50 49 76 51 50 77 28 51 54 1 52 26 14 53 29 13 54 28 0 55 27 2 56 30 15 57 31 14 58 29 1 59 26 3 60 32 16 61 33 15 62 31 2 63 30 4 64 34 17 65 35 16 66 33 3 67 32 5 68 36 18 69 37 17 70 35 4 71 34 6 72 38 19 73 39 18 74 37 5 75 36 7 76 40 20 77 41 19 78 39 6 79 38 8 80 42 21 81 43 20 82 41 7 83 40 9 84 44 22 85 45 21 86 43 8 87 42 10 88 46 23 89 47 22 90 45 9 91 44 11 92 48 24 93 49 23 94 47 10 95 46 12 96 50 25 97 51 24 98 49 11 99 48 0 100 27 13 101 28 25 102 51 12 103 50 1 104 0 0 105 1 26 106 53 27 107 52 13 108 2 14 109 3 29 110 55 28 111 54 2 112 6 1 113 0 27 114 52 30 115 56 14 116 3 15 117 7 31 118 57 29 119 55 3 120 10 2 121 6 30 122 56 32 123 58 15 124 7 16 125 11 33 126 59 31 127 57 4 128 14 3 129 10 32 130 58 34 131 60 16 132 11 17 133 15 35 134 61 33 135 59 5 136 18 4 137 14 34 138 60 36 139 62 17 140 15 18 141 19 37 142 63 35 143 61 6 144 22 5 145 18 36 146 62 38 147 64 18 148 19 19 149 23 39 150 65 37 151 63 7 152 24 6 153 22 38 154 64 40 155 66 19 156 23 20 157 25 41 158 67 39 159 65 8 160 20 7 161 24 40 162 66 42 163 68 20 164 25 21 165 21 43 166 69 41 167 67 9 168 16 8 169 20 42 170 68 44 171 70 21 172 21 22 173 17 45 174 71 43 175 69 10 176 12 9 177 16 44 178 70 46 179 72 22 180 17 23 181 13 47 182 73 45 183 71 11 184 8 10 185 12 46 186 72 48 187 74 23 188 13 24 189 9 49 190 75 47 191 73 12 192 4 11 193 8 48 194 74 50 195 76 24 196 9 25 197 5 51 198 77 49 199 75 0 200 1 12 201 4 50 202 76 26 203 53 25 204 5 13 205 2 28 206 54 51 207 77</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>WasherShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Washer" name="Washer" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#WasherShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Washer</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>

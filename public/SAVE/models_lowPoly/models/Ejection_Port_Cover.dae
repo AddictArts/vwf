@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:09:36</created>
+    <modified>2014-09-18T11:09:36</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Ejection_Port_CoverShape" name="Ejection_Port_CoverShape">
+      <mesh>
+        <source id="Ejection_Port_CoverShape-positions" name="Ejection_Port_CoverShape-positions">
+          <float_array id="Ejection_Port_CoverShape-positions-array" count="234">-0.077508 -0.001335 0.001754 -1.13e-4 -0.001334 0.00175 -1.12e-4 0.005934 0.018666 -0.077472 0.005939 0.018669 -0.044041 2.26e-4 0.005384 -0.033035 2.25e-4 0.005382 -0.044028 0.00509 0.016699 -0.033025 0.00509 0.016699 -0.044041 -0.001746 0.006231 -0.033035 -0.001746 0.00623 -0.044028 0.004293 0.017042 -0.033025 0.004293 0.017042 -0.044036 -7.5e-5 0.010117 -0.033032 -7.6e-5 0.010116 -0.077719 0.001499 0.001529 -0.077719 0.002133 -3e-6 -0.077719 0.001499 -0.001534 -0.077719 -3.3e-5 -0.002168 -0.077719 -0.001564 -0.001534 -0.077719 -0.002198 -3e-6 -0.077719 -0.001564 0.001529 -0.077719 -3.3e-5 0.002163 -0.077719 0.001196 0.001226 -0.077719 0.001704 -3e-6 -0.077719 0.001196 -0.001231 -0.077719 -3.3e-5 -0.00174 -0.077719 -0.001261 -0.001231 -0.077719 -0.00177 -3e-6 -0.077719 -0.001261 0.001226 -0.077719 -3.3e-5 0.001734 -0.04799 0.002133 -3e-6 -0.04799 0.001499 0.001529 -0.04799 0.001499 -0.001534 -0.04799 -3.3e-5 -0.002169 -0.04799 -0.001564 -0.001534 -0.04799 -0.002198 -3e-6 -0.04799 -0.001564 0.001529 -0.04799 -3.3e-5 0.002163 -0.04799 0.001704 -3e-6 -0.04799 0.001196 0.001226 -0.04799 0.001196 -0.001231 -0.04799 -3.3e-5 -0.00174 -0.04799 -0.001261 -0.001231 -0.04799 -0.00177 -3e-6 -0.04799 -0.001261 0.001226 -0.04799 -3.3e-5 0.001734 -0.029737 0.001499 0.001529 -0.029737 0.002133 -3e-6 -0.029737 0.001499 -0.001534 -0.029737 -3.3e-5 -0.002168 -0.029737 -0.001564 -0.001534 -0.029737 -0.002198 -3e-6 -0.029737 -0.001564 0.001529 -0.029737 -3.3e-5 0.002163 -0.029737 0.001196 0.001226 -0.029737 0.001704 -3e-6 -0.029737 0.001196 -0.001231 -0.029737 -3.3e-5 -0.00174 -0.029737 -0.001261 -0.001231 -0.029737 -0.00177 -3e-6 -0.029737 -0.001261 0.001226 -0.029737 -3.3e-5 0.001734 1.5e-4 0.002133 -3e-6 1.5e-4 0.001499 0.001529 1.5e-4 0.001499 -0.001534 1.5e-4 -3.3e-5 -0.002169 1.5e-4 -0.001564 -0.001534 1.5e-4 -0.002198 -3e-6 1.5e-4 -0.001564 0.001529 1.5e-4 -3.3e-5 0.002163 1.5e-4 0.001704 -3e-6 1.5e-4 0.001196 0.001226 1.5e-4 0.001196 -0.001231 1.5e-4 -3.3e-5 -0.00174 1.5e-4 -0.001261 -0.001231 1.5e-4 -0.00177 -3e-6 1.5e-4 -0.001261 0.001226 1.5e-4 -3.3e-5 0.001734</float_array>
+          <technique_common>
+            <accessor source="#Ejection_Port_CoverShape-positions-array" count="78" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Ejection_Port_CoverShape-normals" name="Ejection_Port_CoverShape-normals">
+          <float_array id="Ejection_Port_CoverShape-normals-array" count="894">0 -0.9187018 0.3949519 0 -0.9187018 0.3949519 0 -0.9187018 0.3949519 0 -0.9187018 0.3949519 0 -0.9186824 0.3949972 0 -0.9186826 0.3949968 0 -0.9186824 0.3949972 0 -0.9186826 0.3949968 0 0.394919 0.918716 0 0.394919 0.918716 0 0.394919 0.918716 0 0.394919 0.918716 -0.9999995 4.38e-4 9.73e-4 -0.9999995 4.38e-4 9.73e-4 -0.9999995 4.38e-4 9.73e-4 -0.9999995 4.38e-4 9.73e-4 -0.9999994 4.38e-4 9.72999e-4 -1.6e-4 -0.3949198 -0.9187156 -1.6e-4 -0.3949198 -0.9187156 -1.6e-4 -0.3949202 -0.9187154 -1.6e-4 -0.3949198 -0.9187156 0.9999998 -3.31e-4 -7.12e-4 0.9999998 -3.31e-4 -7.12e-4 0.9999998 -3.31e-4 -7.12e-4 0.9999998 -3.31e-4 -7.12e-4 0.9999998 -3.31e-4 -7.12e-4 0 -0.8730331 0.4876611 0 -0.8730682 0.4875981 0 -0.9187156 0.3949198 0 -0.9187156 0.3949198 0 -0.8457981 0.5335031 0 -0.8730682 0.4875981 0 -0.8730331 0.4876611 0 -0.8457981 0.5335031 0 -0.9187094 0.3949342 0 -0.9187094 0.3949342 0 -0.9187094 0.3949342 0 -0.9187094 0.3949342 0 -0.9187452 0.3948511 0 -0.9187452 0.3948511 0 -0.9187452 0.3948511 0 -0.9187452 0.3948511 0 1 0 0 0.7071074 0.7071064 0 0.7071074 0.7071064 0 1 0 0 0.7071068 -0.7071068 0 1 0 0 1 0 0 0.7071068 -0.7071068 0 0 -1 0 0.7071068 -0.7071068 0 0.7071068 -0.7071068 0 0 -1 0 -0.7071064 -0.7071074 0 0 -1 0 0 -1 0 -0.7071064 -0.7071074 0 -1 0 0 -0.7071064 -0.7071074 0 -0.7071064 -0.7071074 0 -1 0 0 -0.7071068 0.7071068 0 -1 0 0 -1 0 0 -0.7071068 0.7071068 0 0 1 0 -0.7071068 0.7071068 0 -0.7071068 0.7071068 0 0 1 0 0.7071074 0.7071064 0 0 1 0 0 1 0 0.7071074 0.7071064 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0 -0.7071074 -0.7071064 0 -0.7071068 -0.7071068 0 -0.7071064 0.7071074 0 -0.7071068 0.7071068 0 -1 0 0 -1 0 0 0 1 0 0 1 0 -0.7071068 0.7071068 0 -0.7071064 0.7071074 0 0.7071068 0.7071068 0 0.7071074 0.7071064 0 0 1 0 0 1 0 1 0 0 1 0 0 0.7071074 0.7071064 0 0.7071068 0.7071068 0 0.7071078 -0.7071058 0 0.7071084 -0.7071053 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0.7071084 -0.7071053 0 0.7071078 -0.7071058 0 -0.7071068 -0.7071068 0 -0.7071074 -0.7071064 0 0 -1 0 0 -1 0 1 0 0 0.7071074 0.7071064 0 0.7071078 0.7071058 0 1 0 0 0.7071068 -0.7071068 0 1 0 0 1 0 0 0.7071068 -0.7071068 0 0 -1 0 0.7071068 -0.7071068 0 0.7071068 -0.7071068 0 0 -1 0 -0.7071064 -0.7071074 0 0 -1 0 0 -1 0 -0.7071064 -0.7071074 0 -1 0 0 -0.7071064 -0.7071074 0 -0.7071064 -0.7071074 0 -1 0 0 -0.7071068 0.7071068 0 -1 0 0 -1 0 0 -0.7071068 0.7071068 0 0 1 0 -0.7071068 0.7071068 0 -0.7071068 0.7071068 0 0 1 0 0.7071074 0.7071064 0 0 1 0 0 1 0 0.7071078 0.7071058 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0 -0.7071068 -0.7071068 0 -0.7071068 -0.7071068 0 -0.7071058 0.7071078 0 -0.7071064 0.7071074 0 -1 0 0 -1 0 0 0 1 0 0 1 0 -0.7071064 0.7071074 0 -0.7071058 0.7071078 0 0.7071058 0.7071078 0 0.7071064 0.7071074 0 0 1 0 0 1 0 1 0 0 1 0 0 0.7071064 0.7071074 0 0.7071058 0.7071078 0 0.7071068 -0.7071068 0 0.7071074 -0.7071064 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0.7071074 -0.7071064 0 0.7071068 -0.7071068 0 -0.7071068 -0.7071068 0 -0.7071068 -0.7071068 0 0 -1 0 0 -1</float_array>
+          <technique_common>
+            <accessor source="#Ejection_Port_CoverShape-normals-array" count="298" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Ejection_Port_CoverShape-Ejection_Port_CoverShape-Ejection_Port_CoverShape-map1" name="Ejection_Port_CoverShape-Ejection_Port_CoverShape-Ejection_Port_CoverShape-map1">
+          <float_array id="Ejection_Port_CoverShape-Ejection_Port_CoverShape-Ejection_Port_CoverShape-map1-array" count="236">0 0 1 0 0.953091 0.231491 0.055204 0.229003 0.45797 0.049452 0.60667 0.049421 0.46374 0.203362 0.602056 0.203688 0.45797 0.049452 0.60667 0.049421 0.46374 0.203362 0.602056 0.203688 0.459952 0.10231 0.605086 0.102398 0.001044 0 0.745017 0 0.744087 1 0 0.999791 0.125 0.75 0 0.75 0 0.75 0.125 0.75 0.25 0.75 0.25 0.75 0.375 0.75 0.375 0.75 0.5 0.75 0.5 0.75 0.625 0.75 0.625 0.75 0.75 0.75 0.75 0.75 0.875 0.75 0.875 0.75 1 0.75 1 0.75 0.855433 0.963388 0.50188 1 0.50188 1 0.855433 0.963388 0.148326 0.963388 0.148326 0.963388 0.00188 0.875 0.00188 0.875 0.148326 0.786612 0.148326 0.786612 0.50188 0.75 0.50188 0.75 0.855433 0.786612 0.855433 0.786612 1.00188 0.875 1.00188 0.875 0.855433 0.963388 0.855433 0.963388 0.50188 1 0.50188 1 0.148326 0.963388 0.148326 0.963388 0.00188 0.875 0.00188 0.875 0.148326 0.786612 0.148326 0.786612 0.50188 0.75 0.50188 0.75 0.855433 0.786612 0.855433 0.786612 1.00188 0.875 1.00188 0.875 0.125 0.75 0 0.75 0 0.75 0.125 0.75 0.25 0.75 0.25 0.75 0.375 0.75 0.375 0.75 0.5 0.75 0.5 0.75 0.625 0.75 0.625 0.75 0.75 0.75 0.75 0.75 0.875 0.75 0.875 0.75 1 0.75 1 0.75 0.855433 0.963388 0.50188 1 0.50188 1 0.855433 0.963388 0.148326 0.963388 0.148326 0.963388 0.00188 0.875 0.00188 0.875 0.148326 0.786612 0.148326 0.786612 0.50188 0.75 0.50188 0.75 0.855433 0.786612 0.855433 0.786612 1.00188 0.875 1.00188 0.875 0.855433 0.963388 0.855433 0.963388 0.50188 1 0.50188 1 0.148326 0.963388 0.148326 0.963388 0.00188 0.875 0.00188 0.875 0.148326 0.786612 0.148326 0.786612 0.50188 0.75 0.50188 0.75 0.855433 0.786612 0.855433 0.786612 1.00188 0.875 1.00188 0.875</float_array>
+          <technique_common>
+            <accessor source="#Ejection_Port_CoverShape-Ejection_Port_CoverShape-Ejection_Port_CoverShape-map1-array" count="118" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Ejection_Port_CoverShape-vertices" name="Ejection_Port_CoverShape-vertices">
+          <input semantic="POSITION" source="#Ejection_Port_CoverShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="74">
+          <input semantic="VERTEX" source="#Ejection_Port_CoverShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Ejection_Port_CoverShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Ejection_Port_CoverShape-Ejection_Port_CoverShape-Ejection_Port_CoverShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 5 4 5 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>7 0 7 2 1 2 3 2 3 6 3 6 0 4 0 4 5 4 6 6 6 3 7 3 7 8 7 6 9 6 10 10 10 11 11 11 6 12 6 4 13 4 8 14 8 12 15 12 10 16 10 4 17 4 5 18 5 9 19 9 8 20 8 5 21 5 7 22 7 11 23 11 13 24 13 9 25 9 13 26 13 12 27 12 8 28 8 9 29 9 10 30 14 12 31 15 13 32 16 11 33 17 0 34 0 1 35 1 5 36 5 4 37 4 5 38 5 1 39 1 2 40 2 7 41 7 15 42 18 14 43 19 31 44 20 30 45 21 16 46 22 15 47 18 30 48 21 32 49 23 17 50 24 16 51 22 32 52 23 33 53 25 18 54 26 17 55 24 33 56 25 34 57 27 19 58 28 18 59 26 34 60 27 35 61 29 20 62 30 19 63 28 35 64 29 36 65 31 21 66 32 20 67 30 36 68 31 37 69 33 14 70 34 21 71 32 37 72 33 31 73 35 14 74 36 15 75 37 23 76 38 22 77 39 15 78 37 16 79 40 24 80 41 23 81 38 16 82 40 17 83 42 25 84 43 24 85 41 17 86 42 18 87 44 26 88 45 25 89 43 18 90 44 19 91 46 27 92 47 26 93 45 19 94 46 20 95 48 28 96 49 27 97 47 20 98 48 21 99 50 29 100 51 28 101 49 21 102 50 14 103 36 22 104 39 29 105 51 31 106 52 39 107 53 38 108 54 30 109 55 30 110 55 38 111 54 40 112 56 32 113 57 32 114 57 40 115 56 41 116 58 33 117 59 33 118 59 41 119 58 42 120 60 34 121 61 34 122 61 42 123 60 43 124 62 35 125 63 35 126 63 43 127 62 44 128 64 36 129 65 36 130 65 44 131 64 45 132 66 37 133 67 37 134 67 45 135 66 39 136 53 31 137 52 23 138 38 38 139 54 39 140 53 22 141 39 24 142 41 40 143 56 38 144 54 23 145 38 25 146 43 41 147 58 40 148 56 24 149 41 26 150 45 42 151 60 41 152 58 25 153 43 27 154 47 43 155 62 42 156 60 26 157 45 28 158 49 44 159 64 43 160 62 27 161 47 29 162 51 45 163 66 44 164 64 28 165 49 22 166 39 39 167 53 45 168 66 29 169 51 47 170 68 46 171 69 63 172 70 62 173 71 48 174 72 47 175 68 62 176 71 64 177 73 49 178 74 48 179 72 64 180 73 65 181 75 50 182 76 49 183 74 65 184 75 66 185 77 51 186 78 50 187 76 66 188 77 67 189 79 52 190 80 51 191 78 67 192 79 68 193 81 53 194 82 52 195 80 68 196 81 69 197 83 46 198 84 53 199 82 69 200 83 63 201 85 46 202 86 47 203 87 55 204 88 54 205 89 47 206 87 48 207 90 56 208 91 55 209 88 48 210 90 49 211 92 57 212 93 56 213 91 49 214 92 50 215 94 58 216 95 57 217 93 50 218 94 51 219 96 59 220 97 58 221 95 51 222 96 52 223 98 60 224 99 59 225 97 52 226 98 53 227 100 61 228 101 60 229 99 53 230 100 46 231 86 54 232 89 61 233 101 63 234 102 71 235 103 70 236 104 62 237 105 62 238 105 70 239 104 72 240 106 64 241 107 64 242 107 72 243 106 73 244 108 65 245 109 65 246 109 73 247 108 74 248 110 66 249 111 66 250 111 74 251 110 75 252 112 67 253 113 67 254 113 75 255 112 76 256 114 68 257 115 68 258 115 76 259 114 77 260 116 69 261 117 69 262 117 77 263 116 71 264 103 63 265 102 55 266 88 70 267 104 71 268 103 54 269 89 56 270 91 72 271 106 70 272 104 55 273 88 57 274 93 73 275 108 72 276 106 56 277 91 58 278 95 74 279 110 73 280 108 57 281 93 59 282 97 75 283 112 74 284 110 58 285 95 60 286 99 76 287 114 75 288 112 59 289 97 61 290 101 77 291 116 76 292 114 60 293 99 54 294 89 71 295 103 77 296 116 61 297 101</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Ejection_Port_CoverShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Ejection_Port_Cover" name="Ejection_Port_Cover" type="NODE">
+        <translate sid="translate">-0.024992 -0.016724 -0.005855</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Ejection_Port_CoverShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ejection_Port_Cover</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>

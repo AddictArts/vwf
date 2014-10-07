@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:11:10</created>
+    <modified>2014-09-18T11:11:10</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Ejector_Spring_PinShape" name="Ejector_Spring_PinShape">
+      <mesh>
+        <source id="Ejector_Spring_PinShape-positions" name="Ejector_Spring_PinShape-positions">
+          <float_array id="Ejector_Spring_PinShape-positions-array" count="48">-0.021883 0.002337 -0.005764 -0.022476 0.002436 -0.005857 -0.022952 0.00216 -0.005597 -0.022952 0.001716 -0.005181 -0.022476 0.00144 -0.004921 -0.021883 0.001538 -0.005014 -0.021619 0.001938 -0.005389 -0.021883 0.00867 9.82e-4 -0.022476 0.008769 8.89e-4 -0.022952 0.008493 0.001149 -0.022952 0.008049 0.001565 -0.022476 0.007773 0.001825 -0.021883 0.007871 0.001732 -0.021619 0.008271 0.001357 -0.02232 0.001938 -0.005389 -0.02232 0.008271 0.001357</float_array>
+          <technique_common>
+            <accessor source="#Ejector_Spring_PinShape-positions-array" count="16" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Ejector_Spring_PinShape-normals" name="Ejector_Spring_PinShape-normals">
+          <float_array id="Ejector_Spring_PinShape-normals-array" count="210">0.62349 0.570008 -0.535118 -0.2225209 0.7107878 -0.6672818 -0.2225209 0.7107878 -0.6672818 0.62349 0.570008 -0.535118 -0.2225209 0.7107878 -0.6672818 -0.9009691 0.31633 -0.296968 -0.9009691 0.31633 -0.296968 -0.2225209 0.7107878 -0.6672818 -0.9009691 0.31633 -0.296968 -0.9009688 -0.3163309 0.296968 -0.9009683 -0.3163311 0.2969691 -0.9009691 0.31633 -0.296968 -0.9009688 -0.3163309 0.296968 -0.2225209 -0.7107888 0.6672808 -0.2225209 -0.7107888 0.6672808 -0.9009683 -0.3163311 0.2969691 -0.2225209 -0.7107888 0.6672808 0.62349 -0.570009 0.535117 0.62349 -0.570009 0.535117 -0.2225209 -0.7107888 0.6672808 0.62349 -0.570009 0.535117 1 0 0 1 0 0 0.62349 -0.570009 0.535117 1 0 0 0.62349 0.570008 -0.535118 0.62349 0.570008 -0.535118 1 0 0 0 -0.6844422 -0.7290672 0 -0.6844411 -0.7290682 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844427 -0.7290667 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844427 -0.7290667 0 -0.6844422 -0.7290672 0 -0.6844407 -0.7290686 0 -0.6844422 -0.7290672 0 -0.6844422 -0.7290672 0 -0.6844411 -0.7290682 0 -0.6844407 -0.7290686 0 -0.6844422 -0.7290672 0 0.6844401 0.7290691 0 0.6844427 0.7290667 0 0.6844411 0.7290682 0 0.6844427 0.7290667 0 0.6844422 0.7290672 0 0.6844411 0.7290682 0 0.6844422 0.7290672 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844411 0.7290682 0 0.6844391 0.7290701 0 0.6844411 0.7290682 0 0.6844391 0.7290701 0 0.6844401 0.7290691 0 0.6844411 0.7290682</float_array>
+          <technique_common>
+            <accessor source="#Ejector_Spring_PinShape-normals-array" count="70" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Ejector_Spring_PinShape-Ejector_Spring_PinShape-Ejector_Spring_PinShape-map1" name="Ejector_Spring_PinShape-Ejector_Spring_PinShape-Ejector_Spring_PinShape-map1">
+          <float_array id="Ejector_Spring_PinShape-Ejector_Spring_PinShape-Ejector_Spring_PinShape-map1-array" count="64">0.813624 0.027271 0.390619 0.003134 0.051395 0.070765 0.051395 0.179236 0.390619 0.246866 0.813625 0.222729 1.00188 0.125 0 0.25 0.142857 0.25 0.285714 0.25 0.428571 0.25 0.571429 0.25 0.714286 0.25 0.857143 0.25 1 0.25 0 0.75 0.142857 0.75 0.285714 0.75 0.428571 0.75 0.571429 0.75 0.714286 0.75 0.857143 0.75 1 0.75 0.813624 0.777271 0.390619 0.753134 0.051395 0.820764 0.051395 0.929236 0.390619 0.996866 0.813625 0.972729 1.00188 0.875 0.50188 0.125 0.50188 0.875</float_array>
+          <technique_common>
+            <accessor source="#Ejector_Spring_PinShape-Ejector_Spring_PinShape-Ejector_Spring_PinShape-map1-array" count="32" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Ejector_Spring_PinShape-vertices" name="Ejector_Spring_PinShape-vertices">
+          <input semantic="POSITION" source="#Ejector_Spring_PinShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="21">
+          <input semantic="VERTEX" source="#Ejector_Spring_PinShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Ejector_Spring_PinShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Ejector_Spring_PinShape-Ejector_Spring_PinShape-Ejector_Spring_PinShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3</vcount>
+          <p>0 0 7 1 1 8 8 2 16 7 3 15 1 4 8 2 5 9 9 6 17 8 7 16 2 8 9 3 9 10 10 10 18 9 11 17 3 12 10 4 13 11 11 14 19 10 15 18 4 16 11 5 17 12 12 18 20 11 19 19 5 20 12 6 21 13 13 22 21 12 23 20 6 24 13 0 25 14 7 26 22 13 27 21 1 28 1 0 29 0 14 30 30 2 31 2 1 32 1 14 33 30 3 34 3 2 35 2 14 36 30 4 37 4 3 38 3 14 39 30 5 40 5 4 41 4 14 42 30 6 43 6 5 44 5 14 45 30 0 46 0 6 47 6 14 48 30 7 49 28 8 50 27 15 51 31 8 52 27 9 53 26 15 54 31 9 55 26 10 56 25 15 57 31 10 58 25 11 59 24 15 60 31 11 61 24 12 62 23 15 63 31 12 64 23 13 65 29 15 66 31 13 67 29 7 68 28 15 69 31</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Ejector_Spring_PinShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Ejector_Spring_Pin" name="Ejector_Spring_Pin" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Ejector_Spring_PinShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Ejector_Spring_Pin</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
