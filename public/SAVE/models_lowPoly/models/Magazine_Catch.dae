@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:07:10</created>
+    <modified>2014-09-18T11:07:10</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Magazine_CatchShape" name="Magazine_CatchShape">
+      <mesh>
+        <source id="Magazine_CatchShape-positions" name="Magazine_CatchShape-positions">
+          <float_array id="Magazine_CatchShape-positions-array" count="204">-0.091751 0.008999 -0.033656 -0.092593 0.008999 -0.032813 -0.093745 0.008999 -0.032504 -0.094896 0.008999 -0.032813 -0.095739 0.008999 -0.033656 -0.096048 0.008999 -0.034807 -0.095739 0.008999 -0.035958 -0.094896 0.008999 -0.036801 -0.093745 0.008999 -0.03711 -0.092593 0.008999 -0.036801 -0.091751 0.008999 -0.035958 -0.091442 0.008999 -0.034807 -0.091751 -0.021677 -0.033656 -0.092593 -0.021677 -0.032813 -0.093745 -0.021677 -0.032504 -0.094896 -0.021677 -0.032813 -0.095739 -0.021677 -0.033656 -0.096048 -0.021677 -0.034807 -0.095739 -0.021677 -0.035958 -0.094896 -0.021677 -0.036801 -0.093745 -0.021677 -0.03711 -0.092593 -0.021677 -0.036801 -0.091751 -0.021677 -0.035958 -0.091442 -0.021677 -0.034807 -0.093745 0.008999 -0.034807 -0.093745 -0.021677 -0.034807 -0.063459 0.012798 -0.033251 -0.064597 0.012798 -0.032112 -0.066153 0.012798 -0.031696 -0.066153 0.012798 -0.037918 -0.064597 0.012798 -0.037501 -0.063459 0.012798 -0.036363 -0.063042 0.012798 -0.034807 -0.063459 0.009014 -0.033251 -0.064597 0.009014 -0.032112 -0.066153 0.009014 -0.031696 -0.066153 0.009014 -0.037918 -0.064597 0.009014 -0.037501 -0.063459 0.009014 -0.036363 -0.063042 0.009014 -0.034807 -0.066153 0.012798 -0.034807 -0.066153 0.009014 -0.034807 -0.098791 0.012798 -0.033251 -0.097652 0.012798 -0.032112 -0.097652 0.009014 -0.032112 -0.098791 0.009014 -0.033251 -0.096097 0.012798 -0.031696 -0.096097 0.009014 -0.031696 -0.096097 0.012798 -0.037918 -0.097652 0.012798 -0.037501 -0.097652 0.009014 -0.037501 -0.096097 0.009014 -0.037918 -0.098791 0.012798 -0.036363 -0.098791 0.009014 -0.036363 -0.099208 0.012798 -0.034807 -0.099208 0.009014 -0.034807 -0.096097 0.012798 -0.034807 -0.096097 0.009014 -0.034807 -0.073565 0.009014 -0.031696 -0.073565 0.009014 -0.037918 -0.073565 0.009014 -0.034807 -0.086339 0.009014 -0.031696 -0.086339 0.009014 -0.037918 -0.086339 0.009014 -0.034807 -0.073565 0.01034 -0.031696 -0.073565 0.01034 -0.037918 -0.086339 0.01034 -0.031696 -0.086339 0.01034 -0.037918</float_array>
+          <technique_common>
+            <accessor source="#Magazine_CatchShape-positions-array" count="68" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Magazine_CatchShape-normals" name="Magazine_CatchShape-normals">
+          <float_array id="Magazine_CatchShape-normals-array" count="900">0.8660256 0 0.4999998 0.5000021 0 0.8660242 0.5000021 0 0.8660242 0.8660256 0 0.4999998 0.5000021 0 0.8660242 0 0 1 0 0 1 0.5000021 0 0.8660242 0 0 1 -0.5000021 0 0.8660242 -0.5000021 0 0.8660242 0 0 1 -0.5000021 0 0.8660242 -0.8660256 0 0.4999998 -0.8660256 0 0.4999998 -0.5000021 0 0.8660242 -0.8660256 0 0.4999998 -1 0 0 -1 0 0 -0.8660256 0 0.4999998 -1 0 0 -0.8660254 0 -0.5000002 -0.8660254 0 -0.5000002 -1 0 0 -0.8660254 0 -0.5000002 -0.500001 0 -0.8660249 -0.500001 0 -0.8660249 -0.8660254 0 -0.5000002 -0.500001 0 -0.8660249 0 0 -1 0 0 -1 -0.500001 0 -0.8660249 0 0 -1 0.500001 0 -0.8660249 0.500001 0 -0.8660249 0 0 -1 0.500001 0 -0.8660249 0.8660254 0 -0.5000002 0.8660254 0 -0.5000002 0.500001 0 -0.8660249 0.8660254 0 -0.5000002 1 0 0 1 0 0 0.8660254 0 -0.5000002 1 0 0 0.8660256 0 0.4999998 0.8660256 0 0.4999998 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0.8660249 0 0.500001 0.5000002 0 0.8660254 0.5000002 0 0.8660254 0.8660249 0 0.500001 0.5000002 0 0.8660254 0.07502001 0 0.9971821 0.06340599 0 0.9979879 0.5000002 0 0.8660254 0.07502199 0 -0.9971819 0.500001 0 -0.8660249 0.5000021 0 -0.8660242 0.06340799 0 -0.9979877 0.500001 0 -0.8660249 0.8660242 0 -0.5000021 0.8660242 0 -0.5000021 0.5000021 0 -0.8660242 0.8660242 0 -0.5000021 1 0 0 1 0 0 0.8660242 0 -0.5000021 1 0 0 0.8660249 0 0.500001 0.8660249 0 0.500001 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0.06340599 0 0.9979879 0.07502001 0 0.9971821 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 -0.8660238 0 0.5000029 -0.8660242 0 0.5000021 -0.499999 0 0.866026 -0.499999 0 0.866026 -0.499999 0 0.866026 -0.499999 0 0.866026 -0.05111299 0 0.9986929 -0.05852998 0 0.9982857 -0.05853197 0 -0.9982855 -0.05111499 0 -0.9986928 -0.500001 0 -0.8660249 -0.500001 0 -0.8660249 -0.500001 0 -0.8660249 -0.500001 0 -0.8660249 -0.8660238 0 -0.5000029 -0.8660235 0 -0.5000033 -0.8660235 0 -0.5000033 -0.8660238 0 -0.5000029 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -0.8660242 0 0.5000021 -0.8660238 0 0.5000029 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0.06340799 0 -0.9979877 0 0 -1 0 0 -1 0.07502199 0 -0.9971819 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 -0.05852998 0 0.9982857 -0.05111299 0 0.9986929 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -0.05853197 0 -0.9982855 0 0 -1 0 0 -1 -0.05111499 0 -0.9986928</float_array>
+          <technique_common>
+            <accessor source="#Magazine_CatchShape-normals-array" count="300" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Magazine_CatchShape-Magazine_CatchShape-Magazine_CatchShape-map1" name="Magazine_CatchShape-Magazine_CatchShape-Magazine_CatchShape-map1">
+          <float_array id="Magazine_CatchShape-Magazine_CatchShape-Magazine_CatchShape-map1-array" count="336">0.934892 0.0625 0.75188 0.016747 0.50188 0 0.25188 0.016747 0.068867 0.0625 0.00188 0.125 0.068867 0.1875 0.25188 0.233253 0.50188 0.25 0.75188 0.233253 0.934892 0.1875 1.00188 0.125 0 0.25 0.083333 0.25 0.166667 0.25 0.25 0.25 0.333333 0.25 0.416667 0.25 0.5 0.25 0.583333 0.25 0.666667 0.25 0.75 0.25 0.833333 0.25 0.916667 0.25 1 0.25 0 0.75 0.083333 0.75 0.166667 0.75 0.25 0.75 0.333333 0.75 0.416667 0.75 0.5 0.75 0.583333 0.75 0.666667 0.75 0.75 0.75 0.833333 0.75 0.916667 0.75 1 0.75 0.934892 0.8125 0.75188 0.766747 0.50188 0.75 0.25188 0.766747 0.068867 0.8125 0.00188 0.875 0.068867 0.9375 0.25188 0.983253 0.50188 1 0.75188 0.983253 0.934892 0.9375 1.00188 0.875 0.50188 0.125 0.50188 0.875 0 0.25 0.083333 0.25 0.083333 0.75 0 0.75 0.166667 0.25 0.166667 0.75 0.666667 0.25 0.75 0.25 0.75 0.75 0.666667 0.75 0.833333 0.25 0.833333 0.75 0.916667 0.25 0.916667 0.75 1 0.25 1 0.75 0.75188 0.016747 0.934892 0.0625 0.50188 0.125 0.50188 0 0.75188 0.233253 0.50188 0.25 0.934892 0.1875 1.00188 0.125 0.934892 0.9375 0.75188 0.983253 0.50188 0.875 0.50188 1 0.50188 0.75 0.75188 0.766747 0.934892 0.8125 1.00188 0.875 0 0 1 0 0.343867 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0.25 0 0.75 0.083333 0.75 0.083333 0.25 0.166667 0.75 0.166667 0.25 0.666667 0.25 0.666667 0.75 0.75 0.75 0.75 0.25 0.833333 0.75 0.833333 0.25 0.916667 0.75 0.916667 0.25 1 0.75 1 0.25 0.75188 0.016747 0.50188 0.125 0.934892 0.0625 0.50188 0 0.75188 0.233253 0.50188 0.25 0.934892 0.1875 1.00188 0.125 0.934892 0.9375 0.50188 0.875 0.75188 0.983253 0.50188 1 0.50188 0.75 0.75188 0.766747 0.934892 0.8125 1.00188 0.875 1 0 1 0 0.656133 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0 0.656132 0 0 0 0.343868 0 1 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 0 0 1 0 1 0.487155 0 0.487155 0 0 0.206979 0 0.206979 1 0 1 0 0 0.206979 0 0.206979 1 0 1</float_array>
+          <technique_common>
+            <accessor source="#Magazine_CatchShape-Magazine_CatchShape-Magazine_CatchShape-map1-array" count="168" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Magazine_CatchShape-vertices" name="Magazine_CatchShape-vertices">
+          <input semantic="POSITION" source="#Magazine_CatchShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="87">
+          <input semantic="VERTEX" source="#Magazine_CatchShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Magazine_CatchShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Magazine_CatchShape-Magazine_CatchShape-Magazine_CatchShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 4 4 4 4 4 4 3 3 3 3 3 3 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 3 3 3 3 3 3 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>0 0 12 1 1 13 13 2 26 12 3 25 1 4 13 2 5 14 14 6 27 13 7 26 2 8 14 3 9 15 15 10 28 14 11 27 3 12 15 4 13 16 16 14 29 15 15 28 4 16 16 5 17 17 17 18 30 16 19 29 5 20 17 6 21 18 18 22 31 17 23 30 6 24 18 7 25 19 19 26 32 18 27 31 7 28 19 8 29 20 20 30 33 19 31 32 8 32 20 9 33 21 21 34 34 20 35 33 9 36 21 10 37 22 22 38 35 21 39 34 10 40 22 11 41 23 23 42 36 22 43 35 11 44 23 0 45 24 12 46 37 23 47 36 1 48 1 0 49 0 24 50 50 2 51 2 1 52 1 24 53 50 3 54 3 2 55 2 24 56 50 4 57 4 3 58 3 24 59 50 5 60 5 4 61 4 24 62 50 6 63 6 5 64 5 24 65 50 7 66 7 6 67 6 24 68 50 8 69 8 7 70 7 24 71 50 9 72 9 8 73 8 24 74 50 10 75 10 9 76 9 24 77 50 11 78 11 10 79 10 24 80 50 0 81 0 11 82 11 24 83 50 12 84 48 13 85 47 25 86 51 13 87 47 14 88 46 25 89 51 14 90 46 15 91 45 25 92 51 15 93 45 16 94 44 25 95 51 16 96 44 17 97 43 25 98 51 17 99 43 18 100 42 25 101 51 18 102 42 19 103 41 25 104 51 19 105 41 20 106 40 25 107 51 20 108 40 21 109 39 25 110 51 21 111 39 22 112 38 25 113 51 22 114 38 23 115 49 25 116 51 23 117 49 12 118 48 25 119 51 26 120 52 27 121 53 34 122 54 33 123 55 27 124 53 28 125 56 35 126 57 34 127 54 29 128 58 30 129 59 37 130 60 36 131 61 30 132 59 31 133 62 38 134 63 37 135 60 31 136 62 32 137 64 39 138 65 38 139 63 32 140 64 26 141 66 33 142 67 39 143 65 27 144 68 26 145 69 40 146 70 28 147 71 27 148 68 40 149 70 30 150 72 29 151 73 40 152 70 31 153 74 30 154 72 40 155 70 32 156 75 31 157 74 40 158 70 26 159 69 32 160 75 40 161 70 33 162 76 34 163 77 41 164 78 34 165 77 35 166 79 41 167 78 36 168 80 37 169 81 41 170 78 37 171 81 38 172 82 41 173 78 38 174 82 39 175 83 41 176 78 39 177 83 33 178 76 41 179 78 35 180 84 28 181 85 64 182 86 58 183 87 46 184 142 28 185 88 40 186 89 56 187 141 41 188 90 35 189 91 58 190 92 60 191 93 42 192 94 45 193 95 44 194 96 43 195 97 43 196 97 44 197 96 47 198 98 46 199 99 48 200 100 51 201 101 50 202 102 49 203 103 49 204 103 50 205 102 53 206 104 52 207 105 52 208 105 53 209 104 55 210 106 54 211 107 54 212 107 55 213 106 45 214 108 42 215 109 43 216 110 56 217 111 42 218 112 46 219 113 56 220 111 43 221 110 49 222 114 56 223 111 48 224 115 52 225 116 56 226 111 49 227 114 54 228 117 56 229 111 52 230 116 42 231 112 56 232 111 54 233 117 45 234 118 57 235 119 44 236 120 44 237 120 57 238 119 47 239 121 51 240 122 57 241 119 50 242 123 50 243 123 57 244 119 53 245 124 53 246 124 57 247 119 55 248 125 55 249 125 57 250 119 45 251 118 36 252 126 59 253 127 65 254 128 29 255 129 56 256 151 40 257 131 29 258 130 48 259 150 41 260 132 60 261 133 59 262 134 36 263 135 61 264 137 66 265 138 46 266 139 47 267 140 63 268 143 61 269 144 47 270 145 57 271 146 62 272 152 63 273 153 57 274 154 51 275 155 67 276 156 65 277 157 64 278 158 66 279 159 62 280 160 67 281 161 66 282 162 61 283 163 65 284 164 59 285 165 58 286 166 64 287 167 66 288 138 64 289 86 28 290 85 46 291 139 48 292 149 29 293 129 65 294 128 67 295 136 48 296 149 67 297 136 62 298 147 51 299 148</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Magazine_CatchShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Magazine_Catch" name="Magazine_Catch" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Magazine_CatchShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Magazine_Catch</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>

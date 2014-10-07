@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:13:01</created>
+    <modified>2014-09-18T11:13:01</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Swivel_LAMAShape1259863095" name="Swivel_LAMAShape1259863095">
+      <mesh>
+        <source id="Swivel_LAMAShape1259863095-positions" name="Swivel_LAMAShape1259863095-positions">
+          <float_array id="Swivel_LAMAShape1259863095-positions-array" count="132">-0.358116 -0.021392 -0.100578 -0.353845 -0.021392 -0.098627 -0.358116 -0.021392 -0.095247 -0.353845 -0.021392 -0.095247 -0.358116 0.020633 -0.095247 -0.353845 0.020633 -0.095247 -0.358116 0.020633 -0.100578 -0.353845 0.020633 -0.098627 -0.347257 0.020633 -0.111085 -0.344407 0.020633 -0.107929 -0.344407 -0.021392 -0.107929 -0.347257 -0.021392 -0.111085 -0.358116 -0.01702 -0.095247 -0.353845 -0.01702 -0.095247 -0.358116 -0.01702 -0.100578 -0.353845 -0.01702 -0.098627 -0.358116 0.016355 -0.100578 -0.353845 0.016355 -0.098627 -0.358116 0.016355 -0.095247 -0.353845 0.016355 -0.095247 -0.358116 -0.006644 -0.095247 -0.353845 -0.006644 -0.095247 -0.358116 -0.006644 -0.100578 -0.353845 -0.006644 -0.098627 -0.358116 0.005822 -0.100578 -0.353845 0.005822 -0.098627 -0.358116 0.005822 -0.095247 -0.353845 0.005822 -0.095247 -0.353845 -0.006644 -0.079346 -0.358116 -0.006644 -0.079346 -0.353845 0.005822 -0.079346 -0.358116 0.005822 -0.079346 -0.353845 -0.00287 -0.088159 -0.353845 0.002047 -0.088159 -0.353845 0.002047 -0.083005 -0.353845 -0.00287 -0.083005 -0.358116 -0.00287 -0.088159 -0.358116 0.002047 -0.088159 -0.358116 -0.00287 -0.083005 -0.358116 0.002047 -0.083005 -0.347123 0.016355 -0.105252 -0.350382 0.016355 -0.108061 -0.350382 -0.01702 -0.108061 -0.347123 -0.01702 -0.105252</float_array>
+          <technique_common>
+            <accessor source="#Swivel_LAMAShape1259863095-positions-array" count="44" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Swivel_LAMAShape1259863095-normals" name="Swivel_LAMAShape1259863095-normals">
+          <float_array id="Swivel_LAMAShape1259863095-normals-array" count="552">0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0.8145303 0 0.5801212 0.922902 0 0.385035 1 0 0 1 0 0 -0.8388688 0 -0.5443339 -0.9471697 0 -0.3207329 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0.8145306 0 0.5801206 0.9249852 0 0.3800031 0.7019824 0 0.7121944 0.7019828 0 0.7121938 0 -1 0 0 -1 0 0 -1 0 0 -1 0 -0.8388688 0 -0.5443339 -0.9454457 0 -0.3257799 -0.695366 0 -0.7186559 -0.695366 0 -0.7186559 0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 0.922902 0 0.385035 1 0 0 1 0 0 -1 0 0 -0.9454457 0 -0.3257799 -0.8388688 0 -0.5443339 -1 0 0 0.7019824 0 0.7121944 0.922902 0 0.385035 0.8145303 0 0.5801212 0.7019828 0 0.7121938 0.742047 0 -0.6703479 0.742047 0 -0.6703479 0.742047 0 -0.6703479 0.742047 0 -0.6703479 -1 0 0 -0.9471697 0 -0.3207329 -1 0 0 -1 0 0 0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 0.9249852 0 0.3800031 0.8145306 0 0.5801206 1 0 0 -0.6953664 0 -0.7186554 -0.9471697 0 -0.3207329 -0.8388688 0 -0.5443339 -0.6953664 0 -0.7186554 0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -0.9454457 0 -0.3257799 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 1 0 0 0.9249852 0 0.3800031 1 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0.7019828 0 0.7121938 0.7019824 0 0.7121944 0.7019824 0 0.7121944 0.7019828 0 0.7121938 -0.695366 0 -0.7186559 -0.695366 0 -0.7186559 -0.6953664 0 -0.7186554 -0.6953664 0 -0.7186554 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.4154578 0 -0.9096125 0.415461 0 -0.909611 0.415461 0 -0.909611 0.415461 0 -0.909611 0.415461 0 -0.909611 0 -1 0 0 -1 0 0 -1 0 0 -1 0 -0.6528007 0 0.7575297 -0.6528007 0 0.7575297 -0.6528007 0 0.7575297 -0.6528007 0 0.7575297 0 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1</float_array>
+          <technique_common>
+            <accessor source="#Swivel_LAMAShape1259863095-normals-array" count="184" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-map1" name="Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-map1">
+          <float_array id="Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-map1-array" count="204">0.33 0 0.663333 0 0.33 0.25 0.663333 0.25 0.33 0.5 0.663333 0.5 0.33 0.75 0.663333 0.75 0.33 1 0.663333 1 1 0 1 0.25 0 0 0 0.25 0.33 0.758483 0.663333 0.758483 0.663333 0.99133 0.33 0.99133 0.295668 0.25 0.33 0.276009 0.663333 0.276009 0.698359 0.25 0.295668 0 0.33 0.973991 0.663333 0.973991 0.698359 0 0.033593 0 0.33 0.775449 0.663333 0.775449 0.965729 0 0.033593 0.25 0.33 0.474551 0.663333 0.474551 0.965729 0.25 0.185819 0.25 0.33 0.359228 0.663333 0.359228 0.810427 0.25 0.185819 0 0.810427 0 0.144676 0 0.852401 0 0.144676 0.25 0.33 0.390397 0.663333 0.390397 0.852401 0.25 0.33 0.359228 0.663333 0.359228 0.663333 0.390397 0.33 0.390397 0.663333 0.359228 0.663333 0.390397 0.663333 0.390397 0.663333 0.359228 0.33 0.390397 0.33 0.359228 0.33 0.359228 0.33 0.390397 0.663333 0.775449 0.33 0.775449 0.33 0.973991 0.663333 0.973991 0 0 1 0 1 0.376699 0 0.3767 0 0 1 0 1 0.445865 0 0.445865 0 0 1 0 1 0.452619 0 0.452619 0 0 0.965088 0 1 0.384288 0.153635 0.392122 1 0 1 0.408519 0 0 0 0.414708 0.15054 0 1 0 0.968534 0.385984 0 0.39495 0 0 1 0 0.999986 0.868667 0 0.868652 0 0 1 0 1 0.828851 0 0.828851 0 0 1 0 1 0.828866 0 0.828866 0 0 0.999986 0 1 0.868652 0 0.868667</float_array>
+          <technique_common>
+            <accessor source="#Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-map1-array" count="102" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Swivel_LAMAShape1259863095-vertices" name="Swivel_LAMAShape1259863095-vertices">
+          <input semantic="POSITION" source="#Swivel_LAMAShape1259863095-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="46">
+          <input semantic="VERTEX" source="#Swivel_LAMAShape1259863095-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Swivel_LAMAShape1259863095-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-Swivel_LAMAShape1259863095-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>0 0 0 1 1 1 3 2 3 2 3 2 2 4 2 3 5 3 13 6 20 12 7 19 4 8 4 5 9 5 7 10 7 6 11 6 1 12 1 15 13 25 13 14 21 3 15 3 6 16 12 16 17 26 18 18 30 4 19 13 6 20 6 7 21 7 9 22 15 8 23 14 7 24 7 17 25 28 40 26 58 9 27 15 1 28 9 0 29 8 11 30 17 10 31 16 0 32 8 14 33 23 42 34 60 11 35 17 12 36 19 13 37 20 21 38 36 20 39 35 13 40 21 15 41 25 23 42 39 21 43 37 12 44 18 14 45 22 0 46 0 2 47 2 43 48 61 15 49 24 1 50 9 10 51 16 8 52 14 9 53 15 10 54 16 11 55 17 18 56 30 16 57 26 24 58 40 26 59 42 18 60 31 19 61 32 5 62 5 4 63 4 19 64 33 17 65 29 7 66 10 5 67 11 41 68 59 16 69 27 6 70 6 8 71 14 29 72 46 28 73 47 30 74 48 31 75 49 21 76 37 23 77 39 25 78 41 27 79 45 20 80 34 22 81 38 14 82 22 12 83 18 26 84 42 24 85 40 22 86 38 20 87 34 26 88 43 27 89 44 19 90 32 18 91 31 27 92 45 25 93 41 17 94 29 19 95 33 20 96 35 21 97 36 28 98 47 29 99 46 27 100 44 26 101 43 31 102 49 30 103 48 21 104 36 27 105 44 33 106 51 32 107 50 27 108 44 30 109 48 34 110 52 33 111 51 30 112 48 28 113 47 35 114 53 34 115 52 28 116 47 21 117 36 32 118 50 35 119 53 26 120 43 20 121 35 36 122 55 37 123 54 20 124 35 29 125 46 38 126 56 36 127 55 29 128 46 31 129 49 39 130 57 38 131 56 31 132 49 26 133 43 37 134 54 39 135 57 9 136 15 40 137 58 43 138 61 10 139 16 11 140 17 42 141 60 41 142 59 8 143 14 22 144 62 24 145 63 25 146 64 23 147 65 24 148 66 16 149 67 17 150 68 25 151 69 14 152 70 22 153 71 23 154 72 15 155 73 16 156 74 41 157 75 40 158 76 17 159 77 43 160 80 40 161 78 41 162 79 42 163 81 15 164 82 43 165 83 42 166 84 14 167 85 37 168 86 36 169 87 32 170 88 33 171 89 39 172 90 37 173 91 33 174 92 34 175 93 36 176 94 38 177 95 35 178 96 32 179 97 38 180 98 39 181 99 34 182 100 35 183 101</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Swivel_LAMAShape1259863095</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Swivel_LAMA1259863095" name="Swivel_LAMA1259863095" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Swivel_LAMAShape1259863095">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Swivel_LAMA1259863095</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
