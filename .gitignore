@@ -8,3 +8,5 @@ node_modules
 eui.json
 public/SAVEM4/models/textures/.mayaSwatches/
 eui.json.js
+public/scott/
+*.swatch
