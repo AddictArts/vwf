@@ -97,7 +97,7 @@ routes.post(routes.OBJECT, function(req, res) {
     if (o.type == 'create') {
         data = {
             KbId: "myM4",
-            assetURL: "../../SAVE/models/weapons/M4/M4.dae"
+            assetURL: "../../SAVE/models/weapons/M4/M4_noHierarchy.dae"
         };
     }
 
