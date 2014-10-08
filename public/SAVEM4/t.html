@@ -10,9 +10,8 @@ TOW.loadCollada('models/xyzbar.dae', function() {
   $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
   TOW.render();
 });
-TOW.loadCollada('models/M4_Environment_01.dae', function() { onloadTowDatGui(); }, false);
-// TOW.loadColladas([ 'models/M4_Environment_01.dae' ], function() { onloadTowDatGui(); });
-// TOW.loadColladas([ 'models/M4_Environment_01.dae', 'models/M4_v09.dae' ], function() { onloadTowDatGui(); });
+// TOW.loadCollada('../../SAVE/models/environments/range/ShootingRange.dae', function() { onloadTowDatGui(); }, false);
+TOW.loadColladas([ '../../SAVE/models/environments/range/ShootingRange.dae', 'models/M4_lowPoly_06.dae' ], function() { onloadTowDatGui(); });
 TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
   </script>
 
@@ -24,23 +23,23 @@ var TowDatMenu = function() {
   this.meshCache = { }; // mesh references by name
   this.targets = function() {
     n = 'targets';
-    focusSelected($M4_Environment_01_dae);
+    focusSelected($ShootingRange_dae);
   };
   this.ShootingRangeArea8 = function() {
     n = 'ShootingRangeArea8';
-    focusSelected($M4_Environment_01_dae);
+    focusSelected($ShootingRange_dae);
   };
   this.Trigger = function() {
     n = 'Trigger';
-    focusTriggerTween($M4_v09_dae);
+    focusTriggerTween($M4_lowPoly_06_dae);
   };
   this.Selector_Lever = function() {
     n = 'Selector_Lever';
-    focusSelected($M4_v09_dae);
+    focusSelected($M4_lowPoly_06_dae);
   };
   this.Gun_Carrying_Handle = function() {
     n = 'Gun_Carrying_Handle';
-    focusSelected($M4_v09_dae);
+    focusSelected($M4_lowPoly_06_dae);
   };
 
   function focusSelected(dae, onRender) {
