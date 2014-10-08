@@ -93,30 +93,30 @@ scripts:
 
   this.SelectModeSemi = function() {
     console.info('SelectMode semi');
-    this.Selector_Lever.rotation = [ 0, 1, 0, 0 ];
+    this.Selector_Lever.rotation = [ 0, 0, 1, 0 ];
     this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Semi', 'Selector_Lever' ] });
   };
 
   this.SelectModeSafe = function() {
     console.info('SelectMode safe');
-    this.Selector_Lever.rotation = [ 0, 1, 0, 90 ];
+    this.Selector_Lever.rotation = [ 0, 0, 1, 90 ];
     this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Safe', 'Selector_Lever' ] });
   };
 
   this.SelectModeBurst = function() {
     console.info('SelectMode burst');
-    this.Selector_Lever.rotation = [ 0, -1, 0, 90 ];
+    this.Selector_Lever.rotation = [ 0, 0, 1, -90 ];
     this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Burst', 'Selector_Lever' ] });
   };
 
   this.PushMagazineReleaseButton = function() {
     console.info('PushMagazineReleaseButton pushed and released');
-    this.Magazine_Catch.translateTo([ 0, 0.0026, 0 ], 0.125); // back to world origin since object has no local pivot
-    this.Magazine_Catch_Button.translateTo([ 0, 0.0026, 0 ], 0.125); // back to world origin since object has no local pivot
-    this.Tube.translateTo([ 0, 0, -0.125 ], 0.25);
-    this.Base.translateTo([ 0, 0, -0.125 ], 0.25);
-    this.Clip_Spring.translateTo([ 0, 0, -0.125 ], 0.25);
-    this.Clip_Spring1.translateTo([ 0, 0, -0.125 ], 0.25);
+    this.Magazine_Catch.translateTo([ 0, 0, 0.0026 ], 0.125); // back to world origin since object has no local pivot
+    this.Magazine_Catch_Button.translateTo([ 0, 0, 0.0026], 0.125); // back to world origin since object has no local pivot
+    this.Tube.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.Base.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.Clip_Spring.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.Clip_Spring1.translateTo([ 0, 0.125, 0 ], 0.25);
     this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_KbId ] });
   };
 
@@ -177,11 +177,11 @@ scripts:
 
   this.PullTrigger = function() {
     console.info('PullTrigger ');
-    this.Trigger.rotateTo([ 0, 1, 0, 15 ], 0.5);
+    this.Trigger.rotateTo([ 0, 0, 1, 15 ], 0.5);
     this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
     this.future(1).releaseTrigger();
   };
 
   this.releaseTrigger = function() {
-    this.Trigger.rotateTo([ 0, 1, 0, 0 ], 0.125);
+    this.Trigger.rotateTo([ 0, 0, 1, 0 ], 0.125);
   }; //# sourceURL=M4_Carbine.ux
