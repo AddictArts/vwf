@@ -25,7 +25,7 @@ TOW.loadCollada('a.dae', function() {
 
 TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
 
-TWEEN:
+TWEEN: (http://sole.github.io/tween.js/examples/03_graphs.html Easing graphs)
 var pivot =  TOW.findMeshAndVisibleMesh('child', $a);
 
 TOW.render(function(delta) { pivot.rotation.y += Math.PI * delta; });
