@@ -4,7 +4,6 @@
     <title>Exercise UI</title>
     <script type="text/javascript" src="../eui.json.js"></script>
     <script type="text/javascript" src="../js/dat.gui.min.js"></script>
-    <script type="text/javascript" src="../js/tow.js"></script>
     <style type="text/css">
       #wrapper {
         position: absolute;
@@ -393,26 +392,6 @@
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'CheckChamberAndReceiverForAmmo').name('Check Chamber And Receiver For Ammo'));
               break;
             case 'Trigger':
-
-              // TOW.TWEEN = false;
-              // TOW.changeContainerById('viewSelected');
-              // TOW.loadCollada('../models/xyzbar.dae', function() {
-              //   $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
-              //   TOW.render();
-              // });
-              // // TOW.loadColladas([ '../../SAVE/models/environments/range/ShootingRange.dae', '../models/M4_v09.dae' ], function() {
-              // TOW.loadColladas([ '../../SAVE/models/environments/range/ShootingRange.dae' ], function() {
-              //   // TOW.findMeshVisibleAndCenterRender('ShootingRangeArea8', $ShootingRange_dae, function(delta, pivot) {
-              //   TOW.findMeshVisibleAndCenterRender('targets', $ShootingRange_dae, function(delta, pivot) {
-              //     pivot.rotation.y += 0.005;
-              //   });
-              //   // TOW.findMeshVisibleAndCenterRender('Gun_Carrying_Handle', $M4_v09_dae, function(delta, pivot) {
-              //   //   pivot.rotation.y += 0.005;
-              //   // });
-              // });
-              // TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
-
-
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullTrigger').name('Pull Trigger'));
               break;
@@ -449,6 +428,5 @@
   <script type="text/javascript">
     $('#wrapper').appendTo('#vwf-root');
   </script>
-  <!-- div id="viewSelected" style="border: 1px solid red; float: left; width: 320px; height: 180px"></div -->
 </body>
 </html>
