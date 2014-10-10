@@ -22,7 +22,7 @@ properties:
 children:
   M4_Environment_01_dae:
     extends: http://vwf.example.com/node3.vwf
-    source: ../../SAVE/models/environments/range/ShootingRange.dae
+    source: /SAVE/models/environments/range/ShootingRange.dae
     type: model/vnd.collada+xml
     properties:
       scale: [ 1, 1, 1 ]

@@ -1,17 +1,17 @@
 <!-- Copyright 2014, SRI International -->
 <html>
-  <script src="../../vwf/model/threejs/three.js"></script>
-  <script src="../../vwf/model/threejs/js/loaders/ColladaLoader.js"></script>
-  <script src="../tween.min.js"></script>
-  <script src="../tow.js"></script>
-  <script src="../dat.gui.min.js"></script>
+  <script src="/js/three.js"></script>
+  <script src="/js/ColladaLoader.js"></script>
+  <script src="/js/tween.min.js"></script>
+  <script src="/js/tow.js"></script>
+  <script src="/js/dat.gui.min.js"></script>
   <script>
-TOW.loadCollada('../../models/xyzbar.dae', function() {
+TOW.loadCollada('/models/xyzbar.dae', function() {
   $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
   TOW.render();
 });
-TOW.loadColladas([ '../../../../SAVE/models/environments/range/ShootingRange.dae', '../../models/M4_lowPoly_06.dae' ], function() { onloadTowDatGui(); });
-// TOW.loadCollada('../../../../SAVE/models/environments/range/ShootingRange.dae', function() { onloadTowDatGui(); }, false);
+TOW.loadColladas([ '/SAVE/models/environments/range/ShootingRange.dae', '/models/M4_lowPoly_06.dae' ], function() { onloadTowDatGui(); });
+// TOW.loadCollada('/SAVE/models/environments/range/ShootingRange.dae', function() { onloadTowDatGui(); }, false);
 TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
   </script>
 
