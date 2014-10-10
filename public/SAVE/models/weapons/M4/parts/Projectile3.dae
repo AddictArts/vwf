@@ -13,7 +13,7 @@
 			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
 			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
 		</comments>
-      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_v13/M4_v13_noHierarchy.ma</source_data>
+      <source_data>M4_v13_noHierarchy.ma</source_data>
     </contributor>
     <created>2014-10-09T14:12:34</created>
     <modified>2014-10-09T14:12:34</modified>
@@ -101,7 +101,7 @@
   </library_effects>
   <library_images>
     <image id="Generic_Internals_img" name="Generic_Internals_img">
-      <init_from>./Generic_Internals.jpg</init_from>
+      <init_from>textures/Generic_Internals.jpg</init_from>
       <extra>
         <technique profile="OpenCOLLADAMaya">
           <dgnode_type>kFile</dgnode_type>
