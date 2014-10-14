@@ -1,14 +1,12 @@
 
 '''
-reads what would be a "master" collada file and writes out 
-the hierarchy in JSON format.  Does not yet save out the 
-individual parts as separate dae files.
+reads the hierarchy from a Collada file, and writes that hierarchy out in current <grouping> format for s3d.
 '''
 
 import sys
 import libfind
 from math import *
-from decimal import *
+# from decimal import *
 
 
 class Node:
@@ -43,21 +41,21 @@ class Node:
 	def setrotZ (self, rot):
 		self.rotateZ = rot
 	
-	def getQuat(self):
-		radZ = radians(float(self.rotateZ))
-		radY = radians(float(self.rotateY))
-		radX = radians(float(self.rotateX))
-		c1 = cos(radZ / 2)
-		c2 = cos(radX / 2)
-		c3 = cos(radY / 2)
-		s1 = sin(radZ / 2)
-		s2 = sin(radX / 2)
-		s3 = sin(radY / 2)
-		w = Decimal(c1 * c2 * c3 - s1 * s2 * s3) * Decimal(1)  # multiplying by Decimal(1) forces Decimal to use reduced significant digits
-		x = Decimal(s1 * s2 * c3 + c1 * c2 * s3) * Decimal(1)
-		y = Decimal(s1 * c2 * c3 + c1 * s2 * s3) * Decimal(1)
-		z = Decimal(c1 * s2 * c3 - s1 * c2 * s3) * Decimal(1)
-		self.quaternion = [ w, x, y, z ]
+#	def getQuat(self):				# forget having to import decimal for this - not necessary for the s3d writer
+#		radZ = radians(float(self.rotateZ))
+#		radY = radians(float(self.rotateY))
+#		radX = radians(float(self.rotateX))
+#		c1 = cos(radZ / 2)
+#		c2 = cos(radX / 2)
+#		c3 = cos(radY / 2)
+#		s1 = sin(radZ / 2)
+#		s2 = sin(radX / 2)
+#		s3 = sin(radY / 2)
+#		w = Decimal(c1 * c2 * c3 - s1 * s2 * s3) * Decimal(1)  # multiplying by Decimal(1) forces Decimal to use reduced significant digits
+#		x = Decimal(s1 * s2 * c3 + c1 * c2 * s3) * Decimal(1)
+#		y = Decimal(s1 * c2 * c3 + c1 * s2 * s3) * Decimal(1)
+#		z = Decimal(c1 * s2 * c3 - s1 * c2 * s3) * Decimal(1)
+#		self.quaternion = [ w, x, y, z ]
 	
 	def setscale (self, scalevect):
 		self.scale = scalevect
@@ -89,6 +87,7 @@ class Node:
 	def set_scalePivotInverse(self, vect):
 		self.scalePivotInverse = vect
 
+		
 class Scene:
 	def __init__(self, name):
 		self.name = name
@@ -97,56 +96,6 @@ class Scene:
 	def addchild (self, child):
 		self.children.append(child)
 		
-
-class Image:
-	def __init__(self, id):
-		self.id = id
-		self.file = ""
-		self.contents = []		# probably will go unused
-
-		
-	def setfile(self, file):
-		self.file = file
-		
-	def lineadd(self, line):
-		self.contents.append(line)
-
-
-class Effect:		# assuming that each effect can only reference one image - and this will break before long
-	def __init__(self, name):
-		self.name = name
-		self.contents = []
-		self.Images = []		# gets instance of Image class
-		
-	def lineadd(self, line):
-		self.contents.append(line)
-		
-	def addImage(self, Image):
-		self.Images.append(Image)	
-
-		
-class Material:
-	def __init__(self, symbol, target):
-		self.id = target
-		self.symbol = symbol
-		self.Effects = []		# can only be one, but plural cause its a list
-		
-	def setEffect(self, Effect):
-		self.Effects.append(Effect)
-
-
-class Geom:
-	def __init__(self, name):
-		self.name = name
-		self.contents = []
-		self.Materials = []
-		
-	def lineadd(self, line):
-		self.contents.append(line)
-		
-	def addMaterial(self, Name):
-		self.Materials.append(Name)
-
 		
 class Data:
 	def __init__(self):
@@ -155,7 +104,7 @@ class Data:
 		self.idx = 0
 		self.Nodes = []		# list of instances of Node class
 		self.Vis_Scenes = []	# list of instances of Scene class
-		self.Geodes = []	# list of instances of Geom
+		self.Geodes = []	# list of instances of Geom  -  currently unused
 		self.Materials = []  # list of instances of Material
 		self.Images = []
 		self.Effects = []
@@ -175,15 +124,6 @@ class Data:
 		
 	def appendNode(self, Node):
 		self.Nodes.append(Node)
-		
-	def appendImage(self, Image):
-		self.Images.append(Image)
-		
-	def appendEffect(self, Effect):
-		self.Effects.append(Effect)
-		
-	def appendMaterial(self, Mat):
-		self.Materials.append(Mat)
 		
 	def popNode(self):
 		last = len(self.parent_nodes) - 1
@@ -215,69 +155,37 @@ class Data:
 	def cleardata(self):
 		self.datalist.clear()
 					
-					
-def floatGlop3(strung):
-	pos = strung.rfind('"') + 2
-	valglop = strung[pos:]
-	pos = valglop.find('</')
-	valueString = valglop[:pos]
-	a = float(valueString.split()[0])
-	b = float(valueString.split()[1])
-	c = float(valueString.split()[2])
-	floatVals = [a, b, c]
-	return floatVals
-	
-	
-def floatGlop4(strange):
-	pos = strange.rfind('"') + 2
-	valglop = strange[pos:]
-	pos = valglop.find('</')
-	valueString = valglop[:pos]
-	a = float(valueString.split()[0])
-	b = float(valueString.split()[1])
-	c = float(valueString.split()[2])
-	d = float(valueString.split()[3])
-	floatVals4 = [a, b, c, d]
-	return floatVals4
-	
-	
-def tofloat(values):
-	a = float(values[0])
-	b = float(values[1])
-	c = float(values[2])
-	fvect = [a, b, b]
-	return fvect
 
 	
-def georef(Collada):  
-	line = Collada.datalist[Collada.idx]
-	#  get shape name
-	pos_a = line.find('"') + 1
-	stub = line[pos_a:]
-	pos_b = stub.find('"')
-	geoname = stub[:pos_b]
-	Collada.TempNode.addGeoName(geoname)
-	# get material
-	while ("</instance_geometry>" not in line):
-		Collada.idxBump()
-		line = Collada.datalist[Collada.idx]
-		if ("<instance_material symbol=" in line):
-			pos_a = line.find('"') + 1
-			stub = line[pos_a:]
-			pos_b = stub.find('"')
-			matsymbol = stub[:pos_b]
-			latterhalf = stub[pos_b:]
-			pos_a = latterhalf.find('#') + 1
-			latterstub = latterhalf[pos_a:]
-			pos_b = latterstub.find('"')
-			mattarget = latterstub[:pos_b]
-			TempMat = Material(matsymbol, mattarget)
-			Collada.TempNode.addMaterial(TempMat)
+#def georef(Collada):  
+#	line = Collada.datalist[Collada.idx]
+#	#  get shape name
+#	pos_a = line.find('"') + 1
+#	stub = line[pos_a:]
+#	pos_b = stub.find('"')
+#	geoname = stub[:pos_b]
+#	Collada.TempNode.addGeoName(geoname)
+#	# get material
+#	while ("</instance_geometry>" not in line):
+#		Collada.idxBump()
+#		line = Collada.datalist[Collada.idx]
+#		if ("<instance_material symbol=" in line):
+#			pos_a = line.find('"') + 1
+#			stub = line[pos_a:]
+#			pos_b = stub.find('"')
+#			matsymbol = stub[:pos_b]
+#			latterhalf = stub[pos_b:]
+#			pos_a = latterhalf.find('#') + 1
+#			latterstub = latterhalf[pos_a:]
+#			pos_b = latterstub.find('"')
+#			mattarget = latterstub[:pos_b]
+#			TempMat = Material(matsymbol, mattarget)
+#			Collada.TempNode.addMaterial(TempMat)
 
 
 			
 def sceneeval(Collada):
-	Collada.idx = 0		# can't use for/in because of lines 357-371
+	Collada.idx = 0		# can't use for/in because of lines 357-371 - previously written to store materials, effects, images, etc.
 	while (Collada.idx < Collada.dataLen):
 		line = Collada.datalist[Collada.idx]
 		if ('<visual_scene id=' in line):
@@ -313,41 +221,6 @@ def sceneeval(Collada):
 		if ("</node>" in line):
 			Collada.popNode()
 			
-		if ('<translate sid="translate"' in line):
-			fvect = floatGlop3(line)
-			Collada.TempNode.settranslate(fvect)
-		
-		if ('<rotate sid="rotateX' in line):
-			fvect4 = floatGlop4(line)
-			Collada.TempNode.setrotX(fvect4[3])   # always 4th item in list, and rotations are in degrees, not radians
-		
-		if ('<rotate sid="rotateY' in line):
-			fvect4 = floatGlop4(line)
-			Collada.TempNode.setrotY(fvect4[3])
-		
-		if ('<rotate sid="rotateZ' in line):
-			fvect4 = floatGlop4(line)
-			Collada.TempNode.setrotZ(fvect4[3])
-		
-		if ('<scale sid=' in line):
-			fvect = floatGlop3(line)
-			Collada.TempNode.setscale(fvect)
-		
-		if ('<translate sid="rotatePivot"' in line):
-			fvect = floatGlop3(line)
-			Collada.TempNode.set_rotatePivot(fvect)
-		
-		if ('<translate sid="rotatePivotInverse"' in line):
-			fvect = floatGlop3(line)
-			Collada.TempNode.set_rotatePivotInverse(fvect)
-		
-		if ('<translate sid="scalePivot"' in line):
-			fvect = floatGlop3(line)
-			Collada.TempNode.set_scalePivot(fvect)
-			
-		if ('<translate sid="scalePivotInverse"' in line):
-			fvect = floatGlop3(line)
-			Collada.TempNode.set_scalePivotInverse(fvect)	
 		
 		if ('<instance_geometry url=' in line):
 			pos = line.find('#') + 1
@@ -397,146 +270,19 @@ def nodewriter(InNode, thisIndent, Collada):
 					nodewriter(ThisNode, indent, Collada)
 		line = indent + '</group>' + "\n"
 		Collada.s3dStub.write(line)
-
-
-
-def json_start(Collada):
-	line = "{" + "\n"
-	Collada.json.write(line)
-	line = "  " + '"extends": "http://vwf.example.com/node3.vwf",' + "\n"
-	Collada.json.write(line)
-	line = "  " + '"properties": {' + "\n"
-	Collada.json.write(line)
-	line = "    " + '"translation": [ 0, 0, 2 ],' + "\n"
-	Collada.json.write(line)
-	line = "    " + '"rotation": [ 0, 0, 1, 90 ],' + "\n"
-	Collada.json.write(line)
-	line = "    " + '"scale": [ 1, 1, 1 ]' + "\n"
-	Collada.json.write(line)
-	line = "  " + "}," + "\n"
-	Collada.json.write(line)
-	line = "  " + '"children": {' + "\n"
-	Collada.json.write(line)
-	
-	
-		
-		
-def imageryparse(Collada):
-	for idx in range(Collada.dataLen):
-		line = Collada.datalist[idx]
-		if ('<image id="' in line):
-			pos_a = line.find('"') + 1
-			stub = line[pos_a:]
-			pos_b = stub.find('"')
-			img_id = stub[:pos_b]
-			TempImage = Image(img_id)
-		if ('<init_from>' in line):
-			pos_a = line.find('>') + 1
-			stub = line[pos_a:]
-			pos_b = stub.find('</')
-			fileref = stub[:pos_b]
-			TempImage.setfile(fileref)
-		if ('</image>' in line):
-			Collada.appendImage(TempImage)
+			
 
 			
-def effectparse(Collada):
-	for idx in range(Collada.dataLen):
-		line = Collada.datalist[idx]
-		written = 0
-		if ('<effect id="' in line):
-			written = 1
-			pos_a = line.find('"') + 1
-			stub = line[pos_a:]
-			pos_b = stub.find('"')
-			effname = stub[:pos_b]
-			TempEffect = Effect(effname)
-			TempEffect.lineadd(line)
-		if ('<init_from>' in line):
-			written = 1
-			pos_a = line.find('>')
-			stub = line[pos_a:]
-			pos_b = stub.find('</')
-			imgref = stub[:pos_b]
-			for thisImage in Collada.Images:
-				if (thisImage.id == imgref):
-					TempEffect.addImage(thisImage)
-			TempEffect.lineadd(line)
-		if ('</effect>' in line):
-			written = 1
-			TempEffect.lineadd(line)
-			Collada.appendEffect(TempEffect)
-		if ('<library_effects>' not in line) and ('</library_effects>' not in line) and (not written):	
-			TempEffect.lineadd(line)
-		
-
-def matparse(Collada):
-	for idx in range(Collada.dataLen):
-		line = Collada.datalist[idx]
-		if ('<material id="' in line):
-			pos_a = line.find('"') + 1
-			stub = line[pos_a:]
-			pos_b = stub.find('"')
-			mat_id = stub[:pos]
-			Tempmat = Material(matname)
-		if ('<instance_effect url="' in line):
-			pos_a = line.find('#') + 1
-			stub = line[pos:]
-			pos_b = stub.find('"')
-			effname = stub[:pos]
-			for thisEffect in Collada.Effects:
-				if (thisEffect.name == effname):
-					Tempmat.setEffect(thisEffect)
-			Tempmat.seteffect(name)
-		if ('</material>' in line):
-			Collada.appendMaterial(Tempmat)
-		
-		
-def georead(Collada):	#  very unfinished
-	for idx in range(Collada.dataLen):
-		line = Collada.datalist[idx]
-		if ('<geometry id=' in line):
-			pos_a = line.find('"')
-			stub = line[pos_a:]
-			pos_b = stub.find('"')
-			geoname = stub[:pos_b]
-			TempGeo = Geom(geoname)
-		if ('material="' in line):
-			pos_a = line.find('"')
-			stub = line[pos_a:]
-			pos_b = stub.find('"')
-			matnameStart = stub[:pos_b]
-	
-
-def notDoingThis(Collada):
-	tgt = "<library_images>"
-	Collada.libread(infile, tgt)
-	imageryparse(Collada)
-	Collada.cleardata()
-	tgt = "<library_effects>"
-	Collada.libread(infile, tgt)
-	effectparse(Collada)
-	Collada.cleardata()
-	tgt = "<library_materials>"
-	Collada.libread(infile, tgt)
-	matparse(Collada)
-	Collada.cleardata()
-	tgt = '<library_geometries>'
-	Collada.libread(infile, tgt)
-	georead(Collada)
-	
 def main():
-	getcontext().prec = 8	# Decimal makes numbers a little more readable, in this case using 8 significant digits
+#	getcontext().prec = 8	# Decimal makes numbers a little more readable, in this case using 8 significant digits
 	infile = str(sys.argv[1])
 	position = infile.find(".dae")
 	s3dStub = infile[:position] + ".s3dStub"
 	Collada = Data()
-#	notDoingThis(Collada)   # parsing images, effects, materials, geometry, other fun stuff
-	
+
 	tgt = "<library_visual_scenes>"
 	Collada.libread(infile, tgt)
 	sceneeval(Collada)
-#	Collada.cleardata()		# list.clear() is supposed to del all contents, but appears broken.
 	Collada.conflictCheck()
 	Collada.s3dinit(s3dStub)
 	
