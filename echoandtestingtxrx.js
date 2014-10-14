@@ -22,8 +22,11 @@ var qs = require('querystring'),
 var routes = {
     ROOT: '/',
     ROOTANY: '/*',
-    INVENTORY: '/M4clear/inventory',
-    OBJECT: '/M4clear/object',
+    INVCLEAR: '/M4clear/inventory',
+    INVDIS: '/M4dis/inventory',
+    INVCAT: '/cat/inventory',
+    OBJCLEAR: '/M4clear/object',
+    OBJDIS: '/M4dis/object',
     ACTION: '/M4clear/action',
     QUERY: '/M4clear/query',
     ASSESSMENT: '/M4clear/assessment'
@@ -48,11 +51,27 @@ routes.get(routes.ROOTANY, function(req, res) {
 
     res.send(data, status, req.contentType);
 });
-routes.get(routes.INVENTORY, function(req, res) {
-    log('...handling route GET ' + routes.INVENTORY);
+routes.get(routes.INVCLEAR, function(req, res) {
+    log('...handling route GET ' + routes.INVCLEAR);
 
     var data = {
        tooltray: [{
+           name: "M4 Carbine",
+           ID: "myM4"
+        }]
+    };
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+routes.get(routes.INVDIS, routes.gets[ routes.INVCLEAR ]);
+routes.get(routes.INVCAT, function(req, res) {
+    log('...handling route GET ' + routes.INVCAT);
+
+    var data = {
+       tooltray: [{
+           name: "Shooting Range",
+           ID: "myRange",
            name: "M4 Carbine",
            ID: "myM4"
         }]
@@ -78,7 +97,7 @@ routes.get(routes.ASSESSMENT, function(req, res) {
            <li>Select <i>Safe</i> mode </li>\
          </ul></p></div></body></html>', 200, HTMLt);
 });
-routes.post(routes.OBJECT, function(req, res) {
+routes.post(routes.OBJCLEAR, function(req, res) {
     log('...handling route POST ' + routes.OBJECT);
 
     // request json
@@ -97,13 +116,43 @@ routes.post(routes.OBJECT, function(req, res) {
     if (o.type == 'create') {
         data = {
             KbId: "myM4",
-            assetURL: "/SAVE/models/weapons/M4/M4_noHierarchy.dae"
+            assetURL: "/SAVE/models/weapons/M4/M4_noHierarchy.dae",
+            grouping: '{                                                                                                                                                                                                \
+                "M4 Group": {                                                                                                                                                                                           \
+                    "Parts": [ "Sling" ],                                                                                                                                                                               \
+                    "Upper Half Group": {                                                                                                                                                                               \
+                        "Parts": [ "Upper_Receiver", "Upper_Handguard", "Lower_Handguard", "Handguard_Slip_Ring", "Swivel_LAMA1259863095" ],                                                                            \
+                        "Bolt Carrier Assembly": {                                                                                                                                                                      \
+                            "Parts": [ "Key_and_Bolt_Carrier_Assembly", "Charging_Handle", "Bolt_Cam_Pin", "Firing_Pin_Retaining_Pin", "Firing_Pin" ],                                                                  \
+                            "Bolt Group": {                                                                                                                                                                             \
+                                "Parts": [ "Bolt", "Extractor_Pin", "Extractor" ]                                                                                                                                       \
+                            }                                                                                                                                                                                           \
+                        },                                                                                                                                                                                              \
+                        "Carry Handle Group": {                                                                                                                                                                         \
+                            "Parts": [ "Gun_Carrying_Handle", "Round_Nut", "Round_Nut1" ]                                                                                                                               \
+                        }                                                                                                                                                                                               \
+                    },                                                                                                                                                                                                  \
+                    "Lower Receiver Group": {                                                                                                                                                                           \
+                        "Parts": [ "Lower_Receiver", "Selector", "Magazine_Catch_Button", "Hammer", "Trigger", "Pivot_Pin", "Takedown_Pin", "Bolt_Catch", "Lower_Receiver_Extension", "Buffer", "Buffer_Retainer" ],    \
+                        "Magazine Group": {                                                                                                                                                                             \
+                            "Parts": [ "Tube", "Clip_Spring", "Clip_Spring1" ],                                                                                                                                         \
+                            "Casing Group": {                                                                                                                                                                           \
+                                "Parts" : [ "Casing", "projectile" ]                                                                                                                                                    \
+                            }                                                                                                                                                                                           \
+                        },                                                                                                                                                                                              \
+                        "Buttstock Group": {                                                                                                                                                                            \
+                            "Parts": [ "Buttstock", "Small_Sling_Swivel", "Buttstock_Release_Lever" ]                                                                                                                   \
+                        }                                                                                                                                                                                               \
+                    }                                                                                                                                                                                                   \
+                }                                                                                                                                                                                                       \
+            }'
         };
     }
 
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
+routes.post(routes.OBJDIS, routes.posts[ routes.OBJCLEAR ]);
 routes.post(routes.QUERY, function(req, res) {
     log('...handling route POST ' + routes.QUERY);
 
