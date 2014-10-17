@@ -5,6 +5,7 @@
       <author>terrain</author>
       <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
       <comments>
+			Copyright 2014, SRI International
 			ColladaMaya export options: 
 			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
 			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;

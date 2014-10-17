@@ -1,0 +1,267 @@
+# Copyright 2014, SRI International
+---
+extends: http://vwf.example.com/scene.vwf
+implements:
+- begin.eui
+- backendtxrx.ux
+methods:
+  initializeCamera:
+  zoom:
+  orbit:
+  lookAt:
+  clearLookAt:
+  removeInstance:
+  resetBackend:
+  initInstance:
+  instance:
+properties:
+  zoomedValue:
+  scaling:
+  camTarget:
+  backendResetSent:
+children:
+  M4_Environment_01_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: /SAVE/models/environments/range/ShootingRange.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 1, 1, 1 ]
+      translation: [ 0, 0, 0 ]
+  light1:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "directional"
+      translation: [ -0.5, 0, 2 ]
+      rotation: [ 0, 1, 0, 36 ]
+  light2:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "ambient"
+  camera:
+    extends: "http://vwf.example.com/camera.vwf"
+    properties:
+scripts:
+- |
+  var vwf_M4_node3 = {
+    extends: "http://vwf.example.com/node3.vwf",
+    type: "model/vnd.collada+xml",
+    implements: [ "M4_Carbine.ux", "backendtxrx.ux" ],
+    properties: {
+      translation: [ 0, 0, 2 ],
+      rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
+      scale: [ 1, 1, 1 ]
+    },
+    children: {
+      Base: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Bolt: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Catch: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Bolt_Ring: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Ring1: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Ring2: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Bolt_Cam_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Charging_Handle: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Clip_Spring: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Clip_Spring1: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Extractor: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Extractor_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Extractor_Spring: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Ejection_Port_Cover: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Ejector_Spring_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Firing_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Firing_Pin_Retaining_Pin: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Key_and_Bolt_Carrier_Assembly: {
+        extends: "http://vwf.example.com/node3.vwf",
+        implements: [ "togglevis.ux" ]
+      },
+      Magazine_Catch: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Magazine_Catch_Button: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Selector_Lever: {
+        extends: "http://vwf.example.com/node3.vwf",
+      },
+      Trigger: {
+        extends: "http://vwf.example.com/node3.vwf"
+      },
+      Tube: {
+        extends: "http://vwf.example.com/node3.vwf"
+      }
+    }
+  };
+
+  this.initialize = function() {
+    this.zoomedValue = 0;
+    this.scaled = 0;
+    this.backendResetSent = false;
+    this.future(0).initializeCamera();
+  };
+
+  this.initializeCamera = function() {
+    this.camera.translation = [ -1.25, 0, 2.2 ];
+    this.camera.rotation = [ 0, 0, 1, -90 ];
+  };
+
+  this.zoom = function(value) {
+    // console.info('zoom ' + value);
+
+    var EPS = 0.00001;
+    var scale = 1 - value / 100; // normalize the value
+    var tmp = scale;
+
+    if (this.zoomedValue > 0) {
+      if (value < EPS) {
+        scale = (1 / this.scaling);
+        this.scaling = 0;
+        value = 0;
+      } else {
+        scale = (1 / this.scaling) * tmp;
+        this.scaling = tmp;
+      }
+    } else {
+      this.scaling = scale;
+    }
+
+    this.zoomedValue = value;
+    // console.info('scale: ' + scale + ', scaling: ' + this.scaling);
+    // Note: assuming target is the origin for now!
+    var x = this.camera.translation[0];
+    var y = this.camera.translation[1];
+    var z = this.camera.translation[2]; // we keep the z as the target z
+    var theta = Math.atan2(x, y); // radians
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), 0); // radians
+    var radius = Math.sqrt(x * x + y * y) * scale;
+
+    //console.info('radius: ' + radius);
+    x = radius * Math.sin(phi) * Math.sin(theta);
+    y = radius * Math.sin(phi) * Math.cos(theta);
+    //console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
+    // this.camera.translation = [ x, y, z ];
+    this.camera.translateTo([ x, y, z ], 0.125);
+  };
+
+  this.orbit = function(theta) {
+    // console.info('orbit ' + theta + ' degrees');
+
+    // Note: assuming target is the origin for now!
+    var x = this.camera.translation[0];
+    var y = this.camera.translation[1];
+    var z = this.camera.translation[2];
+    var theta = theta * (Math.PI / 180);
+
+    //console.info('offset x ' + x + ', y ' + y + ', z ' + z);
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
+    var radius = Math.sqrt(x * x + y * y + z * z); // again the origin is the target
+
+    //console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius: ' + radius);
+    x = radius * Math.sin(phi) * Math.sin(theta);
+    y = radius * Math.sin(phi) * Math.cos(theta);
+    z = radius * Math.cos(phi);
+    // console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
+    this.camera.translation = [ x, y, z ];
+    // console.info('target theta ' + theta * (180 / Math.PI));
+    // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+    this.future(0).lookAt(this.camTarget);
+  };
+
+  this.clearLookAt = function() {
+    this.camera.lookAt = null;
+  };
+
+  this.lookAt = function(what) {
+    what = what || this.camTarget;
+
+    var lookAt = (what != null)? this[ what ].id : this.id;
+
+    this.camera.lookAt = lookAt;
+    this.future(0).clearLookAt();
+    // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+  };
+
+  this.removeInstance = function() {
+    console.info('removeInstance M4_Carbine_dae');
+    this.children.delete(this.children.M4_Carbine_dae);
+  };
+
+  this.resetBackend = function() {
+    var self = this;
+
+    this.query({ type: 'Reset' },
+      function() {
+        self.backendResetSent = true;
+      }
+    );
+  };
+
+  this.initInstance = function(name, kbid) {
+    this.children[ name ].M4_Carbine_KbId = kbid;
+    this.children[ name ].init();
+  };
+
+  this.instance = function(name, backEndId) {
+    console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
+
+    var self = this;
+
+    name = name.replace(' ', '_') + '_dae';
+    self.obj({ type: 'create', ID: backEndId }, function(data) {
+      console.info(self.id + ' obj request received data ' + JSON.stringify(data));
+
+      if (data.KbId == 'unknown') {
+        console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
+        return;
+      }
+
+      vwf_M4_node3.source = data.assetURL;
+      self.children.create(name, vwf_M4_node3); // vwf_M4_node3 is the only non-dynamic piece of the instance, we could get the json dynamically
+      self.camTarget = name;
+      self.future(0).initInstance(name, data.KbId);
+      self.future(0).lookAt(self.camTarget);
+    });
+  }; //# sourceURL=index.vwf

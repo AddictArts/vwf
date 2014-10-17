@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>terrain</author>
+      <authoring_tool>OpenCOLLADA2013 x64</authoring_tool>
+      <comments>
+			ColladaMaya export options: 
+			bakeTransforms=0;relativePaths=1;copyTextures=1;exportTriangles=0;exportCgfxFileReferences=1;
+			isSampling=0;curveConstrainSampling=0;removeStaticCurves=0;exportPolygonMeshes=1;exportLights=0;
+			exportCameras=0;exportJointsAndSkin=1;exportAnimations=1;exportInvisibleNodes=1;exportDefaultCameras=0;
+			exportTexCoords=1;exportNormals=1;exportNormalsPerVertex=0;exportVertexColors=0;exportVertexColorsPerVertex=0;
+			exportTexTangents=0;exportTangents=0;exportReferencedMaterials=0;exportMaterialsOnly=0;
+			exportXRefs=0;dereferenceXRefs=1;exportCameraAsLookat=0;cameraXFov=0;cameraYFov=1;doublePrecision=0
+		</comments>
+      <source_data>file:///S:/Projects/SAVE/M4/M4_Carbine_Model/M4_LowPoly/M4_lowPoly_09_regrouped.ma</source_data>
+    </contributor>
+    <created>2014-09-18T11:14:15</created>
+    <modified>2014-09-18T11:14:15</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialLibrary2.Material15" name="MaterialLibrary2_Material15">
+      <instance_effect url="#MaterialLibrary2.Material15_fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialLibrary2.Material15_fx">
+      <profile_COMMON>
+        <newparam sid="Generic_Internals_jpg_img_img-surface">
+          <surface type="2D">
+            <init_from>Generic_Internals_jpg_img_img</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Generic_Internals_jpg_img_img-sampler">
+          <sampler2D>
+            <source>Generic_Internals_jpg_img_img-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.3 0.3 0.3 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Generic_Internals_jpg_img_img-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="OpenCOLLADAMaya">
+                    <blend_mode>NONE</blend_mode>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <fast>0</fast>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <rotateFrame>0</rotateFrame>
+                    <rotateUV>0</rotateUV>
+                    <stagger>0</stagger>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0 0 0 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>1</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="Generic_Internals_jpg_img_img" name="Generic_Internals_jpg_img_img">
+      <init_from>./Generic_Internals.jpg</init_from>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+          <originalMayaNodeId>Generic_Internals_jpg_img_img</originalMayaNodeId>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_geometries>
+    <geometry id="Flat_Rear_Sight_SpringShape" name="Flat_Rear_Sight_SpringShape">
+      <mesh>
+        <source id="Flat_Rear_Sight_SpringShape-positions" name="Flat_Rear_Sight_SpringShape-positions">
+          <float_array id="Flat_Rear_Sight_SpringShape-positions-array" count="156">-0.164366 -0.0063 0.056524 -0.163319 -0.0063 0.056104 -0.164366 0.005339 0.056524 -0.163319 0.005339 0.056104 -0.162368 -0.0063 0.056117 -0.162368 0.005339 0.056117 -0.160948 -0.0063 0.056672 -0.160948 0.005339 0.056672 -0.15975 -0.0063 0.057043 -0.15975 0.005339 0.057043 -0.157799 -0.0063 0.057006 -0.157799 0.005339 0.057006 -0.15602 -0.0063 0.056685 -0.15602 0.005339 0.056685 -0.154452 -0.0063 0.056598 -0.154452 0.005339 0.056598 -0.153304 -0.0063 0.05645 -0.153304 0.005339 0.05645 -0.152353 -0.0063 0.056166 -0.152353 0.005339 0.056166 -0.151093 -0.0063 0.055721 -0.151093 0.005339 0.055721 -0.150093 -0.0063 0.055697 -0.150093 0.005339 0.055697 -0.149179 -0.0063 0.056351 -0.149179 0.005339 0.056351 -0.164476 -0.0063 0.056249 -0.163372 -0.0063 0.055819 -0.163372 0.005339 0.055819 -0.164476 0.005339 0.056249 -0.162312 -0.0063 0.055831 -0.162312 0.005339 0.055831 -0.16085 -0.0063 0.056393 -0.16085 0.005339 0.056393 -0.159709 -0.0063 0.056753 -0.159709 0.005339 0.056753 -0.157828 -0.0063 0.056712 -0.157828 0.005339 0.056712 -0.156055 -0.0063 0.056391 -0.156055 0.005339 0.056391 -0.154479 -0.0063 0.056303 -0.154479 0.005339 0.056303 -0.153365 -0.0063 0.056161 -0.153365 0.005339 0.056161 -0.152444 -0.0063 0.055884 -0.152444 0.005339 0.055884 -0.151146 -0.0063 0.055434 -0.151146 0.005339 0.055434 -0.15001 -0.0063 0.055428 -0.15001 0.005339 0.055428 -0.149006 -0.0063 0.05611 -0.149006 0.005339 0.05611</float_array>
+          <technique_common>
+            <accessor source="#Flat_Rear_Sight_SpringShape-positions-array" count="52" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Flat_Rear_Sight_SpringShape-normals" name="Flat_Rear_Sight_SpringShape-normals">
+          <float_array id="Flat_Rear_Sight_SpringShape-normals-array" count="600">-0.363362 0 -0.931648 -0.363362 0 -0.931648 -0.189948 0 -0.9817942 -0.189948 0 -0.9817942 -0.189948 0 -0.9817942 0.221999 0 -0.975047 0.221999 0 -0.975047 -0.189948 0 -0.9817942 0.221999 0 -0.975047 0.3340731 0 -0.9425473 0.3340731 0 -0.9425473 0.221999 0 -0.975047 0.3340731 0 -0.9425473 0.104972 0 -0.9944752 0.104972 0 -0.9944752 0.3340731 0 -0.9425473 0.104972 0 -0.9944752 -0.09863498 0 -0.9951237 -0.09863498 0 -0.9951237 0.104972 0 -0.9944752 -0.09863498 0 -0.9951237 -0.121081 0 -0.9926426 -0.121081 0 -0.9926426 -0.09863498 0 -0.9951237 -0.121081 0 -0.9926426 -0.08512097 0 -0.9963706 -0.08512097 0 -0.9963706 -0.121081 0 -0.9926426 -0.08512097 0 -0.9963706 -0.2016951 0 -0.9794484 -0.2016951 0 -0.9794484 -0.08512097 0 -0.9963706 -0.2016951 0 -0.9794484 -0.311556 0 -0.9502279 -0.311556 0 -0.9502279 -0.2016951 0 -0.9794484 -0.311556 0 -0.9502279 -0.184195 0 -0.9828898 -0.184195 0 -0.9828898 -0.311556 0 -0.9502279 -0.184195 0 -0.9828898 -0.004794003 0 -0.9999885 -0.004794003 0 -0.9999885 -0.184195 0 -0.9828898 0.562102 0 -0.827068 0.562102 0 -0.827068 0.562102 0 -0.827068 0.562102 0 -0.827068 0.3722931 0 0.9281152 0.199887 0 0.979819 0.199886 0 0.9798192 0.3722931 0 0.9281152 0.199886 0 0.9798192 0.199887 0 0.979819 -0.232991 0 0.972479 -0.232991 0 0.972479 -0.232991 0 0.972479 -0.232991 0 0.972479 -0.3335179 0 0.9427438 -0.3335179 0 0.9427438 -0.3335179 0 0.9427438 -0.3335179 0 0.9427438 -0.105294 0 0.9944412 -0.105294 0 0.9944412 -0.105294 0 0.9944412 -0.105294 0 0.9944412 0.09558702 0 0.9954211 0.095588 0 0.995421 0.095588 0 0.995421 0.09558702 0 0.9954211 0.12088 0 0.9926671 0.12088 0 0.9926671 0.12088 0 0.9926671 0.12088 0 0.9926671 0.08604503 0 0.9962913 0.08604503 0 0.9962913 0.08604503 0 0.9962913 0.08604503 0 0.9962913 0.201653 0 0.979457 0.201653 0 0.979457 0.201653 0 0.979457 0.201653 0 0.979457 0.3130421 0 0.9497393 0.3130421 0 0.9497393 0.3130421 0 0.9497393 0.3130421 0 0.9497393 0.203313 0 0.9791139 0.203313 0 0.9791139 0.203313 0 0.9791139 0.203313 0 0.9791139 0.024686 0 0.9996952 0.024686 0 0.9996952 -0.5822772 0 0.8129903 -0.5822772 0 0.8129903 -0.5822772 0 0.8129903 -0.5822772 0 0.8129903 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 -0.9281036 0 0.3723219 -0.9281036 0 0.3723219 -0.9281036 0 0.3723219 -0.9281036 0 0.3723219 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0.8130291 0 0.5822231 0.8130291 0 0.5822231 0.8130291 0 0.5822231 0.8130291 0 0.5822231 0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+          <technique_common>
+            <accessor source="#Flat_Rear_Sight_SpringShape-normals-array" count="200" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-map1" name="Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-map1">
+          <float_array id="Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-map1-array" count="288">0 0 1 0 0 1 1 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-map1-array" count="144" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Flat_Rear_Sight_SpringShape-vertices" name="Flat_Rear_Sight_SpringShape-vertices">
+          <input semantic="POSITION" source="#Flat_Rear_Sight_SpringShape-positions"/>
+        </vertices>
+        <polylist material="MaterialLibrary2_Material15SG" count="50">
+          <input semantic="VERTEX" source="#Flat_Rear_Sight_SpringShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Flat_Rear_Sight_SpringShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-Flat_Rear_Sight_SpringShape-map1" offset="2" set="0"/>
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4</vcount>
+          <p>26 0 96 29 1 99 28 2 98 27 3 97 28 4 103 31 5 102 30 6 101 27 7 100 31 8 107 33 9 106 32 10 105 30 11 104 33 12 111 35 13 110 34 14 109 32 15 108 35 16 115 37 17 114 36 18 113 34 19 112 37 20 119 39 21 118 38 22 117 36 23 116 39 24 123 41 25 122 40 26 121 38 27 120 41 28 127 43 29 126 42 30 125 40 31 124 43 32 131 45 33 130 44 34 129 42 35 128 45 36 135 47 37 134 46 38 133 44 39 132 47 40 139 49 41 138 48 42 137 46 43 136 49 44 143 51 45 142 50 46 141 48 47 140 0 48 48 1 49 49 3 50 50 2 51 51 3 52 52 1 53 53 4 54 54 5 55 55 5 56 56 4 57 57 6 58 58 7 59 59 7 60 60 6 61 61 8 62 62 9 63 63 9 64 64 8 65 65 10 66 66 11 67 67 11 68 68 10 69 69 12 70 70 13 71 71 13 72 72 12 73 73 14 74 74 15 75 75 15 76 76 14 77 77 16 78 78 17 79 79 17 80 80 16 81 81 18 82 82 19 83 83 19 84 84 18 85 85 20 86 86 21 87 87 21 88 88 20 89 89 22 90 90 23 91 91 23 92 92 22 93 93 24 94 94 25 95 95 0 96 0 26 97 96 27 98 97 1 99 1 3 100 3 28 101 98 29 102 99 2 103 2 2 104 2 29 105 99 26 106 96 0 107 0 1 108 5 27 109 100 30 110 101 4 111 6 5 112 7 31 113 102 28 114 103 3 115 4 4 116 9 30 117 104 32 118 105 6 119 10 7 120 11 33 121 106 31 122 107 5 123 8 6 124 13 32 125 108 34 126 109 8 127 14 9 128 15 35 129 110 33 130 111 7 131 12 8 132 17 34 133 112 36 134 113 10 135 18 11 136 19 37 137 114 35 138 115 9 139 16 10 140 21 36 141 116 38 142 117 12 143 22 13 144 23 39 145 118 37 146 119 11 147 20 12 148 25 38 149 120 40 150 121 14 151 26 15 152 27 41 153 122 39 154 123 13 155 24 14 156 29 40 157 124 42 158 125 16 159 30 17 160 31 43 161 126 41 162 127 15 163 28 16 164 33 42 165 128 44 166 129 18 167 34 19 168 35 45 169 130 43 170 131 17 171 32 18 172 37 44 173 132 46 174 133 20 175 38 21 176 39 47 177 134 45 178 135 19 179 36 20 180 41 46 181 136 48 182 137 22 183 42 23 184 43 49 185 138 47 186 139 21 187 40 22 188 45 48 189 140 50 190 141 24 191 46 24 192 46 50 193 141 51 194 142 25 195 47 25 196 47 51 197 142 49 198 143 23 199 44</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="OpenCOLLADAMaya">
+          <originalMayaNodeId>Flat_Rear_Sight_SpringShape</originalMayaNodeId>
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_09_regrouped">
+      <node id="Flat_Rear_Sight_Spring" name="Flat_Rear_Sight_Spring" type="NODE">
+        <translate sid="translate">0 0 0</translate>
+        <rotate sid="rotateZ">0 0 1 0</rotate>
+        <rotate sid="rotateY">0 1 0 0</rotate>
+        <rotate sid="rotateX">1 0 0 0</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_geometry url="#Flat_Rear_Sight_SpringShape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialLibrary2_Material15SG" target="#MaterialLibrary2.Material15">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="OpenCOLLADAMaya">
+            <originalMayaNodeId>Flat_Rear_Sight_Spring</originalMayaNodeId>
+          </technique>
+        </extra>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
