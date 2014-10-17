@@ -1,0 +1,151 @@
+# Copyright 2014, SRI International
+--- 
+properties:
+  __idToName:
+  M4_Carbine_KbId: 'unknown'
+  Base_KbId: 'unknown'
+  Bolt_KbId: 'unknown'
+  Bolt_Catch_KbId: 'unknown'
+  Bolt_Ring_KbId: 'unknown'
+  Bolt_Ring1_KbId: 'unknown'
+  Bolt_Ring2_KbId: 'unknown'
+  Bolt_Cam_Pin_KbId: 'unknown'
+  Charging_Handle_KbId: 'unknown'
+  Clip_Spring_KbId: 'unknown'
+  Clip_Spring1_KbId: 'unknown'
+  Extractor_KbId: 'unknown'
+  Extractor_Pin_KbId: 'unknown'
+  Extractor_Spring_KbId: 'unknown'
+  Ejection_Port_Cover_KbId: 'unknown'
+  Ejector_Spring_Pin_KbId: 'unknown'
+  Firing_Pin_KbId: 'unknown'
+  Firing_Pin_Retaining_Pin_KbId: 'unknown'
+  Key_and_Bolt_Carrier_Assembly_KbId: 'unknown'
+  Magazine_Catch_KbId: 'unknown'
+  Magazine_Catch_Button_KbId: 'unknown'
+  Selector_Lever_KbId: 'unknown'
+  Trigger_KbId: 'unknown'
+  Tube_KbId: 'unknown'
+methods:
+  init:
+  PointWeaponInSafeDirection:
+  SelectModeSemi:
+  SelectModeSafe:
+  SelectModeBurst:
+  PushMagazineReleaseButton:
+  PullAndHoldChargingHandle:
+  PushAndHoldBoltCatchBottom:
+  ReleaseChargingHandle:
+  LetGoOfBoltCatchBottom:
+  PushChargingHandleForward:
+  CheckChamberAndReceiverForAmmo:
+  PushBoltCatchTop:
+  PullTrigger:
+  releaseTrigger:
+scripts:
+- |
+  // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
+  // Since this init depends on another implemented behavior that could be loaded before this and may fix the
+  // undefined reference error, I will just handle init myself. I did not test the order in the array of implements theory.
+  this.init = function() {
+    console.info(this.id + ' ' + this.name + ' init');
+    // Point the weapon in an unsafe direction as the initial state until the tools / backend set the initial state
+    this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90
+
+    // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
+    this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
+    this.__idToName = { };
+    this.__idToName[ this.id ] = this.name;
+
+    var self = this;
+    var count = self.children.length;
+    var comps = [ ];
+
+    for (var i = 0; i < count; i++) {
+      var child = self.children[ i ]; 
+      var name = child.name;
+      var id = child.id;
+
+      self.__idToName[ id ] = name;
+
+      if (self[ name + '_KbId' ]) comps.push(name);
+    }
+
+    // console.log(self.__idToName);
+
+    self.query(
+      { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
+      function(data) {
+        console.info(self.id + " init query received data " + JSON.stringify(data));
+
+        for (var i = 0; i < data.KbIds.length; i++) {
+          self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
+        }
+      }
+    );
+  };
+
+  this.PointWeaponInSafeDirection = function() {
+    console.info('PointWeaponInSafeDirection facing down range');
+    this.rotateBy([ 0, 0, 1, -90 ], 0.5);
+    this.activity({ action: 'Point', arguments: [ this.M4_Carbine_KbId, 'unknown' ] });
+  };
+
+  this.SelectModeSafe = function() {
+    console.info('SelectMode safe');
+    this.Selector_Lever.rotation = [ 0, 0, 1, 90 ];
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Safe', 'Selector_Lever' ] });
+  };
+
+  this.PushMagazineReleaseButton = function() {
+    console.info('PushMagazineReleaseButton pushed and released');
+    this.Magazine_Catch.translateTo([ 0, 0, 0.0026 ], 0.125); // back to world origin since object has no local pivot
+    this.Magazine_Catch_Button.translateTo([ 0, 0, 0.0026], 0.125); // back to world origin since object has no local pivot
+    this.Tube.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.Base.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.Clip_Spring.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.Clip_Spring1.translateTo([ 0, 0.125, 0 ], 0.25);
+    this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_KbId ] });
+  };
+
+  this.LetGoOfBoltCatchBottom = function() {
+    console.info('LetGoOfBoltCatchBottom let go');
+    this.Bolt_Catch.rotation = [ 1, 0, 0, 0 ];
+    this.activity({ action: 'Release', arguments: [ this.Bolt_Catch_KbId ] });
+  };
+
+  this.PushChargingHandleForward = function() {
+    console.info('PushChargingHandleForward');
+    this.Charging_Handle.translateTo([ 0.005, 0, 0 ], 0.25);
+    this.activity({ action: 'Push', arguments: [ this.Charging_Handle_KbId ] });
+  };
+
+  this.CheckChamberAndReceiverForAmmo = function() {
+    console.info('CheckChamberAndReceiverForAmmo');
+    this.Ejection_Port_Cover.rotateTo([ 1, 0, 0, 130 ], 0.5);
+    // this.Key_and_Bolt_Carrier_Assembly.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Bolt.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Firing_Pin.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Extractor.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Bolt_Cam_Pin.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Extractor_Pin.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Extractor_Spring.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Bolt_Ring.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Bolt_Ring1.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Bolt_Ring2.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Firing_Pin_Retaining_Pin.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Ejector_Spring_Pin.translateTo([ 0, 0, 0 ], 0.25);
+    // this.Ejector_Spring.translateTo([ 0, 0, 0 ], 0.25);
+    this.activity({ action: 'Inspect', arguments: [ this.Bolt_KbId ] });
+  };
+
+  this.PullTrigger = function() {
+    console.info('PullTrigger ');
+    this.Trigger.rotateTo([ 0, 0, 1, 15 ], 0.5);
+    this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
+    this.future(1).releaseTrigger();
+  };
+
+  this.releaseTrigger = function() {
+    this.Trigger.rotateTo([ 0, 0, 1, 0 ], 0.125);
+  }; //# sourceURL=M4_Carbine.ux

@@ -1,0 +1,85 @@
+# Copyright 2014, SRI International
+---
+properties:
+  objectServerAddress:
+  queryServerAddress:
+  activityServerAddress:
+  assessmentServerAddress:
+methods:
+  checkForServerProperty:
+  obj:
+  query:
+  activity:
+  post:
+scripts:
+- |
+  // NOTE: Called once even if multiple things implement this behavior
+  this.initialize = function() {
+    if (!this.__initializeStep) return; // begin.eui added property, used to prevent double initialization at the root component
+
+    // we depend on config eui.json or eui-defaults.json via <script/> in index.vwf.html
+  };
+
+  this.checkForServerProperty = function() {
+    if (this.parent) {
+      console.info('backendtxrx.ux Setting the servers using the parent properties...');
+      this.activityServerAddress = this.parent.activityServerAddress;
+      this.queryServerAddress = this.parent.queryServerAddress;
+      this.assessmentServerAddress = this.parent.assessmentServerAddress;
+      this.objectServerAddress = this.parent.objectServerAddress;
+
+      if (!this.parent.baseServerAddress) {
+        var msg = "The baseServerAddress server address is undefined, check the eui.json setting " + this.id;
+
+        jQuery('#reasonertxrxMsg').text(msg);
+        console.warn(msg);
+      } else {
+        console.info(this.id + " backendtxrx.ux objectServerAddress:" + this.objectServerAddress);
+        console.info(this.id + " backendtxrx.ux queryServerAddress:" + this.queryServerAddress);
+        console.info(this.id + " backendtxrx.ux activityServerAddress:" + this.activityServerAddress);
+        console.info(this.id + " backendtxrx.ux assessmentServerAddress:" + this.assessmentServerAddress);
+        jQuery('#backendtxrxMsg').text('Servers '
+          + this.objectServerAddress + ', '
+          + this.queryServerAddress + ', '
+          + this.activityServerAddress + ', '
+          + this.assessmentServerAddress);
+      }
+    }
+  };
+
+  this.obj = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.ux object " + JSON.stringify(data));
+    this.post({ object: JSON.stringify(data) }, this.objectServerAddress, done);
+  };
+
+  this.query = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.ux query " + JSON.stringify(data));
+    this.post({ query: JSON.stringify(data) }, this.queryServerAddress, done);
+  };
+
+  this.activity = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.ux activity " + JSON.stringify(data));
+    this.post({ activity: JSON.stringify(data) }, this.activityServerAddress, done);
+  };
+
+  this.post = function(json, url, done) {
+    jQuery('#backendtxrxMsg').text(JSON.stringify(json));
+    jQuery.ajax({
+      url: url,
+      type: 'post',
+      cache: false,
+      data: json
+    })
+    .done(done)
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.info('using serverAddress:' + url);
+      console.warn("error:" + textStatus);
+    });
+  }; //# sourceURL=backendtxrx.ux
+
+  // http://www.html5rocks.com/en/tutorials/cors/
+  // response['Access-Control-Allow-Origin'] = '*'
+  // response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  // response['Access-Control-Max-Age'] = 1000
+  // # note that '*' is not valid for Access-Control-Allow-Headers
+  // response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'

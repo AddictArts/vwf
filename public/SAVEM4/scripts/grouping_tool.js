@@ -8,19 +8,13 @@ var path = require('path'),
     sax = require("sax"),
     strict = true, // set to false for html-mode
     parser = sax.parser(strict),
-    groupingObj = { },
-    currentObj = undefined,
-    indentLevel = 0,
-    indentSize = 2,
-    endOfLists = [ ],
-    parseOnEnd = function(data) { },
-    baseNode3 = {
-        extends: "http://vwf.example.com/node3.vwf",
-        type: "model/vnd.collada+xml",
-        implements: [ ],
-        properties: { },
-        children: { }
-    };
+    groupingObj,
+    currentObj,
+    indentLevel,
+    indentSize,
+    endOfLists,
+    baseNode3,
+    parseOnEnd = function(data) { };
 
 parser.onerror = function(e) { /* an error happened. */ };
 parser.ontext = function(t) { /* got some text.  t is the string of text. */ };
@@ -144,9 +138,21 @@ function one() {
         </group>\
     </grouping>';
 
-    parser.write(xml).close();
+    groupingObj = { };
+    currentObj = undefined;
+    indentLevel = 0;
+    indentSize = 2;
+    endOfLists = [ ];
+    parser.write(xml).close(); // xml => groupingObj
     prettyPrintObj(groupingObj);
     util.puts(JSON.stringify(groupingObj));
+    baseNode3 = {
+        extends: "http://vwf.example.com/node3.vwf",
+        type: "model/vnd.collada+xml",
+        implements: [ ],
+        properties: { },
+        children: { }
+    };
     baseNode3.grouping = groupingObj.name;
     // util.puts('');
     // util.puts(JSON.stringify(n3));
@@ -312,7 +318,6 @@ function two() {
     indentSize = 2;
     endOfLists = [ ];
     parser.write(xml).close();
-    util.puts('');
     prettyPrintObj(groupingObj);
     util.puts(JSON.stringify(groupingObj));
     baseNode3 = {
@@ -536,7 +541,6 @@ function three() {
     indentSize = 2;
     endOfLists = [ ];
     parser.write(xml).close();
-    util.puts('');
     prettyPrintObj(groupingObj);
     util.puts(JSON.stringify(groupingObj));
     baseNode3 = {
