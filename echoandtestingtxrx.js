@@ -27,9 +27,14 @@ var routes = {
     INVCAT: '/cat/inventory',
     OBJCLEAR: '/M4clear/object',
     OBJDIS: '/M4dis/object',
-    ACTION: '/M4clear/action',
-    QUERY: '/M4clear/query',
-    ASSESSMENT: '/M4clear/assessment'
+    OBJCAT: '/cat/object',
+    ACTCLEAR: '/M4clear/action',
+    ACTDIS: '/M4dis/action',
+    QCLEAR: '/M4clear/query',
+    QDIS: '/M4dis/query',
+    QCAT: '/cat/query',
+    ASSESSMENT: '/M4clear/assessment',
+    ASSESSDIS: '/M4dis/assessment'
 };
 
 start(routes); // construct or initialize the routes object
@@ -113,39 +118,13 @@ routes.post(routes.OBJCLEAR, function(req, res) {
 
     log(o);
 
+    // http://codebeautify.org/xmltojson
+    // http://codebeautify.org/view/jsonviewer
     if (o.type == 'create') {
         data = {
             KbId: "myM4",
             assetURL: "/SAVE/models/weapons/M4/M4_noHierarchy.dae",
-            grouping: '{                                                                                                                                                                                                \
-                "M4 Group": {                                                                                                                                                                                           \
-                    "Parts": [ "Sling" ],                                                                                                                                                                               \
-                    "Upper Half Group": {                                                                                                                                                                               \
-                        "Parts": [ "Upper_Receiver", "Upper_Handguard", "Lower_Handguard", "Handguard_Slip_Ring", "Swivel_LAMA1259863095" ],                                                                            \
-                        "Bolt Carrier Assembly": {                                                                                                                                                                      \
-                            "Parts": [ "Key_and_Bolt_Carrier_Assembly", "Charging_Handle", "Bolt_Cam_Pin", "Firing_Pin_Retaining_Pin", "Firing_Pin" ],                                                                  \
-                            "Bolt Group": {                                                                                                                                                                             \
-                                "Parts": [ "Bolt", "Extractor_Pin", "Extractor" ]                                                                                                                                       \
-                            }                                                                                                                                                                                           \
-                        },                                                                                                                                                                                              \
-                        "Carry Handle Group": {                                                                                                                                                                         \
-                            "Parts": [ "Gun_Carrying_Handle", "Round_Nut", "Round_Nut1" ]                                                                                                                               \
-                        }                                                                                                                                                                                               \
-                    },                                                                                                                                                                                                  \
-                    "Lower Receiver Group": {                                                                                                                                                                           \
-                        "Parts": [ "Lower_Receiver", "Selector", "Magazine_Catch_Button", "Hammer", "Trigger", "Pivot_Pin", "Takedown_Pin", "Bolt_Catch", "Lower_Receiver_Extension", "Buffer", "Buffer_Retainer" ],    \
-                        "Magazine Group": {                                                                                                                                                                             \
-                            "Parts": [ "Tube", "Clip_Spring", "Clip_Spring1" ],                                                                                                                                         \
-                            "Casing Group": {                                                                                                                                                                           \
-                                "Parts" : [ "Casing", "projectile" ]                                                                                                                                                    \
-                            }                                                                                                                                                                                           \
-                        },                                                                                                                                                                                              \
-                        "Buttstock Group": {                                                                                                                                                                            \
-                            "Parts": [ "Buttstock", "Small_Sling_Swivel", "Buttstock_Release_Lever" ]                                                                                                                   \
-                        }                                                                                                                                                                                               \
-                    }                                                                                                                                                                                                   \
-                }                                                                                                                                                                                                       \
-            }'
+            grouping: ''
         };
     }
 
@@ -153,8 +132,8 @@ routes.post(routes.OBJCLEAR, function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.post(routes.OBJDIS, routes.posts[ routes.OBJCLEAR ]);
-routes.post(routes.QUERY, function(req, res) {
-    log('...handling route POST ' + routes.QUERY);
+routes.post(routes.QCLEAR, function(req, res) {
+    log('...handling route POST ' + routes.QCLEAR);
 
     var param = req.param;
     var queryArgs = param['query'];
@@ -185,8 +164,8 @@ routes.post(routes.QUERY, function(req, res) {
         KbIds: kbids
     }), 200, JSONt);
 });
-routes.post(routes.ACTION, function(req, res) {
-    log('...handling route POST ' + routes.ACTION);
+routes.post(routes.ACTCLEAR, function(req, res) {
+    log('...handling route POST ' + routes.ACTCLEAR);
 
     var param = req.param;
     var actionArgs = param['activity'];
