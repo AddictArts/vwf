@@ -10,7 +10,6 @@ methods:
   orbit:
   lookAt:
   clearLookAt:
-  removeInstance:
   resetBackend:
   transformGroupingToNode3:
   vwfChildJsonFromGrouping:
@@ -132,11 +131,6 @@ scripts:
     // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
   };
 
-  this.removeInstance = function() {
-    console.info('removeInstance M4_Carbine_dae');
-    this.children.delete(this.children.M4_Carbine_dae);
-  };
-
   this.resetBackend = function() {
     var self = this;
 
@@ -190,17 +184,17 @@ scripts:
 
   this.initInstance = function(name, kbid) {
     this.children[ name ].M4_Carbine_KbId = kbid;
-    // this.children[ name ].init();
+    this.children[ name ].init();
   };
 
-  this.instance = function(name, backEndId) {
+  this.instance = function(backEndId) {
     console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
 
     var self = this;
 
-    name = name.replace(' ', '_') + '_dae';
     self.obj({ type: 'create', ID: backEndId }, function(data) {
-      console.info(self.id + ' obj request received data ' + JSON.stringify(data));
+      console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' asseyURL: ' + data.assetURL);
+      console.log(JSON.parse(data.grouping));
 
       if (data.KbId == 'unknown') {
         console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
@@ -209,16 +203,16 @@ scripts:
 
       var vwf_node3 = self.vwfChildJsonFromGrouping(data.grouping);
 
+      name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => M4_Carbine_dae
       vwf_node3.source = data.assetURL;
-      vwf_node3.implements = [ "M4_Carbine.ux", "backendtxrx.ux" ];
+      vwf_node3.implements = [ "M4_Carbine.ux", "backendtxrx.ux" ]; // => initial state, base behavior, and props, vwf include?
       vwf_node3.properties = {
         translation: [ 0, 0, 2 ],
         rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
         scale: [ 1, 1, 1 ]
       };
 
-      console.log(vwf_node3); //XXX
-
+      console.log(vwf_node3);
       self.children.create(name, vwf_node3); // vwf_M4_node3 is the only non-dynamic piece of the instance, we could get the json dynamically
       self.camTarget = name;
       self.future(0).initInstance(name, data.KbId);

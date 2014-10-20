@@ -114,24 +114,28 @@
         contextActive: false,
         guiref: { ctx: [ ] },
         assessmentActive: false,
-        PointWeaponInSafeDirection: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PointWeaponInSafeDirection');
+        RemoveTheSling: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheSling');
           handleContextMenu();
         },
-        addSelectorLeverActionGroup: function() {
-          var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selector Lever");
+        RemoveTheHandguards: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheHandguards');
+          handleContextMenu();
+        },
+        PushTheTakeDownPin: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTheTakeDownPin');
+          handleContextMenu();
+        },
+        // addSelectorLeverActionGroup: function() {
+        //   var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selector Lever");
 
-          selectorLeverFolder.add(M4.toolTrayMenu, 'semi').name('SEMI');
-          $('div.dg ul li.title').click();
-        },
-        semi: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSemi');
-          handleContextMenu();
-        },
-        PullTrigger: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');
-          handleContextMenu();
-        },
+        //   selectorLeverFolder.add(M4.toolTrayMenu, 'semi').name('SEMI');
+        //   $('div.dg ul li.title').click();
+        // },
+        // semi: function() {
+        //   vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSemi');
+        //   handleContextMenu();
+        // },
         init: function() {
           $('#backendtxrxMsg').hide();
           this.toolTrayMenu = new ToolTrayMenu();
@@ -139,6 +143,7 @@
           this.toolTrayGUI.name = 'Tool Tray';
           M4.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name(vwfapp.tooltray[0].name);
 
+          // Camera drop down menu's
           this.cameraMenu = new CameraMenu();
           this.cameraGUI = new dat.GUI();
           this.cameraGUI.name = 'Camera Menu';
@@ -164,6 +169,7 @@
           this.cameraGUI.domElement.style.visibility = 'hidden';
           $('body').append(this.cameraGUI.domElement);
 
+          // Context menu drop down menu's
           this.contextMenu = new ContextMenu();
           this.contextGUI = new dat.GUI();
           this.contextGUI.name = 'Context Menu';
@@ -195,27 +201,23 @@
         };
       };
       var ToolTrayMenu = function() {
-        this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
-        this.semi = M4.semi;
-        this.PushBoltCatchTop = M4.PushBoltCatchTop;
-        this.PullTrigger = M4.PullTrigger;
+        this.RemoveTheSling = M4.RemoveTheSling;
+        // this.PullTrigger = M4.PullTrigger;
 
         this.m4Carbine = function() {
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           M4.toolTrayGUI.remove(M4.guiref.m4c);
-          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[0].name, vwfapp.tooltray[0].ID ]);
-          M4.toolTrayGUI.add(M4.toolTrayMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
-          M4.addSelectorLeverActionGroup();
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[0].ID ]);
+          M4.toolTrayGUI.add(M4.toolTrayMenu, 'RemoveTheSling').name('Remove the sling');
+          // M4.addSelectorLeverActionGroup();
         };
       };
       var ContextMenu = function() {
         this.close = function() {
           handleContextMenu();
         };
-        this.PointWeaponInSafeDirection = M4.PointWeaponInSafeDirection;
-        this.semi = M4.semi;
-        this.PushMagazineReleaseButton = M4.PushMagazineReleaseButton;
-        this.PullTrigger = M4.PullTrigger;
+        this.RemoveTheSling = M4.RemoveTheSling;
+        // this.PullTrigger = M4.PullTrigger;
       };
 
       function handleContextMenu() {
@@ -295,26 +297,21 @@
             M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
 
             switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
-            case 'Magazine_Catch':
-            case 'Magazine_Catch_Button':
+            case 'Sling':
+            case 'Small_Sling_Swivel':
+            case 'Swivel_LAMA1259863095':
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushMagazineReleaseButton').name('Push Magazine Release Button'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'RemoveTheSling').name('Remove the sling'));
               break;
-            case 'Selector_Lever':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'semi').name('SEMI'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'safe').name('SAFE'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'burst').name('BURST'));
-              break;
-            case 'Charging_Handle':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushChargingHandleForward').name('Push Charging Handle Forward'));
-              break;
+            // case 'Charging_Handle':
+            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
+            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
+            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushChargingHandleForward').name('Push Charging Handle Forward'));
+            //   break;
             default: // Everything else, barrel, stock, etc, is position the weapon...
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
+              // M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
               break;
             }
           }
