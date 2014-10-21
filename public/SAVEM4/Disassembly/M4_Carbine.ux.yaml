@@ -35,6 +35,7 @@ properties:
   # populate from the grouping, could, but we only need kbid for what the exercise will use, see "if (self[ name + '_KbId' ]) comps.push(name)" in init
 methods:
   init:
+  initialState:
   RemoveTheSling:
   detachSmallSlingSwivel:
   detachSwivel:
@@ -85,8 +86,18 @@ scripts:
         for (var i = 0; i < data.KbIds.length; i++) {
           self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
         }
+
+        self.initialState();
       }
     );
+  };
+
+  this.initialState = function() {
+    this.Selector_Lever.rotation = [ 0, 0, 1, 90 ];
+    this.Tube.translation = [ 0, 0.125, 0 ];
+    this.Base.translation = [ 0, 0.125, 0 ];
+    this.Clip_Spring.translation =  [ 0, 0.125, 0 ];
+    this.Clip_Spring1.translation = [ 0, 0.125, 0 ];
   };
 
   this.RemoveTheSling = function(action) {
