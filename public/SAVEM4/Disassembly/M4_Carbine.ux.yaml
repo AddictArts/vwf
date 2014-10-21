@@ -1,6 +1,7 @@
 # Copyright 2014, SRI International
 --- 
 properties:
+  __slingDetach:
   __idToName:
   M4_Carbine_KbId: 'unknown'
   Sling_KbId: 'unknown'
@@ -9,6 +10,7 @@ properties:
   Handguard_Slip_Ring_LAMA918813252_KbId: 'unknown'
   Upper_Handguard_KbId: 'unknown'
   Lower_Handguard_KbId: 'unknown'
+  Takedown_Pin_KbId: 'unknown'
   # Bolt_Ring_KbId: 'unknown'
   # Bolt_Ring1_KbId: 'unknown'
   # Bolt_Ring2_KbId: 'unknown'
@@ -34,10 +36,15 @@ properties:
 methods:
   init:
   RemoveTheSling:
+  detachSmallSlingSwivel:
+  detachSwivel:
   RemoveTheHandguards:
   pressHandguardSlipRing:
   detachUpperHandguard:
   detachLowerHandguard:
+  PushTheTakeDownPinFar:
+  pushTakedownPin:
+  pullTakedownPin:
 scripts:
 - |
   // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
@@ -50,6 +57,7 @@ scripts:
 
     // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
     this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
+    this.__slingDetach = 0;
     this.__idToName = { };
     this.__idToName[ this.id ] = this.name;
 
@@ -82,17 +90,38 @@ scripts:
   };
 
   this.RemoveTheSling = function(action) {
-    console.info('RemoveTheSling 2 detach actions');
-    this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);
-    this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);
-    this.Swivel_LAMA1259863095.translateTo([ 0, 0.2, 0 ], 0.5);
+    console.info('RemoveTheSling 2 detach actions action:' + action);
+
+    switch (action) {
+    case 'detachSmallSlingSwivel':
+      this.__slingDetach++;
+      this.detachSmallSlingSwivel();
+      break;
+    case 'detachSwivel':
+      this.__slingDetach++;
+      this.detachSwivel();
+      break;
+    }
+
+    if (this.__slingDetach == 2) {
+      this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Swivel_LAMA1259863095.translateTo([ 0, 0.2, 0 ], 0.5);
+    }
+  };
+
+  this.detachSmallSlingSwivel = function() {
     // arguments: detached from, thing detached
     this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ] });
+  };
+
+  this.detachSwivel = function() {
+    // arguments: detached from, thing detached
     this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ] });
   };
 
   this.RemoveTheHandguards = function(action) {
-    console.info('RemoveTheHandguards press and 2 detach actions');
+    console.info('RemoveTheHandguards press and 2 detach actions action:' + action);
 
     switch (action) {
     case 'pressHandguardSlipRing':
@@ -125,13 +154,36 @@ scripts:
     this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Lower_Handguard_KbId ] });
   };
 
+  this.PushTheTakeDownPinFar = function(action) {
+    console.info('PushTheTakeDownPinFar push and pull action:' + action);
+
+    switch(action) {
+    case 'pushTakedownPin':
+      this.pushTakedownPin();
+      break;
+    case 'pullTakedownPin':
+      this.pullTakedownPin();
+      break;
+  }
+  };
+
+  this.pushTakedownPin = function() {
+    this.Takedown_Pin.translateTo([ 0, 0, -0.003344 ], 0.5);
+    // arguments: thingPushed
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ] });
+  };
+
+  this.pullTakedownPin = function() {
+    this.Takedown_Pin.translateTo([ 0, 0, -0.018927 ], 0.5);
+    // arguments: thingPulled
+    this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ] });
+  };
+
   // this.PullTrigger = function() {
-  //   console.info('PullTrigger ');
   //   this.Trigger.rotateTo([ 0, 0, 1, 15 ], 0.5);
-  //   this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
   //   this.future(1).releaseTrigger();
   // };
 
   this.releaseTrigger = function() {
-    this.Trigger.rotateTo([ 0, 0, 1, 0 ], 0.125);
+    // this.Trigger.rotateTo([ 0, 0, 1, 0 ], 0.125);
   }; //# sourceURL=M4_Carbine.ux

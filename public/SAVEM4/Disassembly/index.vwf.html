@@ -104,7 +104,49 @@
         idToName: undefined,
         assessmentServerAddress: undefined
       };
-      var M4 = {
+      var CameraMenu = function() {
+        this.backendtxrxMsg = false;
+        this.cameraOrbit = 0;
+        this.cameraZoom = 0;
+        this.reset = function() {
+          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+        };
+        this.assessment = function() {
+          if (!viewM4.assessmentActive) {
+            $('<iframe/>', {
+              name: 'assessment',
+              id:   'assessmentIFrame',
+              src:  vwfapp.assessmentServerAddress
+            }).appendTo('#assessment').css(cssIFrame);
+            $('#assessment').fadeIn();
+            viewM4.assessmentActive = true;
+            $('.dg.ac').toggle();
+          }
+        };
+      };
+      var ToolTrayMenu = function() {
+        vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ 0 ].ID ]);
+        this.createFolders = function() {
+          var RemoveTheSlingFolder = viewM4.toolTrayGUI.addFolder("Remove the Sling");
+          var RemoveTheHandguardsFolder = viewM4.toolTrayGUI.addFolder("Remove the Handguards");
+          var PushTheTakeDownPinFarFolder = viewM4.toolTrayGUI.addFolder("Push the Takedown Pin Far");
+
+          // $('div.dg ul li.title').click(); // expand folder
+          RemoveTheSlingFolder.add(this, 'detachSmallSlingSwivel').name('Detach Small Sling Swivel');
+          RemoveTheSlingFolder.add(this, 'detachSwivel').name('Detach Swivel');
+          RemoveTheHandguardsFolder.add(this, 'pressHandguardSlipRing').name('Press Handguard Slip Ring');
+          RemoveTheHandguardsFolder.add(this, 'detachUpperHandguard').name('Detach Upper Handguard');
+          RemoveTheHandguardsFolder.add(this, 'detachLowerHandguard').name('Detach Lower Handguard');
+          PushTheTakeDownPinFarFolder.add(this, 'pushTakedownPin').name('Push Takedown Pin');
+          PushTheTakeDownPinFarFolder.add(this, 'pullTakedownPin').name('Pull Takedown Pin');
+        };
+      };
+      var ContextMenu = function() {
+        this.close = function() {
+          handleContextMenu();
+        };
+      };
+      var viewM4 = {
         toolTrayGUI: undefined,
         toolTrayMenu: undefined,
         cameraMenu: undefined,
@@ -114,8 +156,12 @@
         contextActive: false,
         guiref: { ctx: [ ] },
         assessmentActive: false,
-        RemoveTheSling: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheSling');
+        detachSmallSlingSwivel: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheSling', [ 'detachSmallSlingSwivel' ]);
+          handleContextMenu();
+        },
+        detachSwivel: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheSling', [ 'detachSwivel' ]);
           handleContextMenu();
         },
         pressHandguardSlipRing: function() {
@@ -130,31 +176,25 @@
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheHandguards', [ 'detachLowerHandguard' ]);
           handleContextMenu();
         },
-        PushTheTakeDownPin: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTheTakeDownPin');
+        pushTakedownPin: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTheTakeDownPinFar', [ 'pushTakedownPin' ]);
           handleContextMenu();
         },
-        // addSelectorLeverActionGroup: function() {
-        //   var selectorLeverFolder = M4.toolTrayGUI.addFolder("Selector Lever");
-
-        //   selectorLeverFolder.add(M4.toolTrayMenu, 'semi').name('SEMI');
-        //   $('div.dg ul li.title').click();
-        // },
-        // semi: function() {
-        //   vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectModeSemi');
-        //   handleContextMenu();
-        // },
+        pullTakedownPin: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTheTakeDownPinFar', [ 'pullTakedownPin' ]);
+          handleContextMenu();
+        },
         init: function() {
           $('#backendtxrxMsg').hide();
-          this.toolTrayMenu = new ToolTrayMenu();
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
-          M4.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name(vwfapp.tooltray[0].name);
+          this.toolTrayMenu = new ToolTrayMenu();
+          // this.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name(vwfapp.tooltray[ 0 ].name);
 
           // Camera drop down menu's
-          this.cameraMenu = new CameraMenu();
           this.cameraGUI = new dat.GUI();
           this.cameraGUI.name = 'Camera Menu';
+          this.cameraMenu = new CameraMenu();
           this.cameraGUI.add(this.cameraMenu, 'reset').name('Reset');
           this.cameraGUI.add(this.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
             if (value) $('#backendtxrxMsg').show();
@@ -178,67 +218,34 @@
           $('body').append(this.cameraGUI.domElement);
 
           // Context menu drop down menu's
-          this.contextMenu = new ContextMenu();
           this.contextGUI = new dat.GUI();
           this.contextGUI.name = 'Context Menu';
+          this.contextMenu = new ContextMenu();
           this.contextGUI.autoPlace = false;
           this.contextGUI.domElement.style.position = 'absolute';
           $('body').append(this.contextGUI.domElement);
           $('div.close-button:last').css('display', 'none');
-        }
-      };
-      var CameraMenu = function() {
-        this.backendtxrxMsg = false;
-        this.cameraOrbit = 0;
-        this.cameraZoom = 0;
-        this.reset = function() {
-          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
-        };
-        this.assessment = function() {
-          if (!M4.assessmentActive) {
-            $('<iframe/>', {
-              name: 'assessment',
-              id:   'assessmentIFrame',
-              src:  vwfapp.assessmentServerAddress
-            }).appendTo('#assessment').css(cssIFrame);
-            $('#assessment').fadeIn();
-            M4.assessmentActive = true;
-            $('.dg.ac').toggle();
-          }
-        };
-      };
-      var ToolTrayMenu = function() {
-        this.RemoveTheSling = M4.RemoveTheSling;
-        // this.PullTrigger = M4.PullTrigger;
 
-        this.m4Carbine = function() {
-          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-          M4.toolTrayGUI.remove(M4.guiref.m4c);
-          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[0].ID ]);
-          M4.toolTrayGUI.add(M4.toolTrayMenu, 'RemoveTheSling').name('Remove the sling');
-          // M4.addSelectorLeverActionGroup();
-        };
-      };
-      var ContextMenu = function() {
-        this.close = function() {
-          handleContextMenu();
-        };
-        this.RemoveTheSling = M4.RemoveTheSling;
-        this.pressHandguardSlipRing = M4.pressHandguardSlipRing;
-        this.detachUpperHandguard = M4.detachUpperHandguard;
-        this.detachLowerHandguard = M4.detachLowerHandguard;
+          this.toolTrayMenu.detachSmallSlingSwivel = this.contextMenu.detachSmallSlingSwivel = this.detachSmallSlingSwivel;
+          this.toolTrayMenu.detachSwivel = this.contextMenu.detachSwivel = this.detachSwivel;
+          this.toolTrayMenu.pressHandguardSlipRing = this.contextMenu.pressHandguardSlipRing = this.pressHandguardSlipRing;
+          this.toolTrayMenu.detachUpperHandguard = this.contextMenu.detachUpperHandguard = this.detachUpperHandguard;
+          this.toolTrayMenu.detachLowerHandguard = this.contextMenu.detachLowerHandguard = this.detachLowerHandguard;
+          this.toolTrayMenu.pushTakedownPin = this.contextMenu.pushTakedownPin = this.pushTakedownPin;
+          this.toolTrayMenu.pullTakedownPin = this.contextMenu.pullTakedownPin = this.pullTakedownPin;
+        }
       };
 
       function handleContextMenu() {
-        if (M4.contextActive) {
-          var l = M4.guiref.ctx.length;
+        if (viewM4.contextActive) {
+          var l = viewM4.guiref.ctx.length;
 
           for (var i = 0; i < l; i++) {
-            M4.contextGUI.remove(M4.guiref.ctx[ i ]);
+            viewM4.contextGUI.remove(viewM4.guiref.ctx[ i ]);
           }
 
-          M4.guiref.ctx = [ ];
-          M4.contextActive = false;
+          viewM4.guiref.ctx = [ ];
+          viewM4.contextActive = false;
         }
       }
 
@@ -258,7 +265,7 @@
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
-              M4.init();
+              viewM4.init();
               //Pace.stop(); // We should not need to do this, but sometimes the Pace progress just hangs around too long...
             };
             var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
@@ -279,8 +286,8 @@
               console.warn("error:" + textStatus);
             });
           } else if (methodName == 'initInstance') {
-            Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
-            M4.cameraGUI.domElement.style.visibility = 'visible';
+            viewM4.toolTrayMenu.createFolders();
+            viewM4.cameraGUI.domElement.style.visibility = 'visible';
             vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
             vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
             vwfapp.assessmentServerAddress = vwf.getProperty(vwfapp.M4_Carbine_daeId, 'assessmentServerAddress');
@@ -296,33 +303,38 @@
           //   index-vwf:6-98-M4_Carbine_dae
           //   index-vwf 
 
-          if (M4.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
+          if (viewM4.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
 
           console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
           if (nodeId == vwfapp.M4_Carbine_daeId) {
-            M4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
-            M4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
-            M4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+            viewM4.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
+            viewM4.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
+            viewM4.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
 
             switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
             case 'Sling':
             case 'Small_Sling_Swivel':
             case 'Swivel_LAMA1259863095':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'RemoveTheSling').name('Remove the sling'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'close').name('(X) Close'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'detachSmallSlingSwivel').name('Detach Small Sling Swivel'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'detachSwivel').name('Detach Swivel'));
               break;
             case 'Handguard_Slip_Ring_LAMA918813252':
             case 'Upper_Handguard':
             case 'Lower_Handguard':
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'pressHandguardSlipRing').name('Press'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'detachUpperHandguard').name('Detach'));
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'detachLowerHandguard').name('Detach'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'close').name('(X) Close'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'pressHandguardSlipRing').name('Press Handguard Slip Ring'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'detachUpperHandguard').name('Detach Upper Handguard'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'detachLowerHandguard').name('Detach Lower Handguard'));
+              break;
+            case 'Takedown_Pin':
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'close').name('(X) Close'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'pushTakedownPin').name('Push Takedown Pin'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'pullTakedownPin').name('Pull Takedown Pin'));
               break;
             default: // Everything else, barrel, stock, etc, is position the weapon...
-              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-              // M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
+              viewM4.guiref.ctx.push(viewM4.contextGUI.add(viewM4.contextMenu, 'close').name('(X) Close'));
               break;
             }
           }
