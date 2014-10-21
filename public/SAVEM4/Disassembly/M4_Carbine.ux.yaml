@@ -6,6 +6,9 @@ properties:
   Sling_KbId: 'unknown'
   Small_Sling_Swivel_KbId: 'unknown'
   Swivel_LAMA1259863095_KbId: 'unknown'
+  Handguard_Slip_Ring_LAMA918813252_KbId: 'unknown'
+  Upper_Handguard_KbId: 'unknown'
+  Lower_Handguard_KbId: 'unknown'
   # Bolt_Ring_KbId: 'unknown'
   # Bolt_Ring1_KbId: 'unknown'
   # Bolt_Ring2_KbId: 'unknown'
@@ -31,6 +34,10 @@ properties:
 methods:
   init:
   RemoveTheSling:
+  RemoveTheHandguards:
+  pressHandguardSlipRing:
+  detachUpperHandguard:
+  detachLowerHandguard:
 scripts:
 - |
   // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
@@ -74,45 +81,49 @@ scripts:
     );
   };
 
-  this.RemoveTheSling = function() {
+  this.RemoveTheSling = function(action) {
     console.info('RemoveTheSling 2 detach actions');
     this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);
     this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);
     this.Swivel_LAMA1259863095.translateTo([ 0, 0.2, 0 ], 0.5);
-    // detached from, thing detached
-    this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ] }); // Sling_KbId is wrong, should be the group which is missing "Sling Group"
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ] });
     this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ] });
   };
 
-  // this.PushMagazineReleaseButton = function() {
-  //   console.info('PushMagazineReleaseButton pushed and released');
-  //   this.Magazine_Catch.translateTo([ 0, 0, 0.0026 ], 0.125); // back to world origin since object has no local pivot
-  //   this.Magazine_Catch_Button.translateTo([ 0, 0, 0.0026], 0.125); // back to world origin since object has no local pivot
-  //   this.Tube.translateTo([ 0, 0.125, 0 ], 0.25);
-  //   this.Base.translateTo([ 0, 0.125, 0 ], 0.25);
-  //   this.Clip_Spring.translateTo([ 0, 0.125, 0 ], 0.25);
-  //   this.Clip_Spring1.translateTo([ 0, 0.125, 0 ], 0.25);
-  //   this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_KbId ] });
-  // };
+  this.RemoveTheHandguards = function(action) {
+    console.info('RemoveTheHandguards press and 2 detach actions');
 
-  // this.CheckChamberAndReceiverForAmmo = function() {
-  //   console.info('CheckChamberAndReceiverForAmmo');
-  //   this.Ejection_Port_Cover.rotateTo([ 1, 0, 0, 130 ], 0.5);
-  //   // this.Key_and_Bolt_Carrier_Assembly.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Bolt.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Firing_Pin.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Extractor.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Bolt_Cam_Pin.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Extractor_Pin.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Extractor_Spring.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Bolt_Ring.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Bolt_Ring1.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Bolt_Ring2.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Firing_Pin_Retaining_Pin.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Ejector_Spring_Pin.translateTo([ 0, 0, 0 ], 0.25);
-  //   // this.Ejector_Spring.translateTo([ 0, 0, 0 ], 0.25);
-  //   this.activity({ action: 'Inspect', arguments: [ this.Bolt_KbId ] });
-  // };
+    switch (action) {
+    case 'pressHandguardSlipRing':
+      this.pressHandguardSlipRing();
+      break;
+    case 'detachUpperHandguard':
+      this.detachUpperHandguard();
+      break;
+    case 'detachLowerHandguard':
+      this.detachLowerHandguard();
+      break;
+    }
+  };
+
+  this.pressHandguardSlipRing = function() {
+    this.Handguard_Slip_Ring_LAMA918813252.translateTo([  -0.0034912, 0, 0 ], 0.125);
+    // arguments: thingPressed
+    this.activity({ action: 'Press', arguments: [ this.Handguard_Slip_Ring_LAMA918813252_KbId ] });
+  };
+
+  this.detachUpperHandguard = function() {
+    this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Upper_Handguard_KbId ] });
+  };
+
+  this.detachLowerHandguard = function() {
+    this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Lower_Handguard_KbId ] });
+  };
 
   // this.PullTrigger = function() {
   //   console.info('PullTrigger ');

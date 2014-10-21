@@ -141,7 +141,7 @@ scripts:
     );
   };
 
-  this.transformGroupingToNode3 = function(obj, node3) {
+  this.transformGroupingToNode3 = function(obj, node3, mgroups) {
     var self = this;
 
     for (var p in obj) {
@@ -152,9 +152,11 @@ scripts:
                 if (group.node) {
                     node3.children[ group.node ] = { extends: "http://vwf.example.com/node3.vwf", children: { } };
                     children = node3.children[ group.node ];
+                } else {
+                  mgroups.push(group.name);
                 }
 
-                self.transformGroupingToNode3(group, children);
+                self.transformGroupingToNode3(group, children, mgroups);
             });
         } else if (p == 'parts') {
             obj.parts.forEach(function(part) {
@@ -163,7 +165,7 @@ scripts:
         }
     }
 
-    return node3;
+    return [ node3, mgroups ];
   };
 
   this.vwfChildJsonFromGrouping = function(grouping) {
@@ -177,8 +179,10 @@ scripts:
       grouping: groupingObj.name
     };
     
-    var rootNode3 =  this.transformGroupingToNode3(groupingObj, baseNode3);
+    var tformed =  this.transformGroupingToNode3(groupingObj, baseNode3, [ ]);
+    var rootNode3 = tformed[ 0 ];
 
+    console.log(tformed[ 1 ]); //XXX saving the groups so we can ask for kbids for them in init!
     return rootNode3;
   };
 

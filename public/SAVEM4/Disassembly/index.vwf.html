@@ -118,8 +118,16 @@
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheSling');
           handleContextMenu();
         },
-        RemoveTheHandguards: function() {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheHandguards');
+        pressHandguardSlipRing: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheHandguards', [ 'pressHandguardSlipRing' ]);
+          handleContextMenu();
+        },
+        detachUpperHandguard: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheHandguards', [ 'detachUpperHandguard' ]);
+          handleContextMenu();
+        },
+        detachLowerHandguard: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'RemoveTheHandguards', [ 'detachLowerHandguard' ]);
           handleContextMenu();
         },
         PushTheTakeDownPin: function() {
@@ -188,7 +196,6 @@
         };
         this.assessment = function() {
           if (!M4.assessmentActive) {
-            // vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'assessment');
             $('<iframe/>', {
               name: 'assessment',
               id:   'assessmentIFrame',
@@ -217,7 +224,9 @@
           handleContextMenu();
         };
         this.RemoveTheSling = M4.RemoveTheSling;
-        // this.PullTrigger = M4.PullTrigger;
+        this.pressHandguardSlipRing = M4.pressHandguardSlipRing;
+        this.detachUpperHandguard = M4.detachUpperHandguard;
+        this.detachLowerHandguard = M4.detachLowerHandguard;
       };
 
       function handleContextMenu() {
@@ -303,12 +312,14 @@
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'RemoveTheSling').name('Remove the sling'));
               break;
-            // case 'Charging_Handle':
-            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
-            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PullAndHoldChargingHandle').name('Pull And Hold Charging Handle'));
-            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'ReleaseChargingHandle').name('Release Charging Handle'));
-            //   M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PushChargingHandleForward').name('Push Charging Handle Forward'));
-            //   break;
+            case 'Handguard_Slip_Ring_LAMA918813252':
+            case 'Upper_Handguard':
+            case 'Lower_Handguard':
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'pressHandguardSlipRing').name('Press'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'detachUpperHandguard').name('Detach'));
+              M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'detachLowerHandguard').name('Detach'));
+              break;
             default: // Everything else, barrel, stock, etc, is position the weapon...
               M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'close').name('(X) Close'));
               // M4.guiref.ctx.push(M4.contextGUI.add(M4.contextMenu, 'PointWeaponInSafeDirection').name('Position Weapon'));
