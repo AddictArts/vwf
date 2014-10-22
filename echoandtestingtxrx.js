@@ -71,12 +71,13 @@ routes.get(routes.INV_CLEAR, function(req, res) {
 });
 routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
 routes.get(routes.INV_CAT, function(req, res) {
-    log('...handling route GET ' + routes.INV_CAT);
+    log('...handling route GET ' + req.reqPath);
 
     var data = {
        tooltray: [{
            name: "Shooting Range",
-           ID: "myRange",
+           ID: "myRange"
+        }, {
            name: "M4 Carbine",
            ID: "myM4"
         }]
