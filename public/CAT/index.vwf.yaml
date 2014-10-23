@@ -21,13 +21,6 @@ properties:
   camTarget:
   backendResetSent:
 children:
-  # M4_Environment_01_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: /SAVE/models/environments/range/ShootingRange.dae
-  #   type: model/vnd.collada+xml
-  #   properties:
-  #     scale: [ 1, 1, 1 ]
-  #     translation: [ 0, 0, 0 ]
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
@@ -167,7 +160,7 @@ scripts:
   };
 
   this.vwfChildJsonFromGrouping = function(grouping) {
-    var groupingObj = JSON.parse(grouping);
+    var groupingObj = grouping !== undefined? JSON.parse(grouping) : { name: undefined };
     var  baseNode3 = {
       extends: "http://vwf.example.com/node3.vwf",
       type: "model/vnd.collada+xml",
@@ -177,14 +170,16 @@ scripts:
       grouping: groupingObj.name
     };
     
-    var rootNode3 =  this.transformGroupingToNode3(groupingObj, baseNode3);
+    var rootNode3 =  grouping !== undefined? this.transformGroupingToNode3(groupingObj, baseNode3) : baseNode3;
 
     return rootNode3;
   };
 
   this.initInstance = function(name, kbid) {
-    this.children[ name ].M4_Carbine_KbId = kbid;
-    this.children[ name ].init();
+    if (name == "M4_Carbine_dae") {
+      this.children[ name ].M4_Carbine_KbId = kbid;
+      this.children[ name ].init();
+    }
   };
 
   this.instance = function(backEndId) {
@@ -194,7 +189,8 @@ scripts:
 
     self.obj({ type: 'create', ID: backEndId }, function(data) {
       console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' asseyURL: ' + data.assetURL);
-      console.log(JSON.parse(data.grouping));
+
+      if (data.grouping) console.log(JSON.parse(data.grouping));
 
       if (data.KbId == 'unknown') {
         console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
@@ -205,17 +201,23 @@ scripts:
 
       name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => M4_Carbine_dae
       vwf_node3.source = data.assetURL;
-      vwf_node3.implements = [ "catNode3.cat", "backendtxrx.cat" ]; // => initial state, base behavior, and props, vwf include?
-      vwf_node3.properties = {
-        translation: [ 0, 0, 2 ],
-        rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
-        scale: [ 1, 1, 1 ]
-      };
+
+      if (name == "M4_Carbine_dae") {
+        vwf_node3.implements = [ "catNode3.vwf", "backendtxrx.cat" ]; // => initial state, base behavior, and props, vwf include?
+        vwf_node3.properties = {
+          translation: [ 0, 0, 2 ],
+          rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
+          scale: [ 1, 1, 1 ]
+        };
+      }
 
       console.log(vwf_node3);
       self.children.create(name, vwf_node3); // vwf_M4_node3 is the only non-dynamic piece of the instance, we could get the json dynamically
-      self.camTarget = name;
       self.future(0).initInstance(name, data.KbId);
-      self.future(0).lookAt(self.camTarget);
+
+      if (name == "M4_Carbine_dae") {
+        self.camTarget = name;
+        self.future(0).lookAt(self.camTarget);
+      }
     });
   }; //# sourceURL=index.vwf

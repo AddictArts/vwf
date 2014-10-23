@@ -16,6 +16,8 @@
         display: none;
       }
 
+      .property-name { font: 18px 'Lucida Grande', sans-serif; }
+
       // dat.GUI style inspired by ...
       // http://brm.io/dat-gui-light-theme/
       // https://github.com/liabru/dat-gui-light-theme
@@ -111,15 +113,7 @@
         //   vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         // };
       };
-      var ToolTrayMenu = function() {
-        // this.RemoveTheSling = view.RemoveTheSling;
-
-        this.m4Carbine = function() {
-          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-          view.toolTrayGUI.remove(view.guiref.m4c);
-          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ 0 ].ID ]);
-        };
-      };
+      var ToolTrayMenu = function() { };
       var ContextMenu = function() {
         this.close = function() {
           handleContextMenu();
@@ -135,13 +129,24 @@
         contextGUI: undefined,
         contextActive: false,
         guiref: { ctx: [ ] },
+        instance: function(index) {
+          return function() {
+            console.log(vwfapp.tooltray[ index ]);
+            Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+            view.toolTrayGUI.remove(view.guiref[ index ]);
+            vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].ID ]);
+          };
+        },
         init: function() {
           $('#backendtxrxMsg').hide();
           this.toolTrayMenu = new ToolTrayMenu();
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
-          // view.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name(vwfapp.tooltray[ 0 ].name);
-          // view.guiref.m4c = this.toolTrayGUI.add(this.toolTrayMenu, 'm4Carbine').name(vwfapp.tooltray[ 1 ].name);
+
+          for (var index = 0; index < vwfapp.tooltray.length; index++) {
+            this.toolTrayMenu[ 'instance' + index ] = this.instance(index);
+            view.guiref[ index ] = this.toolTrayGUI.add(this.toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
+          }
 
           // Camera drop down menu's
           this.cameraMenu = new CameraMenu();
