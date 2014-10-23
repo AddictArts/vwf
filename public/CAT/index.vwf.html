@@ -16,8 +16,6 @@
         display: none;
       }
 
-      .property-name { font: 18px 'Lucida Grande', sans-serif; }
-
       // dat.GUI style inspired by ...
       // http://brm.io/dat-gui-light-theme/
       // https://github.com/liabru/dat-gui-light-theme
@@ -107,6 +105,7 @@
       };
       var CameraMenu = function() {
         this.backendtxrxMsg = false;
+        this.fontsize = '110%';
         this.cameraOrbit = 0;
         this.cameraZoom = 0;
         // this.reset = function() {
@@ -156,21 +155,23 @@
             if (value) $('#backendtxrxMsg').show();
             else $('#backendtxrxMsg').hide();
           });
+          this.cameraGUI.add(this.cameraMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.cameraGUI.add(this.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
             vwf_view.kernel.callMethod(vwfapp.appId, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
           });
           this.cameraGUI.add(this.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
             vwf_view.kernel.callMethod(vwfapp.appId, 'zoom', [ value ]);
           }).onFinishChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
+            // vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
           });
           this.cameraGUI.autoPlace = false;
           this.cameraGUI.domElement.style.position = 'fixed';
           this.cameraGUI.domElement.style.float = 'left';
           this.cameraGUI.domElement.style.left = '15px';
           this.cameraGUI.domElement.style.overflowX = 'visible';
-          this.cameraGUI.domElement.style.visibility = 'hidden';
+          // this.cameraGUI.domElement.style.visibility = 'hidden';
           $('body').append(this.cameraGUI.domElement);
+          $('*.dg').css('font-size', this.cameraMenu.fontsize);
 
           // Context menu drop down menu's
           this.contextMenu = new ContextMenu();

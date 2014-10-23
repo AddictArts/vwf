@@ -16,6 +16,12 @@
         display: none;
       }
 
+      /* this is rather unfortunate, using the universal selector, but the vwf does not apply the style rules like the browser would natively  */
+      /* the vwf dynamically injects this stuff and therefore any style I set here can be clobbered by when dat gui loads, async fun!  */
+      * {
+        font-size: 110%;
+      }
+
       // dat.GUI style inspired by ...
       // http://brm.io/dat-gui-light-theme/
       // https://github.com/liabru/dat-gui-light-theme
