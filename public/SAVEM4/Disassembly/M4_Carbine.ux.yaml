@@ -1,0 +1,200 @@
+# Copyright 2014, SRI International
+--- 
+properties:
+  __slingDetach:
+  __idToName:
+  M4_Carbine_KbId: 'unknown'
+  Sling_KbId: 'unknown'
+  Small_Sling_Swivel_KbId: 'unknown'
+  Swivel_LAMA1259863095_KbId: 'unknown'
+  Handguard_Slip_Ring_LAMA918813252_KbId: 'unknown'
+  Upper_Handguard_KbId: 'unknown'
+  Lower_Handguard_KbId: 'unknown'
+  Takedown_Pin_KbId: 'unknown'
+  # Bolt_Ring_KbId: 'unknown'
+  # Bolt_Ring1_KbId: 'unknown'
+  # Bolt_Ring2_KbId: 'unknown'
+  # Bolt_Cam_Pin_KbId: 'unknown'
+  # Charging_Handle_KbId: 'unknown'
+  # Clip_Spring_KbId: 'unknown'
+  # Clip_Spring1_KbId: 'unknown'
+  # Extractor_KbId: 'unknown'
+  # Extractor_Pin_KbId: 'unknown'
+  # Extractor_Spring_KbId: 'unknown'
+  # Ejection_Port_Cover_KbId: 'unknown'
+  # Ejector_Spring_Pin_KbId: 'unknown'
+  # Firing_Pin_KbId: 'unknown'
+  # Firing_Pin_Retaining_Pin_KbId: 'unknown'
+  # Key_and_Bolt_Carrier_Assembly_KbId: 'unknown'
+  # Magazine_Catch_KbId: 'unknown'
+  # Magazine_Catch_Button_KbId: 'unknown'
+  # Selector_Lever_KbId: 'unknown'
+  # Trigger_KbId: 'unknown'
+  # Tube_KbId: 'unknown'
+  #
+  # populate from the grouping, could, but we only need kbid for what the exercise will use, see "if (self[ name + '_KbId' ]) comps.push(name)" in init
+methods:
+  init:
+  initialState:
+  RemoveTheSling:
+  detachSmallSlingSwivel:
+  detachSwivel:
+  RemoveTheHandguards:
+  pressHandguardSlipRing:
+  detachUpperHandguard:
+  detachLowerHandguard:
+  PushTheTakeDownPinFar:
+  pushTakedownPin:
+  pullTakedownPin:
+scripts:
+- |
+  // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
+  // Since this init depends on another implemented behavior that could be loaded before this and may fix the
+  // undefined reference error, I will just handle init myself. I did not test the order in the array of implements theory.
+  this.init = function() {
+    console.info(this.id + ' ' + this.name + ' init');
+    // Point the weapon in an unsafe direction as the initial state until the tools / backend set the initial state
+    this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90
+
+    // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
+    this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
+    this.__slingDetach = 0;
+    this.__idToName = { };
+    this.__idToName[ this.id ] = this.name;
+
+    var self = this;
+    var count = self.children.length;
+    var comps = [ ];
+
+    for (var i = 0; i < count; i++) {
+      var child = self.children[ i ]; 
+      var name = child.name;
+      var id = child.id;
+
+      self.__idToName[ id ] = name;
+
+      if (self[ name + '_KbId' ]) comps.push(name);
+    }
+
+    // console.log(self.__idToName);
+
+    self.query(
+      { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
+      function(data) {
+        console.info(self.id + " init query received data " + JSON.stringify(data));
+
+        for (var i = 0; i < data.KbIds.length; i++) {
+          self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
+        }
+
+        self.initialState();
+      }
+    );
+  };
+
+  this.initialState = function() {
+    this.Selector_Lever.rotation = [ 0, 0, 1, 90 ];
+    this.Tube.translation = [ 0, 0.125, 0 ];
+    this.Base.translation = [ 0, 0.125, 0 ];
+    this.Clip_Spring.translation =  [ 0, 0.125, 0 ];
+    this.Clip_Spring1.translation = [ 0, 0.125, 0 ];
+  };
+
+  this.RemoveTheSling = function(action) {
+    console.info('RemoveTheSling 2 detach actions action:' + action);
+
+    switch (action) {
+    case 'detachSmallSlingSwivel':
+      this.__slingDetach++;
+      this.detachSmallSlingSwivel();
+      break;
+    case 'detachSwivel':
+      this.__slingDetach++;
+      this.detachSwivel();
+      break;
+    }
+
+    if (this.__slingDetach == 2) {
+      this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Swivel_LAMA1259863095.translateTo([ 0, 0.2, 0 ], 0.5);
+    }
+  };
+
+  this.detachSmallSlingSwivel = function() {
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ] });
+  };
+
+  this.detachSwivel = function() {
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ] });
+  };
+
+  this.RemoveTheHandguards = function(action) {
+    console.info('RemoveTheHandguards press and 2 detach actions action:' + action);
+
+    switch (action) {
+    case 'pressHandguardSlipRing':
+      this.pressHandguardSlipRing();
+      break;
+    case 'detachUpperHandguard':
+      this.detachUpperHandguard();
+      break;
+    case 'detachLowerHandguard':
+      this.detachLowerHandguard();
+      break;
+    }
+  };
+
+  this.pressHandguardSlipRing = function() {
+    this.Handguard_Slip_Ring_LAMA918813252.translateTo([  -0.0034912, 0, 0 ], 0.125);
+    // arguments: thingPressed
+    this.activity({ action: 'Press', arguments: [ this.Handguard_Slip_Ring_LAMA918813252_KbId ] });
+  };
+
+  this.detachUpperHandguard = function() {
+    this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Upper_Handguard_KbId ] });
+  };
+
+  this.detachLowerHandguard = function() {
+    this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Lower_Handguard_KbId ] });
+  };
+
+  this.PushTheTakeDownPinFar = function(action) {
+    console.info('PushTheTakeDownPinFar push and pull action:' + action);
+
+    switch(action) {
+    case 'pushTakedownPin':
+      this.pushTakedownPin();
+      break;
+    case 'pullTakedownPin':
+      this.pullTakedownPin();
+      break;
+  }
+  };
+
+  this.pushTakedownPin = function() {
+    this.Takedown_Pin.translateTo([ 0, 0, -0.003344 ], 0.5);
+    // arguments: thingPushed
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ] });
+  };
+
+  this.pullTakedownPin = function() {
+    this.Takedown_Pin.translateTo([ 0, 0, -0.018927 ], 0.5);
+    // arguments: thingPulled
+    this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ] });
+  };
+
+  // this.PullTrigger = function() {
+  //   this.Trigger.rotateTo([ 0, 0, 1, 15 ], 0.5);
+  //   this.future(1).releaseTrigger();
+  // };
+
+  this.releaseTrigger = function() {
+    // this.Trigger.rotateTo([ 0, 0, 1, 0 ], 0.125);
+  }; //# sourceURL=M4_Carbine.ux

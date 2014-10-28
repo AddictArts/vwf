@@ -22,19 +22,19 @@ var qs = require('querystring'),
 var routes = {
     ROOT: '/',
     ROOTANY: '/*',
-    INVCLEAR: '/M4clear/inventory',
-    INVDIS: '/M4dis/inventory',
-    INVCAT: '/cat/inventory',
-    OBJCLEAR: '/M4clear/object',
-    OBJDIS: '/M4dis/object',
-    OBJCAT: '/cat/object',
-    ACTCLEAR: '/M4clear/action',
-    ACTDIS: '/M4dis/action',
-    QCLEAR: '/M4clear/query',
-    QDIS: '/M4dis/query',
-    QCAT: '/cat/query',
-    ASSESSMENT: '/M4clear/assessment',
-    ASSESSDIS: '/M4dis/assessment'
+    INV_CLEAR: '/M4clear/inventory',
+    INV_DIS: '/M4dis/inventory',
+    INV_CAT: '/cat/inventory',
+    OBJ_CLEAR: '/M4clear/object',
+    OBJ_DIS: '/M4dis/object',
+    OBJ_CAT: '/cat/object',
+    ACT_CLEAR: '/M4clear/action',
+    ACT_DIS: '/M4dis/action',
+    Q_CLEAR: '/M4clear/query',
+    Q_DIS: '/M4dis/query',
+    Q_CAT: '/cat/query',
+    ASSESS_CLEAR: '/M4clear/assessment',
+    ASSESS_DIS: '/M4dis/assessment'
 };
 
 start(routes); // construct or initialize the routes object
@@ -56,8 +56,8 @@ routes.get(routes.ROOTANY, function(req, res) {
 
     res.send(data, status, req.contentType);
 });
-routes.get(routes.INVCLEAR, function(req, res) {
-    log('...handling route GET ' + routes.INVCLEAR);
+routes.get(routes.INV_CLEAR, function(req, res) {
+    log('...handling route GET ' + req.reqPath);
 
     var data = {
        tooltray: [{
@@ -69,14 +69,15 @@ routes.get(routes.INVCLEAR, function(req, res) {
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.get(routes.INVDIS, routes.gets[ routes.INVCLEAR ]);
-routes.get(routes.INVCAT, function(req, res) {
-    log('...handling route GET ' + routes.INVCAT);
+routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
+routes.get(routes.INV_CAT, function(req, res) {
+    log('...handling route GET ' + req.reqPath);
 
     var data = {
        tooltray: [{
            name: "Shooting Range",
-           ID: "myRange",
+           ID: "myRange"
+        }, {
            name: "M4 Carbine",
            ID: "myM4"
         }]
@@ -85,25 +86,8 @@ routes.get(routes.INVCAT, function(req, res) {
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.get(routes.ASSESSMENT, function(req, res) {
-    res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul>\
-           <li>Pull and hold charging handle </li>\
-           <li>Push and hold bottom of bolt catch </li>\
-           <li>Release charging handle to cock rifle </li>\
-           <li>Let go of bolt catch bottom </li>\
-           <li>Return charging handle to forward position </li>\
-           <li>Check chamber for ammo </li>\
-           <li>Select <i>Safe</i> mode </li>\
-           <li>Release bolt by pushing bolt catch top </li>\
-           <li>Select <i>Semi</i> mode </li>\
-           <li>Pull trigger to fire the weapon </li>\
-           <li>Pull and hold charging handle </li>\
-           <li>Release charging handle to cock rifle </li>\
-           <li>Select <i>Safe</i> mode </li>\
-         </ul></p></div></body></html>', 200, HTMLt);
-});
-routes.post(routes.OBJCLEAR, function(req, res) {
-    log('...handling route POST ' + routes.OBJECT);
+routes.post(routes.OBJ_CLEAR, function(req, res) {
+    log('...handling route POST ' + req.reqPath);
 
     // request json
     // {
@@ -118,22 +102,32 @@ routes.post(routes.OBJCLEAR, function(req, res) {
 
     log(o);
 
-    // http://codebeautify.org/xmltojson
-    // http://codebeautify.org/view/jsonviewer
     if (o.type == 'create') {
-        data = {
-            KbId: "myM4",
-            assetURL: "/SAVE/models/weapons/M4/M4_noHierarchy.dae",
-            grouping: ''
-        };
+        switch (o.ID) {
+        case 'myRange':
+            data = {
+                KbId: "myRange",
+                assetURL: "/SAVE/models/environments/range/ShootingRange.dae",
+                grouping: '{"name":"ShootingRange"}'
+            };
+            break;
+        case 'myM4':
+            data = {
+                KbId: "myM4",
+                assetURL: "/SAVE/models/weapons/M4/M4_noHierarchy.dae",
+                grouping: '{"name":"M4 Carbine","groups":[{"name":"M4 Group","parts":["Sling"],"groups":[{"name":"Buttstock Group","parts":["Buttstock"],"groups":[{"name":"Swivel_LAMA1259863095 Group","parts":["Swivel_LAMA1259863095","Machine_Screw"]},{"name":"Buttstock_Release_Lever_Nut Group","parts":["Buttstock_Release_Lever_Nut","Buttstock_Release_Lever"],"groups":[{"name":"Buttstock_Release_Lever_Screw_LAMA1417807796 Group","parts":["Buttstock_Release_Lever_Screw_LAMA1417807796","Buttstock_Release_Lever_Spring_Pin","Buttstock_Release_Lever_Spring"]}]}]},{"name":"Magazine_g Group","groups":[{"name":"Tube Group","parts":["Tube","Clip_Spring1","Base","Clip_Spring","Follower"],"groups":[{"name":"Casing1 Group","parts":["Casing1","Projectile1"]},{"name":"Casing2 Group","parts":["Casing2","Projectile2"]},{"name":"Casing3 Group","parts":["Casing3","Projectile3"]}]}]},{"name":"Barrel_Assembly Group","parts":["Barrel_Assembly","Upper_Handguard","Lower_Handguard","Small_Sling_Swivel","Compensator","Recessed_Washer__OOCompensator","Spring_Pin2","Spring_Pin3","Rear_Handguard_Clamp","Screw","Gas_Tube_Spring_Pin","Gas_Tube","Handguard_Slip_Ring_Spring","Handguard_Slip_Ring_Retaining_Ring","Handguard_Slip_Ring_LAMA918813252"],"groups":[{"name":"Front_Sight_Post Group","parts":["Front_Sight_Post","Headless_Shoulder_Pin","Spring3","Tubular_Rivet","Synchro_Clamp","Spring_Pin1","Spring_Pin","Swivel_Mount","Flat_Spring","Special_Shaped_Spacer"]}]},{"name":"Lower_Receiver Group","parts":["Lower_Receiver","Bolt_Catch","Bolt_Catch_Spring_Pin","Bolt_Catch_Plunger","Bolt_Catch_Spring","Trigger","Trigger_Spring","Disconnector_Spring__OOBurst__CC","Disconnector_Spring__OOSemi__CC","Trigger_Spring1","Trigger_Pin","Disconnector__Burst","Disconnector__Semi","Magazine_Catch","Magazine_Catch_Spring","Magazine_Catch_Button","Pivot_Pin","Pivot_Pin_Detent","Pivot_Pin_Spring","Takedown_Pin","Takedown_Pin_Detent","Takedown_Pin_Detent_Spring","Selector_Lever","Safety_Detent__OOSelector_Lever__CC","Safety_Spring__OOSelector_Lever__CC","Automatic_Sear","Automatic_Sear_Spring","Sear_Pin","Hammer","Hammer_Spring1","Hammer_Pin","Burst_Cam","Burst_Cam_Clutch_Spring","Hammer_Spring","Lower_Receiver_Extension","Buffer","Action_Spring","Plain_Round_Nut","Receiver_End_Plate","Buffer_Retainer","Buffer_Retainer_Spring"],"groups":[{"name":"Trigger_Guard Group","parts":["Trigger_Guard","Trigger_Guard_Spring_Pin_Retaining_Pin","Trigger_Guard_Detent","Trigger_Guard_Detent_Spring"]},{"name":"Pistol_Grip Group","parts":["Pistol_Grip","Pistol_Grip_Screw","Pistol_Grip_Lock_Washer"]}]},{"name":"Upper_Receiver Group","parts":["Upper_Receiver"],"groups":[{"name":"Charging_Handle Group","parts":["Charging_Handle","Charging_Handle_Latch","Charging_Handle_Spring","Charging_Handle_Spring_Pin"],"groups":[{"name":"Key_and_Bolt_Carrier_Assembly Group","parts":["Key_and_Bolt_Carrier_Assembly","Firing_Pin_Retaining_Pin","Firing_Pin"],"groups":[{"name":"Bolt Group","parts":["Bolt","Bolt_Cam_Pin","Ejector_Spring_Pin","Bolt_Ring","Bolt_Ring2","Bolt_Ring1"],"groups":[{"name":"Ejector Group","parts":["Ejector","Ejector_Spring"]},{"name":"Extractor Group","parts":["Extractor","Extractor_Spring","Extractor_Pin"]},{"name":"Casing4 Group","parts":["Casing4","Projectile4"]}]}]}]},{"name":"Plunger_Assembly Group","parts":["Plunger_Assembly","Pawl__Forward_Assist","Forward_Assist_Spring","Forward_Assist_Spring1","Pawl_Spring_Pin","Pawl_Detent","Pawl_Spring"]},{"name":"Cover_Pin Group","parts":["Cover_Pin","Ejection_Port_Cover","Cover_Spring","Cover_Retaining_Ring__OOC_Clip__CC"]},{"name":"Gun_Carrying_Handle Group","parts":["Gun_Carrying_Handle","Windage_Spring_Pin","Rear_Sight_Screw","Flat_Rear_Sight_Spring","Rear_Sight_Base","Sight_Aperture","Windage_Knob","Spring__Helical__Compression","Knob","Ball_Bearing1","Elevating_Mechanism","Spring2","Spring1","Index_Screw","Ball_Bearing","Pin_Spring","Spring","Ball_Bearing2","Round_Nut1","Washer1","Washer","Clamping_Bar","Round_Nut"]}]}]}]}'
+            };
+            break;
+        }
     }
 
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.post(routes.OBJDIS, routes.posts[ routes.OBJCLEAR ]);
-routes.post(routes.QCLEAR, function(req, res) {
-    log('...handling route POST ' + routes.QCLEAR);
+routes.post(routes.OBJ_DIS, routes.posts[ routes.OBJ_CLEAR ]);
+routes.post(routes.OBJ_CAT, routes.posts[ routes.OBJ_CLEAR ]);
+routes.post(routes.Q_CLEAR, function(req, res) {
+    log('...handling route POST ' + req.reqPath);
 
     var param = req.param;
     var queryArgs = param['query'];
@@ -164,8 +158,9 @@ routes.post(routes.QCLEAR, function(req, res) {
         KbIds: kbids
     }), 200, JSONt);
 });
-routes.post(routes.ACTCLEAR, function(req, res) {
-    log('...handling route POST ' + routes.ACTCLEAR);
+routes.post(routes.Q_DIS, routes.posts[ routes.Q_CLEAR ]);
+routes.post(routes.ACT_CLEAR, function(req, res) {
+    log('...handling route POST ' + req.reqPath);
 
     var param = req.param;
     var actionArgs = param['activity'];
@@ -180,7 +175,25 @@ routes.post(routes.ACTCLEAR, function(req, res) {
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send('{ }\n', 200, JSONt);
 });
-
+routes.post(routes.ACT_DIS, routes.posts[ routes.ACT_CLEAR ]);
+routes.get(routes.ASSESS_CLEAR, function(req, res) {
+    res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul>\
+           <li>Pull and hold charging handle </li>\
+           <li>Push and hold bottom of bolt catch </li>\
+           <li>Release charging handle to cock rifle </li>\
+           <li>Let go of bolt catch bottom </li>\
+           <li>Return charging handle to forward position </li>\
+           <li>Check chamber for ammo </li>\
+           <li>Select <i>Safe</i> mode </li>\
+           <li>Release bolt by pushing bolt catch top </li>\
+           <li>Select <i>Semi</i> mode </li>\
+           <li>Pull trigger to fire the weapon </li>\
+           <li>Pull and hold charging handle </li>\
+           <li>Release charging handle to cock rifle </li>\
+           <li>Select <i>Safe</i> mode </li>\
+         </ul></p></div></body></html>', 200, HTMLt);
+});
+routes.get(routes.ASSESS_DIS, routes.get[ routes.ASSESS_CLEAR ]);
 
 // ====****====****====****==== SERVER ====****====****====****==== //
 var JSONt = 'application/json',
