@@ -14,7 +14,7 @@ methods:
 properties:
   backendResetSent:
 children:
-  ShootingRange_dae:
+  ShootingRange__dae:
     extends: http://vwf.example.com/node3.vwf
     source: /SAVE/models/environments/range/ShootingRange_.dae
     type: model/vnd.collada+xml
@@ -44,17 +44,18 @@ scripts:
   };
 
   this.initializeCamera = function() {
-    __CAT.R = this.ShootingRange_dae;
+    __CAT.R = this.ShootingRange__dae;
 
+    var self = this;
     var node3 = { extends: "http://vwf.example.com/node3.vwf" };
-    var targets = this.ShootingRange_dae.targets;
+    var targets = this.ShootingRange__dae.targets;
 
-    this.ShootingRange_dae.children.create('__offset', node3, function(offset) {
+    this.ShootingRange__dae.children.create('__offset', node3, function(offset) {
       targets.parent_ = offset;
       // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
       offset.translateBy([ -17.339574813842773, 0, 0 ], 2.0);
 
-      if (offset.targets === undefined) offset.targets = __CAT.R.__offset.children[ 0 ];
+      if (offset.targets === undefined) offset.targets = self.ShootingRange__dae.__offset.children[ 0 ];
     });
 
     this.camera.translation = [ -1.25, 0, 2.2 ];
