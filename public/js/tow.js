@@ -65,8 +65,11 @@ TOW.Loader = new THREE.ColladaLoader();
 TOW.Loader.options.convertUpAxis = true;
 TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
 
-// to pull or haul (a car, barge, trailer, etc.) by a rope, chain, or other device
+// light, camera, target (optional) => x, y, z grid (optional)
 TOW.intow = function(lightX, lightY, lightZ, posX, posY, posZ, lookX, lookY, lookZ, grid) {
+  lookX = lookX || 0;
+  lookY = lookY || 0;
+  lookZ = lookZ || 0;
   grid = grid || true;
   TOW.Light = TOW.addLight();
   TOW.addLight({ type: 'Ambient' });
@@ -74,7 +77,7 @@ TOW.intow = function(lightX, lightY, lightZ, posX, posY, posZ, lookX, lookY, loo
   TOW.Camera.position.set(posX, posY, posZ);
   TOW.Camera.lookAt(new THREE.Vector3(lookX, lookY, lookZ));
 
-  if (grid) TOW.addGrid(10, 1, 0x808080);
+  if (grid) TOW.addGrid(10, 1, 0x808080); // #808080
 };
 
 TOW.changeContainerById = function(id) {
@@ -228,12 +231,14 @@ TOW.findMeshAndVisibleMesh = function(name, scene) {
 };
 
 TOW.invisibleSceneChildren = function(scene) {
+  scene = scene || TOW.scene;
   scene.traverse(function(child) {
     child.visible = false;
   });
 };
 
 TOW.visibleSceneChildren = function(scene) {
+  scene = scene || TOW.scene;
   scene.traverse(function(child) {
     child.visible = true;
   });
