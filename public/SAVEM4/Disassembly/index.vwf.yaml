@@ -21,7 +21,7 @@ properties:
   camTarget:
   backendResetSent:
 children:
-  M4_Environment_01_dae:
+  ShootingRange_dae:
     extends: http://vwf.example.com/node3.vwf
     source: /SAVE/models/environments/range/ShootingRange.dae
     type: model/vnd.collada+xml
@@ -197,7 +197,7 @@ scripts:
     var self = this;
 
     self.obj({ type: 'create', ID: backEndId }, function(data) {
-      console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' asseyURL: ' + data.assetURL);
+      console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' assetURL: ' + data.assetURL);
       console.log(JSON.parse(data.grouping));
 
       if (data.KbId == 'unknown') {
