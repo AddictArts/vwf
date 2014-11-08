@@ -108,7 +108,7 @@ routes.post(routes.OBJ_CLEAR, function(req, res) {
             data = {
                 KbId: "myRange",
                 assetURL: "/SAVE/models/environments/range/ShootingRange.dae",
-                grouping: '{"name":"ShootingRange"}'
+                grouping: '{"name":"ShootingRange","groups":[{"name":"undefined","node":"environment","parts":["grass","tree_line","sky","targets","ShootingRangeArea1","ShootingRangeArea2","ShootingRangeArea3","ShootingRangeArea4","ShootingRangeArea5","ShootingRangeArea6","ShootingRangeArea7","ShootingRangeArea8"]}]}'
             };
             break;
         case 'myM4':
@@ -137,6 +137,8 @@ routes.post(routes.Q_CLEAR, function(req, res) {
     log(q);
 
     switch (q.type) {
+    case 'AllActions':
+        break;
     case 'Instance':
         for (var i = 0; i < q.query.length; i++) kbids.push(q.query[i] + Date.now());
 

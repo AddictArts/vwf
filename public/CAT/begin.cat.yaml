@@ -5,14 +5,14 @@ properties:
   baseServerAddress:
   inventoryServerAddress:
 methods:
-  processEuiDotJson:
+  processCatDotJson:
 scripts:
 - |
   this.initialize = function() {
     if (this.__initializeStep++ == -1) return; // VWF scene is the first initialize call, then our scene component additions are next, so -1, then 0
   };
 
-  this.processEuiDotJson = function(data) {
+  this.processCatDotJson = function(data) {
     this.__initializeStep == 1; // processing the eui config json data is step 1
     console.info(this.id + " begin.cat completed initialize move on to process step " + this.__initializeStep);
     console.info(this.id + " begin.cat process json data:" + JSON.stringify(data));
