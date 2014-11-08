@@ -327,7 +327,7 @@ function two() {
         properties: { },
         children: { }
     };
-    baseNode3.grouping = groupingObj.grouping;
+    baseNode3.grouping = groupingObj.name;
     util.puts('');
     prettyPrintObj(transformGroupingToNode3(groupingObj, baseNode3));
 }
@@ -550,7 +550,83 @@ function three() {
         properties: { },
         children: { }
     };
-    baseNode3.grouping = groupingObj.grouping;
+    baseNode3.grouping = groupingObj.name;
+    util.puts('');
+    prettyPrintObj(transformGroupingToNode3(groupingObj, baseNode3));
+}
+
+function four() {
+    var xml = '<grouping name="ShootingRange">\
+        <group node="environment">\
+            <part node="grass"/>\
+            <part node="tree_line"/>\
+            <part node="sky"/>\
+            <part node="targets"/>\
+            <part node="ShootingRangeArea1"/>\
+            <part node="ShootingRangeArea2"/>\
+            <part node="ShootingRangeArea3"/>\
+            <part node="ShootingRangeArea4"/>\
+            <part node="ShootingRangeArea5"/>\
+            <part node="ShootingRangeArea6"/>\
+            <part node="ShootingRangeArea7"/>\
+            <part node="ShootingRangeArea8"/>\
+        </group>\
+    </grouping>';
+
+    groupingObj = { };
+    currentObj = undefined;
+    indentLevel = 0;
+    indentSize = 2;
+    endOfLists = [ ];
+    parser.write(xml).close();
+    prettyPrintObj(groupingObj);
+    util.puts(JSON.stringify(groupingObj));
+    baseNode3 = {
+        extends: "http://vwf.example.com/node3.vwf",
+        type: "model/vnd.collada+xml",
+        implements: [ ],
+        properties: { },
+        children: { }
+    };
+    baseNode3.grouping = groupingObj.name;
+    util.puts('');
+    prettyPrintObj(transformGroupingToNode3(groupingObj, baseNode3));
+}
+
+function five() {
+    var xml = '<grouping name="ShootingRange_">\
+        <part node="targets"/>\
+        <group node="environment">\
+            <part node="grass"/>\
+            <part node="tree_line"/>\
+            <part node="sky"/>\
+            <part node="ShootingRangeArea1"/>\
+            <part node="ShootingRangeArea2"/>\
+            <part node="ShootingRangeArea3"/>\
+            <part node="ShootingRangeArea4"/>\
+            <part node="ShootingRangeArea5"/>\
+            <part node="ShootingRangeArea6"/>\
+            <part node="ShootingRangeArea7"/>\
+            <part node="ShootingRangeArea8"/>\
+        </group>\
+    </grouping>';
+
+    groupingObj = { };
+    currentObj = undefined;
+    indentLevel = 0;
+    indentSize = 2;
+    endOfLists = [ ];
+    parser.write(xml).close();
+    prettyPrintObj(groupingObj);
+    util.puts(JSON.stringify(groupingObj));
+    baseNode3 = {
+        extends: "http://vwf.example.com/node3.vwf",
+        type: "model/vnd.collada+xml",
+        implements: [ ],
+        properties: { },
+        children: { }
+    };
+    baseNode3.grouping = groupingObj.name;
     util.puts('');
     prettyPrintObj(transformGroupingToNode3(groupingObj, baseNode3));
 }
@@ -573,8 +649,14 @@ if (process.argv.length > 2) {
         case '-3':
             three();
             break;
+        case '-4':
+            four();
+            break;
+        case '-5':
+            five();
+            break;
         default:
-            console.log('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[1]) + ' [ -1, -2, -3 ]');
+            console.log('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[1]) + ' [ -1, -2, -3, -4 ]');
             process.exit(0);
         }
     }
