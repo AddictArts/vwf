@@ -106,8 +106,6 @@
       var CameraMenu = function() {
         this.backendtxrxMsg = false;
         this.fontsize = '110%';
-        this.cameraOrbit = 0;
-        this.cameraZoom = 0;
         // this.reset = function() {
         //   vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         // };
@@ -130,7 +128,9 @@
         guiref: { ctx: [ ] },
         instance: function(index) {
           return function() {
-            console.log(vwfapp.tooltray[ index ]);
+            console.info('instance:');
+            console.info(vwfapp.tooltray[ index ]);
+
             Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
             view.toolTrayGUI.remove(view.guiref[ index ]);
             vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].ID ]);
@@ -156,14 +156,6 @@
             else $('#backendtxrxMsg').hide();
           });
           this.cameraGUI.add(this.cameraMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
-          this.cameraGUI.add(this.cameraMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appId, "orbit", [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
-          });
-          this.cameraGUI.add(this.cameraMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
-            vwf_view.kernel.callMethod(vwfapp.appId, 'zoom', [ value ]);
-          }).onFinishChange(function(value) {
-            // vwf_view.kernel.callMethod(vwfapp.appId, 'lookAt', [ null ]);
-          });
           this.cameraGUI.autoPlace = false;
           this.cameraGUI.domElement.style.position = 'fixed';
           this.cameraGUI.domElement.style.float = 'left';
@@ -209,7 +201,7 @@
 
         // notice the methodValue for the function return value as needed...
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
-          if (methodName == 'processEuiDotJson') {
+          if (methodName == 'processCatDotJson') {
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
@@ -234,9 +226,13 @@
             });
           } else if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
-            view.cameraGUI.domElement.style.visibility = 'visible';
-            vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
-            vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+
+            var _assetId = vwf_view.kernel.find(vwfapp.appId, "//" + methodValue)[ 0 ];
+            console.log('vwf _assetId:' + _assetId);
+            // vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+
+            // vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
+            // vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
           }
         };
 
@@ -275,7 +271,7 @@
       vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
         if (childID == vwfapp.appId) {
           sceneInitialize();
-          vwf_view.kernel.callMethod(vwfapp.appId, 'processEuiDotJson', [ __CAT ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'processCatDotJson', [ __CAT ]);
         }
       }
       })(); //# sourceURL=index.vwf.html

@@ -13,7 +13,13 @@ scripts:
   this.init = function() {
     console.info(this.id + ' ' + this.name + ' init');
     // Point the weapon in an unsafe direction as the initial state until the tools / backend set the initial state
-    this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90
+
+    //XXX if M4_Carbine_dae
+    // this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90
+
+    //XXX Would findByID be better?
+    // this.pointerClick = function( pointerInfo, pickInfo ) { id =  pickInfo.pickID; }
+    // var clickedNode = this.findByID( this, id );
 
     // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
     this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
@@ -22,28 +28,16 @@ scripts:
 
     var self = this;
     var count = self.children.length;
-    var comps = [ ];
 
+    //XXX need to look into all the children, new function and recursive call
     for (var i = 0; i < count; i++) {
       var child = self.children[ i ]; 
       var name = child.name;
       var id = child.id;
 
       self.__idToName[ id ] = name;
-
-      // if (self[ name + '_KbId' ]) comps.push(name);
     }
 
-    // console.log(self.__idToName);
-
-    // self.query(
-    //   { type: 'KbId', parent: self.M4_Carbine_KbId, query: comps },
-    //   function(data) {
-    //     console.info(self.id + " init query received data " + JSON.stringify(data));
-
-    //     for (var i = 0; i < data.KbIds.length; i++) {
-    //       self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
-    //     }
-    //   }
-    // );
-  }; //# sourceURL=catNode3.ux
+    console.log('__idToName:');
+    console.log(self.__idToName);
+  }; //# sourceURL=catNode3.vwf

@@ -11,8 +11,7 @@ TOW.loadCollada('/models/xyzbar.dae', function() {
   TOW.render();
 });
 TOW.loadColladas([ '/SAVE/models/environments/range/ShootingRange.dae', '/models/M4_lowPoly_06.dae' ], function() { onloadTowDatGui(); });
-// TOW.loadCollada('/SAVE/models/environments/range/ShootingRange.dae', function() { onloadTowDatGui(); }, false);
-TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25, 0, 0, 0); // light, camera, target ... x,y,z
+TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25); // light, camera => x, y, z
   </script>
 
   <script>
@@ -49,7 +48,13 @@ var TowDatMenu = function() {
   };
 
   function focusSelected(dae, onRender) {
-    onRender = onRender || function(delta, pivot) { pivot.rotation.y += 0.005; };
+    var logged = false;
+
+    onRender = onRender || function(delta, pivot) {
+      if (!logged) { console.log(pivot.children[ 0 ].matrix.elements); logged = true; } // log the offset matrix
+
+      pivot.rotation.y += 0.005;
+    };
 
     if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, dae, onRender);
   }
@@ -96,6 +101,8 @@ function onloadTowDatGui() {
   towDatGUI.add(lookAt, 'x').name('lookX').onChange(function() { TOW.Camera.lookAt(lookAt); });
   towDatGUI.add(lookAt, 'y').name('lookY').onChange(function() { TOW.Camera.lookAt(lookAt); });
   towDatGUI.add(lookAt, 'z').name('lookZ').onChange(function() { TOW.Camera.lookAt(lookAt); });
+  towDatGUI.add(TOW, 'cancelOnRenders');
+  towDatGUI.add(TOW, 'cancelRender');
 
   towDatGUI.add(towDatMenu, 'targets');
   towDatGUI.add(towDatMenu, 'ShootingRangeArea');

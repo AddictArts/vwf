@@ -6,21 +6,26 @@ implements:
 - backendtxrx.cat
 methods:
   initializeCamera:
-  zoom:
-  orbit:
-  lookAt:
-  clearLookAt:
   resetBackend:
   transformGroupingToNode3:
   vwfChildJsonFromGrouping:
   initInstance:
   instance:
 properties:
-  zoomedValue:
-  scaling:
-  camTarget:
   backendResetSent:
 children:
+  ShootingRange__dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: /SAVE/models/environments/range/ShootingRange_.dae
+    type: model/vnd.collada+xml
+    properties:
+      scale: [ 1, 1, 1 ]
+      translation: [ 0, 0, 0 ]
+    children:
+      #environment: # this group and children do not respond to translation, rotation, etc changes
+      #  extends: http://vwf.example.com/node3.vwf
+      targets: # targets had to be moved to the root at the same level as environment before anything could be done in transform terms like animation
+        extends: http://vwf.example.com/node3.vwf
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
@@ -31,97 +36,30 @@ children:
     extends: http://vwf.example.com/light.vwf
     properties:
       lightType: "ambient"
-  camera:
-    extends: "http://vwf.example.com/camera.vwf"
-    properties:
 scripts:
 - |
   this.initialize = function() {
-    this.zoomedValue = 0;
-    this.scaled = 0;
     this.backendResetSent = false;
     this.future(0).initializeCamera();
   };
 
   this.initializeCamera = function() {
+    __CAT.R = this.ShootingRange__dae;
+
+    var self = this;
+    var node3 = { extends: "http://vwf.example.com/node3.vwf" };
+    var targets = this.ShootingRange__dae.targets;
+
+    this.ShootingRange__dae.children.create('__offset', node3, function(offset) {
+      targets.parent_ = offset;
+      // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
+      offset.translateBy([ -17.339574813842773, 0, 0 ], 2.0);
+
+      if (offset.targets === undefined) offset.targets = self.ShootingRange__dae.__offset.children[ 0 ];
+    });
+
     this.camera.translation = [ -1.25, 0, 2.2 ];
     this.camera.rotation = [ 0, 0, 1, -90 ];
-  };
-
-  this.zoom = function(value) {
-    // console.info('zoom ' + value);
-
-    var EPS = 0.00001;
-    var scale = 1 - value / 100; // normalize the value
-    var tmp = scale;
-
-    if (this.zoomedValue > 0) {
-      if (value < EPS) {
-        scale = (1 / this.scaling);
-        this.scaling = 0;
-        value = 0;
-      } else {
-        scale = (1 / this.scaling) * tmp;
-        this.scaling = tmp;
-      }
-    } else {
-      this.scaling = scale;
-    }
-
-    this.zoomedValue = value;
-    // console.info('scale: ' + scale + ', scaling: ' + this.scaling);
-    // Note: assuming target is the origin for now!
-    var x = this.camera.translation[0];
-    var y = this.camera.translation[1];
-    var z = this.camera.translation[2]; // we keep the z as the target z
-    var theta = Math.atan2(x, y); // radians
-    var phi = Math.atan2(Math.sqrt(x * x + y * y), 0); // radians
-    var radius = Math.sqrt(x * x + y * y) * scale;
-
-    //console.info('radius: ' + radius);
-    x = radius * Math.sin(phi) * Math.sin(theta);
-    y = radius * Math.sin(phi) * Math.cos(theta);
-    //console.info('new translation x ' + x + ', y ' + y + ', z ' + z);
-    // this.camera.translation = [ x, y, z ];
-    this.camera.translateTo([ x, y, z ], 0.125);
-  };
-
-  this.orbit = function(theta) {
-    // console.info('orbit ' + theta + ' degrees');
-
-    // Note: assuming target is the origin for now!
-    var x = this.camera.translation[0];
-    var y = this.camera.translation[1];
-    var z = this.camera.translation[2];
-    var theta = theta * (Math.PI / 180);
-
-    //console.info('offset x ' + x + ', y ' + y + ', z ' + z);
-    var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
-    var radius = Math.sqrt(x * x + y * y + z * z); // again the origin is the target
-
-    //console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius: ' + radius);
-    x = radius * Math.sin(phi) * Math.sin(theta);
-    y = radius * Math.sin(phi) * Math.cos(theta);
-    z = radius * Math.cos(phi);
-    // console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
-    this.camera.translation = [ x, y, z ];
-    // console.info('target theta ' + theta * (180 / Math.PI));
-    // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
-    this.future(0).lookAt(this.camTarget);
-  };
-
-  this.clearLookAt = function() {
-    this.camera.lookAt = null;
-  };
-
-  this.lookAt = function(what) {
-    what = what || this.camTarget;
-
-    var lookAt = (what != null)? this[ what ].id : this.id;
-
-    this.camera.lookAt = lookAt;
-    this.future(0).clearLookAt();
-    // console.info('cam rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
   };
 
   this.resetBackend = function() {
@@ -161,10 +99,11 @@ scripts:
 
   this.vwfChildJsonFromGrouping = function(grouping) {
     var groupingObj = grouping !== undefined? JSON.parse(grouping) : { name: undefined };
-    var  baseNode3 = {
+    // vwf include might be better? var tt = { "includes": "http://vwf.example.com/tools/transform/transformTool.vwf" } ... this.children.create("transformTool", tt, function( child ) { ... });
+    var baseNode3 = {
       extends: "http://vwf.example.com/node3.vwf",
       type: "model/vnd.collada+xml",
-      implements: [ ],
+      implements: [ 'catNode3.vwf', 'backendtxrx.cat' ], // => initial state, base behavior, and props
       properties: { },
       children: { },
       grouping: groupingObj.name
@@ -178,8 +117,25 @@ scripts:
   this.initInstance = function(name, kbid) {
     if (name == "M4_Carbine_dae") {
       this.children[ name ].M4_Carbine_KbId = kbid;
-      this.children[ name ].init();
     }
+
+    this.children[ name ].init();
+
+    if (name == 'ShootingRange_dae') {
+      var targets = this.children[ name ].environment.targets;
+      var node3 = { extends: "http://vwf.example.com/node3.vwf" };
+
+      this.children[ name ].children.create('__offset', node3, function(offset) {
+        // console.log('environment.targets:');
+        // console.log(targets);
+        // console.log('offset:');
+        // console.log(offset);
+        // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
+        // offset.translation = [ -17.339574813842773, 0.317113995552063, 1.0399224758148193 ];
+      });
+    }
+
+    return name;
   };
 
   this.instance = function(backEndId) {
@@ -188,9 +144,9 @@ scripts:
     var self = this;
 
     self.obj({ type: 'create', ID: backEndId }, function(data) {
-      console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' asseyURL: ' + data.assetURL);
+      console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
 
-      if (data.grouping) console.log(JSON.parse(data.grouping));
+      // if (data.grouping) console.log(JSON.parse(data.grouping));
 
       if (data.KbId == 'unknown') {
         console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
@@ -199,11 +155,11 @@ scripts:
 
       var vwf_node3 = self.vwfChildJsonFromGrouping(data.grouping);
 
-      name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => M4_Carbine_dae
+      name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => example: M4_Carbine_dae
       vwf_node3.source = data.assetURL;
+      // vwf_node3.implements = [ 'catNode3.vwf', 'backendtxrx.cat' ]; // => initial state, base behavior, and props, vwf include?
 
       if (name == "M4_Carbine_dae") {
-        vwf_node3.implements = [ "catNode3.vwf", "backendtxrx.cat" ]; // => initial state, base behavior, and props, vwf include?
         vwf_node3.properties = {
           translation: [ 0, 0, 2 ],
           rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
@@ -211,13 +167,9 @@ scripts:
         };
       }
 
-      console.log(vwf_node3);
-      self.children.create(name, vwf_node3); // vwf_M4_node3 is the only non-dynamic piece of the instance, we could get the json dynamically
-      self.future(0).initInstance(name, data.KbId);
-
-      if (name == "M4_Carbine_dae") {
-        self.camTarget = name;
-        self.future(0).lookAt(self.camTarget);
-      }
+      // console.log(vwf_node3);
+      self.children.create(name, vwf_node3, function(child) {
+        self.future(0).initInstance(name, data.KbId);
+      });
     });
   }; //# sourceURL=index.vwf
