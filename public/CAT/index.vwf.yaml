@@ -14,18 +14,6 @@ methods:
 properties:
   backendResetSent:
 children:
-  ShootingRange__dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: /SAVE/models/environments/range/ShootingRange_.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1, 1, 1 ]
-      translation: [ 0, 0, 0 ]
-    children:
-      #environment: # this group and children do not respond to translation, rotation, etc changes
-      #  extends: http://vwf.example.com/node3.vwf
-      targets: # targets had to be moved to the root at the same level as environment before anything could be done in transform terms like animation
-        extends: http://vwf.example.com/node3.vwf
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
@@ -44,20 +32,6 @@ scripts:
   };
 
   this.initializeCamera = function() {
-    __CAT.R = this.ShootingRange__dae;
-
-    var self = this;
-    var node3 = { extends: "http://vwf.example.com/node3.vwf" };
-    var targets = this.ShootingRange__dae.targets;
-
-    this.ShootingRange__dae.children.create('__offset', node3, function(offset) {
-      targets.parent_ = offset;
-      // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
-      offset.translateBy([ -17.339574813842773, 0, 0 ], 2.0);
-
-      if (offset.targets === undefined) offset.targets = self.ShootingRange__dae.__offset.children[ 0 ];
-    });
-
     this.camera.translation = [ -1.25, 0, 2.2 ];
     this.camera.rotation = [ 0, 0, 1, -90 ];
   };
@@ -121,17 +95,17 @@ scripts:
 
     this.children[ name ].init();
 
-    if (name == 'ShootingRange_dae') {
-      var targets = this.children[ name ].environment.targets;
+    if (name == 'ShootingRange__dae') {
+      var targets = this.children[ name ].targets;
       var node3 = { extends: "http://vwf.example.com/node3.vwf" };
+      var self = this;
 
       this.children[ name ].children.create('__offset', node3, function(offset) {
-        // console.log('environment.targets:');
-        // console.log(targets);
-        // console.log('offset:');
-        // console.log(offset);
-        // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
-        // offset.translation = [ -17.339574813842773, 0.317113995552063, 1.0399224758148193 ];
+        // offset.transform = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1 ];
+        targets.parent_ = offset;
+        offset.translateBy([ -17.339574813842773, 0, 0 ], 2.0);
+
+        if (offset.targets === undefined) offset.targets = self.ShootingRange__dae.__offset.children[ 0 ];
       });
     }
 
@@ -169,7 +143,7 @@ scripts:
 
       // console.log(vwf_node3);
       self.children.create(name, vwf_node3, function(child) {
-        self.future(0).initInstance(name, data.KbId);
+        self.initInstance(name, data.KbId);
       });
     });
   }; //# sourceURL=index.vwf

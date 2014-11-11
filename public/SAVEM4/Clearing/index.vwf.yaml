@@ -20,7 +20,7 @@ properties:
   camTarget:
   backendResetSent:
 children:
-  M4_Environment_01_dae:
+  ShootingRange_dae:
     extends: http://vwf.example.com/node3.vwf
     source: /SAVE/models/environments/range/ShootingRange.dae
     type: model/vnd.collada+xml
