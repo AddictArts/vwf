@@ -1,0 +1,68 @@
+{
+  "extends": "http://vwf.example.com/node3.vwf",
+  "type": "model/vnd.collada+xml",
+  "implements": [
+  ],
+  "properties":
+  {
+  },
+  "children":
+  {
+    "environment":
+    {
+      "extends": "http://vwf.example.com/node3.vwf",
+      "children":
+      {
+        "grass":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "tree_line":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "sky":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "targets":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea1":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea2":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea3":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea4":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea5":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea6":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea7":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        },
+        "ShootingRangeArea8":
+        {
+          "extends": "http://vwf.example.com/node3.vwf"
+        }
+      }
+    }
+  },
+  "grouping": "ShootingRange"
+}
