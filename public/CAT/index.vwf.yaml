@@ -14,32 +14,6 @@ methods:
 properties:
   backendResetSent:
 children:
-  RangeBad_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: /SAVE/models/environments/range/Range3.dae
-    type: model/vnd.collada+xml
-    children:
-      environment: # <= cannot have the word environment in it anywhere, case does not matter as well position, _environment, Environment, etc <= BAD
-        extends: http://vwf.example.com/node3.vwf
-        implements:
-        children:
-          targets:
-            extends: http://vwf.example.com/node3.vwf
-            properties:
-              visible: false
-  RangeGood_dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: /SAVE/models/environments/range/Range4.dae
-    type: model/vnd.collada+xml
-    children:
-      enviro:
-        extends: http://vwf.example.com/node3.vwf
-        implements:
-        children:
-          targets:
-            extends: http://vwf.example.com/node3.vwf
-            properties:
-              visible: false
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
