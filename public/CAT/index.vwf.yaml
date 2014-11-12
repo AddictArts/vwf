@@ -95,17 +95,29 @@ scripts:
 
     this.children[ name ].init();
 
-    if (name == 'ShootingRange__dae') {
-      var targets = this.children[ name ].targets;
+    if (name == 'ShootingRange_dae') {
       var node3 = { extends: "http://vwf.example.com/node3.vwf" };
       var self = this;
 
-      this.children[ name ].children.create('__offset', node3, function(offset) {
-        // offset.transform = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1 ];
-        targets.parent_ = offset;
-        offset.translateBy([ -17.339574813842773, 0, 0 ], 2.0);
-
-        if (offset.targets === undefined) offset.targets = self.ShootingRange__dae.__offset.children[ 0 ];
+      // Ref: grouping: '{"name":"ShootingRange","groups":[{"name":"environment"}]}'
+      // Ref:
+      // {
+      //   "extends": "http://vwf.example.com/node3.vwf",
+      //   "type": "model/vnd.collada+xml",
+      //   "implements": [ "catNode3.vwf", "backendtxrx.cat" ],
+      //   "properties": {},
+      //   "children": {},
+      //   "grouping": "ShootingRange",
+      //   "source": "/SAVE/models/environments/range/ShootingRange.dae"
+      // }
+      console.log('this.children[ ' + name + ']:');
+      console.log(this.ShootingRange_dae);
+      this.ShootingRange_dae.children.create('environment', node3, function(environment) {
+        // environment.translateBy([ -17.339574813842773, 0, 0 ], 5.0); // <= this failed, so trying the below
+        environment.children.create('targets', node3, function(targets) {
+          // targets.translateBy([ -17.339574813842773, 0, 0 ], 5.0); // <= this failed, so trying the below
+          self.ShootingRange_dae.environment.targets.translateBy([ -17.339574813842773, 0, 0 ], 5.0); // <= this failed as well
+        });
       });
     }
 
@@ -142,6 +154,7 @@ scripts:
       }
 
       // console.log(vwf_node3);
+      // console.log(JSON.stringify(vwf_node3));
       self.children.create(name, vwf_node3, function(child) {
         self.initInstance(name, data.KbId);
       });
