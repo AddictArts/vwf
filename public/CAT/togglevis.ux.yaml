@@ -1,0 +1,13 @@
+# Copyright 2014, SRI International
+---
+methods:
+  toggle:
+scripts:
+- |
+  this.initialize = function() {
+    this.future(0).toggle();
+  };
+
+  this.toggle = function() {
+    this.visible = !this.visible;
+  }; //# sourceURL=togglevis.ux

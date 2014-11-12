@@ -2,7 +2,6 @@
 --- 
 properties:
   __idToName:
-  # populate from the grouping?
 methods:
   init:
 scripts:
@@ -10,34 +9,28 @@ scripts:
   // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
   // Since this init depends on another implemented behavior that could be loaded before this and may fix the
   // undefined reference error, I will just handle init myself. I did not test the order in the array of implements theory.
-  this.init = function() {
+  this.init = function(kbid) {
     console.info(this.id + ' ' + this.name + ' init');
-    // Point the weapon in an unsafe direction as the initial state until the tools / backend set the initial state
-
-    //XXX if M4_Carbine_dae
-    // this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90
-
-    //XXX Would findByID be better?
-    // this.pointerClick = function( pointerInfo, pickInfo ) { id =  pickInfo.pickID; }
-    // var clickedNode = this.findByID( this, id );
+    this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
 
     // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
-    this.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
+    //TODO Would findByID be better thank the cache __idToName? post 1.0
+    // var clickedNode = this.findByID( this, pickInfo.pickID );
     this.__idToName = { };
     this.__idToName[ this.id ] = this.name;
+    this.properties.create(this.name +  '_KbId', kbid);
 
-    var self = this;
-    var count = self.children.length;
-
-    //XXX need to look into all the children, new function and recursive call
-    for (var i = 0; i < count; i++) {
-      var child = self.children[ i ]; 
+    //TODO need to look into all the children (depth), new function and recursive call, post 1.0
+    for (var i = 0, count = this.children.length; i < count; i++) {
+      var child = this.children[ i ]; 
       var name = child.name;
       var id = child.id;
 
-      self.__idToName[ id ] = name;
+      this.__idToName[ id ] = name;
+      this.properties.create(name + '_KbId', undefined);
     }
 
-    console.log('__idToName:');
-    console.log(self.__idToName);
+    // console.log('__idToName:');
+    // console.log(this.__idToName);
+    // console.log(this);
   }; //# sourceURL=catNode3.vwf

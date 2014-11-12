@@ -187,7 +187,7 @@ scripts:
   };
 
   this.initInstance = function(name, kbid) {
-    this.children[ name ].M4_Carbine_KbId = kbid;
+    this.children[ name ].M4_Carbine_KbId = kbid; //XXX need to use property create like CAT
     this.children[ name ].init();
   };
 
