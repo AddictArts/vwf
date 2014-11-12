@@ -14,6 +14,22 @@ methods:
 properties:
   backendResetSent:
 children:
+  ShootingRange_dae:
+    extends: http://vwf.example.com/node3.vwf
+    implements:
+    - togglevis.ux # <= behavior only works at the root level!
+    source: /SAVE/models/environments/range/ShootingRange.dae
+    type: model/vnd.collada+xml
+    children:
+      environment: # this group and children do not respond to translation, rotation, etc changes
+        extends: http://vwf.example.com/node3.vwf
+        implements:
+        - togglevis.ux
+        children:
+          targets:
+            extends: http://vwf.example.com/node3.vwf
+            implements:
+            - togglevis.ux
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
