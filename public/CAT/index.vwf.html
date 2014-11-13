@@ -101,12 +101,13 @@
         appId: vwf_view.kernel.application(),
         tooltray: undefined
       };
-      var CameraMenu = function() {
+      var ControlMenu = function() {
         this.backendtxrxMsg = false;
         this.fontsize = '110%';
         // this.reset = function() {
         //   vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         // };
+        this.x = 0;
       };
       var ToolTrayMenu = function() { };
       var ContextMenu = function() {
@@ -118,8 +119,8 @@
       var view = {
         toolTrayGUI: undefined,
         toolTrayMenu: undefined,
-        cameraMenu: undefined,
-        cameraGUI: undefined,
+        controlMenu: undefined,
+        controlGUI: undefined,
         contextMenu: undefined,
         contextGUI: undefined,
         contextActive: false,
@@ -130,6 +131,7 @@
             console.info(vwfapp.tooltray[ index ]);
 
             Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+            view.guiref.instanceIndex = index;
             view.toolTrayGUI.remove(view.guiref[ index ]);
             vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
           };
@@ -146,22 +148,22 @@
           }
 
           // Camera drop down menu's
-          this.cameraMenu = new CameraMenu();
-          this.cameraGUI = new dat.GUI();
-          this.cameraGUI.name = 'Camera Menu';
-          this.cameraGUI.add(this.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+          this.controlMenu = new ControlMenu();
+          this.controlGUI = new dat.GUI();
+          this.controlGUI.name = 'Camera Menu';
+          this.controlGUI.add(this.controlMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
             if (value) $('#backendtxrxMsg').show();
             else $('#backendtxrxMsg').hide();
           });
-          this.cameraGUI.add(this.cameraMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
-          this.cameraGUI.autoPlace = false;
-          this.cameraGUI.domElement.style.position = 'fixed';
-          this.cameraGUI.domElement.style.float = 'left';
-          this.cameraGUI.domElement.style.left = '15px';
-          this.cameraGUI.domElement.style.overflowX = 'visible';
-          // this.cameraGUI.domElement.style.visibility = 'hidden';
-          $('body').append(this.cameraGUI.domElement);
-          $('*.dg').css('font-size', this.cameraMenu.fontsize);
+          this.controlGUI.add(this.controlMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.autoPlace = false;
+          this.controlGUI.domElement.style.position = 'fixed';
+          this.controlGUI.domElement.style.float = 'left';
+          this.controlGUI.domElement.style.left = '15px';
+          this.controlGUI.domElement.style.overflowX = 'visible';
+          // this.controlGUI.domElement.style.visibility = 'hidden';
+          $('body').append(this.controlGUI.domElement);
+          $('*.dg').css('font-size', this.controlMenu.fontsize);
 
           // Context menu drop down menu's
           this.contextMenu = new ContextMenu();
@@ -222,7 +224,22 @@
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
 
             var assetVwfId = vwf_view.kernel.find(vwfapp.appId, "//" + methodValue)[ 0 ];
+            var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ view.guiref.instanceIndex ].name);
+            var vec3 = vwf.getProperty(assetVwfId, 'translation');
+            var xyzo = {
+              x: vec3[ 0 ],
+              y: vec3[ 1 ],
+              z: vec3[ 2 ],
+              visible: true,
+              static: false
+            };
 
+            assetPropertyFolder.add(xyzo, 'x').onChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
+            assetPropertyFolder.add(xyzo, 'y').onChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
+            assetPropertyFolder.add(xyzo, 'z').onChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
+            assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
+            assetPropertyFolder.add(xyzo, 'static').name('Auto Load');
+            $('*.dg').css('font-size', view.controlMenu.fontsize);
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, "__idToName");
           }
