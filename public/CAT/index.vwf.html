@@ -133,7 +133,7 @@
 
             Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
             view.toolTrayGUI.remove(view.guiref[ index ]);
-            vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].ID ]);
+            vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
           };
         },
         init: function() {
@@ -241,7 +241,7 @@
           if (eventName != 'pointerDown') return;
           if (view.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
 
-          console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
+          // console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
           if (nodeId == vwfapp.M4_Carbine_daeId) {
             view.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...

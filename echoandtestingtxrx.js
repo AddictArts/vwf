@@ -111,7 +111,7 @@ routes.post(routes.OBJ_CLEAR, function(req, res) {
                 // grouping: '{"name":"ShootingRange_","parts":["targets"],"groups":[{"node":"environment","parts":["grass","tree_line","sky","ShootingRangeArea1","ShootingRangeArea2","ShootingRangeArea3","ShootingRangeArea4","ShootingRangeArea5","ShootingRangeArea6","ShootingRangeArea7","ShootingRangeArea8"]}]}'
                 // grouping: '{"name":"ShootingRange","groups":[{"name":"environment"}]}'//,"node":"environment"}]}'
                 assetURL: "/SAVE/models/environments/range/ShootingRange.dae",
-                grouping: '{"name":"ShootingRange","groups":[{"name":"undefined","node":"environment","parts":["grass","tree_line","sky","targets","ShootingRangeArea1","ShootingRangeArea2","ShootingRangeArea3","ShootingRangeArea4","ShootingRangeArea5","ShootingRangeArea6","ShootingRangeArea7","ShootingRangeArea8"]}]}'
+                grouping: '{"name":"ShootingRange","groups":[{"node":"environment","parts":["grass","tree_line","sky","targets","ShootingRangeArea1","ShootingRangeArea2","ShootingRangeArea3","ShootingRangeArea4","ShootingRangeArea5","ShootingRangeArea6","ShootingRangeArea7","ShootingRangeArea8"]}]}'
             };
             break;
         case 'myM4':

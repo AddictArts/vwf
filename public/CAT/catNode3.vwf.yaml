@@ -30,7 +30,7 @@ scripts:
       this.properties.create(name + '_KbId', undefined);
     }
 
-    // console.log('__idToName:');
-    // console.log(this.__idToName);
+    console.log('__idToName:');
+    console.log(this.__idToName);
     // console.log(this);
   }; //# sourceURL=catNode3.vwf

@@ -89,7 +89,7 @@ function prettyPrintObj(obj) {
             endOfLists.push(p == lastpOfObj);
             prettyPrintObj(obj[ p ]);
         } else { // key => value
-            util.puts(getIndentString() +  '"' + p + '": "' + obj[ p ] + (p == lastpOfObj? '"' : '",'));
+            if (obj[ p ] !== undefined) util.puts(getIndentString() +  '"' + p + '": "' + obj[ p ] + (p == lastpOfObj? '"' : '",'));
         }
     }
 

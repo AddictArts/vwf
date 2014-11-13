@@ -9,6 +9,7 @@ methods:
   resetBackend:
   transformGroupingToNode3:
   vwfChildJsonFromGrouping:
+  createObjectParentsForMetaGroups:
   initInstance:
   instance:
 properties:
@@ -50,42 +51,77 @@ scripts:
     var self = this;
 
     for (var p in obj) {
-        if (p == 'groups') {
-            obj.groups.forEach(function(group) {
-                var children = node3;
+      if (p == 'groups') {
+        obj.groups.forEach(function(group) {
+          var children = node3;
 
-                if (group.node) {
-                    node3.children[ group.node ] = { extends: "http://vwf.example.com/node3.vwf", children: { } };
-                    children = node3.children[ group.node ];
-                }
+          if (group.node) {
+              node3.children[ group.node ] = { extends: "http://vwf.example.com/node3.vwf", children: { } };
+              children = node3.children[ group.node ];
+          }
 
-                self.transformGroupingToNode3(group, children);
-            });
-        } else if (p == 'parts') {
-            obj.parts.forEach(function(part) {
-                node3.children[ part ] = { extends: "http://vwf.example.com/node3.vwf" };
-            });
-        }
+          self.transformGroupingToNode3(group, children);
+        });
+      } else if (p == 'parts') {
+        obj.parts.forEach(function(part) {
+            node3.children[ part ] = { extends: "http://vwf.example.com/node3.vwf" };
+        });
+      }
     }
 
     return node3;
   };
 
-  this.vwfChildJsonFromGrouping = function(grouping) {
-    var groupingObj = grouping !== undefined? JSON.parse(grouping) : { name: undefined };
-    // vwf include might be better? var tt = { "includes": "http://vwf.example.com/tools/transform/transformTool.vwf" } ... this.children.create("transformTool", tt, function( child ) { ... });
-    var baseNode3 = {
+  this.vwfChildJsonFromGrouping = function(data) {
+    var self = this;
+    var grouping, name, vwf_node3;
+
+    if (data.grouping !== undefined) {
+      grouping = JSON.parse(data.grouping);
+    } else {        
+      console.warn(self.id + ' object instance request returned undefined grouping');
+      grouping = { name: undefined };
+    }
+
+    // vwf include might be better? var tt = { "includes": "tool.vwf" } ... this.children.create("tool", tt, function( child ) { ... });
+    vwf_node3 = self.transformGroupingToNode3(grouping, {
       extends: "http://vwf.example.com/node3.vwf",
+      source: data.assetURL,
       type: "model/vnd.collada+xml",
-      implements: [ 'catNode3.vwf', 'backendtxrx.cat' ], // => initial state, base behavior, and props
+      implements: [ 'catNode3.vwf', 'backendtxrx.cat' ], // => base behavior, and props
       properties: { },
       children: { },
-      grouping: groupingObj.name
-    };
-    
-    var rootNode3 =  grouping !== undefined? this.transformGroupingToNode3(groupingObj, baseNode3) : baseNode3;
+      grouping: grouping.name
+    });
+    name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
 
-    return rootNode3;
+    self.children.create(name, vwf_node3, function(child) {
+      self.initInstance(name, data.KbId);
+      self.createObjectParentsForMetaGroups(grouping, this.children[ name ]);
+    });
+  };
+
+  this.createObjectParentsForMetaGroups = function(obj, parent) { // setp => set the parent for the parts
+    var self = this;
+
+    for (var p in obj) {
+      if (p == 'groups') {
+        obj.groups.forEach(function(group) {
+          if (group.name != 'undefined') {
+            parent.children.create(group.name, { extends: "http://vwf.example.com/node3.vwf" }, function(child) {
+              if (group.parts) group.parts.forEach(function(part) {
+                var partNode = self.find('//' + part);
+
+                console.log('partNode:');
+                console.log(partNode);
+                partNode.parent_ = child;
+              });
+              else if (group.groups) self.createObjectParentsForMetaGroups(group.groups, child);
+            });
+          }
+        });
+      }
+    }
   };
 
   this.initInstance = function(name, kbid) {
@@ -93,25 +129,13 @@ scripts:
     return name;
   };
 
-  this.instance = function(backEndId) {
+  this.instance = function(name, backEndId) {
     console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
 
     var self = this;
 
     self.obj({ type: 'create', ID: backEndId }, function(data) {
       console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
-
-      if (data.grouping === undefined) {
-        console.warn(self.id + ' object instance request returned undefined grouping, no child to instance');
-        return;
-      }
-
-      var vwf_node3 = self.vwfChildJsonFromGrouping(data.grouping);
-
-      name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => example: M4_Carbine_dae
-      vwf_node3.source = data.assetURL;
-      self.children.create(name, vwf_node3, function(child) {
-        self.initInstance(name, data.KbId);
-      });
+      self.vwfChildJsonFromGrouping(data);
     });
   }; //# sourceURL=index.vwf
