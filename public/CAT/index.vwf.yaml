@@ -88,7 +88,7 @@ scripts:
       extends: "http://vwf.example.com/node3.vwf",
       source: data.assetURL,
       type: "model/vnd.collada+xml",
-      implements: [ 'catNode3.vwf', 'backendtxrx.cat' ], // => base behavior, and props
+      implements: [ 'catNode3.vwf', 'backendtxrx.cat' ], // => base behavior, and properties
       properties: { },
       children: { },
       grouping: grouping.name
@@ -101,22 +101,23 @@ scripts:
     });
   };
 
-  this.createObjectParentsForMetaGroups = function(obj, parent) { // setp => set the parent for the parts
+  this.createObjectParentsForMetaGroups = function(obj, parent) {
     var self = this;
 
     for (var p in obj) {
       if (p == 'groups') {
         obj.groups.forEach(function(group) {
-          if (group.name != 'undefined') {
+          if (group.name && group.node === undefined) {
             parent.children.create(group.name, { extends: "http://vwf.example.com/node3.vwf" }, function(child) {
+              // console.log(child);
               if (group.parts) group.parts.forEach(function(part) {
-                var partNode = self.find('//' + part);
+                var partNode = self.find('//' + part)[ 0 ];
 
-                console.log('partNode:');
-                console.log(partNode);
+                // console.log('partNode:'); console.log(partNode);
                 partNode.parent_ = child;
               });
-              else if (group.groups) self.createObjectParentsForMetaGroups(group.groups, child);
+
+              if (group.groups) self.createObjectParentsForMetaGroups(group.groups, child);
             });
           }
         });
