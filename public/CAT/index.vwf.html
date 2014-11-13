@@ -218,7 +218,7 @@
           assetPropertyFolder.add(xyzo, 'y').onChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
           assetPropertyFolder.add(xyzo, 'z').onChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
           assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-          assetPropertyFolder.add(xyzo, 'static').name('Auto Load');
+          assetPropertyFolder.add(xyzo, 'static').name('auto load');
           assetPropertyFolder.add(xyzo, 'rotX').onChange(function() { vwf.setProperty(assetVwfId, 'rotation', [ 1, 0, 0, xyzo.rotation ]); });
           assetPropertyFolder.add(xyzo, 'rotY').onChange(function() { vwf.setProperty(assetVwfId, 'rotation', [ 0, 1, 0, xyzo.rotation ]); });
           assetPropertyFolder.add(xyzo, 'rotZ').onChange(function() { vwf.setProperty(assetVwfId, 'rotation', [ 0, 0, 1, xyzo.rotation ]); });
