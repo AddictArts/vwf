@@ -3,7 +3,6 @@
   "groups": [
     {
       "name": "M4 Group",
-      "node": "undefined",
       "parts": [
         "Sling",
         "Barrel_Assembly",
@@ -35,7 +34,6 @@
       "groups": [
         {
           "name": "Buttstock Group",
-          "node": "undefined",
           "parts": [
             "Buttstock",
             "Swivel_LAMA1259863095",
@@ -49,7 +47,6 @@
         },
         {
           "name": "Magazine_g Group",
-          "node": "undefined",
           "parts": [
             "Tube",
             "Clip_Spring1",
@@ -60,7 +57,6 @@
           "groups": [
             {
               "name": "Casing1 Group",
-              "node": "undefined",
               "parts": [
                 "Casing1",
                 "Projectile1"
@@ -68,7 +64,6 @@
             },
             {
               "name": "Casing2 Group",
-              "node": "undefined",
               "parts": [
                 "Casing2",
                 "Projectile2"
@@ -76,7 +71,6 @@
             },
             {
               "name": "Casing3 Group",
-              "node": "undefined",
               "parts": [
                 "Casing3",
                 "Projectile3"
@@ -86,7 +80,6 @@
         },
         {
           "name": "Lower_Receiver Group",
-          "node": "undefined",
           "parts": [
             "Lower_Receiver",
             "Trigger",
@@ -136,7 +129,6 @@
           "groups": [
             {
               "name": "Bolt_Catch Group",
-              "node": "undefined",
               "parts": [
                 "Bolt_Catch",
                 "Bolt_Catch_Spring_Pin",
@@ -146,35 +138,28 @@
               "groups": [
                 {
                   "name": "Bolt_Catch_Bottom Group",
-                  "node": "undefined"
                 },
                 {
                   "name": "Bolt_Catch_Top Group",
-                  "node": "undefined"
                 }
               ]
             },
             {
               "name": "PivotPinHead Group",
-              "node": "undefined"
             },
             {
               "name": "PivotPinTail Group",
-              "node": "undefined"
             },
             {
               "name": "TakedownPinHead Group",
-              "node": "undefined"
             },
             {
               "name": "TakedownPinTail Group",
-              "node": "undefined"
             }
           ]
         },
         {
           "name": "Upper_Receiver Group",
-          "node": "undefined",
           "parts": [
             "Upper_Receiver",
             "Plunger_Assembly",
@@ -192,11 +177,9 @@
           "groups": [
             {
               "name": "Chamber Group",
-              "node": "undefined"
             },
             {
               "name": "Charging_Handle Group",
-              "node": "undefined",
               "parts": [
                 "Charging_Handle",
                 "Charging_Handle_Latch",
@@ -206,7 +189,6 @@
             },
             {
               "name": "Key_and_Bolt_Carrier_Assembly Group",
-              "node": "undefined",
               "parts": [
                 "Key_and_Bolt_Carrier_Assembly",
                 "Firing_Pin_Retaining_Pin",
@@ -215,7 +197,6 @@
               "groups": [
                 {
                   "name": "Bolt Group",
-                  "node": "undefined",
                   "parts": [
                     "Bolt",
                     "Bolt_Cam_Pin",
@@ -236,7 +217,6 @@
             },
             {
               "name": "Gun_Carrying_Handle Group",
-              "node": "undefined",
               "parts": [
                 "Gun_Carrying_Handle",
                 "Windage_Spring_Pin",
