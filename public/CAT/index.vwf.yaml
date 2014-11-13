@@ -111,6 +111,8 @@ scripts:
             parent.children.create(group.name, { extends: "http://vwf.example.com/node3.vwf" }, function(child) {
               // console.log(child);
               if (group.parts) group.parts.forEach(function(part) {
+                console.info('Object parent created:' + group.name + ' parenting part:' + part + ' to it');
+
                 var partNode = self.find('//' + part)[ 0 ];
 
                 // console.log('partNode:'); console.log(partNode);

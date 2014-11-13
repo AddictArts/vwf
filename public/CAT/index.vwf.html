@@ -114,7 +114,6 @@
         this.close = function() {
           handleContextMenu();
         };
-        // this.RemoveTheSling = view.RemoveTheSling;
       };
       var view = {
         toolTrayGUI: undefined,
@@ -199,6 +198,40 @@
           }
         };
 
+        function createContolAssetOptions(assetVwfId) {
+          var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ view.guiref.instanceIndex ].name);
+          var vec3 = vwf.getProperty(assetVwfId, 'translation');
+          var vec4 = vwf.getProperty(assetVwfId, 'rotation');
+          var xyzo = {
+            x: vec3[ 0 ],
+            y: vec3[ 1 ],
+            z: vec3[ 2 ],
+            rotX: false,
+            rotY: false,
+            rotZ: false,
+            rotation: vec4[ 3 ],
+            visible: true,
+            static: false
+          };
+
+          assetPropertyFolder.add(xyzo, 'x').onChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
+          assetPropertyFolder.add(xyzo, 'y').onChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
+          assetPropertyFolder.add(xyzo, 'z').onChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
+          assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
+          assetPropertyFolder.add(xyzo, 'static').name('Auto Load');
+          assetPropertyFolder.add(xyzo, 'rotX').onChange(function() { vwf.setProperty(assetVwfId, 'rotation', [ 1, 0, 0, xyzo.rotation ]); });
+          assetPropertyFolder.add(xyzo, 'rotY').onChange(function() { vwf.setProperty(assetVwfId, 'rotation', [ 0, 1, 0, xyzo.rotation ]); });
+          assetPropertyFolder.add(xyzo, 'rotZ').onChange(function() { vwf.setProperty(assetVwfId, 'rotation', [ 0, 0, 1, xyzo.rotation ]); });
+          assetPropertyFolder.add(xyzo, 'rotation').onChange(function(val) {
+            var rx = xyzo.rotX? 1 : 0;
+            var ry = xyzo.rotY? 1 : 0;
+            var rz = xyzo.rotZ? 1 : 0;
+ 
+            vwf.setProperty(assetVwfId, 'rotation', [ rx, ry, rz, val ]);
+          });
+          $('*.dg').css('font-size', view.controlMenu.fontsize);
+        }
+
         // notice the methodValue for the function return value as needed...
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
           if (methodName == 'processCatDotJson') {
@@ -224,22 +257,8 @@
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
 
             var assetVwfId = vwf_view.kernel.find(vwfapp.appId, "//" + methodValue)[ 0 ];
-            var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ view.guiref.instanceIndex ].name);
-            var vec3 = vwf.getProperty(assetVwfId, 'translation');
-            var xyzo = {
-              x: vec3[ 0 ],
-              y: vec3[ 1 ],
-              z: vec3[ 2 ],
-              visible: true,
-              static: false
-            };
 
-            assetPropertyFolder.add(xyzo, 'x').onChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
-            assetPropertyFolder.add(xyzo, 'y').onChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
-            assetPropertyFolder.add(xyzo, 'z').onChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
-            assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-            assetPropertyFolder.add(xyzo, 'static').name('Auto Load');
-            $('*.dg').css('font-size', view.controlMenu.fontsize);
+            createContolAssetOptions(assetVwfId);
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, "__idToName");
           }
@@ -248,6 +267,7 @@
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
           if (eventName != 'pointerDown') return;
+          if (eventArgs[ 0 ].button == 'right') return;
           if (view.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
 
           // console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
