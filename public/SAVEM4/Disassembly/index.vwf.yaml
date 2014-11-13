@@ -191,7 +191,7 @@ scripts:
     this.children[ name ].init();
   };
 
-  this.instance = function(backEndId) {
+  this.instance = function(name, backEndId) {
     console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
 
     var self = this;
