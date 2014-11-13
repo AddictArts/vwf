@@ -57,6 +57,7 @@ function getIndentString() {
     return indentString;
 }
 
+//XXX groups with no parts or groups and only a name have a trailing comma ex: { "name": "TakedownPinTail Group" }
 function prettyPrintObj(obj) {
     if (typeof(obj) == 'string') {
         util.puts(getIndentString() + '"' + obj + '"' + (endOfLists.pop()? '' : ','));

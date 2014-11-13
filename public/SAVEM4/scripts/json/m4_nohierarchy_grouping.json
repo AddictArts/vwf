@@ -134,24 +134,24 @@
           ],
           "groups": [
             {
-              "name": "Bolt_Catch_Bottom Group",
+              "name": "Bolt_Catch_Bottom Group"
             },
             {
-              "name": "Bolt_Catch_Top Group",
+              "name": "Bolt_Catch_Top Group"
             }
           ]
         },
         {
-          "name": "PivotPinHead Group",
+          "name": "PivotPinHead Group"
         },
         {
-          "name": "PivotPinTail Group",
+          "name": "PivotPinTail Group"
         },
         {
-          "name": "TakedownPinHead Group",
+          "name": "TakedownPinHead Group"
         },
         {
-          "name": "TakedownPinTail Group",
+          "name": "TakedownPinTail Group"
         }
       ]
     },
@@ -173,7 +173,7 @@
       ],
       "groups": [
         {
-          "name": "Chamber Group",
+          "name": "Chamber Group"
         },
         {
           "name": "Charging_Handle Group",
