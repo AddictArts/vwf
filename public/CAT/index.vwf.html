@@ -99,9 +99,7 @@
       };
       var vwfapp = {
         appId: vwf_view.kernel.application(),
-        tooltray: undefined,
-        M4_Carbine_daeId: undefined,
-        idToName: undefined
+        tooltray: undefined
       };
       var CameraMenu = function() {
         this.backendtxrxMsg = false;
@@ -142,7 +140,7 @@
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
 
-          for (var index = 0; index < vwfapp.tooltray.length; index++) {
+          for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
             this.toolTrayMenu[ 'instance' + index ] = this.instance(index);
             view.guiref[ index ] = this.toolTrayGUI.add(this.toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
           }
@@ -214,11 +212,7 @@
               url = __CAT.baseServerAddress + '/inventory';
             }
 
-            $.ajax({
-              url: url,
-              type: 'get',
-              cache: false
-            })
+            $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)
             .fail(function(jqXHR, textStatus, errorThrown) {
               console.info('using inventoryServerAddress:' + url);
@@ -227,12 +221,10 @@
           } else if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
 
-            var _assetId = vwf_view.kernel.find(vwfapp.appId, "//" + methodValue)[ 0 ];
-            console.log('vwf _assetId:' + _assetId);
-            // vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+            var assetVwfId = vwf_view.kernel.find(vwfapp.appId, "//" + methodValue)[ 0 ];
 
-            // vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
-            // vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+            console.info('initInstance completed for assetVwfId:' + assetVwfId);
+            vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, "__idToName");
           }
         };
 
@@ -243,18 +235,17 @@
 
           // console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
-          if (nodeId == vwfapp.M4_Carbine_daeId) {
+          if (vwfapp[ nodeId ] !== undefined) {
             view.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
             view.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
             view.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+            console.info('picked id:' + eventArgs[ 1 ].pickID);
+            console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);
 
-            switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
-            case '':
+            switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
+            default: // Everything else...
               view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, 'close').name('(X) Close'));
               // view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, '').name(''));
-              break;
-            default: // Everything else, barrel, stock, etc, is position the weapon...
-              view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, 'close').name('(X) Close'));
               break;
             }
           }
