@@ -97,7 +97,7 @@ scripts:
 
     self.children.create(name, vwf_node3, function(child) {
       self.initInstance(name, data.KbId);
-      self.createObjectParentsForMetaGroups(grouping, this.children[ name ]);
+      self.createObjectParentsForMetaGroups(grouping, self.children[ name ]);
     });
   };
 
@@ -108,10 +108,11 @@ scripts:
       if (p == 'groups') {
         obj.groups.forEach(function(group) {
           if (group.name && group.node === undefined) {
+            // console.log(group.name);
             parent.children.create(group.name, { extends: "http://vwf.example.com/node3.vwf" }, function(child) {
               // console.log(child);
               if (group.parts) group.parts.forEach(function(part) {
-                console.info('Object parent created:' + group.name + ' parenting part:' + part + ' to it');
+                console.info('Object parent:' + group.name + ' parenting part:' + part + ' to it');
 
                 var partNode = self.find('//' + part)[ 0 ];
 
@@ -119,7 +120,10 @@ scripts:
                 partNode.parent_ = child;
               });
 
-              if (group.groups) self.createObjectParentsForMetaGroups(group.groups, child);
+              if (group.groups) {
+                console.info('Group:' + group.name + ' has ' + group.groups.length  + ' groups');
+                self.createObjectParentsForMetaGroups(group, child);
+              }
             });
           }
         });
