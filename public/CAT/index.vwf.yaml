@@ -128,8 +128,8 @@ scripts:
     return name;
   };
 
-  this.instance = function(name, backEndId) {
-    console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
+  this.instance = function(trayName, backEndId) {
+    console.info(this.id + ' instancing tool tray item with trayName:' + trayName  + ' id:' + backEndId);
 
     var self = this;
 

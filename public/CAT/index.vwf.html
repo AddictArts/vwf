@@ -228,7 +228,8 @@
       }
 
       function createContolAssetOptions(assetVwfId) {
-        var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ view.guiref.instanceIndex ].name);
+        var index = view.guiref.instanceIndex;
+        var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ index ].name);
         var vec3 = vwf.getProperty(assetVwfId, 'translation');
         var xyzo = {
           x: vec3[ 0 ],
@@ -246,7 +247,7 @@
         assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
         assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
         assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-        assetPropertyFolder.add(xyzo, 'static').name('auto load');
+        assetPropertyFolder.add(xyzo, 'static').name('auto load').onChange(function(val) { vwfapp.tooltray[ index ].__static = val; });
         assetPropertyFolder.add(xyzo, 'rotX');
         assetPropertyFolder.add(xyzo, 'rotY');
         assetPropertyFolder.add(xyzo, 'rotZ');
@@ -276,6 +277,7 @@
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
+              __CAT.vwfapp = vwfapp;
               view.init();
             };
             var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
@@ -298,6 +300,8 @@
 
             createContolAssetOptions(assetVwfId);
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__static = false;
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__assetVwfId = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, "__idToName");
           }
         };
@@ -349,7 +353,7 @@
       vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
         if (childID == vwfapp.appId) {
           sceneInitialize();
-          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera');
+          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
           vwf_view.kernel.callMethod(vwfapp.appId, 'processCatDotJson', [ __CAT ]);
         }
       }
