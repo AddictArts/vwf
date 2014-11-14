@@ -102,95 +102,85 @@
         cameraId: undefined,
         tooltray: undefined
       };
-      var ControlMenu = function() {
-        var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
-
-        this.backendtxrxMsg = false;
-        this.fontsize = '110%';
-        this.path = 'MyExercise';
-        this.camxyz = {
-          x: vec3[ 0 ],
-          y: vec3[ 1 ],
-          z: vec3[ 2 ],
+      var toolTrayMenu = { };
+      var controlMenu = {
+        backendtxrxMsg: false,
+        fontsize: '110%',
+        path: 'MyExercise',
+        camxyz: {
+          x: 0,
+          y: 0,
+          z: 0,
           rotX: false,
           rotY: false,
           rotZ: false,
           rotation: 0
-        };
-        this.reset = function() {
+        },
+        reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
-        };
-        this.saveExercise = function() {
-        };
+        },
+        saveExercise: function() {
+        },
+        init: function() {
+          var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
+
+          this.camxyz.x = vec3[ 0 ];
+          this.camxyz.y = vec3[ 1 ];
+          this.camxyz.z = vec3[ 2 ];
+        }
       };
-      var ToolTrayMenu = function() { };
-      var ContextMenu = function() {
-        this.close = function() {
+      var contextMenu = {
+        close: function() {
           handleContextMenu();
-        };
+        }
       };
       var view = {
         toolTrayGUI: undefined,
-        toolTrayMenu: undefined,
-        controlMenu: undefined,
         controlGUI: undefined,
-        contextMenu: undefined,
         contextGUI: undefined,
         contextActive: false,
         guiref: { ctx: [ ] },
-        instance: function(index) {
-          return function() {
-            console.info('instance:');
-            console.info(vwfapp.tooltray[ index ]);
-
-            Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-            view.guiref.instanceIndex = index;
-            view.toolTrayGUI.remove(view.guiref[ index ]);
-            vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
-          };
-        },
         init: function() {
           $('#backendtxrxMsg').hide();
-          this.toolTrayMenu = new ToolTrayMenu();
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
 
           for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
-            this.toolTrayMenu[ 'instance' + index ] = this.instance(index);
-            view.guiref[ index ] = this.toolTrayGUI.add(this.toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
+            toolTrayMenu[ 'instance' + index ] = instance(index);
+            view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
           }
 
-          // Camera drop down menu's
-          this.controlMenu = new ControlMenu();
+          // Control drop down menu's
+          controlMenu.init();
           this.controlGUI = new dat.GUI();
           this.controlGUI.name = 'Camera Menu';
-          this.controlGUI.add(this.controlMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+          this.controlGUI.add(controlMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
             if (value) $('#backendtxrxMsg').show();
             else $('#backendtxrxMsg').hide();
           });
-          this.controlGUI.add(this.controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
-          this.controlGUI.add(this.controlMenu, 'reset').name('Reset');
-          this.controlGUI.add(this.controlMenu, 'path').name('Path');
-          this.controlGUI.add(this.controlMenu, 'saveExercise').name('Save Exercise');
+          this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.add(controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(controlMenu, 'path').name('Path');
+          this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
 
           var cameraFolder = this.controlGUI.addFolder('Camera');
 
-          cameraFolder.add(this.controlMenu.camxyz, 'x').onFinishChange(
-            function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, view.controlMenu.camxyz.y, view.controlMenu.camxyz.z ]); }
+          cameraFolder.add(controlMenu.camxyz, 'x').onFinishChange(
+            function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, controlMenu.camxyz.y, controlMenu.camxyz.z ]); }
           );
-          cameraFolder.add(this.controlMenu.camxyz, 'y').onFinishChange(
-            function(newY) { vwf.setProperty(vwfapp.cameraId, 'translation', [ view.controlMenu.camxyz.x, newY, view.controlMenu.camxyz.z ]); }
+          cameraFolder.add(controlMenu.camxyz, 'y').onFinishChange(
+            function(newY) { vwf.setProperty(vwfapp.cameraId, 'translation', [ controlMenu.camxyz.x, newY, controlMenu.camxyz.z ]); }
           );
-          cameraFolder.add(this.controlMenu.camxyz, 'z').onFinishChange(
-            function(newZ) { vwf.setProperty(vwfapp.cameraId, 'translation', [ view.controlMenu.camxyz.x, view.controlMenu.camxyz.y, newZ ]); }
+          cameraFolder.add(controlMenu.camxyz, 'z').onFinishChange(
+            function(newZ) { vwf.setProperty(vwfapp.cameraId, 'translation', [ controlMenu.camxyz.x, controlMenu.camxyz.y, newZ ]); }
           );
-          cameraFolder.add(this.controlMenu.camxyz, 'rotX');
-          cameraFolder.add(this.controlMenu.camxyz, 'rotY');
-          cameraFolder.add(this.controlMenu.camxyz, 'rotZ');
-          cameraFolder.add(this.controlMenu.camxyz, 'rotation').onFinishChange(function(val) {
-            var rx = view.controlMenu.camxyz.rotX? 1 : 0;
-            var ry = view.controlMenu.camxyz.rotY? 1 : 0;
-            var rz = view.controlMenu.camxyz.rotZ? 1 : 0;
+          cameraFolder.add(controlMenu.camxyz, 'rotX');
+          cameraFolder.add(controlMenu.camxyz, 'rotY');
+          cameraFolder.add(controlMenu.camxyz, 'rotZ');
+          cameraFolder.add(controlMenu.camxyz, 'rotation').onFinishChange(function(val) {
+            var rx = controlMenu.camxyz.rotX? 1 : 0;
+            var ry = controlMenu.camxyz.rotY? 1 : 0;
+            var rz = controlMenu.camxyz.rotZ? 1 : 0;
 
             if (rx || ry || rz) vwf_view.kernel.callMethod(vwfapp.cameraId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
           });
@@ -200,10 +190,9 @@
           this.controlGUI.domElement.style.left = '15px';
           this.controlGUI.domElement.style.overflowX = 'visible';
           $('body').append(this.controlGUI.domElement);
-          $('*.dg').css('font-size', this.controlMenu.fontsize);
+          $('*.dg').css('font-size', controlMenu.fontsize);
 
           // Context menu drop down menu's
-          this.contextMenu = new ContextMenu();
           this.contextGUI = new dat.GUI();
           this.contextGUI.name = 'Context Menu';
           this.contextGUI.autoPlace = false;
@@ -212,6 +201,18 @@
           $('div.close-button:last').css('display', 'none');
         }
       };
+
+      function instance(index) {
+        return function() {
+          console.info('instance index:' + index);
+          console.info(vwfapp.tooltray[ index ]);
+
+          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+          view.guiref.instanceIndex = index;
+          view.toolTrayGUI.remove(view.guiref[ index ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
+        };
+      }
 
       function handleContextMenu() {
         if (view.contextActive) {
@@ -245,7 +246,7 @@
         assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
         assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
         assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-        assetPropertyFolder.add(xyzo, 'static').name('auto-load');
+        assetPropertyFolder.add(xyzo, 'static').name('auto load');
         assetPropertyFolder.add(xyzo, 'rotX');
         assetPropertyFolder.add(xyzo, 'rotY');
         assetPropertyFolder.add(xyzo, 'rotZ');
@@ -256,7 +257,7 @@
 
           if (rx || ry || rz) vwf_view.kernel.callMethod(assetVwfId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
         });
-        $('*.dg').css('font-size', view.controlMenu.fontsize);
+        $('*.dg').css('font-size', controlMenu.fontsize);
       }
 
       function sceneInitialize() {
@@ -307,9 +308,9 @@
             var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
             var controllers = view.controlGUI.__folders.Camera.__controllers;
 
-            view.controlMenu.camxyz.x = vec3[ 0 ];
-            view.controlMenu.camxyz.y = vec3[ 1 ];
-            view.controlMenu.camxyz.z = vec3[ 2 ];
+            controlMenu.camxyz.x = vec3[ 0 ];
+            controlMenu.camxyz.y = vec3[ 1 ];
+            controlMenu.camxyz.z = vec3[ 2 ];
 
             // Manual update vs listen(); Iterating over all controllers
             for (var i in controllers) controllers[ i ].updateDisplay();
@@ -330,8 +331,8 @@
 
             switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
             default: // Everything else...
-              view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, 'close').name('(X) Close'));
-              // view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, '').name(''));
+              view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'close').name('(X) Close'));
+              // view.guiref.ctx.push(view.contextGUI.add(contextMenu, '').name(''));
               break;
             }
           }
