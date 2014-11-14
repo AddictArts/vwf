@@ -166,6 +166,7 @@ routes.post(routes.Q_CLEAR, function(req, res) {
     }), 200, JSONt);
 });
 routes.post(routes.Q_DIS, routes.posts[ routes.Q_CLEAR ]);
+routes.post(routes.Q_CAT, routes.posts[ routes.Q_CLEAR ]);
 routes.post(routes.ACT_CLEAR, function(req, res) {
     log('...handling route POST ' + req.reqPath);
 

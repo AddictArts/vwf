@@ -13,7 +13,7 @@ methods:
   initInstance:
   instance:
 properties:
-  backendResetSent:
+  backendResetSent: false
 children:
   light1:
     extends: http://vwf.example.com/light.vwf
@@ -28,7 +28,6 @@ children:
 scripts:
 - |
   this.initialize = function() {
-    this.backendResetSent = false;
     this.future(0).initializeCamera();
   };
 
@@ -40,11 +39,7 @@ scripts:
   this.resetBackend = function() {
     var self = this;
 
-    this.query({ type: 'Reset' },
-      function() {
-        self.backendResetSent = true;
-      }
-    );
+    this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });
   };
 
   this.transformGroupingToNode3 = function(obj, node3) {

@@ -104,10 +104,12 @@
       var ControlMenu = function() {
         this.backendtxrxMsg = false;
         this.fontsize = '110%';
-        // this.reset = function() {
-        //   vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
-        // };
-        this.x = 0;
+        this.path = 'MyExercise';
+        this.reset = function() {
+          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+        };
+        this.saveExercise = function() {
+        };
       };
       var ToolTrayMenu = function() { };
       var ContextMenu = function() {
@@ -155,6 +157,8 @@
             else $('#backendtxrxMsg').hide();
           });
           this.controlGUI.add(this.controlMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.add(this.controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(this.controlMenu, 'path').name('Path');
           this.controlGUI.autoPlace = false;
           this.controlGUI.domElement.style.position = 'fixed';
           this.controlGUI.domElement.style.float = 'left';
@@ -188,6 +192,39 @@
         }
       }
 
+      function createContolAssetOptions(assetVwfId) {
+        var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ view.guiref.instanceIndex ].name);
+        var vec3 = vwf.getProperty(assetVwfId, 'translation');
+        var xyzo = {
+          x: vec3[ 0 ],
+          y: vec3[ 1 ],
+          z: vec3[ 2 ],
+          rotX: false,
+          rotY: false,
+          rotZ: false,
+          rotation: 0,
+          visible: true,
+          static: false
+        };
+
+        assetPropertyFolder.add(xyzo, 'x').onFinishChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
+        assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
+        assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
+        assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
+        assetPropertyFolder.add(xyzo, 'static').name('auto load');
+        assetPropertyFolder.add(xyzo, 'rotX');
+        assetPropertyFolder.add(xyzo, 'rotY');
+        assetPropertyFolder.add(xyzo, 'rotZ');
+        assetPropertyFolder.add(xyzo, 'rotation').onFinishChange(function(val) {
+          var rx = xyzo.rotX? 1 : 0;
+          var ry = xyzo.rotY? 1 : 0;
+          var rz = xyzo.rotZ? 1 : 0;
+
+          if (rx || ry || rz) vwf_view.kernel.callMethod(assetVwfId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
+        });
+        $('*.dg').css('font-size', view.controlMenu.fontsize);
+      }
+
       function sceneInitialize() {
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
@@ -197,39 +234,6 @@
             }
           }
         };
-
-        function createContolAssetOptions(assetVwfId) {
-          var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ view.guiref.instanceIndex ].name);
-          var vec3 = vwf.getProperty(assetVwfId, 'translation');
-          var xyzo = {
-            x: vec3[ 0 ],
-            y: vec3[ 1 ],
-            z: vec3[ 2 ],
-            rotX: false,
-            rotY: false,
-            rotZ: false,
-            rotation: 0,
-            visible: true,
-            static: false
-          };
-
-          assetPropertyFolder.add(xyzo, 'x').onFinishChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
-          assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
-          assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
-          assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-          assetPropertyFolder.add(xyzo, 'static').name('auto load');
-          assetPropertyFolder.add(xyzo, 'rotX');
-          assetPropertyFolder.add(xyzo, 'rotY');
-          assetPropertyFolder.add(xyzo, 'rotZ');
-          assetPropertyFolder.add(xyzo, 'rotation').onFinishChange(function(val) {
-            var rx = xyzo.rotX? 1 : 0;
-            var ry = xyzo.rotY? 1 : 0;
-            var rz = xyzo.rotZ? 1 : 0;
-
-            if (rx || ry || rz) vwf_view.kernel.callMethod(assetVwfId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
-          });
-          $('*.dg').css('font-size', view.controlMenu.fontsize);
-        }
 
         // notice the methodValue for the function return value as needed...
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
