@@ -156,9 +156,10 @@
             if (value) $('#backendtxrxMsg').show();
             else $('#backendtxrxMsg').hide();
           });
-          this.controlGUI.add(this.controlMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.add(this.controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(this.controlMenu, 'reset').name('Reset');
           this.controlGUI.add(this.controlMenu, 'path').name('Path');
+          this.controlGUI.add(this.controlMenu, 'saveExercise').name('Save Exercise');
           this.controlGUI.autoPlace = false;
           this.controlGUI.domElement.style.position = 'fixed';
           this.controlGUI.domElement.style.float = 'left';
@@ -211,7 +212,7 @@
         assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
         assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
         assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-        assetPropertyFolder.add(xyzo, 'static').name('auto load');
+        assetPropertyFolder.add(xyzo, 'static').name('auto-load');
         assetPropertyFolder.add(xyzo, 'rotX');
         assetPropertyFolder.add(xyzo, 'rotY');
         assetPropertyFolder.add(xyzo, 'rotZ');
