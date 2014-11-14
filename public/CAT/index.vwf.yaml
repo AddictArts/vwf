@@ -42,7 +42,7 @@ scripts:
     this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });
   };
 
-  this.transformGroupingToNode3 = function(obj, node3) {
+  this.transformGroupingToNode3 = function(obj, node3, mgroups) {
     var self = this;
 
     for (var p in obj) {
@@ -53,9 +53,11 @@ scripts:
           if (group.node) {
               node3.children[ group.node ] = { extends: "http://vwf.example.com/node3.vwf", children: { } };
               children = node3.children[ group.node ];
+          } else {
+            mgroups.push(group.name);
           }
 
-          self.transformGroupingToNode3(group, children);
+          self.transformGroupingToNode3(group, children, mgroups);
         });
       } else if (p == 'parts') {
         obj.parts.forEach(function(part) {
@@ -64,12 +66,12 @@ scripts:
       }
     }
 
-    return node3;
+    return { vwf_node3: node3, mgroups: mgroups };
   };
 
   this.vwfChildJsonFromGrouping = function(data) {
     var self = this;
-    var grouping, name, vwf_node3;
+    var grouping, name, tform;
 
     if (data.grouping !== undefined) {
       grouping = JSON.parse(data.grouping);
@@ -79,7 +81,7 @@ scripts:
     }
 
     // vwf include might be better? var tt = { "includes": "tool.vwf" } ... this.children.create("tool", tt, function( child ) { ... });
-    vwf_node3 = self.transformGroupingToNode3(grouping, {
+    tform = self.transformGroupingToNode3(grouping, {
       extends: "http://vwf.example.com/node3.vwf",
       source: data.assetURL,
       type: "model/vnd.collada+xml",
@@ -87,11 +89,11 @@ scripts:
       properties: { },
       children: { },
       grouping: grouping.name
-    });
-    name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
+    }, [ ]);
+    name = tform.vwf_node3.grouping.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
 
-    self.children.create(name, vwf_node3, function(child) {
-      self.initInstance(name, data.KbId);
+    self.children.create(name, tform.vwf_node3, function(child) {
+      self.initInstance(name, data.KbId, tform.mgroups);
       self.createObjectParentsForMetaGroups(grouping, self.children[ name ]);
     });
   };
@@ -123,8 +125,8 @@ scripts:
     }
   };
 
-  this.initInstance = function(name, kbid) {
-    this.children[ name ].init(kbid);
+  this.initInstance = function(name, kbid, mgroups) {
+    this.children[ name ].init(kbid, mgroups);
     return name;
   };
 
