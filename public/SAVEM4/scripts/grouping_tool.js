@@ -513,7 +513,7 @@ function three() {
 
 function four() {
     var xml = '<grouping name="ShootingRange">\
-        <group node="environment">\
+        <group name="environment" node="environment">\
             <part node="grass"/>\
             <part node="tree_line"/>\
             <part node="sky"/>\

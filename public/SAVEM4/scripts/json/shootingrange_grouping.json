@@ -2,6 +2,7 @@
   "name": "ShootingRange",
   "groups": [
     {
+      "name": "environment",
       "node": "environment",
       "parts": [
         "grass",

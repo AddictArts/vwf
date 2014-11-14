@@ -108,15 +108,12 @@ scripts:
       if (p == 'groups') {
         obj.groups.forEach(function(group) {
           if (group.name && group.node === undefined) {
-            // console.log(group.name);
             parent.children.create(group.name, { extends: "http://vwf.example.com/node3.vwf" }, function(child) {
-              // console.log(child);
               if (group.parts) group.parts.forEach(function(part) {
                 console.info('Object parent:' + group.name + ' parenting part:' + part + ' to it');
 
                 var partNode = self.find('//' + part)[ 0 ];
 
-                // console.log('partNode:'); console.log(partNode);
                 partNode.parent_ = child;
               });
 
