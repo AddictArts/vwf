@@ -57,7 +57,6 @@ function getIndentString() {
     return indentString;
 }
 
-//XXX groups with no parts or groups and only a name have a trailing comma ex: { "name": "TakedownPinTail Group" }
 function prettyPrintObj(obj) {
     if (typeof(obj) == 'string') {
         util.puts(getIndentString() + '"' + obj + '"' + (endOfLists.pop()? '' : ','));
@@ -83,13 +82,22 @@ function prettyPrintObj(obj) {
             }
 
             indentLevel--;
-            util.puts(getIndentString() +  ']' + (p == lastpOfObj? '' : ','));
+
+            var js = getIndentString() +  ']';
+
+            js += (p != lastpOfObj && obj[ lastpOfObj ] !== undefined)? ',' : '';
+            util.puts(js);
         } else if (Object.prototype.toString.call(obj[ p ]) == '[object Object]') { // key => { ... }
             util.puts(getIndentString() +  '"' + p + '":');
             endOfLists.push(p == lastpOfObj);
             prettyPrintObj(obj[ p ]);
         } else { // key => value
-            if (obj[ p ] !== undefined) util.puts(getIndentString() +  '"' + p + '": "' + obj[ p ] + (p == lastpOfObj? '"' : '",'));
+            if (obj[ p ] !== undefined) {
+                var js = getIndentString() +  '"' + p + '": "' + obj[ p ] + '"';
+
+                js += (p != lastpOfObj && obj[ lastpOfObj ] !== undefined)? ',' : '';
+                util.puts(js);
+            }
         }
     }
 
@@ -143,6 +151,7 @@ function initGlobals(xml) {
 function one() {
     var xml = '<grouping name="M4 Carbine">\
         <part node="Bling"/>\
+        <group name="Empty"/>\
         <group node="M4" name="M4 Group">\
             <group name="B Group">\
                 <part node="A"/>\
