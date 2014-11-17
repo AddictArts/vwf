@@ -153,7 +153,7 @@
           // Control drop down menu's
           controlMenu.init();
           this.controlGUI = new dat.GUI();
-          this.controlGUI.name = 'Camera Menu';
+          this.controlGUI.name = 'Control Menu';
           this.controlGUI.add(controlMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
             if (value) $('#backendtxrxMsg').show();
             else $('#backendtxrxMsg').hide();
