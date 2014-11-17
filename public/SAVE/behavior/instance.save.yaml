@@ -1,0 +1,108 @@
+# Copyright 2014, SRI International
+---
+methods:
+  transformGroupingToNode3:
+  vwfChildJsonFromGrouping:
+  createObjectParentsForMetaGroups:
+  initInstance:
+  instance:
+scripts:
+- |
+  this.transformGroupingToNode3 = function(obj, node3, mgroups) {
+    var self = this;
+
+    for (var p in obj) {
+      if (p == 'groups') {
+        obj.groups.forEach(function(group) {
+          var children = node3;
+
+          if (group.node) {
+              node3.children[ group.node ] = { extends: "http://vwf.example.com/node3.vwf", children: { } };
+              children = node3.children[ group.node ];
+          } else {
+            mgroups.push(group.name);
+          }
+
+          self.transformGroupingToNode3(group, children, mgroups);
+        });
+      } else if (p == 'parts') {
+        obj.parts.forEach(function(part) {
+            node3.children[ part ] = { extends: "http://vwf.example.com/node3.vwf" };
+        });
+      }
+    }
+
+    return { vwf_node3: node3, mgroups: mgroups };
+  };
+
+  this.vwfChildJsonFromGrouping = function(data) {
+    var self = this;
+    var grouping, name, tform;
+
+    if (data.grouping !== undefined) {
+      grouping = JSON.parse(data.grouping);
+    } else {        
+      console.warn(self.id + ' object instance request returned undefined grouping');
+      grouping = { name: undefined };
+    }
+
+    // vwf include might be better? var tt = { "includes": "tool.vwf" } ... this.children.create("tool", tt, function( child ) { ... });
+    tform = self.transformGroupingToNode3(grouping, {
+      extends: "http://vwf.example.com/node3.vwf",
+      source: data.assetURL,
+      type: "model/vnd.collada+xml",
+      implements: [ ' .behave/initNode3.save', ' .behave/backendtxrx.save' ], // => base behavior, and properties
+      properties: { },
+      children: { },
+      grouping: grouping.name
+    }, [ ]);
+    name = tform.vwf_node3.grouping.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
+
+    self.children.create(name, tform.vwf_node3, function(child) {
+      self.initInstance(name, data.KbId, tform.mgroups);
+      self.createObjectParentsForMetaGroups(grouping, self.children[ name ]);
+    });
+  };
+
+  this.createObjectParentsForMetaGroups = function(obj, parent) {
+    var self = this;
+
+    for (var p in obj) {
+      if (p == 'groups') {
+        obj.groups.forEach(function(group) {
+          if (group.name && group.node === undefined) {
+            parent.children.create(group.name, { extends: "http://vwf.example.com/node3.vwf" }, function(child) {
+              if (group.parts) group.parts.forEach(function(part) {
+                console.info('Object parent:' + group.name + ' parenting part:' + part + ' to it');
+
+                var partNode = self.find('//' + part)[ 0 ];
+
+                partNode.parent_ = child;
+              });
+
+              if (group.groups) {
+                console.info('Group:' + group.name + ' has ' + group.groups.length  + ' groups');
+                self.createObjectParentsForMetaGroups(group, child);
+              }
+            });
+          }
+        });
+      }
+    }
+  };
+
+  this.initInstance = function(name, kbid, mgroups) {
+    this.children[ name ].init(kbid, mgroups);
+    return name;
+  };
+
+  this.instance = function(trayName, backEndId) {
+    console.info(this.id + ' instancing tool tray item with trayName:' + trayName  + ' id:' + backEndId);
+
+    var self = this;
+
+    self.obj({ type: 'create', ID: backEndId }, function(data) {
+      console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
+      self.vwfChildJsonFromGrouping(data);
+    });
+  }; //# sourceURL=instance.save

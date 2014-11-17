@@ -273,7 +273,7 @@
 
         // notice the methodValue for the function return value as needed...
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
-          if (methodName == 'processCatDotJson') {
+          if (methodName == 'processSaveDotJson') {
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
@@ -283,7 +283,7 @@
             var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
 
             if (!url)  {
-              console.warn('using __CAT to get inventory server address');
+              console.info('using __CAT to get inventory server address');
               url = __CAT.baseServerAddress + '/inventory';
             }
 
@@ -354,7 +354,7 @@
         if (childID == vwfapp.appId) {
           sceneInitialize();
           vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
-          vwf_view.kernel.callMethod(vwfapp.appId, 'processCatDotJson', [ __CAT ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __CAT ]);
         }
       }
       })(); //# sourceURL=index.vwf.html
