@@ -5,7 +5,8 @@
 var qs = require('querystring'),
     http = require('http'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    util = require('util');
 
 /*
  * Simple web server to test activity and query streams with the EUI. 
@@ -16,12 +17,22 @@ var qs = require('querystring'),
  * Requirements:
  *      node.exe (Windows native)
  *      node (OS X, Linux)
+ *
+ * http://www.html5rocks.com/en/tutorials/cors/
+ * response['Access-Control-Allow-Origin'] = '*'
+ * response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+ * response['Access-Control-Max-Age'] = 1000
+ * # note that '*' is not valid for Access-Control-Allow-Headers
+ * response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
  */
 
 // ====****====****====****==== ROUTES ====****====****====****==== //
 var routes = {
+    putUrlCache: { },
+    rootPath: 'public',
     ROOT: '/',
     ROOTANY: '/*',
+    PUTANY: '/*',
     INV_CLEAR: '/M4clear/inventory',
     INV_DIS: '/M4dis/inventory',
     INV_CAT: '/cat/inventory',
@@ -40,21 +51,49 @@ var routes = {
 start(routes); // construct or initialize the routes object
 routes.get(routes.ROOT, function(req, res) {
     log('...handling route GET ' + routes.ROOT);
+
     var data = "/";
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(data, 200, HTMLt);
 });
 routes.get(routes.ROOTANY, function(req, res) {
     log('...handling route GET ' + routes.ROOTANY + ' for ' + req.reqPath);
 
-    var status = 404,
+    var file = routes.rootPath + req.reqPath,
+        status = fs.existsSync(file)? 200 : 404,
         data = 'The requested URL ' + req.reqPath + ' was not found on this server';
 
-    if (path.existsSync(routes.rootPath + req.reqPath)) {
-        status = 200;
-        data = fs.readFileSync(routes.rootPath + req.reqPath);
+    try {
+        data = fs.readFileSync(file);
+    } catch (e) { }
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(data, status, req.contentType);
+});
+routes.put(routes.PUTANY, function(req, res) { // jQuery Ex: $.ajax({ url:'http://t.uk/foo/s.json.js', type:'put', data:'{ "a" : 1 }', cache: false, processData:false }).done(function(data) { console.log(data); });
+    log('...handling route PUT ' + routes.PUTANY + ' for ' + req.reqPath);
+
+    var putPath = routes.rootPath + '/PutExercise',
+        name = req.reqPath.slice(req.reqPath.lastIndexOf('/')), // 'http://foo.com:3001/some.json.js' => '/some.json.js', could use the path.dirname
+        file = putPath + name,
+        data = file + ' on the server through PUT ' + req.reqPath;
+
+    if (routes.putUrlCache[ req.reqPath ] !== undefined) {
+        data = fs.existsSync(file)? 'Replaced ' + data : 'Added ' + data;
+
+        try {
+            fs.unlinkSync(file);
+        } catch (e) { }
+
+        fs.writeFileSync(file, req.body);
+    } else {
+        routes.putUrlCache[ req.reqPath ] = file;
     }
 
-    res.send(data, status, req.contentType);
+    res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(data, 200, PLAINt);
 });
 routes.get(routes.INV_CLEAR, function(req, res) {
     log('...handling route GET ' + req.reqPath);
@@ -70,6 +109,7 @@ routes.get(routes.INV_CLEAR, function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
+routes.get('/MyExercise/inventory', routes.gets[ routes.INV_CLEAR ]);
 routes.get(routes.INV_CAT, function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
@@ -96,11 +136,11 @@ routes.post(routes.OBJ_CLEAR, function(req, res) {
     // }
 
     var param = req.param;
-    var oArgs = param['object'];
+    var oArgs = param[ 'object' ];
     var data = { KbId: "unknown" };
     var o = JSON.parse(oArgs);
 
-    log(o);
+    log(util.inspect(o));
 
     if (o.type == 'create') {
         switch (o.ID) {
@@ -139,17 +179,17 @@ routes.post(routes.Q_CLEAR, function(req, res) {
     var q = JSON.parse(queryArgs);
     var kbids = [ ];
 
-    log(q);
+    log(util.inspect(q));
 
     switch (q.type) {
     case 'AllActions':
         break;
     case 'Instance':
-        for (var i = 0; i < q.query.length; i++) kbids.push(q.query[i] + Date.now());
+        for (var i = 0; i < q.query.length; i++) kbids.push(q.query[ i ] + Date.now());
 
         break;
     case 'KbId':
-        for (var i = 0; i < q.query.length; i++) kbids.push(q.query[i] + Date.now());
+        for (var i = 0; i < q.query.length; i++) kbids.push(q.query[ i ] + Date.now());
 
         break;
     case 'Reset':
@@ -174,12 +214,6 @@ routes.post(routes.ACT_CLEAR, function(req, res) {
     var actionArgs = param['activity'];
 
     log(actionArgs);
-    // http://www.html5rocks.com/en/tutorials/cors/
-    // response['Access-Control-Allow-Origin'] = '*'
-    // response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-    // response['Access-Control-Max-Age'] = 1000
-    // # note that '*' is not valid for Access-Control-Allow-Headers
-    // response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send('{ }\n', 200, JSONt);
 });
@@ -224,30 +258,30 @@ function start(routes) {
         var ndx = 2;
 
         // Check for any flag
-        if (process.argv[ndx] && process.argv[ndx].charAt(0) == '-') {
-            console.log('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[1]));
+        if (process.argv[ ndx ] && process.argv[ ndx ].charAt(0) == '-') {
+            util.puts('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[ 1 ]));
             process.exit(0);
         }
     }
 
     routes.get = function(route, handler) {
         log('...adding GET handler for route ' + route);
-        this.gets[route] = handler;
+        this.gets[ route ] = handler;
     };
     routes.gets = {};
     routes.post = function(route, handler) {
         log('...adding POST handler for route ' + route);
-        this.posts[route] = handler;
+        this.posts[ route ] = handler;
     };
     routes.posts = {};
     routes.put = function(route, handler) {
         log('...adding PUT handler for route ' + route);
-        this.puts[route] = handler;
+        this.puts[ route ] = handler;
     };
     routes.puts = {};
     routes.del = function(route, handler) {
         log('...adding DELETE handler for route ' + route);
-        this.dels[route] = handler;
+        this.dels[ route ] = handler;
     };
     routes.dels = {};
     routes.dispatch = function(req, res) {
@@ -255,40 +289,41 @@ function start(routes) {
 
         switch (req.method) {
         case "GET":
-            if (this.gets[url]) {
-                this.gets[url](req, res);
+            if (this.gets[ url ]) {
+                this.gets[ url ](req, res);
             } else {
-                this.gets['/*'](req, res);
+                this.gets[ '/*' ](req, res);
             }
             break;
         case "POST":
-            if (this.posts[url]) {
-                this.posts[url](req, res);
+            if (this.posts[ url ]) {
+                this.posts[ url ](req, res);
             } else {
                 log('unknown POST route ' + url);
             }break;
         case "PUT":
-            if (this.puts[url]) {
-                this.puts[url](req, res);
+            if (this.puts[ url ]) {
+                this.puts[ url ](req, res);
             } else {
-                log('unknown PUT route ' + url);
+                this.puts[ '/*' ](req, res);
             }
             break;
         case "DELETE":
-            if (this.dels[url]) {
-                this.dels[url](req, res);
+            if (this.dels[ url ]) {
+                this.dels[ url ](req, res);
             } else {
                 log('unknown DELETE route ' + url);
             }
             break;
         default:
             log('unknown request method ' + req.method);
+            log(util.inspect(req.headers));
         }
     }
 }
 
 function log(msg) {
-    console.log(msg);
+    util.log(msg);
 }
 
 function getPathLessTheQueryString(url) {
@@ -302,7 +337,7 @@ function getTheQueryString(url) {
 function req2ContentType(urlLessQueryString, headerContentType) {
     var at = urlLessQueryString.lastIndexOf('.'),
         fileType = urlLessQueryString.slice(at),
-        contentType = fileTypes.hasOwnProperty(fileType)? fileTypes[fileType] : PLAINt;
+        contentType = fileTypes.hasOwnProperty(fileType)? fileTypes[ fileType ] : PLAINt;
 
     if (at === -1) contentType = headerContentType;
 
@@ -313,12 +348,12 @@ var app = http.createServer(function (hreq, hres) {
     var pltqs = getPathLessTheQueryString(hreq.url),
         req = {
             url: hreq.url,
-            method: hreq.method,
+            method: (hreq.headers[ 'access-control-request-method' ] != 'PUT')? hreq.method : 'PUT', // or hreq.method == 'OPTIONS'
             headers: hreq.headers,
             body: '',
             xhr: hreq.headers['x-requested-with'] == 'XMLHttpRequest',
             reqPath: decodeURIComponent(pltqs),
-            contentType: req2ContentType(pltqs, hreq.headers['content-type']),
+            contentType: req2ContentType(pltqs, hreq.headers[ 'content-type' ]),
             queryString: getTheQueryString(hreq.url),
             param: undefined,
             httpReq: hreq,
