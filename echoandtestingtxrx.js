@@ -28,7 +28,6 @@ var qs = require('querystring'),
 
 // ====****====****====****==== ROUTES ====****====****====****==== //
 var routes = {
-    putUrlCache: { },
     rootPath: 'public',
     ROOT: '/',
     ROOTANY: '/*',
@@ -79,21 +78,24 @@ routes.put(routes.PUTANY, function(req, res) { // jQuery Ex: $.ajax({ url:'http:
         file = putPath + name,
         data = file + ' on the server through PUT ' + req.reqPath;
 
-    if (routes.putUrlCache[ req.reqPath ] !== undefined) {
-        data = fs.existsSync(file)? 'Replaced ' + data : 'Added ' + data;
-
-        try {
-            fs.unlinkSync(file);
-        } catch (e) { }
-
-        fs.writeFileSync(file, req.body);
-    } else {
-        routes.putUrlCache[ req.reqPath ] = file;
-    }
-
     res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send(data, 200, PLAINt);
+    // log(req.headers);
+
+    if (req.method == 'PUT') {
+        try {
+            fs.unlinkSync(file);
+            data = 'Replaced ' + data;
+        } catch (e) {
+            data = 'Added ' + data;
+        }
+
+        fs.writeFileSync(file, req.body);
+        log(data);
+        res.send(data, 200, PLAINt);
+    } else { // req.method == 'OPTIONS'
+        res.send('', 200, PLAINt);
+    }
 });
 routes.get(routes.INV_CLEAR, function(req, res) {
     log('...handling route GET ' + req.reqPath);
@@ -220,21 +222,7 @@ routes.post(routes.ACT_CLEAR, function(req, res) {
 });
 routes.post(routes.ACT_DIS, routes.posts[ routes.ACT_CLEAR ]);
 routes.get(routes.ASSESS_CLEAR, function(req, res) {
-    res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul>\
-           <li>Pull and hold charging handle </li>\
-           <li>Push and hold bottom of bolt catch </li>\
-           <li>Release charging handle to cock rifle </li>\
-           <li>Let go of bolt catch bottom </li>\
-           <li>Return charging handle to forward position </li>\
-           <li>Check chamber for ammo </li>\
-           <li>Select <i>Safe</i> mode </li>\
-           <li>Release bolt by pushing bolt catch top </li>\
-           <li>Select <i>Semi</i> mode </li>\
-           <li>Pull trigger to fire the weapon </li>\
-           <li>Pull and hold charging handle </li>\
-           <li>Release charging handle to cock rifle </li>\
-           <li>Select <i>Safe</i> mode </li>\
-         </ul></p></div></body></html>', 200, HTMLt);
+    res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul><li>Pull and hold charging handle </li><li>Push and hold bottom of bolt catch </li><li>Release charging handle to cock rifle </li<li>Let go of bolt catch bottom </li><li>Return charging handle to forward position </li><li>Check chamber for ammo </li><li>Select <i>Safe</i> mode </li><li>Release bolt by pushing bolt catch top </li><li>Select <i>Semi</i> mode </li><li>Pull trigger to fire the weapon </li><li>Pull and hold charging handle </li><li>Release charging handle to cock rifle </li><li>Select <i>Safe</i> mode </li></ul></p></div></body></html>', 200, HTMLt);
 });
 routes.get(routes.ASSESS_DIS, routes.get[ routes.ASSESS_CLEAR ]);
 
@@ -309,6 +297,13 @@ function start(routes) {
                 this.puts[ '/*' ](req, res);
             }
             break;
+        case "OPTIONS":
+            if (this.puts[ url ]) {
+                this.puts[ url ](req, res);
+            } else {
+                this.puts[ '/*' ](req, res);
+            }
+            break;
         case "DELETE":
             if (this.dels[ url ]) {
                 this.dels[ url ](req, res);
@@ -345,11 +340,13 @@ function req2ContentType(urlLessQueryString, headerContentType) {
     return contentType;
 }
 
-var app = http.createServer(function (hreq, hres) {
+var notCuidId = 0, // cuid npm package for collision resistant
+    app = http.createServer(function (hreq, hres) {
     var pltqs = getPathLessTheQueryString(hreq.url),
         req = {
+            id: ++notCuidId,
             url: hreq.url,
-            method: (hreq.headers[ 'access-control-request-method' ] != 'PUT')? hreq.method : 'PUT', // or hreq.method == 'OPTIONS'
+            method: hreq.method,
             headers: hreq.headers,
             body: '',
             xhr: hreq.headers['x-requested-with'] == 'XMLHttpRequest',
@@ -368,7 +365,7 @@ var app = http.createServer(function (hreq, hres) {
         };
 
     hreq.on('data', function (data) {
-            req.body += data;
+        req.body += data;
     });
     hreq.on('end', function () {
         req.param = qs.parse(req.queryString == '' ? req.body : req.queryString);
