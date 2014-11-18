@@ -200,7 +200,7 @@ scripts:
       console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' assetURL: ' + data.assetURL);
       console.log(JSON.parse(data.grouping));
 
-      if (data.KbId == 'unknown') {
+      if (data.KbId === undefined || data.KbId == 'unknown') {
         console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
         return;
       }
