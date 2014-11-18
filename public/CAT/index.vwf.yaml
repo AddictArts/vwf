@@ -2,30 +2,16 @@
 ---
 extends: http://vwf.example.com/scene.vwf
 implements:
-- begin.cat
-- backendtxrx.cat
+- .behave/begin.save
+- .behave/backendtxrx.save
+- .behave/instance.save
 methods:
   initializeCamera:
   resetBackend:
-  transformGroupingToNode3:
-  vwfChildJsonFromGrouping:
-  initInstance:
-  instance:
 properties:
-  backendResetSent:
+  __CAT: true
+  backendResetSent: false
 children:
-  ShootingRange__dae:
-    extends: http://vwf.example.com/node3.vwf
-    source: /SAVE/models/environments/range/ShootingRange_.dae
-    type: model/vnd.collada+xml
-    properties:
-      scale: [ 1, 1, 1 ]
-      translation: [ 0, 0, 0 ]
-    children:
-      #environment: # this group and children do not respond to translation, rotation, etc changes
-      #  extends: http://vwf.example.com/node3.vwf
-      targets: # targets had to be moved to the root at the same level as environment before anything could be done in transform terms like animation
-        extends: http://vwf.example.com/node3.vwf
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
@@ -39,25 +25,10 @@ children:
 scripts:
 - |
   this.initialize = function() {
-    this.backendResetSent = false;
     this.future(0).initializeCamera();
   };
 
   this.initializeCamera = function() {
-    __CAT.R = this.ShootingRange__dae;
-
-    var self = this;
-    var node3 = { extends: "http://vwf.example.com/node3.vwf" };
-    var targets = this.ShootingRange__dae.targets;
-
-    this.ShootingRange__dae.children.create('__offset', node3, function(offset) {
-      targets.parent_ = offset;
-      // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
-      offset.translateBy([ -17.339574813842773, 0, 0 ], 2.0);
-
-      if (offset.targets === undefined) offset.targets = self.ShootingRange__dae.__offset.children[ 0 ];
-    });
-
     this.camera.translation = [ -1.25, 0, 2.2 ];
     this.camera.rotation = [ 0, 0, 1, -90 ];
   };
@@ -65,111 +36,5 @@ scripts:
   this.resetBackend = function() {
     var self = this;
 
-    this.query({ type: 'Reset' },
-      function() {
-        self.backendResetSent = true;
-      }
-    );
-  };
-
-  this.transformGroupingToNode3 = function(obj, node3) {
-    var self = this;
-
-    for (var p in obj) {
-        if (p == 'groups') {
-            obj.groups.forEach(function(group) {
-                var children = node3;
-
-                if (group.node) {
-                    node3.children[ group.node ] = { extends: "http://vwf.example.com/node3.vwf", children: { } };
-                    children = node3.children[ group.node ];
-                }
-
-                self.transformGroupingToNode3(group, children);
-            });
-        } else if (p == 'parts') {
-            obj.parts.forEach(function(part) {
-                node3.children[ part ] = { extends: "http://vwf.example.com/node3.vwf" };
-            });
-        }
-    }
-
-    return node3;
-  };
-
-  this.vwfChildJsonFromGrouping = function(grouping) {
-    var groupingObj = grouping !== undefined? JSON.parse(grouping) : { name: undefined };
-    // vwf include might be better? var tt = { "includes": "http://vwf.example.com/tools/transform/transformTool.vwf" } ... this.children.create("transformTool", tt, function( child ) { ... });
-    var baseNode3 = {
-      extends: "http://vwf.example.com/node3.vwf",
-      type: "model/vnd.collada+xml",
-      implements: [ 'catNode3.vwf', 'backendtxrx.cat' ], // => initial state, base behavior, and props
-      properties: { },
-      children: { },
-      grouping: groupingObj.name
-    };
-    
-    var rootNode3 =  grouping !== undefined? this.transformGroupingToNode3(groupingObj, baseNode3) : baseNode3;
-
-    return rootNode3;
-  };
-
-  this.initInstance = function(name, kbid) {
-    if (name == "M4_Carbine_dae") {
-      this.children[ name ].M4_Carbine_KbId = kbid;
-    }
-
-    this.children[ name ].init();
-
-    if (name == 'ShootingRange_dae') {
-      var targets = this.children[ name ].environment.targets;
-      var node3 = { extends: "http://vwf.example.com/node3.vwf" };
-
-      this.children[ name ].children.create('__offset', node3, function(offset) {
-        // console.log('environment.targets:');
-        // console.log(targets);
-        // console.log('offset:');
-        // console.log(offset);
-        // offset.transform = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -17.339574813842773, 0.317113995552063, 1.0399224758148193, 1];
-        // offset.translation = [ -17.339574813842773, 0.317113995552063, 1.0399224758148193 ];
-      });
-    }
-
-    return name;
-  };
-
-  this.instance = function(backEndId) {
-    console.info(this.id + ' instancing tool tray item with name:' + name  + ' id:' + backEndId);
-
-    var self = this;
-
-    self.obj({ type: 'create', ID: backEndId }, function(data) {
-      console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
-
-      // if (data.grouping) console.log(JSON.parse(data.grouping));
-
-      if (data.KbId == 'unknown') {
-        console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
-        return;
-      }
-
-      var vwf_node3 = self.vwfChildJsonFromGrouping(data.grouping);
-
-      name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => example: M4_Carbine_dae
-      vwf_node3.source = data.assetURL;
-      // vwf_node3.implements = [ 'catNode3.vwf', 'backendtxrx.cat' ]; // => initial state, base behavior, and props, vwf include?
-
-      if (name == "M4_Carbine_dae") {
-        vwf_node3.properties = {
-          translation: [ 0, 0, 2 ],
-          rotation: [ 1, 0, 0, 270 ], // asset is laying flat, rotate x => -90 or 270
-          scale: [ 1, 1, 1 ]
-        };
-      }
-
-      // console.log(vwf_node3);
-      self.children.create(name, vwf_node3, function(child) {
-        self.future(0).initInstance(name, data.KbId);
-      });
-    });
+    this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });
   }; //# sourceURL=index.vwf

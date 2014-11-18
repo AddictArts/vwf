@@ -260,7 +260,7 @@
         this.m4Carbine = function() {
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           M4.toolTrayGUI.remove(M4.guiref.m4c);
-          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[0].name, vwfapp.tooltray[0].ID ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ 0 ].name, vwfapp.tooltray[ 0 ].ID ]);
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PointWeaponInSafeDirection').name('Position Weapon');
           M4.addSelectorLeverActionGroup();
           M4.toolTrayGUI.add(M4.toolTrayMenu, 'PushMagazineReleaseButton').name('Push Magazine Release Button');

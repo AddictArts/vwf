@@ -131,7 +131,7 @@
         };
       };
       var ToolTrayMenu = function() {
-        vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ 0 ].ID ]);
+        vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ 0 ].name, vwfapp.tooltray[ 0 ].ID ]);
         this.createFolders = function() {
           var RemoveTheSlingFolder = viewM4.toolTrayGUI.addFolder("Remove the Sling");
           var RemoveTheHandguardsFolder = viewM4.toolTrayGUI.addFolder("Remove the Handguards");

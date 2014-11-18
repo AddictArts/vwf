@@ -12,14 +12,14 @@ scripts:
 - |
   // NOTE: Called once even if multiple things implement this behavior
   this.initialize = function() {
-    if (!this.__initializeStep) return; // begin.eui added property, used to prevent double initialization at the root component
+    if (!this.__initializeStep) return; // begin.save added property, used to prevent double initialization at the root component
 
-    // we depend on config eui.json or eui-defaults.json via <script/> in index.vwf.html
+    // we depend on config save.json or save-defaults.json via <script/> in index.vwf.html
   };
 
   this.checkForServerProperty = function() {
     if (this.parent) {
-      console.info('backendtxrx.ux Setting the servers using the parent properties...');
+      console.info('backendtxrx.save Setting the servers using the parent properties...');
       this.queryServerAddress = this.parent.queryServerAddress;
       this.objectServerAddress = this.parent.objectServerAddress;
 
@@ -29,8 +29,8 @@ scripts:
         jQuery('#reasonertxrxMsg').text(msg);
         console.warn(msg);
       } else {
-        console.info(this.id + " backendtxrx.ux objectServerAddress:" + this.objectServerAddress);
-        console.info(this.id + " backendtxrx.ux queryServerAddress:" + this.queryServerAddress);
+        console.info(this.id + " backendtxrx.save objectServerAddress:" + this.objectServerAddress);
+        console.info(this.id + " backendtxrx.save queryServerAddress:" + this.queryServerAddress);
         jQuery('#backendtxrxMsg').text('Servers '
           + this.objectServerAddress + ', '
           + this.queryServerAddress);
@@ -39,12 +39,12 @@ scripts:
   };
 
   this.obj = function(data, done /* callback */) {
-    console.info(this.id + " backendtxrx.ux object " + JSON.stringify(data));
+    console.info(this.id + " backendtxrx.save object " + JSON.stringify(data));
     this.post({ object: JSON.stringify(data) }, this.objectServerAddress, done);
   };
 
   this.query = function(data, done /* callback */) {
-    console.info(this.id + " backendtxrx.ux query " + JSON.stringify(data));
+    console.info(this.id + " backendtxrx.save query " + JSON.stringify(data));
     this.post({ query: JSON.stringify(data) }, this.queryServerAddress, done);
   };
 
@@ -61,7 +61,7 @@ scripts:
       console.info('using serverAddress:' + url);
       console.warn("error:" + textStatus);
     });
-  }; //# sourceURL=backendtxrx.cat
+  }; //# sourceURL=backendtxrx.save
 
   // http://www.html5rocks.com/en/tutorials/cors/
   // response['Access-Control-Allow-Origin'] = '*'

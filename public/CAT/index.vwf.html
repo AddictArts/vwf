@@ -99,74 +99,100 @@
       };
       var vwfapp = {
         appId: vwf_view.kernel.application(),
-        tooltray: undefined,
-        M4_Carbine_daeId: undefined,
-        idToName: undefined
+        cameraId: undefined,
+        tooltray: undefined
       };
-      var CameraMenu = function() {
-        this.backendtxrxMsg = false;
-        this.fontsize = '110%';
-        // this.reset = function() {
-        //   vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
-        // };
+      var toolTrayMenu = { };
+      var controlMenu = {
+        backendtxrxMsg: false,
+        fontsize: '110%',
+        path: 'MyExercise',
+        camxyz: {
+          x: 0,
+          y: 0,
+          z: 0,
+          rotX: false,
+          rotY: false,
+          rotZ: false,
+          rotation: 0
+        },
+        reset: function() {
+          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+        },
+        saveExercise: function() {
+        },
+        init: function() {
+          var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
+
+          this.camxyz.x = vec3[ 0 ];
+          this.camxyz.y = vec3[ 1 ];
+          this.camxyz.z = vec3[ 2 ];
+        }
       };
-      var ToolTrayMenu = function() { };
-      var ContextMenu = function() {
-        this.close = function() {
+      var contextMenu = {
+        close: function() {
           handleContextMenu();
-        };
-        // this.RemoveTheSling = view.RemoveTheSling;
+        }
       };
       var view = {
         toolTrayGUI: undefined,
-        toolTrayMenu: undefined,
-        cameraMenu: undefined,
-        cameraGUI: undefined,
-        contextMenu: undefined,
+        controlGUI: undefined,
         contextGUI: undefined,
         contextActive: false,
         guiref: { ctx: [ ] },
-        instance: function(index) {
-          return function() {
-            console.info('instance:');
-            console.info(vwfapp.tooltray[ index ]);
-
-            Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-            view.toolTrayGUI.remove(view.guiref[ index ]);
-            vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].ID ]);
-          };
-        },
         init: function() {
           $('#backendtxrxMsg').hide();
-          this.toolTrayMenu = new ToolTrayMenu();
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
 
-          for (var index = 0; index < vwfapp.tooltray.length; index++) {
-            this.toolTrayMenu[ 'instance' + index ] = this.instance(index);
-            view.guiref[ index ] = this.toolTrayGUI.add(this.toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
+          for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
+            toolTrayMenu[ 'instance' + index ] = instance(index);
+            view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
           }
 
-          // Camera drop down menu's
-          this.cameraMenu = new CameraMenu();
-          this.cameraGUI = new dat.GUI();
-          this.cameraGUI.name = 'Camera Menu';
-          this.cameraGUI.add(this.cameraMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
+          // Control drop down menu's
+          controlMenu.init();
+          this.controlGUI = new dat.GUI();
+          this.controlGUI.name = 'Control Menu';
+          this.controlGUI.add(controlMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
             if (value) $('#backendtxrxMsg').show();
             else $('#backendtxrxMsg').hide();
           });
-          this.cameraGUI.add(this.cameraMenu, 'fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
-          this.cameraGUI.autoPlace = false;
-          this.cameraGUI.domElement.style.position = 'fixed';
-          this.cameraGUI.domElement.style.float = 'left';
-          this.cameraGUI.domElement.style.left = '15px';
-          this.cameraGUI.domElement.style.overflowX = 'visible';
-          // this.cameraGUI.domElement.style.visibility = 'hidden';
-          $('body').append(this.cameraGUI.domElement);
-          $('*.dg').css('font-size', this.cameraMenu.fontsize);
+          this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.add(controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(controlMenu, 'path').name('Path');
+          this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
+
+          var cameraFolder = this.controlGUI.addFolder('Camera');
+
+          cameraFolder.add(controlMenu.camxyz, 'x').onFinishChange(
+            function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, controlMenu.camxyz.y, controlMenu.camxyz.z ]); }
+          );
+          cameraFolder.add(controlMenu.camxyz, 'y').onFinishChange(
+            function(newY) { vwf.setProperty(vwfapp.cameraId, 'translation', [ controlMenu.camxyz.x, newY, controlMenu.camxyz.z ]); }
+          );
+          cameraFolder.add(controlMenu.camxyz, 'z').onFinishChange(
+            function(newZ) { vwf.setProperty(vwfapp.cameraId, 'translation', [ controlMenu.camxyz.x, controlMenu.camxyz.y, newZ ]); }
+          );
+          cameraFolder.add(controlMenu.camxyz, 'rotX');
+          cameraFolder.add(controlMenu.camxyz, 'rotY');
+          cameraFolder.add(controlMenu.camxyz, 'rotZ');
+          cameraFolder.add(controlMenu.camxyz, 'rotation').onFinishChange(function(val) {
+            var rx = controlMenu.camxyz.rotX? 1 : 0;
+            var ry = controlMenu.camxyz.rotY? 1 : 0;
+            var rz = controlMenu.camxyz.rotZ? 1 : 0;
+
+            if (rx || ry || rz) vwf_view.kernel.callMethod(vwfapp.cameraId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
+          });
+          this.controlGUI.autoPlace = false;
+          this.controlGUI.domElement.style.position = 'fixed';
+          this.controlGUI.domElement.style.float = 'left';
+          this.controlGUI.domElement.style.left = '15px';
+          this.controlGUI.domElement.style.overflowX = 'visible';
+          $('body').append(this.controlGUI.domElement);
+          $('*.dg').css('font-size', controlMenu.fontsize);
 
           // Context menu drop down menu's
-          this.contextMenu = new ContextMenu();
           this.contextGUI = new dat.GUI();
           this.contextGUI.name = 'Context Menu';
           this.contextGUI.autoPlace = false;
@@ -175,6 +201,18 @@
           $('div.close-button:last').css('display', 'none');
         }
       };
+
+      function instance(index) {
+        return function() {
+          console.info('instance index:' + index);
+          console.info(vwfapp.tooltray[ index ]);
+
+          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+          view.guiref.instanceIndex = index;
+          view.toolTrayGUI.remove(view.guiref[ index ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
+        };
+      }
 
       function handleContextMenu() {
         if (view.contextActive) {
@@ -189,6 +227,40 @@
         }
       }
 
+      function createContolAssetOptions(assetVwfId) {
+        var index = view.guiref.instanceIndex;
+        var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ index ].name);
+        var vec3 = vwf.getProperty(assetVwfId, 'translation');
+        var xyzo = {
+          x: vec3[ 0 ],
+          y: vec3[ 1 ],
+          z: vec3[ 2 ],
+          rotX: false,
+          rotY: false,
+          rotZ: false,
+          rotation: 0,
+          visible: true,
+          static: false
+        };
+
+        assetPropertyFolder.add(xyzo, 'x').onFinishChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
+        assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
+        assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
+        assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
+        assetPropertyFolder.add(xyzo, 'static').name('auto load').onChange(function(val) { vwfapp.tooltray[ index ].__static = val; });
+        assetPropertyFolder.add(xyzo, 'rotX');
+        assetPropertyFolder.add(xyzo, 'rotY');
+        assetPropertyFolder.add(xyzo, 'rotZ');
+        assetPropertyFolder.add(xyzo, 'rotation').onFinishChange(function(val) {
+          var rx = xyzo.rotX? 1 : 0;
+          var ry = xyzo.rotY? 1 : 0;
+          var rz = xyzo.rotZ? 1 : 0;
+
+          if (rx || ry || rz) vwf_view.kernel.callMethod(assetVwfId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
+        });
+        $('*.dg').css('font-size', controlMenu.fontsize);
+      }
+
       function sceneInitialize() {
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
@@ -201,24 +273,21 @@
 
         // notice the methodValue for the function return value as needed...
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
-          if (methodName == 'processCatDotJson') {
+          if (methodName == 'processSaveDotJson') {
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
+              __CAT.vwfapp = vwfapp;
               view.init();
             };
             var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
 
             if (!url)  {
-              console.warn('using __CAT to get inventory server address');
+              console.info('using __CAT to get inventory server address');
               url = __CAT.baseServerAddress + '/inventory';
             }
 
-            $.ajax({
-              url: url,
-              type: 'get',
-              cache: false
-            })
+            $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)
             .fail(function(jqXHR, textStatus, errorThrown) {
               console.info('using inventoryServerAddress:' + url);
@@ -227,34 +296,47 @@
           } else if (methodName == 'initInstance') {
             Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
 
-            var _assetId = vwf_view.kernel.find(vwfapp.appId, "//" + methodValue)[ 0 ];
-            console.log('vwf _assetId:' + _assetId);
-            // vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+            var assetVwfId = vwf_view.kernel.find(vwfapp.appId, '//' + methodValue)[ 0 ];
 
-            // vwfapp.M4_Carbine_daeId = vwf_view.kernel.find(vwfapp.appId, "//M4_Carbine_dae")[ 0 ];
-            // vwfapp.idToName = vwf.getProperty(vwfapp.M4_Carbine_daeId, "__idToName");
+            createContolAssetOptions(assetVwfId);
+            console.info('initInstance completed for assetVwfId:' + assetVwfId);
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__static = false;
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__assetVwfId = assetVwfId;
+            vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, "__idToName");
           }
         };
 
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
+          if (eventName == 'changingTransformFromView') {
+            var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
+            var controllers = view.controlGUI.__folders.Camera.__controllers;
+
+            controlMenu.camxyz.x = vec3[ 0 ];
+            controlMenu.camxyz.y = vec3[ 1 ];
+            controlMenu.camxyz.z = vec3[ 2 ];
+
+            // Manual update vs listen(); Iterating over all controllers
+            for (var i in controllers) controllers[ i ].updateDisplay();
+          }
+
           if (eventName != 'pointerDown') return;
+          if (eventArgs[ 0 ].button == 'right') return;
           if (view.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
 
-          console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
+          // console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
 
-          if (nodeId == vwfapp.M4_Carbine_daeId) {
+          if (vwfapp[ nodeId ] !== undefined) {
             view.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
             view.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
             view.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+            console.info('picked id:' + eventArgs[ 1 ].pickID);
+            console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);
 
-            switch (vwfapp.idToName[ eventArgs[ 1 ].pickID ]) {
-            case '':
-              view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, 'close').name('(X) Close'));
-              // view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, '').name(''));
-              break;
-            default: // Everything else, barrel, stock, etc, is position the weapon...
-              view.guiref.ctx.push(view.contextGUI.add(view.contextMenu, 'close').name('(X) Close'));
+            switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
+            default: // Everything else...
+              view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'close').name('(X) Close'));
+              // view.guiref.ctx.push(view.contextGUI.add(contextMenu, '').name(''));
               break;
             }
           }
@@ -271,7 +353,8 @@
       vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
         if (childID == vwfapp.appId) {
           sceneInitialize();
-          vwf_view.kernel.callMethod(vwfapp.appId, 'processCatDotJson', [ __CAT ]);
+          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
+          vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __CAT ]);
         }
       }
       })(); //# sourceURL=index.vwf.html
