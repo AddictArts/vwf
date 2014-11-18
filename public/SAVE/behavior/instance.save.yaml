@@ -38,6 +38,7 @@ scripts:
   this.vwfChildJsonFromGrouping = function(data) {
     var self = this;
     var grouping, name, tform;
+    var impl = [ ' .behave/initNode3.save', ' .behave/backendtxrx.save' ]; // => base behavior, and properties
 
     if (data.grouping !== undefined) {
       grouping = JSON.parse(data.grouping);
@@ -46,17 +47,20 @@ scripts:
       grouping = { name: undefined };
     }
 
+    name = grouping.name.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
+
+    if (!self.__CAT) impl.push(name + '.eui');
+
     // vwf include might be better? var tt = { "includes": "tool.vwf" } ... this.children.create("tool", tt, function( child ) { ... });
     tform = self.transformGroupingToNode3(grouping, {
       extends: "http://vwf.example.com/node3.vwf",
       source: data.assetURL,
       type: "model/vnd.collada+xml",
-      implements: [ ' .behave/initNode3.save', ' .behave/backendtxrx.save' ], // => base behavior, and properties
+      implements: impl, // => base behavior, and properties
       properties: { },
       children: { },
       grouping: grouping.name
     }, [ ]);
-    name = tform.vwf_node3.grouping.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
 
     self.children.create(name, tform.vwf_node3, function(child) {
       self.initInstance(name, data.KbId, tform.mgroups);
@@ -93,6 +97,9 @@ scripts:
 
   this.initInstance = function(name, kbid, mgroups) {
     this.children[ name ].init(kbid, mgroups);
+
+    if (!this.__CAT) this.children[ name ].setup();
+
     return name;
   };
 

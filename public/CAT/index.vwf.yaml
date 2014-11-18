@@ -9,6 +9,7 @@ methods:
   initializeCamera:
   resetBackend:
 properties:
+  __CAT: true
   backendResetSent: false
 children:
   light1:

@@ -171,6 +171,7 @@ routes.post(routes.OBJ_CLEAR, function(req, res) {
 });
 routes.post(routes.OBJ_DIS, routes.posts[ routes.OBJ_CLEAR ]);
 routes.post(routes.OBJ_CAT, routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/MyExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post(routes.Q_CLEAR, function(req, res) {
     log('...handling route POST ' + req.reqPath);
 
