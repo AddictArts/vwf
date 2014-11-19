@@ -44,7 +44,7 @@ scripts:
   };
 
   this.query = function(data, done /* callback */) {
-    console.info(this.id + " backendtxrx.save query " + JSON.stringify(data));
+    console.info(this.id + " backendtxrx.save query " + JSON.stringify(data).slice(0, 272) + "...");
     this.post({ query: JSON.stringify(data) }, this.queryServerAddress, done);
   };
 
@@ -69,3 +69,8 @@ scripts:
   // response['Access-Control-Max-Age'] = 1000
   // # note that '*' is not valid for Access-Control-Allow-Headers
   // response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+  //
+  // httpRes.setHeader('Access-Control-Allow-Origin', httpReq.headers.origin); // can only be a single origin
+  // httpRes.setHeader('Access-Control-Allow-Credentials', 'true');
+  // httpRes.setHeader('Access-Control-Allow-Headers', 'Authorization');
+  // httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');

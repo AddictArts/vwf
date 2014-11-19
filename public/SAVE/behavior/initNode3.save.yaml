@@ -51,7 +51,7 @@ scripts:
     self.query(
       { type: 'KbId', parent: kbid, query: comps },
       function(data) {
-        console.info(self.id + " init query received data " + JSON.stringify(data));
+        console.info(self.id + " init query received data " + JSON.stringify(data).slice(0, 272) + '...');
 
         for (var i = 0, l = data.KbIds.length; i < l; i++) {
           self[ comps[ i ] ] = data.KbIds[ i ];

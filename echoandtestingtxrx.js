@@ -87,7 +87,7 @@ routes.get(routes.ROOTANY, function(req, res) {
 routes.put(routes.PUTANY, function(req, res) {
     log('...handling route ' + req.method + ' ' + routes.PUTANY + ' for ' + req.reqPath);
     // "Preflight" OPTIONS response headers, handle without authentication
-    res.httpRes.setHeader('Access-Control-Allow-Origin', req.headers.origin); // can only be a single value
+    res.httpRes.setHeader('Access-Control-Allow-Origin', req.headers.origin); // can only be a single origin
     res.httpRes.setHeader('Access-Control-Allow-Credentials', 'true');
     res.httpRes.setHeader('Access-Control-Allow-Headers', 'Authorization');
     res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
@@ -235,6 +235,7 @@ routes.post(routes.Q_CLEAR, function(req, res) {
 });
 routes.post(routes.Q_DIS, routes.posts[ routes.Q_CLEAR ]);
 routes.post(routes.Q_CAT, routes.posts[ routes.Q_CLEAR ]);
+routes.post('/MyExercise/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post(routes.ACT_CLEAR, function(req, res) {
     log('...handling route POST ' + req.reqPath);
 
