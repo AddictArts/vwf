@@ -70,32 +70,57 @@ routes.get(routes.ROOTANY, function(req, res) {
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(data, status, req.contentType);
 });
-routes.put(routes.PUTANY, function(req, res) { // jQuery Ex: $.ajax({ url:'http://t.uk/foo/s.json.js', type:'put', data:'{ "a" : 1 }', cache: false, processData:false }).done(function(data) { console.log(data); });
-    log('...handling route PUT ' + routes.PUTANY + ' for ' + req.reqPath);
+// jQuery.ajax({
+//     url:'http://localhost:3001/foo/s.json.js',
+//     type:'put',
+//     data:'{ "a" : 1 }',
+//     cache: false,
+//     processData: false,
+//     crossDomain: true,
+//     xhrFields: { withCredentials: true } // prompt if you don't set the header below
+//     // beforeSend: function(xhr) {
+//     //     xhr.setRequestHeader ("Authorization", "Basic  letmein!");
+//     // }
+// })
+// .done(function(data) { jQuery('body').text(data); });
+// jQuery.ajax({url:'http://localhost:3001/foo/s.json.js',type:'put',data:'{ "a" : 1 }',cache: false,processData: false,crossDomain: true,xhrFields: { withCredentials: true }}).done(function(data) { jQuery('body').text(data); });
+routes.put(routes.PUTANY, function(req, res) {
+    log('...handling route ' + req.method + ' ' + routes.PUTANY + ' for ' + req.reqPath);
+    // "Preflight" OPTIONS response headers, handle without authentication
+    res.httpRes.setHeader('Access-Control-Allow-Origin', req.headers.origin); // can only be a single value
+    res.httpRes.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.httpRes.setHeader('Access-Control-Allow-Headers', 'Authorization');
+    res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
+
+    if (req.method == 'OPTIONS') {
+        res.send('', 200, PLAINt);
+        return;
+    }
 
     var putPath = routes.rootPath + '/PutExercise',
         name = req.reqPath.slice(req.reqPath.lastIndexOf('/')), // 'http://foo.com:3001/some.json.js' => '/some.json.js', could use the path.dirname
         file = putPath + name,
         data = file + ' on the server through PUT ' + req.reqPath;
 
-    res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
-    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    // log(req.headers);
-
-    if (req.method == 'PUT') {
-        try {
-            fs.unlinkSync(file);
-            data = 'Replaced ' + data;
-        } catch (e) {
-            data = 'Added ' + data;
-        }
-
-        fs.writeFileSync(file, req.body);
-        log(data);
-        res.send(data, 200, PLAINt);
-    } else { // req.method == 'OPTIONS'
-        res.send('', 200, PLAINt);
+    // after preflight now authenticate with http basic auth
+    if (req.headers.authorization === undefined) {
+        res.httpRes.setHeader('WWW-Authenticate', 'Basic realm="echoandtestingtxrx"');
+        res.send('', 401, PLAINt);
+        return;
     }
+
+    // log(util.inspect(req.headers));
+
+    try {
+        fs.unlinkSync(file);
+        data = 'Replaced ' + data;
+    } catch (e) {
+        data = 'Added ' + data;
+    }
+
+    fs.writeFileSync(file, req.body);
+    log(data);
+    res.send(data, 200, PLAINt);
 });
 routes.get(routes.INV_CLEAR, function(req, res) {
     log('...handling route GET ' + req.reqPath);
