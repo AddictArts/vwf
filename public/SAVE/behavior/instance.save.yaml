@@ -38,7 +38,7 @@ scripts:
   this.vwfChildJsonFromGrouping = function(data) {
     var self = this;
     var grouping, name, tform;
-    var impl = [ ' .behave/initNode3.save', ' .behave/backendtxrx.save' ]; // => base behavior, and properties
+    var impl = [ '.behave/initNode3.save', '.behave/backendtxrx.save' ]; // => base behavior, and properties
 
     if (data.grouping !== undefined) {
       if (Object.prototype.toString.call(data.grouping) == '[object Object]') grouping = data.grouping;
@@ -50,7 +50,7 @@ scripts:
 
     name = grouping.name.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
 
-    if (!self.__CAT) impl.push(name + '.eui');
+    if (!self.__CAT) impl.push(name + '.eui'); // implement asset behaviors where any auto-loaded assets do not by convention have a asset_name_dae.eui.yaml
 
     // vwf include might be better? var tt = { "includes": "tool.vwf" } ... this.children.create("tool", tt, function( child ) { ... });
     tform = self.transformGroupingToNode3(grouping, {
