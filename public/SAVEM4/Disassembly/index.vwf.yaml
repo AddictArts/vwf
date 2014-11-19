@@ -169,7 +169,7 @@ scripts:
   };
 
   this.vwfChildJsonFromGrouping = function(grouping) {
-    var groupingObj = JSON.parse(grouping);
+    var groupingObj = grouping;
     var  baseNode3 = {
       extends: "http://vwf.example.com/node3.vwf",
       type: "model/vnd.collada+xml",
@@ -198,14 +198,23 @@ scripts:
 
     self.obj({ type: 'create', ID: backEndId }, function(data) {
       console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' assetURL: ' + data.assetURL);
-      console.log(JSON.parse(data.grouping));
 
       if (data.KbId === undefined || data.KbId == 'unknown') {
         console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
         return;
       }
 
-      var vwf_node3 = self.vwfChildJsonFromGrouping(data.grouping);
+      var grouping;
+
+      if (Object.prototype.toString.call(data.grouping) == '[object Object]') { // data.grouping => { ... }
+        grouping = data.grouping;
+      } else {
+        grouping = JSON.parse(data.grouping);
+      }
+
+      console.log(grouping);
+
+      var vwf_node3 = self.vwfChildJsonFromGrouping(grouping);
 
       name = vwf_node3.grouping.replace(' ', '_') + '_dae'; // => M4_Carbine_dae
       vwf_node3.source = data.assetURL;

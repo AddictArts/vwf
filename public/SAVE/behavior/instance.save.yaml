@@ -41,8 +41,9 @@ scripts:
     var impl = [ ' .behave/initNode3.save', ' .behave/backendtxrx.save' ]; // => base behavior, and properties
 
     if (data.grouping !== undefined) {
-      grouping = JSON.parse(data.grouping);
-    } else {        
+      if (Object.prototype.toString.call(data.grouping) == '[object Object]') grouping = data.grouping;
+      else grouping = JSON.parse(data.grouping);
+    } else {
       console.warn(self.id + ' object instance request returned undefined grouping');
       grouping = { name: undefined };
     }
