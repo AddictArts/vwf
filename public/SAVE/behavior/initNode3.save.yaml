@@ -25,28 +25,35 @@ scripts:
     self.properties.create(self.name +  '_KbId', kbid);
 
     //TODO need to look into all the children (depth), new function and recursive call, post 1.0, or just use the grouping data rather than the children, post 1.0
-    for (var i = 0, count = self.children.length; i < count; i++) {
+    for (var i = 0, l = self.children.length; i < l; i++) {
       var child = self.children[ i ]; 
       var name = child.name;
+      var name_KbId = name + '_KbId';
       var id = child.id;
 
       self.__idToName[ id ] = name;
-      self.properties.create(name + '_KbId', undefined);
-      comps.push(name + '_KbId');
+      self.properties.create(name_KbId, undefined);
+      comps.push(name_KbId);
     }
 
     console.log('__idToName:');
     console.log(self.__idToName);
-    // console.log(self);
 
     if (self.parent.__CAT) return;
+
+    mgroups.forEach(function(group) {
+      var name_KbId = group + '__KbId';
+
+      self.properties.create(name_KbId, undefined);
+      comps.push(name_KbId);
+    })
 
     self.query(
       { type: 'KbId', parent: kbid, query: comps },
       function(data) {
-        console.info(self.id + " init query received data " + JSON.stringify(data));
+        console.info(self.id + " init query received data " + JSON.stringify(data).slice(0, 272) + '...');
 
-        for (var i = 0; i < data.KbIds.length; i++) {
+        for (var i = 0, l = data.KbIds.length; i < l; i++) {
           self[ comps[ i ] ] = data.KbIds[ i ];
         }
       }

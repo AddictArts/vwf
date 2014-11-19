@@ -28,7 +28,6 @@ var qs = require('querystring'),
 
 // ====****====****====****==== ROUTES ====****====****====****==== //
 var routes = {
-    putUrlCache: { },
     rootPath: 'public',
     ROOT: '/',
     ROOTANY: '/*',
@@ -71,28 +70,56 @@ routes.get(routes.ROOTANY, function(req, res) {
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(data, status, req.contentType);
 });
-routes.put(routes.PUTANY, function(req, res) { // jQuery Ex: $.ajax({ url:'http://t.uk/foo/s.json.js', type:'put', data:'{ "a" : 1 }', cache: false, processData:false }).done(function(data) { console.log(data); });
-    log('...handling route PUT ' + routes.PUTANY + ' for ' + req.reqPath);
+// jQuery.ajax({
+//     url:'http://localhost:3001/foo/s.json.js',
+//     type:'put',
+//     data:'{ "a" : 1 }',
+//     cache: false,
+//     processData: false,
+//     crossDomain: true,
+//     xhrFields: { withCredentials: true } // prompt if you don't set the header below
+//     // beforeSend: function(xhr) {
+//     //     xhr.setRequestHeader ("Authorization", "Basic  letmein!");
+//     // }
+// })
+// .done(function(data) { jQuery('body').text(data); });
+// jQuery.ajax({url:'http://localhost:3001/foo/s.json.js',type:'put',data:'{ "a" : 1 }',cache: false,processData: false,crossDomain: true,xhrFields: { withCredentials: true }}).done(function(data) { jQuery('body').text(data); });
+routes.put(routes.PUTANY, function(req, res) {
+    log('...handling route ' + req.method + ' ' + routes.PUTANY + ' for ' + req.reqPath);
+    // "Preflight" OPTIONS response headers, handle without authentication
+    res.httpRes.setHeader('Access-Control-Allow-Origin', req.headers.origin); // can only be a single origin
+    res.httpRes.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.httpRes.setHeader('Access-Control-Allow-Headers', 'Authorization');
+    res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
+
+    if (req.method == 'OPTIONS') {
+        res.send('', 200, PLAINt);
+        return;
+    }
 
     var putPath = routes.rootPath + '/PutExercise',
         name = req.reqPath.slice(req.reqPath.lastIndexOf('/')), // 'http://foo.com:3001/some.json.js' => '/some.json.js', could use the path.dirname
         file = putPath + name,
         data = file + ' on the server through PUT ' + req.reqPath;
 
-    if (routes.putUrlCache[ req.reqPath ] !== undefined) {
-        data = fs.existsSync(file)? 'Replaced ' + data : 'Added ' + data;
-
-        try {
-            fs.unlinkSync(file);
-        } catch (e) { }
-
-        fs.writeFileSync(file, req.body);
-    } else {
-        routes.putUrlCache[ req.reqPath ] = file;
+    // after preflight now authenticate with http basic auth
+    if (req.headers.authorization === undefined) {
+        res.httpRes.setHeader('WWW-Authenticate', 'Basic realm="echoandtestingtxrx"');
+        res.send('', 401, PLAINt);
+        return;
     }
 
-    res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
-    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    // log(util.inspect(req.headers));
+
+    try {
+        fs.unlinkSync(file);
+        data = 'Replaced ' + data;
+    } catch (e) {
+        data = 'Added ' + data;
+    }
+
+    fs.writeFileSync(file, req.body);
+    log(data);
     res.send(data, 200, PLAINt);
 });
 routes.get(routes.INV_CLEAR, function(req, res) {
@@ -208,6 +235,7 @@ routes.post(routes.Q_CLEAR, function(req, res) {
 });
 routes.post(routes.Q_DIS, routes.posts[ routes.Q_CLEAR ]);
 routes.post(routes.Q_CAT, routes.posts[ routes.Q_CLEAR ]);
+routes.post('/MyExercise/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post(routes.ACT_CLEAR, function(req, res) {
     log('...handling route POST ' + req.reqPath);
 
@@ -220,21 +248,7 @@ routes.post(routes.ACT_CLEAR, function(req, res) {
 });
 routes.post(routes.ACT_DIS, routes.posts[ routes.ACT_CLEAR ]);
 routes.get(routes.ASSESS_CLEAR, function(req, res) {
-    res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul>\
-           <li>Pull and hold charging handle </li>\
-           <li>Push and hold bottom of bolt catch </li>\
-           <li>Release charging handle to cock rifle </li>\
-           <li>Let go of bolt catch bottom </li>\
-           <li>Return charging handle to forward position </li>\
-           <li>Check chamber for ammo </li>\
-           <li>Select <i>Safe</i> mode </li>\
-           <li>Release bolt by pushing bolt catch top </li>\
-           <li>Select <i>Semi</i> mode </li>\
-           <li>Pull trigger to fire the weapon </li>\
-           <li>Pull and hold charging handle </li>\
-           <li>Release charging handle to cock rifle </li>\
-           <li>Select <i>Safe</i> mode </li>\
-         </ul></p></div></body></html>', 200, HTMLt);
+    res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul><li>Pull and hold charging handle </li><li>Push and hold bottom of bolt catch </li><li>Release charging handle to cock rifle </li<li>Let go of bolt catch bottom </li><li>Return charging handle to forward position </li><li>Check chamber for ammo </li><li>Select <i>Safe</i> mode </li><li>Release bolt by pushing bolt catch top </li><li>Select <i>Semi</i> mode </li><li>Pull trigger to fire the weapon </li><li>Pull and hold charging handle </li><li>Release charging handle to cock rifle </li><li>Select <i>Safe</i> mode </li></ul></p></div></body></html>', 200, HTMLt);
 });
 routes.get(routes.ASSESS_DIS, routes.get[ routes.ASSESS_CLEAR ]);
 
@@ -309,6 +323,13 @@ function start(routes) {
                 this.puts[ '/*' ](req, res);
             }
             break;
+        case "OPTIONS":
+            if (this.puts[ url ]) {
+                this.puts[ url ](req, res);
+            } else {
+                this.puts[ '/*' ](req, res);
+            }
+            break;
         case "DELETE":
             if (this.dels[ url ]) {
                 this.dels[ url ](req, res);
@@ -345,11 +366,13 @@ function req2ContentType(urlLessQueryString, headerContentType) {
     return contentType;
 }
 
-var app = http.createServer(function (hreq, hres) {
+var notCuidId = 0, // cuid npm package for collision resistant
+    app = http.createServer(function (hreq, hres) {
     var pltqs = getPathLessTheQueryString(hreq.url),
         req = {
+            id: ++notCuidId,
             url: hreq.url,
-            method: (hreq.headers[ 'access-control-request-method' ] != 'PUT')? hreq.method : 'PUT', // or hreq.method == 'OPTIONS'
+            method: hreq.method,
             headers: hreq.headers,
             body: '',
             xhr: hreq.headers['x-requested-with'] == 'XMLHttpRequest',
@@ -368,7 +391,7 @@ var app = http.createServer(function (hreq, hres) {
         };
 
     hreq.on('data', function (data) {
-            req.body += data;
+        req.body += data;
     });
     hreq.on('end', function () {
         req.param = qs.parse(req.queryString == '' ? req.body : req.queryString);
