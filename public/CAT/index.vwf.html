@@ -106,7 +106,10 @@
       var controlMenu = {
         backendtxrxMsg: false,
         fontsize: '110%',
-        path: 'MyExercise',
+        path: '/MyExercise',
+        pathLink: function() {
+          window.location.pathname = this.path;
+        },
         camxyz: {
           x: 0,
           y: 0,
@@ -122,6 +125,8 @@
         saveExercise: function() {
           // /cat/finishExercise (POST)
           // { "exercise": "/path/to/new/EUI/dir/", "auto": [ "tooltray-id-of-shootingrange" ] }
+          view.controlGUI.remove(view.guiref.saveExerciseRef);
+          view.controlGUI.add(this, 'pathLink').name(this.path);
         },
         init: function() {
           var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
@@ -149,7 +154,7 @@
 
           for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
             toolTrayMenu[ 'instance' + index ] = instance(index);
-            view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
+            this.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
           }
 
           // Control drop down menu's
@@ -163,7 +168,7 @@
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
           this.controlGUI.add(controlMenu, 'path').name('Path');
-          this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
+          this.guiref.saveExerciseRef = this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
 
           var cameraFolder = this.controlGUI.addFolder('Camera');
 
