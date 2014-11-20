@@ -1,13 +1,32 @@
 # Copyright 2014, SRI International
 ---
 methods:
+  instanceAutoLoads:
   transformGroupingToNode3:
+  parseInstanceResponseGrouping:
   vwfChildJsonFromGrouping:
   createObjectParentsForMetaGroups:
   initInstance:
   instance:
 scripts:
 - |
+  this.instanceAutoLoads = function() {
+    var self = this;
+
+    if (self.ShootingRange_dae === undefined) return; // this instancing is not dynamic, post 1.0
+
+    self.obj({ type: 'create', ID: null, auto: true }, function(rdata) {
+      var data = rdata[ 0 ];
+
+      console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
+      self.query({ type: 'KbId', parent: data.KbId, query: [ 'targets' ] },
+        function(data) {
+          console.info(self.id + " KbId query received data " + JSON.stringify(data).slice(0, 272) + '...');
+          self.ShootingRange_dae.properties.create('targets_KbId', data.KbIds[ 0 ]);
+      });
+    });
+  };
+
   this.transformGroupingToNode3 = function(obj, node3, mgroups) {
     var self = this;
 
@@ -35,19 +54,26 @@ scripts:
     return { vwf_node3: node3, mgroups: mgroups };
   };
 
-  this.vwfChildJsonFromGrouping = function(data) {
-    var self = this;
-    var grouping, name, tform;
-    var impl = [ '.behave/initNode3.save', '.behave/backendtxrx.save' ]; // => base behavior, and properties
+  this.parseInstanceResponseGrouping = function(data) {
+    var grouping;
 
     if (data.grouping !== undefined) {
       if (Object.prototype.toString.call(data.grouping) == '[object Object]') grouping = data.grouping;
       else grouping = JSON.parse(data.grouping);
     } else {
-      console.warn(self.id + ' object instance request returned undefined grouping');
+      console.warn(this.id + ' object instance request returned undefined grouping');
       grouping = { name: undefined };
     }
 
+    return grouping;
+  };
+
+  this.vwfChildJsonFromGrouping = function(data) {
+    var self = this;
+    var grouping, name, tform;
+    var impl = [ '.behave/initNode3.save', '.behave/backendtxrx.save' ]; // => base behavior, and properties
+
+    grouping = self.parseInstanceResponseGrouping(data);
     name = grouping.name.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
 
     if (!self.__CAT) impl.push(name + '.eui'); // implement asset behaviors where any auto-loaded assets do not by convention have a asset_name_dae.eui.yaml
@@ -109,8 +135,8 @@ scripts:
 
     var self = this;
 
-    self.obj({ type: 'create', ID: backEndId }, function(data) {
+    self.obj({ type: 'create', ID: backEndId, auto: false }, function(data) {
       console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
-      self.vwfChildJsonFromGrouping(data);
+      self.vwfChildJsonFromGrouping(data[ 0 ]);
     });
   }; //# sourceURL=instance.save
