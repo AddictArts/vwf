@@ -3,10 +3,12 @@
 properties:
   objectServerAddress:
   queryServerAddress:
+  activityServerAddress:
 methods:
   checkForServerProperty:
   obj:
   query:
+  activity:
   post:
 scripts:
 - |
@@ -22,12 +24,14 @@ scripts:
       console.info('backendtxrx.save Setting the servers using the parent properties...');
       this.queryServerAddress = this.parent.queryServerAddress;
       this.objectServerAddress = this.parent.objectServerAddress;
+      this.activityServerAddress = this.parent.activityServerAddress;
 
       if (!this.parent.baseServerAddress) {
         console.warn("The baseServerAddress server address is undefined, check the eui.json setting " + this.id);
       } else {
         console.info(this.id + " backendtxrx.save objectServerAddress:" + this.objectServerAddress);
         console.info(this.id + " backendtxrx.save queryServerAddress:" + this.queryServerAddress);
+        console.info(this.id + " backendtxrx.save activityServerAddress:" + this.activityServerAddress);
       }
     }
   };
@@ -40,6 +44,11 @@ scripts:
   this.query = function(data, done /* callback */) {
     console.info(this.id + " backendtxrx.save query " + JSON.stringify(data).slice(0, 272) + "...");
     this.post({ query: JSON.stringify(data) }, this.queryServerAddress, done);
+  };
+
+  this.activity = function(data, done /* callback */) {
+    console.info(this.id + " backendtxrx.save activity " + JSON.stringify(data));
+    this.post({ activity: JSON.stringify(data) }, this.activityServerAddress, done);
   };
 
   this.post = function(json, url, done) {

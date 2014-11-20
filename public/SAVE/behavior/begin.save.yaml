@@ -5,6 +5,7 @@ properties:
   baseServerAddress:
   objectServerAddress:
   queryServerAddress:
+  activityServerAddress:
 methods:
   processSaveDotJson:
 scripts:
@@ -23,9 +24,11 @@ scripts:
     if (this.baseServerAddress != null) {
       this.objectServerAddress = data.baseServerAddress + '/object'; // POST
       this.queryServerAddress = data.baseServerAddress + '/query'; // POST
+      this.activityServerAddress = data.baseServerAddress + '/action'; // POST
 
       console.info(this.id + " begin.save objectServerAddress:" + this.objectServerAddress);
       console.info(this.id + " begin.save queryServerAddress:" + this.queryServerAddress);
+      console.info(this.id + " begin.save activityServerAddress:" + this.activityServerAddress);
     }
 
     this.__initializeStep = 2;
