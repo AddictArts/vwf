@@ -130,7 +130,8 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     log('...handling route GET ' + req.reqPath);
 
     var data = {
-       tooltray: [{
+        instructorMode: false,
+        tooltray: [{
            name: "M4 Carbine",
            ID: "myM4"
         }]

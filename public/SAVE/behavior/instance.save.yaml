@@ -135,8 +135,10 @@ scripts:
 
     var self = this;
 
-    self.obj({ type: 'create', ID: backEndId, auto: false }, function(data) {
-      console.info(self.id + ' obj request received data.kbid: ' + data.KbId + ' assetURL: ' + data.assetURL);
-      self.vwfChildJsonFromGrouping(data[ 0 ]);
+    self.obj({ type: 'create', ID: backEndId, auto: false }, function(rdata) {
+      var data = rdata[ 0 ];
+
+      console.info(self.id + ' obj request received data.KbId: ' + data.KbId + ' assetURL: ' + data.assetURL);
+      self.vwfChildJsonFromGrouping(data);
     });
   }; //# sourceURL=instance.save

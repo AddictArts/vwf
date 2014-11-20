@@ -251,6 +251,8 @@ scripts:
 
     name = name.replace(' ', '_') + '_dae';
     self.obj({ type: 'create', ID: backEndId }, function(data) {
+      var data = rdata[ 0 ];
+
       console.info(self.id + ' obj request received data ' + JSON.stringify(data));
 
       if (data.KbId == 'unknown') {

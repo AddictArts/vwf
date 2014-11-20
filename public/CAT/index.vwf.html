@@ -120,6 +120,8 @@
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
         saveExercise: function() {
+          // /cat/finishExercise (POST)
+          // { "exercise": "/path/to/new/EUI/dir/", "auto": [ "tooltray-id-of-shootingrange" ] }
         },
         init: function() {
           var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
