@@ -104,7 +104,6 @@
       };
       var toolTrayMenu = { };
       var controlMenu = {
-        backendtxrxMsg: false,
         fontsize: '110%',
         path: '/MyExercise',
         pathLink: function() {
@@ -148,7 +147,6 @@
         contextActive: false,
         guiref: { ctx: [ ] },
         init: function() {
-          $('#backendtxrxMsg').hide();
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
 
@@ -161,10 +159,6 @@
           controlMenu.init();
           this.controlGUI = new dat.GUI();
           this.controlGUI.name = 'Control Menu';
-          this.controlGUI.add(controlMenu, 'backendtxrxMsg').name('Messages').onFinishChange(function(value) {
-            if (value) $('#backendtxrxMsg').show();
-            else $('#backendtxrxMsg').hide();
-          });
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
           this.controlGUI.add(controlMenu, 'path').name('Path');
@@ -369,7 +363,6 @@
   </head>
 <body>
   <div id="wrapper" class="wrapper">
-    <div id="backendtxrxMsg"></div>
     <div id="assessment"></div>
   </div>
   <script type="text/javascript">

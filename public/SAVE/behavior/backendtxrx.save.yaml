@@ -24,16 +24,10 @@ scripts:
       this.objectServerAddress = this.parent.objectServerAddress;
 
       if (!this.parent.baseServerAddress) {
-        var msg = "The baseServerAddress server address is undefined, check the eui.json setting " + this.id;
-
-        jQuery('#reasonertxrxMsg').text(msg);
-        console.warn(msg);
+        console.warn("The baseServerAddress server address is undefined, check the eui.json setting " + this.id);
       } else {
         console.info(this.id + " backendtxrx.save objectServerAddress:" + this.objectServerAddress);
         console.info(this.id + " backendtxrx.save queryServerAddress:" + this.queryServerAddress);
-        jQuery('#backendtxrxMsg').text('Servers '
-          + this.objectServerAddress + ', '
-          + this.queryServerAddress);
       }
     }
   };
@@ -49,7 +43,6 @@ scripts:
   };
 
   this.post = function(json, url, done) {
-    jQuery('#backendtxrxMsg').text(JSON.stringify(json));
     jQuery.ajax({
       url: url,
       type: 'post',
