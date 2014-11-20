@@ -94,19 +94,19 @@ scripts:
   this.SelectModeSemi = function() {
     console.info('SelectMode semi');
     this.Selector_Lever.rotation = [ 0, 0, 1, 0 ];
-    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Semi', 'Selector_Lever' ] });
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ this.Selector_Lever_KbId, 'Semi' ] });
   };
 
   this.SelectModeSafe = function() {
     console.info('SelectMode safe');
     this.Selector_Lever.rotation = [ 0, 0, 1, 90 ];
-    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Safe', 'Selector_Lever' ] });
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ this.Selector_Lever_KbId, 'Safe' ] });
   };
 
   this.SelectModeBurst = function() {
     console.info('SelectMode burst');
     this.Selector_Lever.rotation = [ 0, 0, 1, -90 ];
-    this.activity({ action: 'SelectSwitchPosition', arguments: [ 'Burst', 'Selector_Lever' ] });
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ this.Selector_Lever_KbId, 'Burst' ] });
   };
 
   this.PushMagazineReleaseButton = function() {
