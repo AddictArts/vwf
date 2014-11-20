@@ -32,7 +32,7 @@ scripts:
 
       self.__idToName[ id ] = name;
       self.properties.create(name_KbId, undefined);
-      comps.push(name_KbId);
+      comps.push(name);
     }
 
     console.log('__idToName:');
@@ -44,7 +44,7 @@ scripts:
       var name_KbId = group + '__KbId';
 
       self.properties.create(name_KbId, undefined);
-      comps.push(name_KbId);
+      comps.push(group);
     })
 
     self.query(
