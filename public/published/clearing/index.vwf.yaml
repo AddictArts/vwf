@@ -1,0 +1,43 @@
+# Copyright 2014, SRI International
+---
+extends: http://vwf.example.com/scene.vwf
+implements:
+- .behave/begin.save
+- .behave/backendtxrx.save
+- .behave/instance.save
+methods:
+  initializeCamera:
+  resetBackend:
+properties:
+  backendResetSent: false
+children:
+  ShootingRange_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: /SAVE/models/environments/range/ShootingRange.dae
+    type: model/vnd.collada+xml
+  light1:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "directional"
+      translation: [ -0.5, 0, 2 ]
+      rotation: [ 0, 1, 0, 36 ]
+  light2:
+    extends: http://vwf.example.com/light.vwf
+    properties:
+      lightType: "ambient"
+scripts:
+- |
+  this.initialize = function() {
+    this.future(0).initializeCamera();
+  };
+
+  this.initializeCamera = function() {
+    this.camera.translation = [ -1.25, 0, 2.2 ];
+    this.camera.rotation = [ 0, 0, 1, -90 ];
+  };
+
+  this.resetBackend = function() {
+    var self = this;
+
+    this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });
+  }; //# sourceURL=index.vwf
