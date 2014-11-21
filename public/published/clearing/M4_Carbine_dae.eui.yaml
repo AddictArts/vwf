@@ -12,6 +12,10 @@ methods:
   ReleaseChargingHandle:
   ReleaseBoltCatchBottom:
   PushChargingHandle:
+  InspectChamberGroup:
+  PushBoltCatchTop:
+  PullTrigger:
+  releaseTrigger:
 scripts:
 - |
   this.setup = function() {
@@ -91,7 +95,7 @@ scripts:
   };
 
   this.ReleaseChargingHandle = function() {
-    console.info(this.id + 'Release ChargingHandle');
+    console.info(this.id + ' Release ChargingHandle');
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0., 0, 0 ], 0.25);
     this.activity({ action: 'Release', arguments: [ this[ 'Charging_Handle Group_KbId' ] ] });
   };
@@ -106,5 +110,42 @@ scripts:
     console.info(this.id + ' Push ChargingHandle');
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0.005, 0, 0 ], 0.25);
     this.activity({ action: 'Push', arguments: [ this[ 'Charging_Handle Group_KbId' ] ] });
+  };
+
+  this.InspectChamberGroup = function() {
+    console.info(this.id + ' Inspect Chamber');
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 9 ].name != 'Ejection_Port_Cover') {
+        console.warn(this.id + ' Upper_Receiver Group child 9 is not the Ejection_Port_Cover');
+        return;
+    }
+
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].translateTo([ -0.075, 0, 0 ], 0.25);
+    this.children[ 'Upper_Receiver Group' ].children[ 9 ].rotateTo([ 1, 0, 0, 130 ], 0.5);
+    this.activity({ action: 'Inspect', arguments: [ this[ 'Chamber Group_KbId' ] ] });
+  };
+
+  this.PushBoltCatchTop = function() {
+    console.info(this.id + ' Push BoltCatchTop');
+
+    this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 12 ];
+    this.activity({ action: 'Push', arguments: [ this[ 'Bolt_Catch_Top Group_KbId' ] ] });
+  };
+
+  this.PullTrigger = function() {
+    console.info(this.id + ' Pull Trigger');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 1 ].name != 'Trigger') {
+        console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 15 ], 0.5);
+    this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
+    this.future(1).releaseTrigger();
+  };
+
+  this.releaseTrigger = function() {
+    this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 0 ], 0.125);
   };
   //# sourceURL=M4_Carbine_dae.eui

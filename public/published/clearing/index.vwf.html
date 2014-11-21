@@ -148,6 +148,20 @@
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);
           handleContextMenu();
         },
+        Inspect: function(name) {
+          switch (name) {
+          case 'Ejection_Port_Cover':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'InspectChamberGroup');
+            break;
+          }
+        },
+        Pull: function(name) {
+          switch (name) {
+          case 'Trigger':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');
+            break;
+          }
+        },
         PullAndHold: function(name) {
           switch (name) {
           case 'Charging_Handle':
@@ -164,6 +178,9 @@
         },
         Push: function(name) {
           switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushBoltCatchTop');
+            break;
           case 'Charging_Handle':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandle');
             break;
@@ -310,15 +327,21 @@
               view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));
             });
 
-            switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
+            var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];
+
+            switch (objectName) {
             case 'Bolt_Catch':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push(objectName);
+              };
               contextMenu.PushAndHold = function() {
                 handleContextMenu();
-                view.PushAndHold('Bolt_Catch');
+                view.PushAndHold(objectName);
               };
               contextMenu.Release = function() {
                 handleContextMenu();
-                view.Release('Bolt_Catch');
+                view.Release(objectName);
               };
               break;
             case 'Charging_Handle_Latch':
@@ -335,6 +358,13 @@
                 handleContextMenu();
                 view.Release('Charging_Handle');
               };
+              break;
+            case 'Ejection_Port_Cover':
+              contextMenu.Inspect = function() {
+                handleContextMenu();
+                view.Inspect(objectName);
+              };
+
               break;
             case 'Magazine_Catch':
             case 'Magazine_Catch_Button':
@@ -353,6 +383,12 @@
                 view.guiref.ctx.push(view.contextGUI.add(view, 'Burst'));
               };
               view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'SelectSwitchPosition'));
+              break;
+            case 'Trigger':
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull('Trigger');
+              };
               break;
             default: // Everything else... is just the point action point at selection
               contextMenu.Point = function() {
