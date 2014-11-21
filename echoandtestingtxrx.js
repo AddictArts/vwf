@@ -258,7 +258,8 @@ routes.post('/MyExercise/action', routes.posts[ routes.ACT_CLEAR ]);
 routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
     res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul><li>Pull and hold charging handle </li><li>Push and hold bottom of bolt catch </li><li>Release charging handle to cock rifle </li<li>Let go of bolt catch bottom </li><li>Return charging handle to forward position </li><li>Check chamber for ammo </li><li>Select <i>Safe</i> mode </li><li>Release bolt by pushing bolt catch top </li><li>Select <i>Semi</i> mode </li><li>Pull trigger to fire the weapon </li><li>Pull and hold charging handle </li><li>Release charging handle to cock rifle </li><li>Select <i>Safe</i> mode </li></ul></p></div></body></html>', 200, HTMLt);
 });
-routes.get(routes.ASSESS_DIS, routes.get[ routes.ASSESS_CLEAR ]);
+routes.get(routes.ASSESS_DIS, routes.gets[ routes.ASSESS_CLEAR ]);
+routes.get('/MyExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 
 // ====****====****====****==== SERVER ====****====****====****==== //
 var JSONt = 'application/json',

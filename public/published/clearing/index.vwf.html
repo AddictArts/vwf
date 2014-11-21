@@ -99,13 +99,26 @@
       };
       var vwfapp = {
         appId: vwf_view.kernel.application(),
-        tooltray: undefined
+        tooltray: undefined,
+        assessmentActive: false
       };
       var toolTrayMenu = { };
       var controlMenu = {
         fontsize: '110%',
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+        },
+        assessment: function() {
+          if (!vwfapp.assessmentActive) {
+            $('<iframe/>', {
+              name: 'assessment',
+              id:   'assessmentIFrame',
+              src:  vwfapp.assessmentServerAddress
+            }).appendTo('#assessment').css(cssIFrame);
+            $('#assessment').fadeIn();
+            vwfapp.assessmentActive = true;
+            $('.dg.ac').toggle();
+          }
         }
       };
       var contextMenu = {
@@ -183,6 +196,7 @@
           this.controlGUI.name = 'Control Menu';
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(controlMenu, 'assessment').name('Assessment');
           this.controlGUI.autoPlace = false;
           this.controlGUI.domElement.style.position = 'fixed';
           this.controlGUI.domElement.style.float = 'left';
@@ -252,12 +266,14 @@
               vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);
             };
 
-            console.info('using __EUI to get inventory server address');
+            console.info('using __EUI to get inventory and assessment server address');
+            vwfapp.assessmentServerAddress = __EUI.baseServerAddress + '/assessment';
             url = __EUI.baseServerAddress + '/inventory';
             $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)
             .fail(function(jqXHR, textStatus, errorThrown) {
               console.info('using inventoryServerAddress:' + url);
+              console.info('using assessmentServerAddress:' + vwfapp.assessmentServerAddress);
               console.warn("error:" + textStatus);
             });
           } else if (methodName == 'initInstance') {

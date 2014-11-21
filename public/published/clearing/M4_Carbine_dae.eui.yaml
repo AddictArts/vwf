@@ -60,7 +60,7 @@ scripts:
   };
 
   this.PushMagazineReleaseButton = function() {
-    console.info(this.id + ' Push MagazineReleaseButton pushed and released');
+    console.info(this.id + ' Push MagazineReleaseButton');
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 9 ].name != 'Magazine_Catch') {
         console.warn(this.id + ' Lower_Receiver Group child 9 is not the Magazine_Catch');
