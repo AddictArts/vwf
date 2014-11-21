@@ -7,6 +7,8 @@ methods:
   Point:
   SelectSwitchPosition:
   PushMagazineReleaseButton:
+  PullAndHoldChargingHandle:
+  PushAndHoldBoltCatchBottom:
 scripts:
 - |
   this.setup = function() {
@@ -55,7 +57,7 @@ scripts:
   };
 
   this.PushMagazineReleaseButton = function() {
-    console.info(this.id + ' PushMagazineReleaseButton pushed and released');
+    console.info(this.id + ' Push MagazineReleaseButton pushed and released');
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 9 ].name != 'Magazine_Catch') {
         console.warn(this.id + ' Lower_Receiver Group child 9 is not the Magazine_Catch');
@@ -74,8 +76,14 @@ scripts:
   };
 
   this.PullAndHoldChargingHandle = function() {
-    console.info('PullAndHoldChargingHandle pulled');
-    this.Charging_Handle.translateTo([ -0.005, 0, 0 ], 0.25);
-    this.activity({ action: 'PullAndHold', arguments: [ this.Charging_Handle_KbId ] });
+    console.info(this.id + ' PullAndHold ChargingHandle');
+    this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.005, 0, 0 ], 0.25);
+    this.activity({ action: 'PullAndHold', arguments: [ this[ 'Charging_Handle Group_KbId' ] ] });
+  };
+
+  this.PushAndHoldBoltCatchBottom = function() {
+    console.info(this.id + ' PushAndHold BoltCatchBottom');
+    this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, -12 ];
+    this.activity({ action: 'PushAndHold', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ] });
   };
   //# sourceURL=M4_Carbine_dae.eui

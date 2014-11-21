@@ -142,8 +142,19 @@
             break;
           }
         },
-        Pull: function(name) {
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
+        PushAndHold: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushAndHoldBoltCatchBottom');
+            break;
+          }
+        },
+        PullAndHold: function(name) {
+          switch (name) {
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
+            break;
+          }
         },
         init: function() {
           this.toolTrayGUI = new dat.GUI();
@@ -270,6 +281,18 @@
             });
 
             switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
+            case 'Bolt_Catch':
+              contextMenu.PushAndHold = function() {
+                handleContextMenu();
+                view.PushAndHold('Bolt_Catch');
+              };
+              break;
+            case 'Charging_Handle':
+              contextMenu.PullAndHold = function() {
+                handleContextMenu();
+                view.PullAndHold('Charging_Handle');
+              };
+              break;
             case 'Magazine_Catch':
             case 'Magazine_Catch_Button':
               contextMenu.Push = function() {
