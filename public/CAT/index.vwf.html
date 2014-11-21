@@ -206,7 +206,8 @@
       function instance(index) {
         return function() {
           console.info('instance index:' + index);
-          console.info(vwfapp.tooltray[ index ]);
+          console.info('tooltray[ ' + index + ' ]:');
+          console.log(vwfapp.tooltray[ index ]);
 
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           view.guiref.instanceIndex = index;

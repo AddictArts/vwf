@@ -135,10 +135,10 @@
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);
           handleContextMenu();
         },
-        Push: function(name) {
+        PullAndHold: function(name) {
           switch (name) {
-          case 'Magazine_Catch':
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
             break;
           }
         },
@@ -149,10 +149,23 @@
             break;
           }
         },
-        PullAndHold: function(name) {
+        Push: function(name) {
           switch (name) {
           case 'Charging_Handle':
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandle');
+            break;
+          case 'Magazine_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
+            break;
+          }
+        },
+        Release: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseBoltCatchBottom');
+            break;
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseChargingHandle');
             break;
           }
         },
@@ -191,7 +204,8 @@
       function instance(index) {
         return function() {
           console.info('instance index:' + index);
-          console.info(vwfapp.tooltray[ index ]);
+          console.info('tooltray[ ' + index + ' ]:');
+          console.log(vwfapp.tooltray[ index ]);
 
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           view.toolTrayGUI.remove(view.guiref[ index ]);
@@ -200,8 +214,8 @@
       }
 
       function addActionsToTrayMenu() {
-        $('div.close-button:first').css('display', 'none');
-        view.toolTrayGUI.add(view, 'defaultPoint').name('Point');
+        // $('div.close-button:first').css('display', 'none');
+        // view.toolTrayGUI.add(view, 'defaultPoint').name('Point');
       }
 
       function handleContextMenu() {
@@ -286,11 +300,24 @@
                 handleContextMenu();
                 view.PushAndHold('Bolt_Catch');
               };
+              contextMenu.Release = function() {
+                handleContextMenu();
+                view.Release('Bolt_Catch');
+              };
               break;
+            case 'Charging_Handle_Latch':
             case 'Charging_Handle':
               contextMenu.PullAndHold = function() {
                 handleContextMenu();
                 view.PullAndHold('Charging_Handle');
+              };
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Charging_Handle');
+              };
+              contextMenu.Release = function() {
+                handleContextMenu();
+                view.Release('Charging_Handle');
               };
               break;
             case 'Magazine_Catch':

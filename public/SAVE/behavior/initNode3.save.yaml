@@ -35,7 +35,7 @@ scripts:
       comps.push(name);
     }
 
-    console.log('__idToName:');
+    console.info('__idToName:');
     console.log(self.__idToName);
 
     if (self.parent.__CAT) return;
