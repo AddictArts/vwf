@@ -129,7 +129,7 @@ scripts:
   this.PushAndHoldBoltCatchBottom = function() {
     console.info('PushAndHoldBoltCatchBottom pushed');
     this.Bolt_Catch.rotation = [ 1, 0, 0, -12 ];
-    this.activity({ action: 'PullAndHold', arguments: [ this.Bolt_Catch_KbId ] });
+    this.activity({ action: 'PushAndHold', arguments: [ this.Bolt_Catch_KbId ] });
   };
 
   this.ReleaseChargingHandle = function() {
