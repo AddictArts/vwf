@@ -1,7 +1,7 @@
 # Copyright 2014, SRI International
 --- 
 properties:
-  actionNames: [ "Attach", "Close", "Detach", "Extract", "Insert", "Inspect", "Lift", "Open", "Point", "Press", "Pull", "PullAndHold", "Push", "PushAndHold", "Release" ]
+  actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]
 methods:
   setup:
   Point:
@@ -76,8 +76,8 @@ scripts:
         return;
     }
 
-    this.children[ 'Lower_Receiver Group' ].children[ 9 ].translateTo([ 0, 0, 0.0026 ], 0.125); // Magazine_Catch
-    this.children[ 'Lower_Receiver Group' ].children[ 11 ].translateTo([ 0, 0, 0.0026], 0.125); // Magazine_Catch_Button
+    this.children[ 'Lower_Receiver Group' ].children[ 9 ].translateTo([ 0, 0, 0.0026 ], 0.125);
+    this.children[ 'Lower_Receiver Group' ].children[ 11 ].translateTo([ 0, 0, 0.0026], 0.125);
     this.children[ 'Magazine_g Group' ].translateTo([ 0, 0.125, 0 ], 0.25);
     this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_Button_KbId ] });
   };
