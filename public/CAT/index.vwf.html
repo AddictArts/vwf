@@ -128,7 +128,7 @@
 
           base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
 
-          jQuery.ajax({
+          $.ajax({
               url: base + controlMenu.path + '/eui.json.js',
               type: 'put',
               data: eui_json_js,
@@ -141,7 +141,17 @@
               // }
           })
           .done(function(data) { console.info(data); });
-          jQuery.ajax({
+          $.ajax({
+              url: base + controlMenu.path + '/index.vwf.html',
+              type: 'put',
+              data: index_vwf_html,
+              cache: false,
+              processData: false,
+              crossDomain: true,
+              xhrFields: { withCredentials: true } // prompt if you don't set the header below
+          })
+          .done(function(data) { console.info(data); });
+          $.ajax({
               url: base + controlMenu.path + '/index.vwf.yaml',
               type: 'put',
               data: index_vwf_yaml,
@@ -151,7 +161,7 @@
               xhrFields: { withCredentials: true } // prompt if you don't set the header below
           })
           .done(function(data) { console.info(data); });
-          jQuery.ajax({
+          $.ajax({
               url: base + controlMenu.path + '/M4_Carbine_dae.eui.yaml',
               type: 'put',
               data: M4_Carbine_dae_eui_yaml,
@@ -161,8 +171,6 @@
               xhrFields: { withCredentials: true } // prompt if you don't set the header below
           })
           .done(function(data) { console.info(data); });
-
-
           view.controlGUI.remove(view.guiref.saveExerciseRef);
           view.controlGUI.add(this, 'pathLink').name(this.path);
         },
