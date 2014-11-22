@@ -141,7 +141,7 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
-routes.get('/MyExercise/inventory', routes.gets[ routes.INV_CLEAR ]);
+routes.get('/PutExercise/inventory', routes.gets[ routes.INV_CLEAR ]);
 
 routes.get(routes.INV_CAT, function(req, res) { /* CAT/inventory */
     log('...handling route GET ' + req.reqPath);
@@ -202,7 +202,7 @@ routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
 });
 routes.post(routes.OBJ_DIS, routes.posts[ routes.OBJ_CLEAR ]);
 routes.post(routes.OBJ_CAT, routes.posts[ routes.OBJ_CLEAR ]);
-routes.post('/MyExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/PutExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
 
 routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
     log('...handling route POST ' + req.reqPath);
@@ -240,7 +240,7 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
 });
 routes.post(routes.Q_DIS, routes.posts[ routes.Q_CLEAR ]);
 routes.post(routes.Q_CAT, routes.posts[ routes.Q_CLEAR ]);
-routes.post('/MyExercise/query', routes.posts[ routes.Q_CLEAR ]);
+routes.post('/PutExercise/query', routes.posts[ routes.Q_CLEAR ]);
 
 routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
     log('...handling route POST ' + req.reqPath);
@@ -253,13 +253,13 @@ routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
     res.send('{ }\n', 200, JSONt);
 });
 routes.post(routes.ACT_DIS, routes.posts[ routes.ACT_CLEAR ]);
-routes.post('/MyExercise/action', routes.posts[ routes.ACT_CLEAR ]);
+routes.post('/PutExercise/action', routes.posts[ routes.ACT_CLEAR ]);
 
 routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
     res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul><li>Pull and hold charging handle </li><li>Push and hold bottom of bolt catch </li><li>Release charging handle to cock rifle </li<li>Let go of bolt catch bottom </li><li>Return charging handle to forward position </li><li>Check chamber for ammo </li><li>Select <i>Safe</i> mode </li><li>Release bolt by pushing bolt catch top </li><li>Select <i>Semi</i> mode </li><li>Pull trigger to fire the weapon </li><li>Pull and hold charging handle </li><li>Release charging handle to cock rifle </li><li>Select <i>Safe</i> mode </li></ul></p></div></body></html>', 200, HTMLt);
 });
 routes.get(routes.ASSESS_DIS, routes.gets[ routes.ASSESS_CLEAR ]);
-routes.get('/MyExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
+routes.get('/PutExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 
 // ====****====****====****==== SERVER ====****====****====****==== //
 var JSONt = 'application/json',
