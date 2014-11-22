@@ -9,19 +9,22 @@ methods:
   initializeCamera:
   resetBackend:
 properties:
-  __CAT: true
   backendResetSent: false
 children:
+  ShootingRange_dae:
+    extends: http://vwf.example.com/node3.vwf
+    source: /SAVE/models/environments/range/ShootingRange.dae
+    type: model/vnd.collada+xml
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
-      lightType: "directional"
+      lightType: 'directional'
       translation: [ -0.5, 0, 2 ]
       rotation: [ 0, 1, 0, 36 ]
   light2:
     extends: http://vwf.example.com/light.vwf
     properties:
-      lightType: "ambient"
+      lightType: 'ambient'
 scripts:
 - |
   this.initialize = function() {

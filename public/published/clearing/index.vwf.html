@@ -2,8 +2,7 @@
 <html>
   <head>
     <title>Exercise UI</title>
-    <script type='text/javascript' src='../cat.json.js'></script>
-    <script type='text/javascript' src='/SAVE/template/exercise.files.js'></script>
+    <script type='text/javascript' src='../eui.json.js'></script>
     <script type='text/javascript' src='/js/dat.gui.min.js'></script>
     <style type='text/css'>
       #wrapper {
@@ -89,7 +88,7 @@
       }
     </style>
     <script type='text/javascript'>
-      var __CAT; // resist doing '= undefined, or = null' we just need it named and an async event will bind it!
+      var __EUI; // resist doing '= undefined, or = null' we just need it named and an async event will bind it!
 
       (function() {
       var cssIFrame = {
@@ -100,90 +99,30 @@
       };
       var vwfapp = {
         appId: vwf_view.kernel.application(),
-        cameraId: undefined,
-        tooltray: undefined
+        tooltray: undefined,
+        assessmentActive: false
       };
       var toolTrayMenu = { };
       var controlMenu = {
         fontsize: '110%',
-        path: '/MyExercise',
-        pathLink: function() {
-          window.location.pathname = this.path;
-        },
-        camxyz: {
-          x: 0,
-          y: 0,
-          z: 0,
-          rotX: false,
-          rotY: false,
-          rotZ: false,
-          rotation: 0
-        },
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
-        saveExercise: function() {
-          // /cat/finishExercise (POST)
-          // { 'exercise': '/path/to/new/EUI/dir/', 'auto': [ 'tooltray-id-of-shootingrange' ] }
-
-          base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
-
-          // $.ajax({
-          //     url: base + controlMenu.path + '/eui.json.js',
-          //     type: 'put',
-          //     data: eui_json_js,
-          //     cache: false,
-          //     processData: false,
-          //     crossDomain: true,
-          //     xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          //     // beforeSend: function(xhr) {
-          //     //     xhr.setRequestHeader ('Authorization', 'Basic  letmein!');
-          //     // }
-          // })
-          // .done(function(data) { console.info(data); });
-          $.ajax({
-              url: base + controlMenu.path + '/index.vwf.html',
-              type: 'put',
-              data: index_vwf_html,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          })
-          .done(function(data) { console.info(data); });
-          $.ajax({
-              url: base + controlMenu.path + '/index.vwf.yaml',
-              type: 'put',
-              data: index_vwf_yaml,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          })
-          .done(function(data) { console.info(data); });
-          $.ajax({
-              url: base + controlMenu.path + '/M4_Carbine_dae.eui.yaml',
-              type: 'put',
-              data: M4_Carbine_dae_eui_yaml,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          })
-          .done(function(data) { console.info(data); });
-          view.controlGUI.remove(view.guiref.saveExerciseRef);
-          view.controlGUI.add(this, 'pathLink').name(this.path);
-        },
-        init: function() {
-          var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
-
-          this.camxyz.x = vec3[ 0 ];
-          this.camxyz.y = vec3[ 1 ];
-          this.camxyz.z = vec3[ 2 ];
+        assessment: function() {
+          if (!vwfapp.assessmentActive) {
+            $('<iframe/>', {
+              name: 'assessment',
+              id:   'assessmentIFrame',
+              src:  vwfapp.assessmentServerAddress
+            }).appendTo('#assessment').css(cssIFrame);
+            $('#assessment').fadeIn();
+            vwfapp.assessmentActive = true;
+            $('.dg.ac').toggle();
+          }
         }
       };
       var contextMenu = {
-        close: function() {
+        closeCtxMenu: function() {
           handleContextMenu();
         }
       };
@@ -193,45 +132,88 @@
         contextGUI: undefined,
         contextActive: false,
         guiref: { ctx: [ ] },
+        defaultPoint: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'Point', [ vwfapp.M4_Carbine_daeId ]);
+          handleContextMenu();
+        },
+        Semi: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Semi' ]);
+          handleContextMenu();
+        },
+        Safe: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Safe' ]);
+          handleContextMenu();
+        },
+        Burst: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);
+          handleContextMenu();
+        },
+        Inspect: function(name) {
+          switch (name) {
+          case 'Ejection_Port_Cover':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'InspectChamberGroup');
+            break;
+          }
+        },
+        Pull: function(name) {
+          switch (name) {
+          case 'Trigger':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');
+            break;
+          }
+        },
+        PullAndHold: function(name) {
+          switch (name) {
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
+            break;
+          }
+        },
+        PushAndHold: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushAndHoldBoltCatchBottom');
+            break;
+          }
+        },
+        Push: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushBoltCatchTop');
+            break;
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandle');
+            break;
+          case 'Magazine_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
+            break;
+          }
+        },
+        Release: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseBoltCatchBottom');
+            break;
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseChargingHandle');
+            break;
+          }
+        },
         init: function() {
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
 
           for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
             toolTrayMenu[ 'instance' + index ] = instance(index);
-            this.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
+            view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
           }
 
-          // Control drop down menu's
-          controlMenu.init();
+          // Control menu's
           this.controlGUI = new dat.GUI();
           this.controlGUI.name = 'Control Menu';
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
-          this.controlGUI.add(controlMenu, 'path').name('Path');
-          this.guiref.saveExerciseRef = this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
-
-          var cameraFolder = this.controlGUI.addFolder('Camera');
-
-          cameraFolder.add(controlMenu.camxyz, 'x').onFinishChange(
-            function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, controlMenu.camxyz.y, controlMenu.camxyz.z ]); }
-          );
-          cameraFolder.add(controlMenu.camxyz, 'y').onFinishChange(
-            function(newY) { vwf.setProperty(vwfapp.cameraId, 'translation', [ controlMenu.camxyz.x, newY, controlMenu.camxyz.z ]); }
-          );
-          cameraFolder.add(controlMenu.camxyz, 'z').onFinishChange(
-            function(newZ) { vwf.setProperty(vwfapp.cameraId, 'translation', [ controlMenu.camxyz.x, controlMenu.camxyz.y, newZ ]); }
-          );
-          cameraFolder.add(controlMenu.camxyz, 'rotX');
-          cameraFolder.add(controlMenu.camxyz, 'rotY');
-          cameraFolder.add(controlMenu.camxyz, 'rotZ');
-          cameraFolder.add(controlMenu.camxyz, 'rotation').onFinishChange(function(val) {
-            var rx = controlMenu.camxyz.rotX? 1 : 0;
-            var ry = controlMenu.camxyz.rotY? 1 : 0;
-            var rz = controlMenu.camxyz.rotZ? 1 : 0;
-
-            if (rx || ry || rz) vwf_view.kernel.callMethod(vwfapp.cameraId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
-          });
+          this.controlGUI.add(controlMenu, 'assessment').name('Assessment');
           this.controlGUI.autoPlace = false;
           this.controlGUI.domElement.style.position = 'fixed';
           this.controlGUI.domElement.style.float = 'left';
@@ -257,10 +239,14 @@
           console.log(vwfapp.tooltray[ index ]);
 
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
-          view.guiref.instanceIndex = index;
           view.toolTrayGUI.remove(view.guiref[ index ]);
           vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
         };
+      }
+
+      function addActionsToTrayMenu() {
+        // $('div.close-button:first').css('display', 'none');
+        // view.toolTrayGUI.add(view, 'defaultPoint').name('Point');
       }
 
       function handleContextMenu() {
@@ -274,40 +260,6 @@
           view.guiref.ctx = [ ];
           view.contextActive = false;
         }
-      }
-
-      function createContolAssetOptions(assetVwfId) {
-        var index = view.guiref.instanceIndex;
-        var assetPropertyFolder = view.controlGUI.addFolder(vwfapp.tooltray[ index ].name);
-        var vec3 = vwf.getProperty(assetVwfId, 'translation');
-        var xyzo = {
-          x: vec3[ 0 ],
-          y: vec3[ 1 ],
-          z: vec3[ 2 ],
-          rotX: false,
-          rotY: false,
-          rotZ: false,
-          rotation: 0,
-          visible: true,
-          static: false
-        };
-
-        assetPropertyFolder.add(xyzo, 'x').onFinishChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
-        assetPropertyFolder.add(xyzo, 'y').onFinishChange(function(newY) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, newY, xyzo.z ]); });
-        assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
-        assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
-        assetPropertyFolder.add(xyzo, 'static').name('auto load').onChange(function(val) { vwfapp.tooltray[ index ].__static = val; });
-        assetPropertyFolder.add(xyzo, 'rotX');
-        assetPropertyFolder.add(xyzo, 'rotY');
-        assetPropertyFolder.add(xyzo, 'rotZ');
-        assetPropertyFolder.add(xyzo, 'rotation').onFinishChange(function(val) {
-          var rx = xyzo.rotX? 1 : 0;
-          var ry = xyzo.rotY? 1 : 0;
-          var rz = xyzo.rotZ? 1 : 0;
-
-          if (rx || ry || rz) vwf_view.kernel.callMethod(assetVwfId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
-        });
-        $('*.dg').css('font-size', controlMenu.fontsize);
       }
 
       function sceneInitialize() {
@@ -326,20 +278,19 @@
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
-              __CAT.vwfapp = vwfapp;
+              __EUI.vwfapp = vwfapp;
               view.init();
+              vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);
             };
-            var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
 
-            if (!url)  {
-              console.info('using __CAT to get inventory server address');
-              url = __CAT.baseServerAddress + '/inventory';
-            }
-
+            console.info('using __EUI to get inventory and assessment server address');
+            vwfapp.assessmentServerAddress = __EUI.baseServerAddress + '/assessment';
+            url = __EUI.baseServerAddress + '/inventory';
             $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)
             .fail(function(jqXHR, textStatus, errorThrown) {
               console.info('using inventoryServerAddress:' + url);
+              console.info('using assessmentServerAddress:' + vwfapp.assessmentServerAddress);
               console.warn('error:' + textStatus);
             });
           } else if (methodName == 'initInstance') {
@@ -347,28 +298,16 @@
 
             var assetVwfId = vwf_view.kernel.find(vwfapp.appId, '//' + methodValue)[ 0 ];
 
-            createContolAssetOptions(assetVwfId);
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
-            vwfapp.tooltray[ view.guiref.instanceIndex ].__static = false;
-            vwfapp.tooltray[ view.guiref.instanceIndex ].__assetVwfId = assetVwfId;
+            vwfapp[ methodValue + 'Id' ] = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
+            vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');
+            addActionsToTrayMenu();
           }
         };
 
         // Event observers...
         vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
-          if (eventName == 'changingTransformFromView') {
-            var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
-            var controllers = view.controlGUI.__folders.Camera.__controllers;
-
-            controlMenu.camxyz.x = vec3[ 0 ];
-            controlMenu.camxyz.y = vec3[ 1 ];
-            controlMenu.camxyz.z = vec3[ 2 ];
-
-            // Manual update vs listen(); Iterating over all controllers
-            for (var i in controllers) controllers[ i ].updateDisplay();
-          }
-
           if (eventName != 'pointerDown') return;
           if (eventArgs[ 0 ].button == 'right') return;
           if (view.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
@@ -382,10 +321,82 @@
             console.info('picked id:' + eventArgs[ 1 ].pickID);
             console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);
 
-            switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
-            default: // Everything else...
-              view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'close').name('(X) Close'));
-              // view.guiref.ctx.push(view.contextGUI.add(contextMenu, '').name(''));
+            view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+            vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {
+              contextMenu[ action ] = function() { };
+              view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));
+            });
+
+            var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];
+
+            switch (objectName) {
+            case 'Bolt_Catch':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push(objectName);
+              };
+              contextMenu.PushAndHold = function() {
+                handleContextMenu();
+                view.PushAndHold(objectName);
+              };
+              contextMenu.Release = function() {
+                handleContextMenu();
+                view.Release(objectName);
+              };
+              break;
+            case 'Charging_Handle_Latch':
+            case 'Charging_Handle':
+              contextMenu.PullAndHold = function() {
+                handleContextMenu();
+                view.PullAndHold('Charging_Handle');
+              };
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Charging_Handle');
+              };
+              contextMenu.Release = function() {
+                handleContextMenu();
+                view.Release('Charging_Handle');
+              };
+              break;
+            case 'Ejection_Port_Cover':
+              contextMenu.Inspect = function() {
+                handleContextMenu();
+                view.Inspect(objectName);
+              };
+
+              break;
+            case 'Magazine_Catch':
+            case 'Magazine_Catch_Button':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Magazine_Catch');
+              };
+              break;
+            case 'Selector_Lever':
+              contextMenu.SelectSwitchPosition = function() {
+                handleContextMenu();
+                view.contextActive = true;
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'Semi'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'Safe'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'Burst'));
+              };
+              view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'SelectSwitchPosition'));
+              break;
+            case 'Trigger':
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull('Trigger');
+              };
+              break;
+            default: // Everything else... is just the point action point at selection
+              contextMenu.Point = function() {
+                handleContextMenu();
+                view.contextActive = true;
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'defaultPoint').name('targets'));
+              };
               break;
             }
           }
@@ -402,8 +413,7 @@
       vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
         if (childID == vwfapp.appId) {
           sceneInitialize();
-          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
-          vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __CAT ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __EUI ]);
         }
       }
       })(); //# sourceURL=index.vwf.html

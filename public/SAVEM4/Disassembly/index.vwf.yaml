@@ -196,8 +196,10 @@ scripts:
 
     var self = this;
 
-    self.obj({ type: 'create', ID: backEndId }, function(data) {
-      console.info(self.id + ' obj request received data.kbid: ' + data.kbid + ' assetURL: ' + data.assetURL);
+    self.obj({ type: 'create', ID: backEndId }, function(rdata) {
+      var data = rdata[ 0 ];
+
+      console.info(self.id + ' obj request received data.KbId: ' + data.KbId + ' assetURL: ' + data.assetURL);
 
       if (data.KbId === undefined || data.KbId == 'unknown') {
         console.warn(self.id + ' object instance request returned unknown KbId, nothing to instance');
