@@ -128,19 +128,19 @@
 
           base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
 
-          $.ajax({
-              url: base + controlMenu.path + '/eui.json.js',
-              type: 'put',
-              data: eui_json_js,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-              // beforeSend: function(xhr) {
-              //     xhr.setRequestHeader ('Authorization', 'Basic  letmein!');
-              // }
-          })
-          .done(function(data) { console.info(data); });
+          // $.ajax({
+          //     url: base + controlMenu.path + '/eui.json.js',
+          //     type: 'put',
+          //     data: eui_json_js,
+          //     cache: false,
+          //     processData: false,
+          //     crossDomain: true,
+          //     xhrFields: { withCredentials: true } // prompt if you don't set the header below
+          //     // beforeSend: function(xhr) {
+          //     //     xhr.setRequestHeader ('Authorization', 'Basic  letmein!');
+          //     // }
+          // })
+          // .done(function(data) { console.info(data); });
           $.ajax({
               url: base + controlMenu.path + '/index.vwf.html',
               type: 'put',
