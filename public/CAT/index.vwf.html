@@ -92,12 +92,6 @@
       var __CAT; // resist doing '= undefined, or = null' we just need it named and an async event will bind it!
 
       (function() {
-      var cssIFrame = {
-        'border': '1px outset #999999',
-        'width': '450px',
-        'height': '600px',
-        'background-color': 'rgba(228, 228, 228, 0.8)'
-      };
       var vwfapp = {
         appId: vwf_view.kernel.application(),
         cameraId: undefined,
@@ -123,56 +117,59 @@
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
         saveExercise: function() {
-          // /cat/finishExercise (POST)
-          // { 'exercise': '/path/to/new/EUI/dir/', 'auto': [ 'tooltray-id-of-shootingrange' ] }
+          var self = this;
+          var url = __CAT.baseServerAddress + '/finishExercise';
+          var base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
+          var exercise = base + controlMenu.path;
+          var statics = [ ];
 
-          base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
+          vwfapp.tooltray.forEach(function(tt) {
+            if (tt.__static) statics.push(tt.ID);
+          });
 
-          // $.ajax({
-          //     url: base + controlMenu.path + '/eui.json.js',
-          //     type: 'put',
-          //     data: eui_json_js,
-          //     cache: false,
-          //     processData: false,
-          //     crossDomain: true,
-          //     xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          //     // beforeSend: function(xhr) {
-          //     //     xhr.setRequestHeader ('Authorization', 'Basic  letmein!');
-          //     // }
-          // })
-          // .done(function(data) { console.info(data); });
+          console.info('Saving exercise to:' + exercise  +' with auto statics:');
+          console.log(statics);
           $.ajax({
-              url: base + controlMenu.path + '/index.vwf.html',
+              url: exercise + '/index.vwf.html',
               type: 'put',
               data: index_vwf_html,
               cache: false,
               processData: false,
               crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          })
-          .done(function(data) { console.info(data); });
-          $.ajax({
-              url: base + controlMenu.path + '/index.vwf.yaml',
-              type: 'put',
-              data: index_vwf_yaml,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          })
-          .done(function(data) { console.info(data); });
-          $.ajax({
-              url: base + controlMenu.path + '/M4_Carbine_dae.eui.yaml',
-              type: 'put',
-              data: M4_Carbine_dae_eui_yaml,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt if you don't set the header below
-          })
-          .done(function(data) { console.info(data); });
-          view.controlGUI.remove(view.guiref.saveExerciseRef);
-          view.controlGUI.add(this, 'pathLink').name(this.path);
+              xhrFields: { withCredentials: true } // prompt
+          }).done(function(data) {
+            console.info(data);
+            $.ajax({
+                url: exercise + '/index.vwf.yaml',
+                type: 'put',
+                data: index_vwf_yaml,
+                cache: false,
+                processData: false,
+                crossDomain: true,
+                xhrFields: { withCredentials: true } // prompt
+            }).done(function(data) {
+              console.info(data);
+              $.ajax({
+                  url: exercise + '/M4_Carbine_dae.eui.yaml',
+                  type: 'put',
+                  data: M4_Carbine_dae_eui_yaml,
+                  cache: false,
+                  processData: false,
+                  crossDomain: true,
+                  xhrFields: { withCredentials: true } // prompt
+              }).done(function(data) {
+                console.info(data);
+                $.ajax({
+                  url: url,
+                  type: 'post',
+                  cache: false,
+                  data: { save: JSON.stringify({ exercise: exercise, auto: statics }) }
+                }).done(function(data) { console.info(data); });
+                view.controlGUI.remove(view.guiref.saveExerciseRef);
+                view.controlGUI.add(self, 'pathLink').name(self.path);
+              });
+            });
+          });
         },
         init: function() {
           var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
@@ -329,12 +326,8 @@
               __CAT.vwfapp = vwfapp;
               view.init();
             };
-            var url = vwf.getProperty(vwfapp.appId, 'inventoryServerAddress');
 
-            if (!url)  {
-              console.info('using __CAT to get inventory server address');
-              url = __CAT.baseServerAddress + '/inventory';
-            }
+            var url = __CAT.baseServerAddress + '/inventory';
 
             $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)

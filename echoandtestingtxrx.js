@@ -261,6 +261,14 @@ routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
 routes.get(routes.ASSESS_DIS, routes.gets[ routes.ASSESS_CLEAR ]);
 routes.get('/PutExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 
+routes.post(routes.FIN_CAT, function(req, res) { /* /cat/finishExercise */
+    log('...handling route POST ' + req.reqPath);
+
+    log(util.inspect(req.param));
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send('{ }\n', 200, JSONt);
+});
+
 // ====****====****====****==== SERVER ====****====****====****==== //
 var JSONt = 'application/json',
     HTMLt = 'text/html',
