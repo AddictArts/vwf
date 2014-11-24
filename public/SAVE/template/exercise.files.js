@@ -543,6 +543,10 @@ scripts:\n\
     this.translation = [ 0, 0, 2 ];\n\
     this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90\n\
     this.rotateBy([ 0, 1, 0, -90 ], 0); // rotate y => -90\n\
+\n\
+    this.children[ 'Magazine_g Group' ].children[ 'Casing1 Group' ].visible = false;\n\
+    this.children[ 'Magazine_g Group' ].children[ 'Casing2 Group' ].visible = false;\n\
+    this.children[ 'Magazine_g Group' ].children[ 'Casing3 Group' ].visible = false;\n\
     // console.log(this);\n\
   };\n\
 \n\
