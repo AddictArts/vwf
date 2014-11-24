@@ -557,9 +557,9 @@ if (process.argv.length > 2) {
     var ndx = 2;
 
     // Check for any flag
-    if (process.argv[ndx] && process.argv[ndx].charAt(0) == '-') {
+    if (process.argv[ ndx ] && process.argv[ ndx ].charAt(0) == '-') {
 
-        var flag = process.argv[ndx++];
+        var flag = process.argv[ ndx++ ];
 
         switch (flag) {
         case '-1':
@@ -578,7 +578,7 @@ if (process.argv.length > 2) {
             five();
             break;
         default:
-            console.log('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[1]) + ' [ -1, -2, -3, -4 ]');
+            console.log('Usage: ' + process.argv[ 0 ] + ' ' + path.basename(process.argv[ 1 ]) + ' [ -1, -2, -3, -4 ]');
             process.exit(0);
         }
     }

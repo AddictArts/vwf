@@ -88,7 +88,7 @@
       }
     </style>
     <script type='text/javascript'>
-      var __EUI; // resist doing '= undefined, or = null' we just need it named and an async event will bind it!
+      var __EUI; // resist doing '= undefined, or = null' we just need it named and an async event will bind it, vwf script inject after parsing this!
 
       (function() {
       var cssIFrame = {
@@ -100,24 +100,42 @@
       var vwfapp = {
         appId: vwf_view.kernel.application(),
         tooltray: undefined,
-        assessmentActive: false
+        instructorMode: false,
+        assessmentActive: false,
+        path: window.location.pathname.split('/').slice(0, -2).join('/')
       };
       var toolTrayMenu = { };
       var controlMenu = {
+        bannerInstructorMode: vwfapp.path,
         fontsize: '110%',
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
+        pathLink: function() {
+          window.location.pathname = vwfapp.path;
+        },
+        saveSolution: function() {
+          var self = this;
+          var url = __EUI.baseServerAddress + '/generateSolution';
+
+          console.info('Saving exercise to:' + url  +' with path:' + vwfapp.path);
+          $.ajax({ url: url, type: 'get', cache: false })
+          .done(function(data) {
+            view.controlGUI.remove(view.guiref.saveSolutionRef);
+            view.controlGUI.add(self, 'pathLink').name('Open ' + vwfapp.path);
+          })
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            console.info('using generateSolution:' + url);
+            console.warn('error:' + textStatus);
+          });
+        },
         assessment: function() {
           if (!vwfapp.assessmentActive) {
-            $('<iframe/>', {
-              name: 'assessment',
-              id:   'assessmentIFrame',
-              src:  vwfapp.assessmentServerAddress
-            }).appendTo('#assessment').css(cssIFrame);
+            var url = __EUI.baseServerAddress + '/assessment';
+
+            $('<iframe/>', { name: 'assessment', id: 'assessmentIFrame', src: url}).appendTo('#assessment').css(cssIFrame);
             $('#assessment').fadeIn();
             vwfapp.assessmentActive = true;
-            $('.dg.ac').toggle();
           }
         }
       };
@@ -211,16 +229,26 @@
           // Control menu's
           this.controlGUI = new dat.GUI();
           this.controlGUI.name = 'Control Menu';
+
+          if (vwfapp.instructorMode) {
+            this.controlGUI.add(controlMenu, 'bannerInstructorMode').name('Instructor');
+            $('li.cr.string').css('background-color', 'red');
+            $('li.cr.string span.property-name').css('color', 'white');
+            $('li.cr.string  div.c input').attr('readonly', 'readonly').css({ color: 'white', 'background-color': 'red', 'margin-top': '0px' });
+          }
+
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
-          this.controlGUI.add(controlMenu, 'assessment').name('Assessment');
+
+          if (vwfapp.instructorMode) view.guiref.saveSolutionRef = this.controlGUI.add(controlMenu, 'saveSolution').name('Save Solution');
+          else this.controlGUI.add(controlMenu, 'assessment').name('Assessment');
+
           this.controlGUI.autoPlace = false;
           this.controlGUI.domElement.style.position = 'fixed';
           this.controlGUI.domElement.style.float = 'left';
           this.controlGUI.domElement.style.left = '15px';
           this.controlGUI.domElement.style.overflowX = 'visible';
           $('body').append(this.controlGUI.domElement);
-          $('*.dg').css('font-size', controlMenu.fontsize);
 
           // Context menu drop down menu's
           this.contextGUI = new dat.GUI();
@@ -229,6 +257,8 @@
           this.contextGUI.domElement.style.position = 'absolute';
           $('body').append(this.contextGUI.domElement);
           $('div.close-button:last').css('display', 'none');
+
+          $('*.dg').css('font-size', controlMenu.fontsize);
         }
       };
 
@@ -278,20 +308,19 @@
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
-              __EUI.vwfapp = vwfapp;
+
+              if (data.instructorMode) vwfapp.instructorMode = true;
+
               view.init();
               vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);
             };
 
-            vwfapp.assessmentServerAddress = __EUI.baseServerAddress + '/assessment';
-            
             var url = __EUI.baseServerAddress + '/inventory';
 
             $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)
             .fail(function(jqXHR, textStatus, errorThrown) {
               console.info('using inventoryServerAddress:' + url);
-              console.info('using assessmentServerAddress:' + vwfapp.assessmentServerAddress);
               console.warn('error:' + textStatus);
             });
           } else if (methodName == 'initInstance') {
@@ -303,7 +332,8 @@
             vwfapp[ methodValue + 'Id' ] = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
             vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');
-            addActionsToTrayMenu();
+            $('.dg.ac').toggle(); // hide / remove the tray menu
+            // addActionsToTrayMenu();
           }
         };
 
@@ -415,6 +445,7 @@
         if (childID == vwfapp.appId) {
           sceneInitialize();
           vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __EUI ]);
+          __EUI.vwfapp = vwfapp; // for console debug access
         }
       }
       })(); //# sourceURL=index.vwf.html

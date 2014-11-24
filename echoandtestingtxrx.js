@@ -45,7 +45,8 @@ var routes = {
     Q_CAT: '/cat/query',
     FIN_CAT: '/cat/finishExercise',
     ASSESS_CLEAR: '/M4clear/assessment',
-    ASSESS_DIS: '/M4dis/assessment'
+    ASSESS_DIS: '/M4dis/assessment',
+    puteInstructorMode: true
 };
 
 start(routes); // construct or initialize the routes object
@@ -126,6 +127,28 @@ routes.put(routes.PUTANY, function(req, res) {
     res.send(data, 200, PLAINt);
 });
 
+routes.get('/PutExercise/generateSolution', function(req, res) { /* /PutExercise/generateSolution */
+    log('...handling route GET ' + req.reqPath);
+    routes.puteInstructorMode = false;
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send('', 200, PLAINt);
+});
+
+routes.get('/PutExercise/inventory', function(req, res) { /* /PutExercise/inventory */
+    log('...handling route GET ' + req.reqPath);
+
+    var data = {
+        instructorMode: routes.puteInstructorMode,
+        tooltray: [{
+           name: "M4 Carbine",
+           ID: "myM4"
+        }]
+    };
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
 routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     log('...handling route GET ' + req.reqPath);
 
@@ -141,9 +164,8 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
-routes.get('/PutExercise/inventory', routes.gets[ routes.INV_CLEAR ]);
 
-routes.get(routes.INV_CAT, function(req, res) { /* CAT/inventory */
+routes.get(routes.INV_CAT, function(req, res) { /* /cat/inventory */
     log('...handling route GET ' + req.reqPath);
 
     var data = {
@@ -216,6 +238,7 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
 
     switch (q.type) {
     case 'AllActions':
+        // TODO: Implement the backend sending these to the CAT for caching in the behavior yaml, post 1.0
         break;
     case 'Instance':
         for (var i = 0; i < q.query.length; i++) kbids.push(q.query[ i ] + Date.now());
@@ -226,7 +249,7 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
 
         break;
     case 'Reset':
-        // don't need to do anything usefull to test reset query type at this point of the backends life...
+        routes.puteInstructorMode = true;
         break;
     default:
         log('no handling for query type ' + q.type + ' request');
