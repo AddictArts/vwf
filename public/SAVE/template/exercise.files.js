@@ -1,5 +1,9 @@
-var index_vwf_html = "\
-<!-- Copyright 2014, SRI International -->\n\
+// Copyright 2014, SRI International
+// jsstringit Creating index_vwf_html, index_vwf_yaml, and M4_Carbine_dae_eui_yaml from ../public/SAVE/template
+// Copyright 2014, SRI International
+//1
+
+var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 <html>\n\
   <head>\n\
     <title>Exercise UI</title>\n\
@@ -28,7 +32,7 @@ var index_vwf_html = "\
       .dg.main .close-button {\n\
         background-color: #ccc;\n\
       }\n\
-\n\
+       \n\
       .dg.main .close-button:hover {\n\
         background-color: #ddd;\n\
       }\n\
@@ -45,12 +49,12 @@ var index_vwf_html = "\
       .dg.main::-webkit-scrollbar-thumb {\n\
         background: #bbb;\n\
       }\n\
-\n\
+       \n\
       .dg li:not(.folder) {\n\
         background: #fafafa;\n\
         border-bottom: 1px solid #ddd;\n\
       }\n\
-\n\
+       \n\
       .dg li.save-row .button {\n\
         text-shadow: none !important;\n\
       }\n\
@@ -66,20 +70,20 @@ var index_vwf_html = "\
       .dg .cr.function:hover,.dg .cr.boolean:hover {\n\
         background: #fff;\n\
       }\n\
-\n\
+       \n\
       .dg .c input[type=text] {\n\
         background: #e9e9e9;\n\
       }\n\
-\n\
+       \n\
       .dg .c input[type=text]:hover {\n\
         background: #eee;\n\
       }\n\
-\n\
+       \n\
       .dg .c input[type=text]:focus {\n\
         background: #eee;\n\
         color: #555;\n\
       }\n\
-\n\
+       \n\
       .dg .c .slider {\n\
         background: #e9e9e9;\n\
       }\n\
@@ -89,7 +93,7 @@ var index_vwf_html = "\
       }\n\
     </style>\n\
     <script type='text/javascript'>\n\
-      var __EUI; // resist doing '= undefined, or = null' we just need it named and an async event will bind it!\n\
+      var __EUI; // resist doing '= undefined, or = null' we just need it named and an async event will bind it, vwf script inject after parsing this!\n\
 \n\
       (function() {\n\
       var cssIFrame = {\n\
@@ -101,24 +105,42 @@ var index_vwf_html = "\
       var vwfapp = {\n\
         appId: vwf_view.kernel.application(),\n\
         tooltray: undefined,\n\
-        assessmentActive: false\n\
+        instructorMode: false,\n\
+        assessmentActive: false,\n\
+        path: window.location.pathname.split('/').slice(0, -2).join('/')\n\
       };\n\
       var toolTrayMenu = { };\n\
       var controlMenu = {\n\
+        bannerInstructorMode: vwfapp.path,\n\
         fontsize: '110%',\n\
         reset: function() {\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');\n\
         },\n\
+        pathLink: function() {\n\
+          window.location.pathname = vwfapp.path;\n\
+        },\n\
+        saveSolution: function() {\n\
+          var self = this;\n\
+          var url = __EUI.baseServerAddress + '/generateSolution';\n\
+\n\
+          console.info('Saving exercise to:' + url  +' with path:' + vwfapp.path);\n\
+          $.ajax({ url: url, type: 'get', cache: false })\n\
+          .done(function(data) {\n\
+            view.controlGUI.remove(view.guiref.saveSolutionRef);\n\
+            view.controlGUI.add(self, 'pathLink').name('Open ' + vwfapp.path);\n\
+          })\n\
+          .fail(function(jqXHR, textStatus, errorThrown) {\n\
+            console.info('using generateSolution:' + url);\n\
+            console.warn('error:' + textStatus);\n\
+          });\n\
+        },\n\
         assessment: function() {\n\
           if (!vwfapp.assessmentActive) {\n\
-            $('<iframe/>', {\n\
-              name: 'assessment',\n\
-              id:   'assessmentIFrame',\n\
-              src:  vwfapp.assessmentServerAddress\n\
-            }).appendTo('#assessment').css(cssIFrame);\n\
+            var url = __EUI.baseServerAddress + '/assessment';\n\
+\n\
+            $('<iframe/>', { name: 'assessment', id: 'assessmentIFrame', src: url}).appendTo('#assessment').css(cssIFrame);\n\
             $('#assessment').fadeIn();\n\
             vwfapp.assessmentActive = true;\n\
-            $('.dg.ac').toggle();\n\
           }\n\
         }\n\
       };\n\
@@ -212,16 +234,26 @@ var index_vwf_html = "\
           // Control menu's\n\
           this.controlGUI = new dat.GUI();\n\
           this.controlGUI.name = 'Control Menu';\n\
+\n\
+          if (vwfapp.instructorMode) {\n\
+            this.controlGUI.add(controlMenu, 'bannerInstructorMode').name('Instructor');\n\
+            $('li.cr.string').css('background-color', 'red');\n\
+            $('li.cr.string span.property-name').css('color', 'white');\n\
+            $('li.cr.string  div.c input').attr('readonly', 'readonly').css({ color: 'white', 'background-color': 'red', 'margin-top': '0px' });\n\
+          }\n\
+\n\
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });\n\
           this.controlGUI.add(controlMenu, 'reset').name('Reset');\n\
-          this.controlGUI.add(controlMenu, 'assessment').name('Assessment');\n\
+\n\
+          if (vwfapp.instructorMode) view.guiref.saveSolutionRef = this.controlGUI.add(controlMenu, 'saveSolution').name('Save Solution');\n\
+          else this.controlGUI.add(controlMenu, 'assessment').name('Assessment');\n\
+\n\
           this.controlGUI.autoPlace = false;\n\
           this.controlGUI.domElement.style.position = 'fixed';\n\
           this.controlGUI.domElement.style.float = 'left';\n\
           this.controlGUI.domElement.style.left = '15px';\n\
           this.controlGUI.domElement.style.overflowX = 'visible';\n\
           $('body').append(this.controlGUI.domElement);\n\
-          $('*.dg').css('font-size', controlMenu.fontsize);\n\
 \n\
           // Context menu drop down menu's\n\
           this.contextGUI = new dat.GUI();\n\
@@ -230,6 +262,8 @@ var index_vwf_html = "\
           this.contextGUI.domElement.style.position = 'absolute';\n\
           $('body').append(this.contextGUI.domElement);\n\
           $('div.close-button:last').css('display', 'none');\n\
+\n\
+          $('*.dg').css('font-size', controlMenu.fontsize);\n\
         }\n\
       };\n\
 \n\
@@ -279,12 +313,12 @@ var index_vwf_html = "\
             var callback = function(data) {\n\
               console.info('the view tooltray data is ' + JSON.stringify(data));\n\
               vwfapp.tooltray = data.tooltray;\n\
-              __EUI.vwfapp = vwfapp;\n\
+\n\
+              if (data.instructorMode) vwfapp.instructorMode = true;\n\
+\n\
               view.init();\n\
               vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);\n\
             };\n\
-\n\
-            vwfapp.assessmentServerAddress = __EUI.baseServerAddress + '/assessment';\n\
 \n\
             var url = __EUI.baseServerAddress + '/inventory';\n\
 \n\
@@ -292,7 +326,6 @@ var index_vwf_html = "\
             .done(callback)\n\
             .fail(function(jqXHR, textStatus, errorThrown) {\n\
               console.info('using inventoryServerAddress:' + url);\n\
-              console.info('using assessmentServerAddress:' + vwfapp.assessmentServerAddress);\n\
               console.warn('error:' + textStatus);\n\
             });\n\
           } else if (methodName == 'initInstance') {\n\
@@ -304,7 +337,8 @@ var index_vwf_html = "\
             vwfapp[ methodValue + 'Id' ] = assetVwfId;\n\
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');\n\
             vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');\n\
-            addActionsToTrayMenu();\n\
+            $('.dg.ac').toggle(); // hide / remove the tray menu\n\
+            // addActionsToTrayMenu();\n\
           }\n\
         };\n\
 \n\
@@ -416,6 +450,7 @@ var index_vwf_html = "\
         if (childID == vwfapp.appId) {\n\
           sceneInitialize();\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __EUI ]);\n\
+          __EUI.vwfapp = vwfapp; // for console debug access\n\
         }\n\
       }\n\
       })(); //# sourceURL=index.vwf.html\n\
@@ -429,17 +464,12 @@ var index_vwf_html = "\
     $('#wrapper').appendTo('#vwf-root');\n\
   </script>\n\
 </body>\n\
-</html>";
+</html>\n\
+";
 
+//2
 
-
-
-
-
-
-
-var index_vwf_yaml = "\
-# Copyright 2014, SRI International\n\
+var index_vwf_yaml = "\# Copyright 2014, SRI International\n\
 ---\n\
 extends: http://vwf.example.com/scene.vwf\n\
 implements:\n\
@@ -482,17 +512,12 @@ scripts:\n\
     var self = this;\n\
 \n\
     this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });\n\
-  }; //# sourceURL=index.vwf";
+  }; //# sourceURL=index.vwf\n\
+";
 
+//3
 
-
-
-
-
-
-
-var M4_Carbine_dae_eui_yaml = "\
-# Copyright 2014, SRI International\n\
+var M4_Carbine_dae_eui_yaml = "\# Copyright 2014, SRI International\n\
 --- \n\
 properties:\n\
   actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]\n\
@@ -642,17 +667,5 @@ scripts:\n\
   this.releaseTrigger = function() {\n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 0 ], 0.125);\n\
   };\n\
-  //# sourceURL=M4_Carbine_dae.eui";
-
-
-
-
-
-
-
-
-var eui_json_js = '\
-// Copyright 2014, SRI International\n\
-var __EUI = {\n\
-    "baseServerAddress": ""\n\
-};';
+  //# sourceURL=M4_Carbine_dae.eui\n\
+";
