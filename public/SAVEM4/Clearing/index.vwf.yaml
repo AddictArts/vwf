@@ -250,7 +250,7 @@ scripts:
     var self = this;
 
     name = name.replace(' ', '_') + '_dae';
-    self.obj({ type: 'create', ID: backEndId }, function(data) {
+    self.obj({ type: 'create', ID: backEndId }, function(rdata) {
       var data = rdata[ 0 ];
 
       console.info(self.id + ' obj request received data ' + JSON.stringify(data));
