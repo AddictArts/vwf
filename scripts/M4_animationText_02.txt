@@ -1,0 +1,455 @@
+	<grouping>
+		<group name="M4 Group">
+			<group name="Buttstock Group">
+				<part node="Buttstock"/>
+				<part node="Machine_Screw"/>
+				<group name="Buttstock_Release_Lever_Nut Group">
+					<part node="Buttstock_Release_Lever_Nut"/>
+					<group name="Buttstock_Release_Lever_Screw_LAMA1417807796 Group">
+						<part node="Buttstock_Release_Lever_Screw_LAMA1417807796"/>
+						<part node="Buttstock_Release_Lever_Spring_Pin"/>
+						<part node="Buttstock_Release_Lever_Spring"/>
+					</group>
+					<part node="Buttstock_Release_Lever"/>
+				</group>
+			</group>
+			<group name="Magazine_g Group">
+				<part node="Tube"/>
+				<part node="Clip_Spring1"/>
+				<part node="Base"/>
+				<part node="Clip_Spring"/>
+				<part node="Follower"/>
+			</group>
+			
+			<group name="Sling Group">
+				<part node="Sling"/>
+				<part node="Small_Sling_Swivel"/>
+				<part node="Swivel_LAMA1259863095"/>
+			</group>
+			<group name="Lower_Receiver Group">
+				<part node="Lower_Receiver"/>
+				<group name="Trigger_Guard Group">
+					<part node="Trigger_Guard"/>
+					<part node="Trigger_Guard_Spring_Pin_Retaining_Pin"/>
+					<part node="Trigger_Guard_Detent"/>
+					<part node="Trigger_Guard_Detent_Spring"/>
+				</group>
+				<group name="Pistol_Grip Group">
+					<part node="Pistol_Grip"/>
+					<part node="Pistol_Grip_Screw"/>
+					<part node="Pistol_Grip_Lock_Washer"/>
+				</group>
+				<part node="Bolt_Catch"/>
+				<part node="Bolt_Catch_Spring_Pin"/>
+				<part node="Bolt_Catch_Plunger"/>
+				<part node="Bolt_Catch_Spring"/>
+				<part node="Trigger"/>
+				<part node="Trigger_Spring"/>
+				<part node="Disconnector_Spring__OOBurst__CC"/>
+				<part node="Disconnector_Spring__OOSemi__CC"/>
+				<part node="Trigger_Spring1"/>
+				<part node="Trigger_Pin"/>
+				<part node="Disconnector__Burst"/>
+				<part node="Disconnector__Semi"/>
+				<part node="Magazine_Catch"/>
+				<part node="Magazine_Catch_Spring"/>
+				<part node="Magazine_Catch_Button"/>
+				<part node="Pivot_Pin"/>
+				<part node="Pivot_Pin_Detent"/>
+				<part node="Pivot_Pin_Spring"/>
+				<part node="Takedown_Pin"/>
+				<part node="Takedown_Pin_Detent"/>
+				<part node="Takedown_Pin_Detent_Spring"/>
+				<part node="Selector_Lever"/>
+				<part node="Safety_Detent__OOSelector_Lever__CC"/>
+				<part node="Safety_Spring__OOSelector_Lever__CC"/>
+				<part node="Automatic_Sear"/>
+				<part node="Automatic_Sear_Spring"/>
+				<part node="Sear_Pin"/>
+				<part node="Hammer"/>
+				<part node="Hammer_Spring1"/>
+				<part node="Hammer_Pin"/>
+				<part node="Burst_Cam"/>
+				<part node="Burst_Cam_Clutch_Spring"/>
+				<part node="Hammer_Spring"/>
+				<part node="Lower_Receiver_Extension"/>
+				<part node="Buffer"/>
+				<part node="Action_Spring"/>
+				<part node="Plain_Round_Nut"/>
+				<part node="Receiver_End_Plate"/>
+				<part node="Buffer_Retainer"/>
+				<part node="Buffer_Retainer_Spring"/>
+			</group>
+			<group name="Upper_Receiver Group">
+				<part node="Upper_Receiver"/>
+				<group name="Charging_Handle Group">
+					<part node="Charging_Handle"/>
+					<part node="Charging_Handle_Latch"/>
+					<part node="Charging_Handle_Spring"/>
+					<part node="Charging_Handle_Spring_Pin"/>
+				</group>
+				<group name="Firing_Pin_Retaining_Pin Group">
+					<part node="Firing_Pin_Retaining_Pin"/>
+					<group name="Firing_Pin Group">
+						<part node="Firing_Pin"/>
+						<group name="Bolt_Cam_Pin Group">
+							<part node="Bolt_Cam_Pin"/>
+							<group name="Bolt Group">
+								<part node="Bolt"/>
+								<part node="Key_and_Bolt_Carrier_Assembly"/>
+								<part node="Extractor_Pin"/>
+								<group name="Extractor Group">
+									<part node="Extractor"/>
+									<part node="Extractor_Spring"/>
+								</group>
+								<part node="Ejector_Spring_Pin"/>
+								<part node="Bolt_Ring"/>
+								<part node="Bolt_Ring2"/>
+								<part node="Bolt_Ring1"/>
+								<part node="Ejector"/>
+								<part node="Ejector_Spring"/>
+							</group>
+						</group>
+					</group>
+				</group>
+				<group name="Plunger_Assembly Group">
+					<part node="Plunger_Assembly"/>
+					<part node="Pawl__Forward_Assist"/>
+					<part node="Forward_Assist_Spring"/>
+					<part node="Forward_Assist_Spring1"/>
+					<part node="Pawl_Spring_Pin"/>
+					<part node="Pawl_Detent"/>
+					<part node="Pawl_Spring"/>
+				</group>
+				<group name="Cover_Pin Group">
+					<part node="Cover_Pin"/>
+					<part node="Ejection_Port_Cover"/>
+					<part node="Cover_Spring"/>
+					<part node="Cover_Retaining_Ring__OOC_Clip__CC"/>
+				</group>
+				<group name="Gun_Carrying_Handle Group">
+					<part node="Gun_Carrying_Handle"/>
+					<part node="Windage_Spring_Pin"/>
+					<part node="Rear_Sight_Screw"/>
+					<part node="Flat_Rear_Sight_Spring"/>
+					<part node="Rear_Sight_Base"/>
+					<part node="Sight_Aperture"/>
+					<part node="Windage_Knob"/>
+					<part node="Spring__Helical__Compression"/>
+					<part node="Knob"/>
+					<part node="Ball_Bearing1"/>
+					<part node="Elevating_Mechanism"/>
+					<part node="Spring2"/>
+					<part node="Spring1"/>
+					<part node="Index_Screw"/>
+					<part node="Ball_Bearing"/>
+					<part node="Pin_Spring"/>
+					<part node="Spring"/>
+					<part node="Ball_Bearing2"/>
+					<part node="Round_Nut1"/>
+					<part node="Washer1"/>
+					<part node="Washer"/>
+					<part node="Clamping_Bar"/>
+					<part node="Round_Nut"/>
+				</group>
+				<group name="Barrel_Assembly Group">
+					<part node="Barrel_Assembly"/>
+					<part node="Upper_Handguard"/>
+					<part node="Lower_Handguard"/>
+					<group name="Front_Sight_Post Group">
+						<part node="Front_Sight_Post"/>
+						<part node="Headless_Shoulder_Pin"/>
+						<part node="Spring3"/>
+						<part node="Tubular_Rivet"/>
+						<part node="Synchro_Clamp"/>
+						<part node="Spring_Pin1"/>
+						<part node="Spring_Pin"/>
+						<part node="Swivel_Mount"/>
+						<part node="Flat_Spring"/>
+						<part node="Special_Shaped_Spacer"/>
+					</group>
+					<part node="Compensator"/>
+					<part node="Recessed_Washer__OOCompensator"/>
+					<part node="Spring_Pin2"/>
+					<part node="Spring_Pin3"/>
+					<part node="Rear_Handguard_Clamp"/>
+					<part node="Screw"/>
+					<part node="Gas_Tube_Spring_Pin"/>
+					<part node="Gas_Tube"/>
+					<part node="Handguard_Slip_Ring_Spring"/>
+					<part node="Handguard_Slip_Ring_Retaining_Ring"/>
+					<part node="Handguard_Slip_Ring_LAMA918813252"/>
+				</group>
+			</group>
+		</group>
+	</grouping>
+	<initial_positions>
+		Charging_Handle Group -> MoveTo(0.0172993 0 0.020893)
+		Upper_Receiver Group -> MoveTo(0.0172993 0 0.020893)
+		Bolt_Catch -> MoveTo(-0.0915744 0.0149607 -0.0193214)
+		Ejection_Port_Cover -> MoveTo(-0.024992 -0.016724 -0.0058548)
+		Ejection_Port_Cover -> RotateTo(r3.128, 0, 0)
+		Selector_Lever -> MoveTo(-0.1552785 0.0111103 -0.03238)
+		Trigger -> MoveTo(-0.127447 0 -0.0378954)
+		Firing_Pin_Retaining_Pin -> MoveTo(-0.0874988 -0.0889159 0)
+	</initial_positions>
+	
+	this.Charging_Handle.translateTo([ 0., 0, 0 ], 0.25);
+	
+	<animations>
+this.FailAttemptSafe = function() {
+	Selector_Lever.rotateTo([0, 1, 0, 4], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, 3], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, -4], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, -3], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, 4], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, 3], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, -4], 0.1];
+	Selector_Lever.rotateTo([0, 1, 0, -3], 0.1];
+};
+
+
+<!--  this.PullTrigger = function() {    -->
+
+this.dropMag = function() {
+	Magazine_g Group.translateBy([0, 0, -1.0], 0.5);
+};
+
+this.releaseMagCatch = function() {
+	Magazine_Catch_Button.translateTo([ 0, 0.0031275, 0 ], 0.4);
+	Magazine_Catch.translateTo([ 0, 0.0031275, 0 ], 0.4);
+	
+this.removeMagazine = function() {
+	Magazine_Catch_Button.translateTo([ 0, 0.0031275, 0 ], 0.4);
+	Magazine_Catch.translateTo([ 0, 0.0031275, 0 ], 0.4);
+	this.future(0.5).dropMag();
+};
+
+
+this.Pull_and_hold_Charging_Handle = function() {
+	Charging_Handle.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Charging_Handle_Latch.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Charging_Handle_Spring.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Charging_Handle_Spring_Pin.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Key_and_Bolt_Carrier_Assembly Group.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Key_and_Bolt_Carrier_Assembly.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Firing_Pin_Retaining_Pin.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Firing_Pin.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Bolt Group.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Bolt.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Bolt_Cam_Pin.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Ejector_Spring_Pin.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Bolt_Ring.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Bolt_Ring2.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Bolt_Ring1.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Ejector Group.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Ejector.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Ejector_Spring.translateTo([-0.054968, 0, 0.020893], 0.4);
+	Extractor Group.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Extractor.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Extractor_Spring.translateTo([-0.054968, 0, 0.020893], 0.4);
+    Extractor_Pin.translateTo([-0.054968, 0, 0.020893], 0.4);
+};
+	
+			Charging_Handle Group -> MoveTo(-0.054968, 0, 0.020893) in 0.4 seconds
+			and
+			Ejection_Port_Cover -> RotateTo([1, 0, 0, 187], 0.2)
+		</1d1>
+		<1d2>	Press the bottom of the bolt catch
+			Bolt_Catch -> RotateTo(r-0.1966, 0, 0) in 0.3 seconds
+		</1d2>
+		<1d3>	Move the bolt forward until it engages bolt catch
+			Charging_Handle Group -> MoveTo(-0.0526496 0 0.020893) in 0.5 seconds
+		</1d3>
+		<1d4>	Return charging handle to the forward position
+			Charging_Handle Group
+				MoveTo 0.0172993 0 0.020893
+		</1d4>
+		<1d5>	Camera movement only
+		</1d5>
+		<1e>	Place the selector lever on SAFE
+			Selector_Lever
+				Rotate Y to 90
+		</1e>
+		<1f>	release bolt catch
+			Bolt_Catch
+				Rotate X  to 0
+			Firing_Pin_Retaining_Pin Group
+				MoveTo 0.0173997 0 0.020893
+		</1f>
+		<1g>	move selector lever from SAFE to SEMI
+			Selector_Lever
+				Rotate Y to 0
+		</1g>
+		<1h>	squeeze the trigger
+			Trigger
+				Rotate Y to 5   short pause
+				Rotate Y to 0
+		</1h>
+this.releaseChargingHandle = function() {
+	Charging_Handle.translateBy([-0.07, 0, 0], 0.1);
+	Charging_Handle_Latch.translateBy([-0.07, 0, 0], 0.1);
+	Charging_Handle_Spring.translateBy([-0.07, 0, 0], 0.1);
+	Charging_Handle_Spring_Pin.translateBy([-0.07, 0, 0], 0.1);
+	Key_and_Bolt_Carrier_Assembly Group.translateBy([-0.07, 0, 0], 0.1);
+	Key_and_Bolt_Carrier_Assembly.translateBy([-0.07, 0, 0], 0.1);
+	Firing_Pin_Retaining_Pin.translateBy([-0.07, 0, 0], 0.1);
+	Firing_Pin.translateBy([-0.07, 0, 0], 0.1);
+	Bolt Group.translateBy([-0.07, 0, 0], 0.1);
+	Bolt.translateBy([-0.07, 0, 0], 0.1);
+	Bolt_Cam_Pin.translateBy([-0.07, 0, 0], 0.1);
+	Ejector_Spring_Pin.translateBy([-0.07, 0, 0], 0.1);
+    Bolt_Ring.translateBy([-0.07, 0, 0], 0.1);
+    Bolt_Ring2.translateBy([-0.07, 0, 0], 0.1);
+    Bolt_Ring1.translateBy([-0.07, 0, 0], 0.1);
+    Ejector Group.translateBy([-0.07, 0, 0], 0.1);
+    Ejector.translateBy([-0.07, 0, 0], 0.1);
+    Ejector_Spring.translateBy([-0.07, 0, 0], 0.1);
+	Extractor Group.translateBy([-0.07, 0, 0], 0.1);
+    Extractor.translateBy([-0.07, 0, 0], 0.1);
+    Extractor_Spring.translateBy([-0.07, 0, 0], 0.1);
+    Extractor_Pin.translateBy([-0.07, 0, 0], 0.1);
+};
+
+<!--  1i  -->
+this.PullChargingHandleAndRelease = function() {
+	Charging_Handle.translateBy([0.07, 0, 0], 0.2);
+	Charging_Handle_Latch.translateBy([0.07, 0, 0], 0.2);
+	Charging_Handle_Spring.translateBy([0.07, 0, 0], 0.2);
+	Charging_Handle_Spring_Pin.translateBy([0.07, 0, 0], 0.2);
+	Key_and_Bolt_Carrier_Assembly Group.translateBy([0.07, 0, 0], 0.2);
+	Key_and_Bolt_Carrier_Assembly.translateBy([0.07, 0, 0], 0.2);
+	Firing_Pin_Retaining_Pin.translateBy([0.07, 0, 0], 0.2);
+	Firing_Pin.translateBy([0.07, 0, 0], 0.2);
+	Bolt Group.translateBy([0.07, 0, 0], 0.2);
+	Bolt.translateBy([0.07, 0, 0], 0.2);
+	Bolt_Cam_Pin.translateBy([0.07, 0, 0], 0.2);
+	Ejector_Spring_Pin.translateBy([0.07, 0, 0], 0.2);
+    Bolt_Ring.translateBy([0.07, 0, 0], 0.2);
+    Bolt_Ring2.translateBy([0.07, 0, 0], 0.2);
+    Bolt_Ring1.translateBy([0.07, 0, 0], 0.2);
+    Ejector Group.translateBy([0.07, 0, 0], 0.2);
+    Ejector.translateBy([0.07, 0, 0], 0.2);
+    Ejector_Spring.translateBy([0.07, 0, 0], 0.2);
+	Extractor Group.translateBy([0.07, 0, 0], 0.2);
+    Extractor.translateBy([0.07, 0, 0], 0.2);
+    Extractor_Spring.translateBy([0.07, 0, 0], 0.2);
+    Extractor_Pin.translateBy([0.07, 0, 0], 0.2);
+	this.future(0.3).releaseChargingHandle();
+};
+
+<!--  1j  -->
+this.PlaceSelectorLeverOnSafe = function() {
+	Selector_Lever.rotateTo([0, 1, 0, 90], 0.3);
+};
+
+<!-- 2a  Remove the Sling  -->
+this.RemoveSling = function() {
+	Sling.translateBy([0, 0, -1.0], 1);
+};
+
+<!--  I'm told that the Swivel and the SmallSlingSwivel would never be removed from the weapon -->
+<!--  so we should probably add some form of QuickConnect connectors to the Sling model  -->
+
+
+<!-- 2b   Remove the Handguards  -->
+this.releaseSlipRing = function() {
+	Handguard_Slip_Ring_LAMA918813252.translateTo([0, 0, 0], 0.4);
+};
+
+this.handguardsFly = function() {
+	Upper_Handguard.translateBy([0, 0, 1], 1);
+	Lower_Handguard.translateBy([0, 0, -1], 1);
+	this.future(0.6).releaseSlipRing();
+};
+
+this.RemoveHandguards = function() {
+	Handguard_Slip_Ring_LAMA918813252.translateTo([0, 0, -0.0035], 0.4);
+	this.future(1).handguardsFly();
+};
+
+
+<!--  2c	Push the takedown pin as far as it will go  -->
+this.takeDownPinStart = function() {
+	Takedown_Pin.translateTo([0, -0.03344, 0], 0.4);
+};
+
+this.takeDownPinFinish = function() {
+	Takedown_Pin.translateTo([0, -0.018927, 0], 0.4);
+};
+
+this.PushTakedownPin = function() {
+	this.takeDownPinStart();
+	this.future(0.6).takeDownPinFinish();
+};
+
+this.PivotUpperFromLower = function() {
+	Upper_Receiver.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	Charging_Handle.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	.transformTo([0.819152 0 0.5735764 -0.01739972 0 1 0 0 -0.5735764 0 0.819152 -0.020893 0 0 0 1], 1.2);
+	
+
+
+		<2d>	Pivot the upper receiver from the lower
+			Upper_Receiver Group
+				Rotate Y to 16
+		</2d>
+		<2e>	Push the receiver pivot pin as far as it will go
+			if done in two parts:
+			Pivot_Pin
+				Translate Y to -0.003344
+			-short pause and move camera to starboard side of weapon
+				Translate Y to -0.018927   (Note - not designed to be fully removed on this 3D model)
+		</2e>
+		<2f>	Separate the Upper and Lower Receivers
+			Upper_Receiver Group
+				Translate X to -0.22
+		</2f>
+		<2g>	remove carry handle
+			Round_Nut1
+				Rotate Y to 720  **This will look terrible, pivot not correctly set**
+				Translate Y to 0.001
+			-short pause-
+			Round_Nut
+				Rotate Y to 720  **This will look terrible, pivot not correctly set**
+				Translate Y to 0.001
+			-short pause-
+			Gun_Carrying_Handle Group
+				Translate Z to 0.5
+		</2g>
+		<2h>	Pull back the charging handle
+			Charging_Handle Group
+				MoveTo -0.0839552 0 0.020893
+			Firing_Pin_Retaining_Pin Group
+				MoveTo -0.0839552 0 0.020893
+		</2h>
+		<2i>	Remove the bolt carrier and bolt
+			Firing_Pin_Retaining_Pin Group
+				MoveTo -0.1499226 0.2411898 -0.0272667
+				and Rotate Y to -16
+		</2i>
+		<2j>
+			Charging_Handle Group
+				MoveTo -0.0839913 0 0.0094991
+				-short pause-
+				MoveTo -0.5 0 0.01
+		</2j>
+		<2k1>	remove firing pin retaining pin
+			Firing_Pin_Retaining_Pin
+				MoveTo -0.0874988 -0.0608688 0
+				-then-
+				MoveTo -0.0874988 0.05 0
+		</2k1>
+
+			
+			
+			
+			
+			
+			

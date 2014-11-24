@@ -283,9 +283,10 @@
               vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);
             };
 
-            console.info('using __EUI to get inventory and assessment server address');
             vwfapp.assessmentServerAddress = __EUI.baseServerAddress + '/assessment';
-            url = __EUI.baseServerAddress + '/inventory';
+            
+            var url = __EUI.baseServerAddress + '/inventory';
+
             $.ajax({ url: url, type: 'get', cache: false })
             .done(callback)
             .fail(function(jqXHR, textStatus, errorThrown) {
