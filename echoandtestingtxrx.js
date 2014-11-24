@@ -126,6 +126,27 @@ routes.put(routes.PUTANY, function(req, res) {
     res.send(data, 200, PLAINt);
 });
 
+routes.get('/PutExercise/generateSolution', function(req, res) { /* /PutExercise/generateSolution */
+    log('...handling route GET ' + req.reqPath);
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send('', 200, PLAINt);
+});
+
+routes.get('/PutExercise/inventory', function(req, res) { /* /PutExercise/inventory */
+    log('...handling route GET ' + req.reqPath);
+
+    var data = {
+        instructorMode: true,
+        tooltray: [{
+           name: "M4 Carbine",
+           ID: "myM4"
+        }]
+    };
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
 routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     log('...handling route GET ' + req.reqPath);
 
@@ -141,9 +162,8 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
-routes.get('/PutExercise/inventory', routes.gets[ routes.INV_CLEAR ]);
 
-routes.get(routes.INV_CAT, function(req, res) { /* CAT/inventory */
+routes.get(routes.INV_CAT, function(req, res) { /* /cat/inventory */
     log('...handling route GET ' + req.reqPath);
 
     var data = {
