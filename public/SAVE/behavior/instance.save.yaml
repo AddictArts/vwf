@@ -92,6 +92,8 @@ scripts:
     self.children.create(name, tform.vwf_node3, function(child) {
       self.initInstance(name, data.KbId, tform.mgroups);
       self.createObjectParentsForMetaGroups(grouping, self.children[ name ]);
+
+      if (!self.__CAT) this.children[ name ].future(0).setup(); // setup after the new group parents are created
     });
   };
 
@@ -124,9 +126,6 @@ scripts:
 
   this.initInstance = function(name, kbid, mgroups) {
     this.children[ name ].init(kbid, mgroups);
-
-    if (!this.__CAT) this.children[ name ].setup();
-
     return name;
   };
 
