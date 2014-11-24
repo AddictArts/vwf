@@ -166,7 +166,7 @@
                   data: { save: JSON.stringify({ exercise: exercise, auto: statics }) }
                 }).done(function(data) { console.info(data); });
                 view.controlGUI.remove(view.guiref.saveExerciseRef);
-                view.controlGUI.add(self, 'pathLink').name(self.path);
+                view.controlGUI.add(self, 'pathLink').name('Open ' + self.path);
               });
             });
           });
@@ -235,7 +235,6 @@
           this.controlGUI.domElement.style.left = '15px';
           this.controlGUI.domElement.style.overflowX = 'visible';
           $('body').append(this.controlGUI.domElement);
-          $('*.dg').css('font-size', controlMenu.fontsize);
 
           // Context menu drop down menu's
           this.contextGUI = new dat.GUI();
@@ -244,6 +243,8 @@
           this.contextGUI.domElement.style.position = 'absolute';
           $('body').append(this.contextGUI.domElement);
           $('div.close-button:last').css('display', 'none');
+
+          $('*.dg').css('font-size', controlMenu.fontsize);
         }
       };
 

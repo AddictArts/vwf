@@ -106,6 +106,7 @@
       };
       var toolTrayMenu = { };
       var controlMenu = {
+        bannerInstructorMode: vwfapp.path,
         fontsize: '110%',
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
@@ -121,7 +122,7 @@
           $.ajax({ url: url, type: 'get', cache: false })
           .done(function(data) {
             view.controlGUI.remove(view.guiref.saveSolutionRef);
-            view.controlGUI.add(self, 'pathLink').name(vwfapp.path);
+            view.controlGUI.add(self, 'pathLink').name('Open ' + vwfapp.path);
           })
           .fail(function(jqXHR, textStatus, errorThrown) {
             console.info('using generateSolution:' + url);
@@ -228,6 +229,14 @@
           // Control menu's
           this.controlGUI = new dat.GUI();
           this.controlGUI.name = 'Control Menu';
+
+          if (vwfapp.instructorMode) {
+            this.controlGUI.add(controlMenu, 'bannerInstructorMode').name('Instructor');
+            $('li.cr.string').css('background-color', 'red');
+            $('li.cr.string span.property-name').css('color', 'white');
+            $('li.cr.string  div.c input').attr('readonly', 'readonly').css({ color: 'white', 'background-color': 'red', 'margin-top': '0px' });
+          }
+
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
 
@@ -240,7 +249,6 @@
           this.controlGUI.domElement.style.left = '15px';
           this.controlGUI.domElement.style.overflowX = 'visible';
           $('body').append(this.controlGUI.domElement);
-          $('*.dg').css('font-size', controlMenu.fontsize);
 
           // Context menu drop down menu's
           this.contextGUI = new dat.GUI();
@@ -249,6 +257,8 @@
           this.contextGUI.domElement.style.position = 'absolute';
           $('body').append(this.contextGUI.domElement);
           $('div.close-button:last').css('display', 'none');
+
+          $('*.dg').css('font-size', controlMenu.fontsize);
         }
       };
 
