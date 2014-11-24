@@ -323,7 +323,6 @@
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
-              __CAT.vwfapp = vwfapp;
               view.init();
             };
 
@@ -397,6 +396,7 @@
           sceneInitialize();
           vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
           vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __CAT ]);
+          __CAT.vwfapp = vwfapp;
         }
       }
       })(); //# sourceURL=index.vwf.html
