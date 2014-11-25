@@ -6,7 +6,8 @@
 var path = require('path'),
     util = require('util'),
     puts = util.puts,
-    fs = require('fs');
+    fs = require('fs'),
+    templates = '../public/SAVE/template';
 
 function createPublishedFiles(basePath) {
     var ihtml, // index.vwf.html
@@ -59,4 +60,6 @@ if (process.argv.length > 2) {
     }
 
     if (process.argv[ ndx ]) createPublishedFiles(process.argv[ ndx ]);
+} else {
+    createPublishedFiles(templates); // default
 }

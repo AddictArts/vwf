@@ -482,10 +482,7 @@ methods:\n\
 properties:\n\
   backendResetSent: false\n\
 children:\n\
-  ShootingRange_dae:\n\
-    extends: http://vwf.example.com/node3.vwf\n\
-    source: /SAVE/models/environments/range/ShootingRange.dae\n\
-    type: model/vnd.collada+xml\n\
+#!=static-children\n\
   light1:\n\
     extends: http://vwf.example.com/light.vwf\n\
     properties:\n\
@@ -504,8 +501,8 @@ scripts:\n\
 \n\
   this.initializeCamera = function() {\n\
     this.camera.translationSpeed = 5;\n\
-    this.camera.translation = [ -1.25, 0, 2.2 ];\n\
-    this.camera.rotation = [ 0, 0, 1, -90 ];\n\
+    //#!=static-camera-translation;\n\
+    //#!=static-camera-rotation;\n\
   };\n\
 \n\
   this.resetBackend = function() {\n\
@@ -543,10 +540,6 @@ scripts:\n\
     this.translation = [ 0, 0, 2 ];\n\
     this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90\n\
     this.rotateBy([ 0, 1, 0, -90 ], 0); // rotate y => -90\n\
-\n\
-    this.children[ 'Magazine_g Group' ].children[ 'Casing1 Group' ].visible = false;\n\
-    this.children[ 'Magazine_g Group' ].children[ 'Casing2 Group' ].visible = false;\n\
-    this.children[ 'Magazine_g Group' ].children[ 'Casing3 Group' ].visible = false;\n\
     // console.log(this);\n\
   };\n\
 \n\
