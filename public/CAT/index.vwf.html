@@ -122,10 +122,19 @@
           var base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
           var exercise = base + controlMenu.path;
           var statics = [ ];
+          var staticChildren = '';
 
           vwfapp.tooltray.forEach(function(tt) {
-            if (tt.__static) statics.push(tt.ID);
+            if (tt.__static) {
+              statics.push(tt.ID);
+              staticChildren = '  ' + tt.__name + ':\n' +
+                               '    extends: http://vwf.example.com/node3.vwf\n' +
+                               '    source: ' + vwf.getNode(tt.__assetVwfId).source + '\n' +
+                               '    type: model/vnd.collada+xml';
+            }
           });
+
+          index_vwf_yaml =  index_vwf_yaml.replace('#!=static-children', staticChildren);
 
           console.info('Saving exercise to:' + exercise  +' with auto statics:');
           console.log(statics);
@@ -342,6 +351,7 @@
 
             createContolAssetOptions(assetVwfId);
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__name =  methodValue;
             vwfapp.tooltray[ view.guiref.instanceIndex ].__static = false;
             vwfapp.tooltray[ view.guiref.instanceIndex ].__assetVwfId = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');

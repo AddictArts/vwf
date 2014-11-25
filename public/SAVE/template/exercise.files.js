@@ -482,10 +482,11 @@ methods:\n\
 properties:\n\
   backendResetSent: false\n\
 children:\n\
-  ShootingRange_dae:\n\
-    extends: http://vwf.example.com/node3.vwf\n\
-    source: /SAVE/models/environments/range/ShootingRange.dae\n\
-    type: model/vnd.collada+xml\n\
+#!=static-children\n\
+  # ShootingRange_dae:\n\
+  #   extends: http://vwf.example.com/node3.vwf\n\
+  #   source: /SAVE/models/environments/range/ShootingRange.dae\n\
+  #   type: model/vnd.collada+xml\n\
   light1:\n\
     extends: http://vwf.example.com/light.vwf\n\
     properties:\n\
