@@ -122,19 +122,19 @@
           var base = __CAT.baseServerAddress.slice(0, __CAT.baseServerAddress.lastIndexOf('/'));
           var exercise = base + controlMenu.path;
           var statics = [ ];
-          var staticChildren = '';
+          var staticChildren = [ ];
 
           vwfapp.tooltray.forEach(function(tt) {
             if (tt.__static) {
               statics.push(tt.ID);
-              staticChildren = '  ' + tt.__name + ':\n' +
-                               '    extends: http://vwf.example.com/node3.vwf\n' +
-                               '    source: ' + vwf.getNode(tt.__assetVwfId).source + '\n' +
-                               '    type: model/vnd.collada+xml';
+              staticChildren.push(
+                '  ' + tt.__name + ':\n' +
+                '    extends: http://vwf.example.com/node3.vwf\n' +
+                '    source: ' + vwf.getNode(tt.__assetVwfId).source + '\n' +
+                '    type: model/vnd.collada+xml'
+              );
             }
           });
-
-          index_vwf_yaml =  index_vwf_yaml.replace('#!=static-children', staticChildren);
 
           console.info('Saving exercise to:' + exercise  +' with auto statics:');
           console.log(statics);
@@ -148,6 +148,15 @@
               xhrFields: { withCredentials: true } // prompt
           }).done(function(data) {
             console.info(data);
+
+            var vec4 = vwf.getProperty(vwfapp.cameraId, 'rotation');
+            var camRotation = '[ ' + vec4[ 0 ] + ', ' +  vec4[ 1 ] + ', ' +  vec4[ 2 ] + ', ' +  vec4[ 3 ] +  ' ]';
+            var camTranslation = '[ ' + self.camxyz.x + ', ' + self.camxyz.y + ', ' + self.camxyz.z + ' ]';
+
+            console.info('Saving exercise camera translation:' + camTranslation + ' and rotation:' + camRotation);
+            index_vwf_yaml = index_vwf_yaml.replace('#!=static-children', staticChildren.join('\n'));
+            index_vwf_yaml = index_vwf_yaml.replace('//#!=static-camera-translation', 'this.camera.translation = ' + camTranslation);
+            index_vwf_yaml = index_vwf_yaml.replace('//#!=static-camera-rotation', 'this.camera.rotation = ' + camRotation);
             $.ajax({
                 url: exercise + '/index.vwf.yaml',
                 type: 'put',

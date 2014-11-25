@@ -289,7 +289,7 @@ routes.post(routes.FIN_CAT, function(req, res) { /* /cat/finishExercise */
 
     log(util.inspect(req.param));
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send('{ }\n', 200, JSONt);
+    res.send('', 200, PLAINt);
 });
 
 // ====****====****====****==== SERVER ====****====****====****==== //

@@ -12,10 +12,6 @@ properties:
   backendResetSent: false
 children:
 #!=static-children
-  # ShootingRange_dae:
-  #   extends: http://vwf.example.com/node3.vwf
-  #   source: /SAVE/models/environments/range/ShootingRange.dae
-  #   type: model/vnd.collada+xml
   light1:
     extends: http://vwf.example.com/light.vwf
     properties:
@@ -34,8 +30,8 @@ scripts:
 
   this.initializeCamera = function() {
     this.camera.translationSpeed = 5;
-    this.camera.translation = [ -1.25, 0, 2.2 ];
-    this.camera.rotation = [ 0, 0, 1, -90 ];
+    //#!=static-camera-translation;
+    //#!=static-camera-rotation;
   };
 
   this.resetBackend = function() {
