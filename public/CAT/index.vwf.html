@@ -100,7 +100,7 @@
       var toolTrayMenu = { };
       var controlMenu = {
         fontsize: '110%',
-        path: '/MyExercise',
+        path: '/PutExercise',
         pathLink: function() {
           window.location.pathname = this.path;
         },
@@ -126,12 +126,20 @@
 
           vwfapp.tooltray.forEach(function(tt) {
             if (tt.__static) {
+              var vec3 = vwf.getProperty(tt.__assetVwfId, 'translation');
+              var vec4 = vwf.getProperty(tt.__assetVwfId, 'rotation');
+              var rotation = '[ ' + vec4[ 0 ] + ', ' +  vec4[ 1 ] + ', ' +  vec4[ 2 ] + ', ' +  vec4[ 3 ] +  ' ]';
+              var translation = '[ ' + vec3[ 0 ] + ', ' + vec3[ 1 ] + ', ' + vec3[ 2 ] + ' ]';
+
               statics.push(tt.ID);
               staticChildren.push(
                 '  ' + tt.__name + ':\n' +
                 '    extends: http://vwf.example.com/node3.vwf\n' +
                 '    source: ' + vwf.getNode(tt.__assetVwfId).source + '\n' +
-                '    type: model/vnd.collada+xml'
+                '    type: model/vnd.collada+xml\n' +
+                '    properties:\n' +
+                '      translation: ' + translation + '\n' +
+                '      rotation: ' + rotation
               );
             }
           });
@@ -224,7 +232,6 @@
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
           this.controlGUI.add(controlMenu, 'path').name('Path');
-          this.guiref.saveExerciseRef = this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
 
           var cameraFolder = this.controlGUI.addFolder('Camera');
 
@@ -247,6 +254,7 @@
 
             if (rx || ry || rz) vwf_view.kernel.callMethod(vwfapp.cameraId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
           });
+          this.guiref.saveExerciseRef = this.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
           this.controlGUI.autoPlace = false;
           this.controlGUI.domElement.style.position = 'fixed';
           this.controlGUI.domElement.style.float = 'left';
@@ -323,6 +331,8 @@
 
           if (rx || ry || rz) vwf_view.kernel.callMethod(assetVwfId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
         });
+        view.controlGUI.remove(view.guiref.saveExerciseRef); // keep the save exercise at the bottom
+        view.guiref.saveExerciseRef = view.controlGUI.add(controlMenu, 'saveExercise').name('Save Exercise');
         $('*.dg').css('font-size', controlMenu.fontsize);
       }
 
