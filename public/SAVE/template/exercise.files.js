@@ -537,10 +537,8 @@ scripts:\n\
   this.setup = function() {\n\
     console.info(this.id + ' ' + this.name + ' setup');\n\
     console.info(this.id + ' point behavior depends on shooting range targets KbId:' + this.parent.ShootingRange_dae.targets_KbId);\n\
-    this.translation = [ 0, 0, 2 ];\n\
-    this.rotateBy([ 0, 0, 1, 90 ], 0); // rotate z => 90\n\
-    this.rotateBy([ 0, 1, 0, -90 ], 0); // rotate y => -90\n\
-    // console.log(this);\n\
+    //#!=asset-translation;\n\
+    //#!=asset-rotation;\n\
   };\n\
 \n\
   this.Point = function(vwfId) {\n\
