@@ -34,16 +34,16 @@ var routes = {
     PUTANY: '/*',
     INV_CLEAR: '/M4clear/inventory',
     INV_DIS: '/M4dis/inventory',
-    INV_CAT: '/cat/inventory',
+    INV_CAT: '/CAT/inventory',
     OBJ_CLEAR: '/M4clear/object',
     OBJ_DIS: '/M4dis/object',
-    OBJ_CAT: '/cat/object',
+    OBJ_CAT: '/CAT/object',
     ACT_CLEAR: '/M4clear/action',
     ACT_DIS: '/M4dis/action',
     Q_CLEAR: '/M4clear/query',
     Q_DIS: '/M4dis/query',
-    Q_CAT: '/cat/query',
-    FIN_CAT: '/cat/finishExercise',
+    Q_CAT: '/CAT/query',
+    FIN_CAT: '/CAT/finishExercise',
     ASSESS_CLEAR: '/M4clear/assessment',
     ASSESS_DIS: '/M4dis/assessment',
     puteInstructorMode: true
@@ -165,7 +165,7 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
 });
 routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
 
-routes.get(routes.INV_CAT, function(req, res) { /* /cat/inventory */
+routes.get(routes.INV_CAT, function(req, res) { /* /CAT/inventory */
     log('...handling route GET ' + req.reqPath);
 
     var data = {
@@ -284,7 +284,7 @@ routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
 routes.get(routes.ASSESS_DIS, routes.gets[ routes.ASSESS_CLEAR ]);
 routes.get('/PutExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 
-routes.post(routes.FIN_CAT, function(req, res) { /* /cat/finishExercise */
+routes.post(routes.FIN_CAT, function(req, res) { /* /CAT/finishExercise */
     log('...handling route POST ' + req.reqPath);
 
     log(util.inspect(req.param));

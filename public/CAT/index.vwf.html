@@ -127,6 +127,9 @@
 
           for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
             var tt = vwfapp.tooltray[ index ];
+
+            if (tt.__assetVwfId ===  undefined) break; // it has not been instanced, so it is not part of the exercise
+
             var vec3 = vwf.getProperty(tt.__assetVwfId, 'translation');
             var vec4 = vwf.getProperty(tt.__assetVwfId, 'rotation');
             var translation = '[ ' + vec3[ 0 ] + ', ' + vec3[ 1 ] + ', ' + vec3[ 2 ] + ' ]';
@@ -168,14 +171,19 @@
             var vec4 = vwf.getProperty(vwfapp.cameraId, 'rotation');
             var camTranslation = '[ ' + vec3[ 0 ] + ', ' + vec3[ 1 ] + ', ' + vec3[ 2 ] + ' ]';
             var camRotation = '[ ' + vec4[ 0 ] + ', ' +  vec4[ 1 ] + ', ' +  vec4[ 2 ] + ', ' +  vec4[ 3 ] +  ' ]';
-            var behaveAssetTrayItem = vwfapp.tooltray[ behaveAssetTrayIndex ];
 
             console.info('Saving exercise camera translation:' + camTranslation + ' and rotation:' + camRotation);
             index_vwf_yaml = index_vwf_yaml.replace('#!=static-children', staticChildren.join('\n'));
             index_vwf_yaml = index_vwf_yaml.replace('//#!=static-camera-translation', 'this.camera.translation = ' + camTranslation);
             index_vwf_yaml = index_vwf_yaml.replace('//#!=static-camera-rotation', 'this.camera.rotation = ' + camRotation);
-            M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-translation', 'this.translation = ' + behaveAssetTrayItem.__translation);
-            M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + behaveAssetTrayItem.__rotation);
+
+            if (behaveAssetTrayIndex !== undefined) {
+              var behaveAssetTrayItem = vwfapp.tooltray[ behaveAssetTrayIndex ];
+
+              M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-translation', 'this.translation = ' + behaveAssetTrayItem.__translation);
+              M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + behaveAssetTrayItem.__rotation);
+            }
+
             $.ajax({
                 url: exercise + '/index.vwf.yaml',
                 type: 'put',
