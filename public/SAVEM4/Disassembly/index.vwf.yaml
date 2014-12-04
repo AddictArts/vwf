@@ -45,7 +45,7 @@ scripts:
 - |
   this.initialize = function() {
     this.zoomedValue = 0;
-    this.scaled = 0;
+    this.scaling = 0;
     this.backendResetSent = false;
     this.future(0).initializeCamera();
   };
