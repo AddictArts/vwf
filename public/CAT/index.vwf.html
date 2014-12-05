@@ -127,7 +127,7 @@
           for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
             var tt = vwfapp.tooltray[ index ];
 
-            if (tt.__assetVwfId ===  undefined) break; // it has not been instanced, so it is not part of the exercise
+            if (tt.__assetVwfId ===  undefined) continue; // it has not been instanced, so it is not part of the exercise
 
             var vec3 = vwf.getProperty(tt.__assetVwfId, 'translation');
             var vec4 = vwf.getProperty(tt.__assetVwfId, 'rotation');
@@ -184,10 +184,19 @@
             }).done(function(data) {
               console.info(data);
               vwfapp.tooltray.forEach(function(tt) {
-                if (!tt.__static) {
+                if (tt.__assetVwfId !==  undefined && !tt.__static) {
                   if (tt.__name == 'M4_Carbine_dae') {
                     M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-translation', 'this.translation = ' + tt.__translation);
                     M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + tt.__rotation);
+                    $.ajax({
+                      url: exercise +  '/' + tt.__name + '.eui.yaml',
+                      type: 'put',
+                      data: M4_Carbine_dae_eui_yaml,
+                      cache: false,
+                      processData: false,
+                      crossDomain: true,
+                      xhrFields: { withCredentials: true } // prompt
+                    }).done(function(data) { console.info(data); });
                   } else {
                     var assetEuiYaml = "\
 ---\n\
@@ -218,24 +227,13 @@ scripts:\n\
                 }
               });
               $.ajax({
-                url: exercise + '/M4_Carbine_dae.eui.yaml',
-                type: 'put',
-                data: M4_Carbine_dae_eui_yaml,
+                url: url,
+                type: 'post',
                 cache: false,
-                processData: false,
-                crossDomain: true,
-                xhrFields: { withCredentials: true } // prompt
-              }).done(function(data) {
-                console.info(data);
-                $.ajax({
-                  url: url,
-                  type: 'post',
-                  cache: false,
-                  data: { save: JSON.stringify({ exercise: exercise, auto: staticIds }) }
-                }).done(function(data) { console.info(data); });
-                view.controlGUI.remove(view.guiref.saveExerciseRef);
-                view.controlGUI.add(self, 'pathLink').name('Open ' + self.path);
-              });
+                data: { save: JSON.stringify({ exercise: exercise, auto: staticIds }) }
+              }).done(function(data) { console.info(data); });
+              view.controlGUI.remove(view.guiref.saveExerciseRef);
+              view.controlGUI.add(self, 'pathLink').name('Open ' + self.path);
             });
           });
         },
