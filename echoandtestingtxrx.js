@@ -142,6 +142,10 @@ routes.get('/PutExercise/inventory', function(req, res) { /* /PutExercise/invent
         tooltray: [{
            name: "M4 Carbine",
            ID: "myM4"
+        }
+        , {
+           name: "* Shooting Range",
+           ID: "myRange"
         }]
     };
 

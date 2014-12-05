@@ -123,7 +123,6 @@
           var exercise = base + controlMenu.path;
           var staticIds = [ ];
           var staticChildren = [ ];
-          var behaveAssetTrayIndex;
 
           for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
             var tt = vwfapp.tooltray[ index ];
@@ -147,8 +146,6 @@
                 '      rotation: ' + rotation
               );
             } else {
-              if (tt.__name == 'M4_Carbine_dae') behaveAssetTrayIndex = index;
-
               tt.__translation = translation;
               tt.__rotation = rotation;
             }
@@ -157,13 +154,13 @@
           console.info('Saving exercise to:' + exercise  +' with auto staticIds:');
           console.log(staticIds);
           $.ajax({
-              url: exercise + '/index.vwf.html',
-              type: 'put',
-              data: index_vwf_html,
-              cache: false,
-              processData: false,
-              crossDomain: true,
-              xhrFields: { withCredentials: true } // prompt
+            url: exercise + '/index.vwf.html',
+            type: 'put',
+            data: index_vwf_html,
+            cache: false,
+            processData: false,
+            crossDomain: true,
+            xhrFields: { withCredentials: true } // prompt
           }).done(function(data) {
             console.info(data);
 
@@ -176,32 +173,58 @@
             index_vwf_yaml = index_vwf_yaml.replace('#!=static-children', staticChildren.join('\n'));
             index_vwf_yaml = index_vwf_yaml.replace('//#!=static-camera-translation', 'this.camera.translation = ' + camTranslation);
             index_vwf_yaml = index_vwf_yaml.replace('//#!=static-camera-rotation', 'this.camera.rotation = ' + camRotation);
-
-            if (behaveAssetTrayIndex !== undefined) {
-              var behaveAssetTrayItem = vwfapp.tooltray[ behaveAssetTrayIndex ];
-
-              M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-translation', 'this.translation = ' + behaveAssetTrayItem.__translation);
-              M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + behaveAssetTrayItem.__rotation);
-            }
-
             $.ajax({
-                url: exercise + '/index.vwf.yaml',
+              url: exercise + '/index.vwf.yaml',
+              type: 'put',
+              data: index_vwf_yaml,
+              cache: false,
+              processData: false,
+              crossDomain: true,
+              xhrFields: { withCredentials: true } // prompt
+            }).done(function(data) {
+              console.info(data);
+              vwfapp.tooltray.forEach(function(tt) {
+                if (!tt.__static) {
+                  if (tt.__name == 'M4_Carbine_dae') {
+                    M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-translation', 'this.translation = ' + tt.__translation);
+                    M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + tt.__rotation);
+                  } else {
+                    var assetEuiYaml = "\
+---\n\
+properties:\n\
+  actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]\n\
+methods:\n\
+  setup:\n\
+scripts:\n\
+- |\n\
+  this.setup = function() {\n\
+    console.info(this.id + ' ' + this.name + ' setup');\n\
+    //#!=asset-translation;\n\
+    //#!=asset-rotation;\n\
+  };\n\
+";
+                    assetEuiYaml = assetEuiYaml.replace('//#!=asset-translation', 'this.translation = ' + tt.__translation);
+                    assetEuiYaml = assetEuiYaml.replace('//#!=asset-rotation', 'this.rotation = ' + tt.__rotation);
+                    $.ajax({
+                      url: exercise + '/' + tt.__name + '.eui.yaml',
+                      type: 'put',
+                      data: assetEuiYaml,
+                      cache: false,
+                      processData: false,
+                      crossDomain: true,
+                      xhrFields: { withCredentials: true } // prompt
+                    }).done(function(data) { console.info(data); });
+                  }
+                }
+              });
+              $.ajax({
+                url: exercise + '/M4_Carbine_dae.eui.yaml',
                 type: 'put',
-                data: index_vwf_yaml,
+                data: M4_Carbine_dae_eui_yaml,
                 cache: false,
                 processData: false,
                 crossDomain: true,
                 xhrFields: { withCredentials: true } // prompt
-            }).done(function(data) {
-              console.info(data);
-              $.ajax({
-                  url: exercise + '/M4_Carbine_dae.eui.yaml',
-                  type: 'put',
-                  data: M4_Carbine_dae_eui_yaml,
-                  cache: false,
-                  processData: false,
-                  crossDomain: true,
-                  xhrFields: { withCredentials: true } // prompt
               }).done(function(data) {
                 console.info(data);
                 $.ajax({
