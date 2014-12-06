@@ -102,12 +102,18 @@
         tooltray: undefined,
         instructorMode: false,
         assessmentActive: false,
+        cameraId: undefined,
         path: window.location.pathname.split('/').slice(0, -2).join('/')
       };
       var toolTrayMenu = { };
       var controlMenu = {
         bannerInstructorMode: vwfapp.path,
         fontsize: '110%',
+        cameraStartTranslation: undefined,
+        cameraStartRotation: undefined,
+        cameraFly: false,
+        cameraOrbit: 0,
+        cameraZoom: 0,
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
@@ -137,6 +143,11 @@
             $('#assessment').fadeIn();
             vwfapp.assessmentActive = true;
           }
+        },
+        init: function() {
+          this.cameraStartTranslation = vwf.getProperty(vwfapp.cameraId, 'translation');
+          this.cameraStartRotation = vwf.getProperty(vwfapp.cameraId, 'rotation');
+          vwf.setProperty(vwfapp.appId, 'cameraTarget', [ 'M4_Carbine_dae' ]);
         }
       };
       var contextMenu = {
@@ -227,6 +238,7 @@
           }
 
           // Control menu's
+          controlMenu.init();
           this.controlGUI = new dat.GUI();
           this.controlGUI.name = 'Control Menu';
 
@@ -239,6 +251,27 @@
 
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {
+            controlMenu.cameraOrbit = 0;
+            controlMenu.cameraZoom = 0;
+            view.controlGUI.__controllers.forEach(function(ctrl) { ctrl.updateDisplay(); });
+
+            if (!value) {
+              vwf.setProperty(vwfapp.cameraId, 'translation', controlMenu.cameraStartTranslation);
+              vwf.setProperty(vwfapp.cameraId, 'rotation', controlMenu.cameraStartRotation);
+              vwf.setProperty(vwfapp.cameraId, 'navmode', [ 'none' ]);
+            } else {
+              vwf.setProperty(vwfapp.cameraId, 'navmode', [ 'fly' ]);
+            }
+          });
+          this.controlGUI.add(controlMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraOrbit', [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+          });
+          this.controlGUI.add(controlMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraZoom', [ value ]);
+          }).onFinishChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraLookAt', [ 'M4_Carbine_dae' ]);
+          });
 
           if (vwfapp.instructorMode) view.guiref.saveSolutionRef = this.controlGUI.add(controlMenu, 'saveSolution').name('Save Solution');
           else this.controlGUI.add(controlMenu, 'assessment').name('Assessment');
@@ -281,9 +314,7 @@
 
       function handleContextMenu() {
         if (view.contextActive) {
-          var l = view.guiref.ctx.length;
-
-          for (var i = 0; i < l; i++) {
+          for (var i = 0, l = view.guiref.ctx.length; i < l; i++) {
             view.contextGUI.remove(view.guiref.ctx[ i ]);
           }
 
@@ -297,7 +328,7 @@
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
           if (nodeId == vwfapp.appId) {
             if (propertyName == 'backendResetSent') {
-              if (propertyValue) window.location.reload(true); // window.location.href = window.location.href;
+              if (propertyValue) window.location.href = '../';
             }
           }
         };
@@ -332,7 +363,7 @@
             vwfapp[ methodValue + 'Id' ] = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
             vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');
-            $('.dg.ac').toggle(); // hide / remove the tray menu
+            $('.dg.ac').toggle(); // hide / remove the tray menu //XXX we need to see if other things are in the tray before toggling it away
             // addActionsToTrayMenu();
           }
         };
@@ -445,6 +476,7 @@
         if (childID == vwfapp.appId) {
           sceneInitialize();
           vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __EUI ]);
+          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
           __EUI.vwfapp = vwfapp; // for console debug access
         }
       }
