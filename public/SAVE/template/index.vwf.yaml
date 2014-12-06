@@ -5,6 +5,7 @@ implements:
 - .behave/begin.save
 - .behave/backendtxrx.save
 - .behave/instance.save
+- .behave/cameranav.save
 methods:
   initializeCamera:
   resetBackend:
@@ -29,6 +30,7 @@ scripts:
   };
 
   this.initializeCamera = function() {
+    this.camera.navmode = 'none';
     this.camera.translationSpeed = 5;
     //#!=static-camera-translation;
     //#!=static-camera-rotation;
@@ -38,4 +40,5 @@ scripts:
     var self = this;
 
     this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });
-  }; //# sourceURL=index.vwf
+  };
+  //# sourceURL=index.vwf

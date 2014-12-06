@@ -198,26 +198,12 @@
                       xhrFields: { withCredentials: true } // prompt
                     }).done(function(data) { console.info(data); });
                   } else {
-                    var assetEuiYaml = "\
----\n\
-properties:\n\
-  actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]\n\
-methods:\n\
-  setup:\n\
-scripts:\n\
-- |\n\
-  this.setup = function() {\n\
-    console.info(this.id + ' ' + this.name + ' setup');\n\
-    //#!=asset-translation;\n\
-    //#!=asset-rotation;\n\
-  };\n\
-";
-                    assetEuiYaml = assetEuiYaml.replace('//#!=asset-translation', 'this.translation = ' + tt.__translation);
-                    assetEuiYaml = assetEuiYaml.replace('//#!=asset-rotation', 'this.rotation = ' + tt.__rotation);
+                    default_Asset_Eui_B_yaml = default_Asset_Eui_B_yaml.replace('//#!=asset-translation', 'this.translation = ' + tt.__translation);
+                    default_Asset_Eui_B_yaml = default_Asset_Eui_B_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + tt.__rotation);
                     $.ajax({
                       url: exercise + '/' + tt.__name + '.eui.yaml',
                       type: 'put',
-                      data: assetEuiYaml,
+                      data: default_Asset_Eui_B_yaml,
                       cache: false,
                       processData: false,
                       crossDomain: true,
@@ -329,9 +315,7 @@ scripts:\n\
 
       function handleContextMenu() {
         if (view.contextActive) {
-          var l = view.guiref.ctx.length;
-
-          for (var i = 0; i < l; i++) {
+          for (var i = 0, l = view.guiref.ctx.length; i < l; i++) {
             view.contextGUI.remove(view.guiref.ctx[ i ]);
           }
 

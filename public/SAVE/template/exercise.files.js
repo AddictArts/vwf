@@ -107,12 +107,18 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         tooltray: undefined,\n\
         instructorMode: false,\n\
         assessmentActive: false,\n\
+        cameraId: undefined,\n\
         path: window.location.pathname.split('/').slice(0, -2).join('/')\n\
       };\n\
       var toolTrayMenu = { };\n\
       var controlMenu = {\n\
         bannerInstructorMode: vwfapp.path,\n\
         fontsize: '110%',\n\
+        cameraStartTranslation: undefined,\n\
+        cameraStartRotation: undefined,\n\
+        cameraFly: false,\n\
+        cameraOrbit: 0,\n\
+        cameraZoom: 0,\n\
         reset: function() {\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');\n\
         },\n\
@@ -142,6 +148,11 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             $('#assessment').fadeIn();\n\
             vwfapp.assessmentActive = true;\n\
           }\n\
+        },\n\
+        init: function() {\n\
+          this.cameraStartTranslation = vwf.getProperty(vwfapp.cameraId, 'translation');\n\
+          this.cameraStartRotation = vwf.getProperty(vwfapp.cameraId, 'rotation');\n\
+          vwf.setProperty(vwfapp.appId, 'cameraTarget', [ 'M4_Carbine_dae' ]);\n\
         }\n\
       };\n\
       var contextMenu = {\n\
@@ -232,6 +243,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
           }\n\
 \n\
           // Control menu's\n\
+          controlMenu.init();\n\
           this.controlGUI = new dat.GUI();\n\
           this.controlGUI.name = 'Control Menu';\n\
 \n\
@@ -244,6 +256,27 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 \n\
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });\n\
           this.controlGUI.add(controlMenu, 'reset').name('Reset');\n\
+          this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {\n\
+            controlMenu.cameraOrbit = 0;\n\
+            controlMenu.cameraZoom = 0;\n\
+            view.controlGUI.__controllers.forEach(function(ctrl) { ctrl.updateDisplay(); });\n\
+\n\
+            if (!value) {\n\
+              vwf.setProperty(vwfapp.cameraId, 'translation', controlMenu.cameraStartTranslation);\n\
+              vwf.setProperty(vwfapp.cameraId, 'rotation', controlMenu.cameraStartRotation);\n\
+              vwf.setProperty(vwfapp.cameraId, 'navmode', [ 'none' ]);\n\
+            } else {\n\
+              vwf.setProperty(vwfapp.cameraId, 'navmode', [ 'fly' ]);\n\
+            }\n\
+          });\n\
+          this.controlGUI.add(controlMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {\n\
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraOrbit', [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1\n\
+          });\n\
+          this.controlGUI.add(controlMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {\n\
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraZoom', [ value ]);\n\
+          }).onFinishChange(function(value) {\n\
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraLookAt', [ 'M4_Carbine_dae' ]);\n\
+          });\n\
 \n\
           if (vwfapp.instructorMode) view.guiref.saveSolutionRef = this.controlGUI.add(controlMenu, 'saveSolution').name('Save Solution');\n\
           else this.controlGUI.add(controlMenu, 'assessment').name('Assessment');\n\
@@ -286,9 +319,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 \n\
       function handleContextMenu() {\n\
         if (view.contextActive) {\n\
-          var l = view.guiref.ctx.length;\n\
-\n\
-          for (var i = 0; i < l; i++) {\n\
+          for (var i = 0, l = view.guiref.ctx.length; i < l; i++) {\n\
             view.contextGUI.remove(view.guiref.ctx[ i ]);\n\
           }\n\
 \n\
@@ -302,7 +333,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {\n\
           if (nodeId == vwfapp.appId) {\n\
             if (propertyName == 'backendResetSent') {\n\
-              if (propertyValue) window.location.reload(true); // window.location.href = window.location.href;\n\
+              if (propertyValue) window.location.href = '../';\n\
             }\n\
           }\n\
         };\n\
@@ -337,7 +368,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             vwfapp[ methodValue + 'Id' ] = assetVwfId;\n\
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');\n\
             vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');\n\
-            $('.dg.ac').toggle(); // hide / remove the tray menu\n\
+            $('.dg.ac').toggle(); // hide / remove the tray menu //XXX we need to see if other things are in the tray before toggling it away\n\
             // addActionsToTrayMenu();\n\
           }\n\
         };\n\
@@ -450,6 +481,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         if (childID == vwfapp.appId) {\n\
           sceneInitialize();\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __EUI ]);\n\
+          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];\n\
           __EUI.vwfapp = vwfapp; // for console debug access\n\
         }\n\
       }\n\
@@ -476,6 +508,7 @@ implements:\n\
 - .behave/begin.save\n\
 - .behave/backendtxrx.save\n\
 - .behave/instance.save\n\
+- .behave/cameranav.save\n\
 methods:\n\
   initializeCamera:\n\
   resetBackend:\n\
@@ -500,6 +533,7 @@ scripts:\n\
   };\n\
 \n\
   this.initializeCamera = function() {\n\
+    this.camera.navmode = 'none';\n\
     this.camera.translationSpeed = 5;\n\
     //#!=static-camera-translation;\n\
     //#!=static-camera-rotation;\n\
@@ -509,8 +543,8 @@ scripts:\n\
     var self = this;\n\
 \n\
     this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });\n\
-  }; //# sourceURL=index.vwf\n\
-";
+  };\n\
+  //# sourceURL=index.vwf";
 
 //3
 
@@ -663,4 +697,20 @@ scripts:\n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 0 ], 0.125);\n\
   };\n\
   //# sourceURL=M4_Carbine_dae.eui\n\
+";
+
+//4
+
+var default_Asset_Eui_B_yaml = "\---\n\
+properties:\n\
+  actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]\n\
+methods:\n\
+  setup:\n\
+scripts:\n\
+- |\n\
+  this.setup = function() {\n\
+    console.info(this.id + ' ' + this.name + ' setup');\n\
+    //#!=asset-translation;\n\
+    //#!=asset-rotation;\n\
+  };\n\
 ";
