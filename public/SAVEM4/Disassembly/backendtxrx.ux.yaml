@@ -31,7 +31,7 @@ scripts:
       if (!this.parent.baseServerAddress) {
         var msg = "The baseServerAddress server address is undefined, check the eui.json setting " + this.id;
 
-        jQuery('#reasonertxrxMsg').text(msg);
+        jQuery('#backendtxrxMsg').text(msg);
         console.warn(msg);
       } else {
         console.info(this.id + " backendtxrx.ux objectServerAddress:" + this.objectServerAddress);
