@@ -114,6 +114,7 @@
         cameraFly: false,
         cameraOrbit: 0,
         cameraZoom: 0,
+        allActions: false,
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
@@ -251,6 +252,7 @@
 
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(controlMenu, 'allActions').name('AllActions');
           this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {
             controlMenu.cameraOrbit = 0;
             controlMenu.cameraZoom = 0;
@@ -384,10 +386,13 @@
             console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);
 
             view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
-            vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {
-              contextMenu[ action ] = function() { };
-              view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));
-            });
+
+            if (controlMenu.allActions) {
+              vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {
+                contextMenu[ action ] = function() { };
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));
+              });
+            }
 
             var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];
 
@@ -405,6 +410,10 @@
                 handleContextMenu();
                 view.Release(objectName);
               };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PushAndHold'));
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));
               break;
             case 'Charging_Handle_Latch':
             case 'Charging_Handle':
@@ -420,6 +429,10 @@
                 handleContextMenu();
                 view.Release('Charging_Handle');
               };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));
               break;
             case 'Ejection_Port_Cover':
               contextMenu.Inspect = function() {
@@ -427,6 +440,7 @@
                 view.Inspect(objectName);
               };
 
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));
               break;
             case 'Magazine_Catch':
             case 'Magazine_Catch_Button':
@@ -434,6 +448,8 @@
                 handleContextMenu();
                 view.Push('Magazine_Catch');
               };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
               break;
             case 'Selector_Lever':
               contextMenu.SelectSwitchPosition = function() {
@@ -451,6 +467,8 @@
                 handleContextMenu();
                 view.Pull('Trigger');
               };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));
               break;
             default: // Everything else... is just the point action point at selection
               contextMenu.Point = function() {
@@ -459,6 +477,8 @@
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
                 view.guiref.ctx.push(view.contextGUI.add(view, 'defaultPoint').name('targets'));
               };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Point'));
               break;
             }
           }

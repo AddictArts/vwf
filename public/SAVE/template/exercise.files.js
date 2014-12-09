@@ -119,6 +119,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         cameraFly: false,\n\
         cameraOrbit: 0,\n\
         cameraZoom: 0,\n\
+        allActions: false,\n\
         reset: function() {\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');\n\
         },\n\
@@ -256,6 +257,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 \n\
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });\n\
           this.controlGUI.add(controlMenu, 'reset').name('Reset');\n\
+          this.controlGUI.add(controlMenu, 'allActions').name('AllActions');\n\
           this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {\n\
             controlMenu.cameraOrbit = 0;\n\
             controlMenu.cameraZoom = 0;\n\
@@ -389,10 +391,13 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);\n\
 \n\
             view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));\n\
-            vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {\n\
-              contextMenu[ action ] = function() { };\n\
-              view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));\n\
-            });\n\
+\n\
+            if (controlMenu.allActions) {\n\
+              vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {\n\
+                contextMenu[ action ] = function() { };\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));\n\
+              });\n\
+            }\n\
 \n\
             var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];\n\
 \n\
@@ -410,6 +415,10 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 handleContextMenu();\n\
                 view.Release(objectName);\n\
               };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PushAndHold'));\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
               break;\n\
             case 'Charging_Handle_Latch':\n\
             case 'Charging_Handle':\n\
@@ -425,6 +434,10 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 handleContextMenu();\n\
                 view.Release('Charging_Handle');\n\
               };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
               break;\n\
             case 'Ejection_Port_Cover':\n\
               contextMenu.Inspect = function() {\n\
@@ -432,6 +445,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 view.Inspect(objectName);\n\
               };\n\
 \n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));\n\
               break;\n\
             case 'Magazine_Catch':\n\
             case 'Magazine_Catch_Button':\n\
@@ -439,6 +453,8 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 handleContextMenu();\n\
                 view.Push('Magazine_Catch');\n\
               };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
               break;\n\
             case 'Selector_Lever':\n\
               contextMenu.SelectSwitchPosition = function() {\n\
@@ -456,6 +472,8 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 handleContextMenu();\n\
                 view.Pull('Trigger');\n\
               };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));\n\
               break;\n\
             default: // Everything else... is just the point action point at selection\n\
               contextMenu.Point = function() {\n\
@@ -464,6 +482,8 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));\n\
                 view.guiref.ctx.push(view.contextGUI.add(view, 'defaultPoint').name('targets'));\n\
               };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Point'));\n\
               break;\n\
             }\n\
           }\n\
