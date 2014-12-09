@@ -28,6 +28,7 @@ scripts:
 
       if (!this.parent.baseServerAddress) {
         console.warn("The baseServerAddress server address is undefined, check the eui.json setting " + this.id);
+        jQuery('#euiMsg').text('The baseServerAddress is undefined in eui.json.js __EUI.baseServerAddress');
       } else {
         console.info(this.id + " backendtxrx.save objectServerAddress:" + this.objectServerAddress);
         console.info(this.id + " backendtxrx.save queryServerAddress:" + this.queryServerAddress);
@@ -52,6 +53,7 @@ scripts:
   };
 
   this.post = function(json, url, done) {
+    jQuery('#euiMsg').text(JSON.stringify(json).replace(/\\/g, ''));
     jQuery.ajax({
       url: url,
       type: 'post',

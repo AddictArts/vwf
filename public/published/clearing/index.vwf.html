@@ -109,6 +109,7 @@
       var controlMenu = {
         bannerInstructorMode: vwfapp.path,
         fontsize: '110%',
+        euiMsg: true,
         cameraStartTranslation: undefined,
         cameraStartRotation: undefined,
         cameraFly: false,
@@ -251,6 +252,10 @@
           }
 
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.add(controlMenu, 'euiMsg').name('Messages').onFinishChange(function(value) {
+            if (value) $('#euiMsg').show();
+            else $('#euiMsg').hide();
+          });
           this.controlGUI.add(controlMenu, 'reset').name('Reset');
           this.controlGUI.add(controlMenu, 'allActions').name('AllActions');
           this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {
@@ -505,6 +510,7 @@
   </head>
 <body>
   <div id='wrapper' class='wrapper'>
+    <div id='euiMsg'></div>
     <div id='assessment'></div>
   </div>
   <script type='text/javascript'>

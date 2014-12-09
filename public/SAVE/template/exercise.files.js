@@ -114,6 +114,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
       var controlMenu = {\n\
         bannerInstructorMode: vwfapp.path,\n\
         fontsize: '110%',\n\
+        euiMsg: true,\n\
         cameraStartTranslation: undefined,\n\
         cameraStartRotation: undefined,\n\
         cameraFly: false,\n\
@@ -256,6 +257,10 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
           }\n\
 \n\
           this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });\n\
+          this.controlGUI.add(controlMenu, 'euiMsg').name('Messages').onFinishChange(function(value) {\n\
+            if (value) $('#euiMsg').show();\n\
+            else $('#euiMsg').hide();\n\
+          });\n\
           this.controlGUI.add(controlMenu, 'reset').name('Reset');\n\
           this.controlGUI.add(controlMenu, 'allActions').name('AllActions');\n\
           this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {\n\
@@ -510,6 +515,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
   </head>\n\
 <body>\n\
   <div id='wrapper' class='wrapper'>\n\
+    <div id='euiMsg'></div>\n\
     <div id='assessment'></div>\n\
   </div>\n\
   <script type='text/javascript'>\n\
