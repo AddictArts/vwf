@@ -49,11 +49,14 @@ scripts:
 
   this.activity = function(data, done /* callback */) {
     console.info(this.id + " backendtxrx.save activity " + JSON.stringify(data));
-    this.post({ activity: JSON.stringify(data) }, this.activityServerAddress, done);
+
+    var json = { activity: JSON.stringify(data) };
+
+    jQuery('#euiMsg').text(JSON.stringify(json).replace(/\\/g, ''));
+    this.post(json, this.activityServerAddress, done);
   };
 
   this.post = function(json, url, done) {
-    jQuery('#euiMsg').text(JSON.stringify(json).replace(/\\/g, ''));
     jQuery.ajax({
       url: url,
       type: 'post',
