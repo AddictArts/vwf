@@ -15,7 +15,6 @@ methods:
   InspectChamberGroup:
   PushBoltCatchTop:
   PullTrigger:
-  releaseTrigger:
 scripts:
 - |
   this.setup = function() {
@@ -118,8 +117,26 @@ scripts:
         return;
     }
 
+    if (this.children[ 'Upper_Receiver Group' ].children[ 10 ].name != 'Cover_Spring') {
+        console.warn(this.id + ' Upper_Receiver Group child 10 is not the Cover_Spring');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].name != 'Casing4') {
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 11 is not the Casing4');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].name != 'Projectile4') {
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 12 is not the Projectile4');
+        return;
+    }
+
+    this.children[ 'Upper_Receiver Group' ].children[ 10 ].visible = false; // We have to hide it, beceause it does not have a proper rotation pivot point
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].future(0.5).visible = false;
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].future(0.5).visible = false;
     this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].translateTo([ -0.075, 0, 0 ], 0.25);
-    this.children[ 'Upper_Receiver Group' ].children[ 9 ].rotateTo([ 1, 0, 0, 130 ], 0.5);
+    this.children[ 'Upper_Receiver Group' ].children[ 9 ].rotateTo([ 1, 0, 0, 130 ], 0.25);
     this.activity({ action: 'Inspect', arguments: [ this[ 'Chamber Group_KbId' ] ] });
   };
 
@@ -140,10 +157,6 @@ scripts:
 
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 15 ], 0.5);
     this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });
-    this.future(1).releaseTrigger();
-  };
-
-  this.releaseTrigger = function() {
-    this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 0 ], 0.125);
+    this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);
   };
   //# sourceURL=M4_Carbine_dae.eui
