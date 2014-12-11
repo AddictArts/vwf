@@ -111,7 +111,21 @@
           rotX: false,
           rotY: false,
           rotZ: false,
-          rotation: 0
+          rotation: 0,
+          startTransform: undefined,
+          default: function() {
+            vwf.setProperty(vwfapp.cameraId, 'transform', controlMenu.camxyz.startTransform);
+
+            var vec3 = vwf.getProperty(vwfapp.cameraId, 'translation');
+            var controllers = view.controlGUI.__folders.Camera.__controllers;
+
+            this.x = vec3[ 0 ];
+            this.y = vec3[ 1 ];
+            this.z = vec3[ 2 ];
+
+            // Manual update vs listen(); Iterating over all controllers
+            for (var i in controllers) controllers[ i ].updateDisplay();
+          }
         },
         reset: function() {
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
@@ -229,6 +243,7 @@
           this.camxyz.x = vec3[ 0 ];
           this.camxyz.y = vec3[ 1 ];
           this.camxyz.z = vec3[ 2 ];
+          this.camxyz.startTransform = vwf.getProperty(vwfapp.cameraId, 'transform');
         }
       };
       var contextMenu = {
@@ -261,6 +276,7 @@
 
           var cameraFolder = this.controlGUI.addFolder('Camera');
 
+          cameraFolder.add(controlMenu.camxyz, 'default').name('Default');
           cameraFolder.add(controlMenu.camxyz, 'x').onFinishChange(
             function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, controlMenu.camxyz.y, controlMenu.camxyz.z ]); }
           );
