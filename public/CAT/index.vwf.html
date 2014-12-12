@@ -302,6 +302,8 @@
           this.controlGUI.domElement.style.float = 'left';
           this.controlGUI.domElement.style.left = '15px';
           this.controlGUI.domElement.style.overflowX = 'visible';
+          this.controlGUI.domElement.addEventListener('keydown', function(event) { event.stopPropagation(); });
+          this.controlGUI.domElement.addEventListener('keyup', function(event) { event.stopPropagation(); });
           $('body').append(this.controlGUI.domElement);
 
           // Context menu drop down menu's
