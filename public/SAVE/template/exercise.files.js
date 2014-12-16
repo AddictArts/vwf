@@ -518,7 +518,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
   </head>\n\
 <body>\n\
   <div id='wrapper' class='wrapper'>\n\
-    <div id='euiMsg' style='width: 40em;position: relative;font-size: large;'>\n\
+    <div id='euiMsg' style='width: 40em;position: relative;font-size: medium;'>\n\
       <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>Action performed: None</div>\n\
       <div class='actionKey' style='left: 0; right: 50%;background: green;color: white;padding: 5px;position: absolute;'>\n\
       </div>\n\
