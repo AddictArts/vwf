@@ -510,11 +510,18 @@
   </head>
 <body>
   <div id='wrapper' class='wrapper'>
-    <div id='euiMsg'></div>
+    <div id='euiMsg' style='width: 40em;position: relative;font-size: large;'>
+      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>No activity action performed</div>
+      <div class='actionKey' style='left: 0; right: 50%;background: green;color: white;padding: 5px;position: absolute;'>
+      </div>
+      <div class='actionArgs' style='left: 50%; right: 0;background: blue;color: white;padding: 5px;position: absolute;'>
+      </div>
+    </div>
     <div id='assessment'></div>
   </div>
   <script type='text/javascript'>
     $('#wrapper').appendTo('#vwf-root');
   </script>
+  <!--script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);var monkeyPatchTimer = setInterval(function() { console.info('Waiting to monkey patch the LR reloader...'); if (LiveReload) { LiveReload.reloader.reloadPage = function() { window.document.location.href = '../'; }; clearInterval(monkeyPatchTimer); }}, 100);</script-->
 </body>
 </html>

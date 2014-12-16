@@ -515,12 +515,19 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
   </head>\n\
 <body>\n\
   <div id='wrapper' class='wrapper'>\n\
-    <div id='euiMsg'></div>\n\
+    <div id='euiMsg' style='width: 40em;position: relative;font-size: large;'>\n\
+      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>No activity action performed</div>\n\
+      <div class='actionKey' style='left: 0; right: 50%;background: green;color: white;padding: 5px;position: absolute;'>\n\
+      </div>\n\
+      <div class='actionArgs' style='left: 50%; right: 0;background: blue;color: white;padding: 5px;position: absolute;'>\n\
+      </div>\n\
+    </div>\n\
     <div id='assessment'></div>\n\
   </div>\n\
   <script type='text/javascript'>\n\
     $('#wrapper').appendTo('#vwf-root');\n\
   </script>\n\
+  <!--script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);var monkeyPatchTimer = setInterval(function() { console.info('Waiting to monkey patch the LR reloader...'); if (LiveReload) { LiveReload.reloader.reloadPage = function() { window.document.location.href = '../'; }; clearInterval(monkeyPatchTimer); }}, 100);</script-->\n\
 </body>\n\
 </html>\n\
 ";
@@ -608,7 +615,7 @@ scripts:\n\
     switch (objectName) {\n\
     default:\n\
       this.rotateBy([ 0, 0, 1, -90 ], 0.5);\n\
-      this.activity({ action: 'Point', arguments: [ this.M4_Carbine_dae_KbId, this.parent.ShootingRange_dae.targets_KbId ] });\n\
+      this.activity({ action: 'Point', arguments: [ this.M4_Carbine_dae_KbId, this.parent.ShootingRange_dae.targets_KbId ], names: [ 'M4_Carbine_dae', 'targets' ] });\n\
       break;\n\
     }\n\
   };\n\
@@ -633,7 +640,7 @@ scripts:\n\
         break;\n\
     }\n\
 \n\
-    this.activity({ action: 'SelectSwitchPosition', arguments: [ this.Selector_Lever_KbId, position ] });\n\
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ this.Selector_Lever_KbId, position ], names: [ 'Selector_Lever', position ] });\n\
   };\n\
 \n\
   this.PushMagazineReleaseButton = function() {\n\
@@ -652,37 +659,37 @@ scripts:\n\
     this.children[ 'Lower_Receiver Group' ].children[ 9 ].translateTo([ 0, 0, 0.0026 ], 0.125);\n\
     this.children[ 'Lower_Receiver Group' ].children[ 11 ].translateTo([ 0, 0, 0.0026], 0.125);\n\
     this.children[ 'Magazine_g Group' ].translateTo([ 0, 0.125, 0 ], 0.25);\n\
-    this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_Button_KbId ] });\n\
+    this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_Button_KbId ], names: [ 'Magazine_Catch_Button' ] });\n\
   };\n\
 \n\
   this.PullAndHoldChargingHandle = function() {\n\
     console.info(this.id + ' PullAndHold ChargingHandle');\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.005, 0, 0 ], 0.25);\n\
-    this.activity({ action: 'PullAndHold', arguments: [ this[ 'Charging_Handle Group_KbId' ] ] });\n\
+    this.activity({ action: 'PullAndHold', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
   };\n\
 \n\
   this.PushAndHoldBoltCatchBottom = function() {\n\
     console.info(this.id + ' PushAndHold BoltCatchBottom');\n\
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, -12 ];\n\
-    this.activity({ action: 'PushAndHold', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ] });\n\
+    this.activity({ action: 'PushAndHold', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });\n\
   };\n\
 \n\
   this.ReleaseChargingHandle = function() {\n\
     console.info(this.id + ' Release ChargingHandle');\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0., 0, 0 ], 0.25);\n\
-    this.activity({ action: 'Release', arguments: [ this[ 'Charging_Handle Group_KbId' ] ] });\n\
+    this.activity({ action: 'Release', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
   };\n\
 \n\
   this.ReleaseBoltCatchBottom = function() {\n\
     console.info(this.id + ' Release BoltCatchBottom');\n\
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 0 ];\n\
-    this.activity({ action: 'Release', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ] });\n\
+    this.activity({ action: 'Release', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });\n\
   };\n\
 \n\
   this.PushChargingHandle = function() {\n\
     console.info(this.id + ' Push ChargingHandle');\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0.005, 0, 0 ], 0.25);\n\
-    this.activity({ action: 'Push', arguments: [ this[ 'Charging_Handle Group_KbId' ] ] });\n\
+    this.activity({ action: 'Push', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
   };\n\
 \n\
   this.InspectChamberGroup = function() {\n\
@@ -713,14 +720,14 @@ scripts:\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].future(0.5).visible = false;\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].translateTo([ -0.075, 0, 0 ], 0.25);\n\
     this.children[ 'Upper_Receiver Group' ].children[ 9 ].rotateTo([ 1, 0, 0, 130 ], 0.25);\n\
-    this.activity({ action: 'Inspect', arguments: [ this[ 'Chamber Group_KbId' ] ] });\n\
+    this.activity({ action: 'Inspect', arguments: [ this[ 'Chamber Group_KbId' ] ], names: [ 'Chamber Group' ] });\n\
   };\n\
 \n\
   this.PushBoltCatchTop = function() {\n\
     console.info(this.id + ' Push BoltCatchTop');\n\
 \n\
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 12 ];\n\
-    this.activity({ action: 'Push', arguments: [ this[ 'Bolt_Catch_Top Group_KbId' ] ] });\n\
+    this.activity({ action: 'Push', arguments: [ this[ 'Bolt_Catch_Top Group_KbId' ] ], names: [ 'Bolt_Catch_Top Group' ] });\n\
   };\n\
 \n\
   this.PullTrigger = function() {\n\
@@ -732,7 +739,7 @@ scripts:\n\
     }\n\
 \n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 15 ], 0.5);\n\
-    this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ] });\n\
+    this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ], names: [ 'Trigger' ] });\n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);\n\
   };\n\
   //# sourceURL=M4_Carbine_dae.eui\n\
