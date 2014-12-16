@@ -149,6 +149,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             $('<iframe/>', { name: 'assessment', id: 'assessmentIFrame', src: url}).appendTo('#assessment').css(cssIFrame);\n\
             $('#assessment').fadeIn();\n\
             vwfapp.assessmentActive = true;\n\
+            controlMenu.euiMsg = false;\n\
+            view.controlGUI.__controllers.forEach(function(ctrl) { ctrl.updateDisplay(); });\n\
+            $('#euiMsg').hide();\n\
           }\n\
         },\n\
         init: function() {\n\
@@ -516,7 +519,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 <body>\n\
   <div id='wrapper' class='wrapper'>\n\
     <div id='euiMsg' style='width: 40em;position: relative;font-size: large;'>\n\
-      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>No activity action performed</div>\n\
+      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>Action performed: None</div>\n\
       <div class='actionKey' style='left: 0; right: 50%;background: green;color: white;padding: 5px;position: absolute;'>\n\
       </div>\n\
       <div class='actionArgs' style='left: 50%; right: 0;background: blue;color: white;padding: 5px;position: absolute;'>\n\

@@ -49,9 +49,9 @@ scripts:
 
   this.activity = function(data, done /* callback */) {
     console.info(this.id + " backendtxrx.save activity " + JSON.stringify(data));
-    jQuery('#euiMsg .actionDesc').text('Activity action performed');
+    jQuery('#euiMsg .actionDesc').text('Action performed:');
     jQuery('#euiMsg .actionKey').text(data.action);
-    jQuery('#euiMsg .actionArgs').html(data.names.toString().replace(',', ',<br>'));
+    jQuery('#euiMsg .actionArgs').text(data.names.toString().replace(',', ', '));
 
     var json = { activity: JSON.stringify(data) };
 

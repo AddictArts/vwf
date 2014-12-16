@@ -144,6 +144,9 @@
             $('<iframe/>', { name: 'assessment', id: 'assessmentIFrame', src: url}).appendTo('#assessment').css(cssIFrame);
             $('#assessment').fadeIn();
             vwfapp.assessmentActive = true;
+            controlMenu.euiMsg = false;
+            view.controlGUI.__controllers.forEach(function(ctrl) { ctrl.updateDisplay(); });
+            $('#euiMsg').hide();
           }
         },
         init: function() {
@@ -511,7 +514,7 @@
 <body>
   <div id='wrapper' class='wrapper'>
     <div id='euiMsg' style='width: 40em;position: relative;font-size: large;'>
-      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>No activity action performed</div>
+      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>Action performed: None</div>
       <div class='actionKey' style='left: 0; right: 50%;background: green;color: white;padding: 5px;position: absolute;'>
       </div>
       <div class='actionArgs' style='left: 50%; right: 0;background: blue;color: white;padding: 5px;position: absolute;'>
