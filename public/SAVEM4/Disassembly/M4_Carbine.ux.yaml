@@ -175,7 +175,7 @@ scripts:
     case 'pullTakedownPin':
       this.pullTakedownPin();
       break;
-  }
+    }
   };
 
   this.pushTakedownPin = function() {

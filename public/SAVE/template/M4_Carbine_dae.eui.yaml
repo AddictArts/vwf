@@ -1,6 +1,7 @@
 # Copyright 2014, SRI International
 --- 
 properties:
+  __slingDetach: 0
   actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]
 methods:
   setup:
@@ -158,5 +159,66 @@ scripts:
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 15 ], 0.5);
     this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ], names: [ 'Trigger' ] });
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);
+  };
+
+  this.DetachSling = function(detached) {
+    console.info(this.id + 'DetachSling 2 detach actions detaching:' + detached);
+
+    switch (detached) {
+    case 'SmallSlingSwivel':
+      this.__slingDetach++;
+      this.DetachSmallSlingSwivel();
+      break;
+    case 'Swivel':
+      this.__slingDetach++;
+      this.DetachSwivel();
+      break;
+    }
+
+    if (this.__slingDetach == 2) {
+      this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Swivel_LAMA1259863095.translateTo([ 0, 0.2, 0 ], 0.5);
+    }
+  };
+
+  this.DetachSmallSlingSwivel = function() {
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ] });
+  };
+
+  this.DetachSwivel = function() {
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ] });
+  };
+
+  this.PressHandguardSlipRing = function() {
+    this.Handguard_Slip_Ring_LAMA918813252.translateTo([  -0.0034912, 0, 0 ], 0.125);
+    // arguments: thingPressed
+    this.activity({ action: 'Press', arguments: [ this.Handguard_Slip_Ring_LAMA918813252_KbId ] });
+  };
+
+  this.DetachUpperHandguard = function() {
+    this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Upper_Handguard_KbId ] });
+  };
+
+  this.DetachLowerHandguard = function() {
+    this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_KbId, this.Lower_Handguard_KbId ] });
+  };
+
+  this.PushTakedownPin = function() {
+    this.Takedown_Pin.translateTo([ 0, 0, -0.003344 ], 0.5);
+    // arguments: thingPushed
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ] });
+  };
+
+  this.PullTakedownPin = function() {
+    this.Takedown_Pin.translateTo([ 0, 0, -0.018927 ], 0.5);
+    // arguments: thingPulled
+    this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ] });
   };
   //# sourceURL=M4_Carbine_dae.eui
