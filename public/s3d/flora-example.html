@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script>
+
+
+// --- Utility functions ---
+
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+
+  }
+  return xhr;
+}
+
+/*
+function getXmlHttp() {
+	var xhttp;
+	if (window.XMLHttpRequest) {
+  		xhttp = new XMLHttpRequest();
+  		if (typeof xhttp.overrideMimeType !== 'undefined') {
+    		xhttp.overrideMimeType('text/xml');
+  		}
+	} else if (window.ActiveXObject) {
+  		xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	} else {
+  		alert('Perhaps your browser does not support xmlhttprequests?'); 
+	}
+	return xhttp;
+}
+*/
+
+// Returns an array of elements
+function getElementsByClassName(node, cls){
+	var elts = [];
+	var children = node.childNodes;
+	for (var i=0; i<children.length; i++){
+		var child = children[i];
+		if (child.getAttribute("class") === cls)
+			elts.push(child);
+	}
+	return elts;
+}
+
+// Returns an array of elements
+function getFirstElementByTagName(node, tag){
+	var children = node.childNodes;
+	for (var i=0; i<children.length; i++){
+		var child = children[i];
+		if (child.tagName === tag)
+			return child;
+	}
+	return null;
+}
+
+function removeAllChildren(node){
+	while (node.firstChild) {
+    	node.removeChild(node.firstChild);
+	}
+}
+
+
+// --- View functions ---
+
+// Equivalent to Identifier.toString() on the Java side
+/* -- not used. We now put the toString() versions directly in the JSON objects.
+function floraTerm2String(floraTerm){
+	var termtype = floraTerm.termtype;
+	if (termtype === 'Qname'){
+		return floraTerm.prefix + '#' + floraTerm.local;
+	}
+	else if (termtype === 'Iri'){
+		return floraTerm.value;
+	}
+	else if (termtype === 'AtomicTerm'){
+		return floraTerm.name;
+	}	
+	else
+	 	return 'Not an Identifier';
+}
+*/
+
+// Takes a class id string
+function createExpandButton(id) {
+    var expandButton = document.createElement("button");
+    expandButton.setAttribute("class","expandTermButton");
+    expandButton.setAttribute("onclick","getSubClasses('" + id + "')");
+    expandButton.appendChild(document.createTextNode("(expand)"));
+	return expandButton;
+}
+
+// Takes a class id string
+function createCollapseButton(id) {
+	var collapseButton = document.createElement("button");
+   	collapseButton.setAttribute("class","collapseTermButton");
+   	collapseButton.setAttribute("onclick","collapseNode('" + id + "')");
+    collapseButton.appendChild(document.createTextNode("(collapse)"));
+	return collapseButton;
+}
+
+// Takes a flora term string and returns an HTML DOM representation of it
+// with buttons for selecting and expanding the identifier
+function createTaxonomyIdDiv(floraTerm) {
+    var div = document.createElement("div");
+    div.setAttribute("id",floraTerm);
+    div.setAttribute("class","term");
+    
+    var detailsButton = document.createElement("button");    
+    detailsButton.setAttribute("class","termDetailsButton");
+    detailsButton.setAttribute("onclick","getDetails('" + floraTerm  + "')");
+    detailsButton.appendChild(document.createTextNode(floraTerm));
+    div.appendChild(detailsButton);
+    
+    div.appendChild(createExpandButton(floraTerm));
+
+	return div;
+}
+
+// Takes a flora term string and returns a simple HTML DOM representation of it
+// with no buttons.
+function createSimpleIdDiv(floraTerm) {
+    var div = document.createElement("div");
+    div.setAttribute("class","simpleterm");
+    div.appendChild(document.createTextNode(floraTerm));
+    return div;
+}
+
+// Takes a JSON object contains the fields "property", "value", and so on, 
+// and an empty row to fill. No return value.
+function createClassPropertyRow(propInfo, row) {
+    var prop = row.insertCell(0);
+    prop.appendChild(document.createTextNode(propInfo.property));
+    var value = row.insertCell(1);
+    value.appendChild(document.createTextNode(propInfo.value));
+    var kind = row.insertCell(2); 
+    kind.appendChild(document.createTextNode(propInfo.kind));
+	var min = row.insertCell(3);
+	if (propInfo.min)    	
+    	min.appendChild(document.createTextNode(propInfo.min));
+    else
+    	min.appendChild(document.createTextNode("*"));
+	var max = row.insertCell(4);
+	if (propInfo.max)    	
+    	max.appendChild(document.createTextNode(propInfo.max));
+    else
+    	max.appendChild(document.createTextNode("*"));
+    var assertedIn = row.insertCell(5);
+    assertedIn.appendChild(document.createTextNode(propInfo.assertedIn));
+    var file = row.insertCell(6);
+    file.appendChild(document.createTextNode(propInfo.file));
+}
+
+// Takes a JSON object contains the fields "property", "value", and so on,
+// and an empty row to fill. No return value.
+function createIndividualPropertyRow(propInfo, row) {
+    var prop = row.insertCell(0);
+    prop.appendChild(document.createTextNode(propInfo.property));
+    var value = row.insertCell(1);
+    value.appendChild(document.createTextNode(propInfo.value));
+    var kind = row.insertCell(2); 
+    kind.appendChild(document.createTextNode(propInfo.kind));
+    var assertedIn = row.insertCell(3);
+    assertedIn.appendChild(document.createTextNode(propInfo.assertedIn));
+    var file = row.insertCell(4);
+    file.appendChild(document.createTextNode(propInfo.file));
+}
+
+function createClassPropsTable() {
+	var table = document.createElement("TABLE");
+	
+	// Create the header
+	var header = table.createTHead();
+	header.setAttribute("class","propcolheader");
+	var row = header.insertRow(0);
+	var colPropertyHeaderCell = row.insertCell(0);
+	colPropertyHeaderCell.appendChild(document.createTextNode("Property"));
+	var colValueHeaderCell = row.insertCell(1);
+	colValueHeaderCell.appendChild(document.createTextNode("Value"));
+	var colKindHeaderCell = row.insertCell(2);
+	colKindHeaderCell.appendChild(document.createTextNode("Kind"));
+	var colMinHeaderCell = row.insertCell(3);
+	colMinHeaderCell.appendChild(document.createTextNode("Min"));
+	var colMaxHeaderCell = row.insertCell(4);
+	colMaxHeaderCell.appendChild(document.createTextNode("Max"));
+	var colAssertedInHeaderCell = row.insertCell(5);
+	colAssertedInHeaderCell.appendChild(document.createTextNode("AssertedIn"));
+	var colFileHeaderCell = row.insertCell(6);
+	colFileHeaderCell.appendChild(document.createTextNode("File"));
+	
+	// Create the table body
+	var body = document.createElement('tbody')
+	table.appendChild(body);
+	
+	return table;
+}
+
+function createIndPropsTable() {
+	var table = document.createElement("TABLE");
+	
+	// Create the header
+	var header = table.createTHead();
+	var row = header.insertRow(0);
+	var colPropertyHeaderCell = row.insertCell(0);
+	colPropertyHeaderCell.appendChild(document.createTextNode("Property"));
+	var colValueHeaderCell = row.insertCell(1);
+	colValueHeaderCell.appendChild(document.createTextNode("Value"));
+	var colKindHeaderCell = row.insertCell(2);
+	colKindHeaderCell.appendChild(document.createTextNode("Kind"));
+	var colAssertedInHeaderCell = row.insertCell(3);
+	colAssertedInHeaderCell.appendChild(document.createTextNode("AssertedIn"));
+	var colFileHeaderCell = row.insertCell(4);
+	colFileHeaderCell.appendChild(document.createTextNode("File"));
+	
+	// Create the table body
+	var body = document.createElement('tbody')
+	table.appendChild(body);
+	
+	return table;
+}
+
+function collapseNode(id){
+  	var div = document.getElementById(id);  // the div for the whole class entry
+
+	// Remove the subclass nodes		  	
+	var subs = getElementsByClassName(div,"term");
+	for (var i=0; i<subs.length; i++) {
+		var sub = subs[i];
+		div.removeChild(sub);
+	}
+
+	// Change the "collapse" button to an "expand" button
+	var collapseButton = div.getElementsByClassName("collapseTermButton")[0];
+	var expandButton = createExpandButton(div.id);
+	div.replaceChild(expandButton,collapseButton);
+}
+
+function clearDetailsPane(){
+	var sups = document.getElementById("superclasses");
+	var classprops = document.getElementById("classproperties");
+	var types = document.getElementById("types");
+	var indprops = document.getElementById("indproperties");
+
+	removeAllChildren(sups);
+	removeAllChildren(classprops);
+	removeAllChildren(types);
+	removeAllChildren(indprops);
+}
+
+function showTaxonomy() {
+	if (this.readyState == 4 && this.status == 200) {
+		console.log('showTaxonomy');
+	  	var jsontax = xmlhttp.responseText;
+	  	//console.log('taxonomy: ' + jsontax);
+	  	var taxdiv = document.getElementById("taxonomy");
+		var tax = JSON.parse(jsontax);
+		for (var i=0; i<tax.length; i++){
+			taxdiv.appendChild(createTaxonomyIdDiv(tax[i]));
+		}  	
+    } else if (this.readyState == 4) {
+      	// error case
+      	console.log("Error, code: " + this.status + " text: " + xmlhttp.responseText);
+    } else {
+      	// wait for the call to complete
+      	//console.log("Waiting...");  
+    }
+}
+
+function showSubClasses() {
+	if (this.readyState == 4 && this.status == 200) {
+		console.log('showSubClasses: ' + xmlhttp.responseText);
+	  	var jsonres = JSON.parse(xmlhttp.responseText);
+	  	var supdiv = document.getElementById(jsonres.superclass);
+
+		// Change the "expand" button to a "collapse" button
+		var expandButton = supdiv.getElementsByClassName("expandTermButton")[0];
+		var collapseButton = createCollapseButton(supdiv.id);
+		supdiv.replaceChild(collapseButton,expandButton);
+
+		// Add the subclass nodes		  	
+		var subs = jsonres.subclasses;
+		for (var i=0; i<subs.length; i++){
+			var sub = createTaxonomyIdDiv(subs[i]);
+			supdiv.appendChild(sub);
+		}
+    } else if (this.readyState == 4) {
+      	// error case
+      	console.log("Error, code: " + this.status + " text: " + xmlhttp.responseText);
+    } else {
+      	// wait for the call to complete
+      	//console.log("Waiting...");  
+    }
+}
+
+function showClassDetails() {
+	if (this.readyState == 4 && this.status == 200) {
+		console.log('showClassDetails: ' + xmlhttp.responseText);
+	  	var jsonres = JSON.parse(xmlhttp.responseText);
+	  	
+	  	// Empty all the details fields
+	  	clearDetailsPane();
+	  	
+	  	// Populate the superclasses field
+	  	var supsdiv = document.getElementById("superclasses");
+	  	var sups = jsonres.superclasses;
+		for (var i=0; i<sups.length; i++){
+	  		supsdiv.appendChild(createSimpleIdDiv(sups[i]));
+	  	}
+	  	
+	  	// Populate the class properties table
+	  	var classpropsdiv = document.getElementById("classproperties");
+	  	var classprops = jsonres.classproperties;
+	  	if (classprops.length > 0){
+	  		var table = createClassPropsTable();
+  			var body = getFirstElementByTagName(table,'TBODY');
+	  		classpropsdiv.appendChild(table);
+			for (var i=0; i<classprops.length; i++){
+	  			var row = body.insertRow(i);
+	  			createClassPropertyRow(classprops[i], row);
+	  		}
+	  	}
+	  	
+	  	// Populate the types field
+	  	var typesdiv = document.getElementById(jsonres.types);
+	  	var types = jsonres.types;
+		for (var i=0; i<types.length; i++){
+	  		typesdiv.appendChild(createSimpleIdDiv(types[i]));
+	  	}
+
+	  	// Populate the individual properties table
+	  	var indpropsdiv = document.getElementById("indproperties");
+	  	var indprops = jsonres.individualproperties;
+   		if (indprops.length > 0){
+   			var table = createIndPropsTable();
+  			var body = getFirstElementByTagName(table,'TBODY');
+   			indpropsdiv.appendChild(table);
+			for (var i=0; i<indprops.length; i++){
+	  			var row = body.insertRow(i);
+	  			createIndividualPropertyRow(indprops[i], row);
+	  		}
+	  	}
+	  	
+    } else if (this.readyState == 4) {
+      	// error case
+      	console.log("Error, code: " + this.status + " text: " + xmlhttp.responseText);
+    } else {
+      	// wait for the call to complete
+      	//console.log("Waiting...");  
+    }
+}
+
+function createQueryInfoDiv(label,str) {
+    var div = document.createElement("div");
+    div.setAttribute("class","queryinfowrapper");
+    
+    var labeldiv = document.createElement("div");
+    labeldiv.setAttribute("class","queryinfolabel");
+    labeldiv.appendChild(document.createTextNode(label));
+    div.appendChild(labeldiv);
+    
+    var strdiv = document.createElement("div");
+    strdiv.setAttribute("class","queryinfostr");
+    strdiv.appendChild(document.createTextNode(str));
+    div.appendChild(strdiv);
+
+	return div;
+}
+
+function createSolutionsTable(variables) {
+	var table = document.createElement("TABLE");
+	
+	// Create the header
+	var header = table.createTHead();
+	header.setAttribute("class","querycolheader");
+	var row = header.insertRow(0);
+	
+	for (var i=0; i<variables.length; i++){
+		var varname = variables[i];
+		var headerCell = row.insertCell(i);
+		headerCell.appendChild(document.createTextNode(varname));  
+	}
+	
+	// Create the table body
+	var body = document.createElement('tbody')
+	table.appendChild(body);
+	
+	return table;
+}
+
+// TODO: Show constraints, undefinedness
+function createSolutionRow(solution, row, variables) {
+	console.log('createSolutionsRow: ' + JSON.stringify(solution) + " " + variables);
+	
+	var bindings = solution.bindings;
+	for (var i=0; i<variables.length; i++){
+		var varname = variables[i];
+		
+		console.log("adding value for: " + varname + " from bindings: " + JSON.stringify(bindings));
+		
+    	var valcell = row.insertCell(i);
+    	var value = bindings[varname];
+    	valcell.appendChild(document.createTextNode(value));
+	}    
+}
+
+function showQueryResult() {
+	if (this.readyState == 4 && this.status == 200) {
+		console.log('showQueryResult: ' + xmlhttp.responseText);
+	  	var jsonres = JSON.parse(xmlhttp.responseText);
+	  	
+	  	var queryResultDiv = document.getElementById("queryResultPane");
+
+	  	// Remove the old query results
+	 	removeAllChildren(queryResultDiv); 	
+	  	
+	  	var queryStr = jsonres.query;
+	  	queryResultDiv.appendChild(createQueryInfoDiv("Query: ",queryStr));
+	  	
+	  	var solutions = jsonres.solutions;
+	  	queryResultDiv.appendChild(createQueryInfoDiv("Number of solutions: ",solutions.length));
+	  	
+	  	var status = jsonres.status;
+	  	queryResultDiv.appendChild(createQueryInfoDiv("Status: ",status));
+	  	
+	  	var variables = jsonres.variables;
+	  	
+	  	if (solutions.length > 0){
+	  		var table = createSolutionsTable(variables);
+  			var body = getFirstElementByTagName(table,'TBODY');
+	  		queryResultDiv.appendChild(document.createElement('br'));
+	  		queryResultDiv.appendChild(table);
+			for (var i=0; i<solutions.length; i++){
+	  			var row = body.insertRow(i);
+	  			var sol = solutions[i];
+	  			createSolutionRow(sol, row, variables);
+	  		}
+	  	}
+    } else if (this.readyState == 4) {
+      	// error case
+      	console.log("Error, code: " + this.status + " text: " + xmlhttp.responseText);
+    } else {
+      	// wait for the call to complete
+      	//console.log("Waiting...");  
+    }
+}
+
+function handleLoadFileDone() {
+	if (this.readyState == 4 && this.status == 200) {
+		console.log('handleLoadFileDone');
+		getTaxonomyRoots();
+    } else if (this.readyState == 4) {
+      	// error case
+      	console.log("Error, code: " + this.status + " text: " + xmlhttp.responseText);
+    } else {
+      	// wait for the call to complete
+      	//console.log("Waiting...");  
+    }
+}
+
+// --- Server call (controller) functions ---
+
+function loadFile(filename) {
+	console.log("Loading KB file: " + filename);
+	xmlhttp.onreadystatechange = handleLoadFileDone;	
+	xmlhttp.open("GET", "http://localhost:8080/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
+    xmlhttp.send();
+	console.log("Loading KB file done");
+}
+
+function getTaxonomyRoots() {
+	xmlhttp.onreadystatechange = showTaxonomy;	
+    xmlhttp.open("GET", "http://localhost:8080/flora/server?method=getTaxonomyRoots", true);
+    xmlhttp.send();
+}
+
+function getSubClasses(id) {
+	console.log('getSubclasses: ' + id);
+	xmlhttp.onreadystatechange = showSubClasses;	
+	xmlhttp.open("GET", "http://localhost:8080/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
+    xmlhttp.send();
+}
+
+function getDetails(id) {
+	console.log('getDetails: ' + id);
+	xmlhttp.onreadystatechange = showClassDetails;	
+	xmlhttp.open("GET", "http://localhost:8080/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
+    xmlhttp.send();
+}
+
+function query(qstring) {
+	console.log('query: ' + qstring);
+	xmlhttp.onreadystatechange = showQueryResult;	
+	xmlhttp.open("GET", "http://localhost:8080/flora/server?method=query&queryString=" + encodeURIComponent(qstring), true);
+    xmlhttp.send();
+}
+
+
+// --- Initialization ---
+
+// Global variable for the HTTP request object
+//var xmlhttp = getXmlHttp();
+var xmlhttp = createCORSRequest('GET', "http://localhost:8080/flora");
+if (!xmlhttp) {
+  throw new Error('CORS not supported');
+}
+
+// Load an initial KB file
+loadFile("m4_test.flr");
+
+</script>
+
+<style>
+body {
+  font-family: verdana;
+  font-size: 9pt;
+}
+.term {
+  font-family: monospace;
+}
+.simpleterm {
+  font-family: monospace;
+}
+.classprop {
+  font-family: monospace;
+}
+.indprop {
+  font-family: monospace;
+}
+.queryinfo {
+  font-family: monospace;
+}
+.termDetailsButton {
+  background: transparent;
+}
+.expandTermButton {
+  background: transparent;
+}
+.collapseTermButton {
+  background: transparent;
+}
+.detailslabel {
+  font-weight: bold;
+}
+.queryinfowrapper {
+  overflow: auto;
+}
+.queryinfolabel {
+  font-weight: bold;
+  float: left;
+}
+.queryinfostr {
+  font-family: monospace;
+}
+.querycolheader {
+  font-weight: bold;
+}
+.propcolheader {
+  font-weight: bold;
+}
+.container {
+  margin: 10pt;
+  border: 1pt solid black;
+  padding: 2pt;
+  //width: 100%;
+}
+#taxonomy {
+  font-family: monospace;
+}
+#superclasses {
+  font-family: monospace;
+}
+#classproperties {
+  font-family: monospace;
+}
+#types {
+  font-family: monospace;
+}
+#indproperties {
+  font-family: monospace;
+}
+#ontbrowser {
+    width: 100%;
+    border: 1px solid black;
+    overflow: auto; /* so the size of the wrapper is alway the size of the longest content */
+}
+#taxonomypane {
+    float: left;
+    width: 400px;
+}
+#classdetailspane {
+    margin: 0 0 0 450px; /* considering the border you need to use a margin so the content does not float under the first div*/
+    width: 600px;
+}
+#queryInputPane {
+    width: 100%;
+    border: 1px solid black;
+}
+#queryResultPane {
+    width: 100%;
+    border: 1px solid black;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<div id="ontbrowser">
+	<div id="taxonomypane">
+		<h2>Classes</h2>
+		<div class="container" id="taxonomy"></div>
+	</div>
+	<div id="classdetailspane">
+		<h2>Details</h2>
+		<div class="container">
+			<div class="detailslabel">Superclasses</div>
+			<div id="superclasses" class="container"></div>
+			<div class="detailslabel">Class Properties</div>
+			<div id="classproperties" class="container"></div>
+			<div class="detailslabel">Types</div>
+			<div id="types" class="container"></div>
+			<div class="detailslabel">Individual Properties</div>
+			<div id="indproperties" class="container"></div>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<h2>Query</h2>
+<textarea name="query" id="queryInputPane" rows="10"></textarea>
+<br>
+<input value="Submit query" 
+       type="button" 
+       onclick="query(document.getElementById('queryInputPane').value)" />
+
+<div id="result">
+</div>
+<h2>Query Result</h2><br>
+<div id="container">
+	<div id="queryResultPane"></div>
+</div>
+
+</body>
+</html> 
