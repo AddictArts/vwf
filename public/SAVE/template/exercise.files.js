@@ -187,6 +187,18 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);\n\
           handleContextMenu();\n\
         },\n\
+        Detach: function(name) {\n\
+          switch (name) {\n\
+          case 'Small_Sling_Swivel':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');\n\
+            break;\n\
+          case 'Swivel_LAMA1259863095':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSwivel');\n\
+            break;\n\
+          }\n\
+\n\
+          handleContextMenu();\n\
+        },\n\
         Inspect: function(name) {\n\
           switch (name) {\n\
           case 'Ejection_Port_Cover':\n\
@@ -475,6 +487,32 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               };\n\
               view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'SelectSwitchPosition'));\n\
               break;\n\
+            case 'Sling':\n\
+              contextMenu.Detach = function() {\n\
+                handleContextMenu();\n\
+                view.contextActive = true;\n\
+\n\
+                var options = {\n\
+                  Small_Sling_Swivel: function() { view.Detach('Small_Sling_Swivel'); },\n\
+                  Swivel_LAMA1259863095: function() { view.Detach('Swivel_LAMA1259863095'); }\n\
+                };\n\
+\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(options, 'Small_Sling_Swivel').name('Small Sling Swivel'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(options, 'Swivel_LAMA1259863095').name('Swivel LAMA1259863095'));\n\
+              }\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
+              break;\n\
+            case 'Small_Sling_Swivel':\n\
+            case 'Swivel_LAMA1259863095':\n\
+              contextMenu.Detach = function() {\n\
+                handleContextMenu();\n\
+                view.Detach(objectName);\n\
+              }\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
+              break;\n\
             case 'Trigger':\n\
               contextMenu.Pull = function() {\n\
                 handleContextMenu();\n\
@@ -529,6 +567,13 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
   </div>\n\
   <script type='text/javascript'>\n\
     $('#wrapper').appendTo('#vwf-root');\n\
+\n\
+\n\
+    if (__EUI) {\n\
+      $('#euiMsg .actionDesc').text('EUI Configured');\n\
+      $('#euiMsg .actionKey').text('baseServerAddress');\n\
+      $('#euiMsg .actionArgs').text(__EUI.baseServerAddress);\n\
+    }\n\
   </script>\n\
   <!--script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);var monkeyPatchTimer = setInterval(function() { console.info('Waiting to monkey patch the LR reloader...'); if (LiveReload) { LiveReload.reloader.reloadPage = function() { window.document.location.href = '../'; }; clearInterval(monkeyPatchTimer); }}, 100);</script-->\n\
 </body>\n\
@@ -587,9 +632,11 @@ scripts:\n\
 var M4_Carbine_dae_eui_yaml = "\# Copyright 2014, SRI International\n\
 --- \n\
 properties:\n\
+  __slingDetach: 0\n\
   actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]\n\
 methods:\n\
   setup:\n\
+  detach:\n\
   Point:\n\
   SelectSwitchPosition:\n\
   PushMagazineReleaseButton:\n\
@@ -601,6 +648,13 @@ methods:\n\
   InspectChamberGroup:\n\
   PushBoltCatchTop:\n\
   PullTrigger:\n\
+  DetachSmallSlingSwivel:\n\
+  DetachSwivel:\n\
+  PressHandguardSlipRing:\n\
+  DetachUpperHandguard:\n\
+  DetachLowerHandguard:\n\
+  PushTakedownPin:\n\
+  PullTakedownPin:\n\
 scripts:\n\
 - |\n\
   this.setup = function() {\n\
@@ -737,13 +791,108 @@ scripts:\n\
     console.info(this.id + ' Pull Trigger');\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 1 ].name != 'Trigger') {\n\
-        console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');\n\
-        return;\n\
+      console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');\n\
+      return;\n\
     }\n\
 \n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 15 ], 0.5);\n\
     this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ], names: [ 'Trigger' ] });\n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);\n\
+  };\n\
+\n\
+  this.detach = function(detached) {\n\
+    console.info(this.id + 'DetachSling 2 detach actions detaching:' + detached);\n\
+\n\
+    var detachSling = false;\n\
+\n\
+    switch (detached) {\n\
+    case 'Small_Sling_Swivel':\n\
+      if (this.__slingDetach == 2) detachSling = true;\n\
+      else this.__slingDetach = 1;\n\
+      break;\n\
+    case 'Swivel_LAMA1259863095':\n\
+      if (this.__slingDetach == 1) detachSling = true;\n\
+      else this.__slingDetach = 2;\n\
+      break;\n\
+    }\n\
+\n\
+    if (detachSling) {\n\
+      this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);\n\
+      this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);\n\
+\n\
+      if (this.children[ 'Buttstock Group' ].children[ 1 ].name != 'Swivel_LAMA1259863095') {\n\
+          console.warn(this.id + ' Buttstock Group child 1 is not the Swivel_LAMA1259863095');\n\
+          return;\n\
+      }\n\
+\n\
+      this.children[ 'Buttstock Group' ].children[ 1 ].translateTo([ 0, 0.2, 0 ], 0.5);\n\
+    }\n\
+  };\n\
+\n\
+  this.DetachSmallSlingSwivel = function() {\n\
+    console.info(this.id + ' Detach SmallSlingSwivel');\n\
+\n\
+    this.detach('Small_Sling_Swivel');\n\
+    // arguments: detached from, thing detached\n\
+    this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ], names: [ 'Small_Sling_Swivel' ] });\n\
+  };\n\
+\n\
+  this.DetachSwivel = function() {\n\
+    console.info(this.id + ' Detach Swivel');\n\
+\n\
+    this.detach('Swivel_LAMA1259863095');\n\
+    // arguments: detached from, thing detached\n\
+    this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ], names: [ 'Swivel_LAMA1259863095' ] });\n\
+  };\n\
+\n\
+  this.PressHandguardSlipRing = function() {\n\
+    console.info(this.id + ' Press HandguardSlipRing');\n\
+\n\
+    this.Handguard_Slip_Ring_LAMA918813252.translateTo([ -0.0034912, 0, 0 ], 0.125);\n\
+    // arguments: thingPressed\n\
+    this.activity({ action: 'Press', arguments: [ this.Handguard_Slip_Ring_LAMA918813252_KbId ], names: [ 'Handguard_Slip_Ring_LAMA918813252' ] });\n\
+  };\n\
+\n\
+  this.DetachUpperHandguard = function() {\n\
+    console.info(this.id + ' Detach UpperHandguard');\n\
+\n\
+    this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);\n\
+    // arguments: detached from, thing detached\n\
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_dae_KbId, this.Upper_Handguard_KbId ], names: [ 'Upper_Handguard' ] });\n\
+  };\n\
+\n\
+  this.DetachLowerHandguard = function() {\n\
+    console.info(this.id + ' Detach LowerHandguard');\n\
+\n\
+    this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);\n\
+    // arguments: detached from, thing detached\n\
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_dae_KbId, this.Lower_Handguard_KbId ], names: [ 'Lower_Handguard' ] });\n\
+  };\n\
+\n\
+  this.PushTakedownPin = function() {\n\
+    console.info(this.id + ' Push TakedownPin');\n\
+\n\
+    if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {\n\
+        console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');\n\
+        return;\n\
+    }\n\
+\n\
+    this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.003344 ], 0.5);\n\
+    // arguments: thingPushed\n\
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ], names: [ 'Takedown_Pin' ] });\n\
+  };\n\
+\n\
+  this.PullTakedownPin = function() {\n\
+    console.info(this.id + ' Pull TakedownPin');\n\
+\n\
+    if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {\n\
+        console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');\n\
+        return;\n\
+    }\n\
+\n\
+    this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.018927 ], 0.5);\n\
+    // arguments: thingPulled\n\
+    this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });\n\
   };\n\
   //# sourceURL=M4_Carbine_dae.eui\n\
 ";
