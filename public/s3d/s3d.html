@@ -82,9 +82,9 @@
     .footer-left { float: left; width: 50%; }
     .footer-right { float: right; width: 50%; }
   </style>
-  <link rel="stylesheet" href="http://static.jstree.com/3.0.1/assets/dist/themes/default/style.min.css" />
-  <script src="http://static.jstree.com/3.0.1/assets/jquery-1.10.2.min.js"></script>
-  <script src="http://static.jstree.com/3.0.1/assets/dist/jstree.min.js"></script>
+  <link rel="stylesheet" href="localhost:3000/js/themes/default/style.min.css" />
+  <script src="http://localhost:3000/js/jquery-1.10.2.min.js"></script>
+  <script src="http://localhost:3000/js/jstree.min.js"></script>
 </head>
 <body>
   <div id="mainContainer">
@@ -195,7 +195,8 @@
   }
 
   function handleLoadFileDone() {
-    if (this.readyState == 4 && this.status == 200) {
+    // if (this.readyState == 4 && this.status == 200) {
+    if (this.status == 404) {
       console.log('handleLoadFileDone()');
       getTaxonomyRoots();
     } else if (this.readyState == 4) {
@@ -219,9 +220,16 @@
   function showTaxonomy() {
     console.log("Start Show Taxonomy:- readyState: " + this.readyState +" status: " + this.status);
 
-    if (this.readyState == 4 && this.status == 200) {
+    // if (this.readyState == 4 && this.status == 200) {
+    if (this.status == 404) {
       //    console.log('showTaxonomy');
       var jsontax = xmlhttp.responseText;
+
+
+jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]';
+
+
+
       console.log('taxonomy: ' + jsontax);
       var taxdiv = document.getElementById("taxonomy");
       var tax = JSON.parse(jsontax);
@@ -232,7 +240,7 @@
       rootNode.appendChild(elementList);
       classList.appendChild(rootNode);
               
-      for (var i=0; i<tax.length; i++) {
+      for (var i = 0; i < tax.length; i++) {
         elementList.appendChild(createListItem(tax[ i ]));
       }
 
@@ -289,14 +297,17 @@
   function loadFile(filename) {
     console.log("Loading KB file: " + filename);
     xmlhttp.onreadystatechange = handleLoadFileDone;
-    xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
+    // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
+    xmlhttp.open("GET", "http://" + hostName + ":3000/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
     xmlhttp.send();
     console.log("Loading KB file done");
   }
 
+  // ["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]
   function getTaxonomyRoots() {
     xmlhttp.onreadystatechange = showTaxonomy;
-    xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getTaxonomyRoots", true);
+    // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getTaxonomyRoots", true);
+    xmlhttp.open("GET", "http://" + hostName + ":3000/flora/server?method=getTaxonomyRoots", true);
     xmlhttp.send();
   }
 
@@ -884,7 +895,7 @@
 
   $('#modelHierarchy').on('changed.jstree', function(e, data2) {
     var i, j, r = [ ];
-  
+
     for (i = 0, j = data2.selected.length; i < j; i++) {
       r.push(data2.instance.get_node(data2.selected[ i ]).text);
     }
@@ -918,7 +929,7 @@
       floraClass = data2.selected[ 0 ];
       console.log("Is Leaf: " + leafNode);
 
-      if(leafNode == true) {
+      if (leafNode == true) {
         getSubClasses(r.join(', '));
       }
     }
