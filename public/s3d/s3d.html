@@ -82,7 +82,7 @@
     .footer-left { float: left; width: 50%; }
     .footer-right { float: right; width: 50%; }
   </style>
-  <link rel="stylesheet" href="localhost:3000/js/themes/default/style.min.css" />
+  <link rel="stylesheet" href="http://localhost:3000/js/themes/default/style.min.css" />
   <script src="http://localhost:3000/js/jquery-1.10.2.min.js"></script>
   <script src="http://localhost:3000/js/jstree.min.js"></script>
 </head>
@@ -195,8 +195,7 @@
   }
 
   function handleLoadFileDone() {
-    // if (this.readyState == 4 && this.status == 200) {
-    if (this.status == 404) {
+    if (this.readyState == 4 && this.status == 200) {
       console.log('handleLoadFileDone()');
       getTaxonomyRoots();
     } else if (this.readyState == 4) {
@@ -204,7 +203,7 @@
       console.log("Handle load file:- Error, code: " + this.status + " text: " + xmlhttp.responseText);
     } else {
       // wait for the call to complete
-      //console.log("Waiting...");
+      console.log("Waiting...");
     }
   }
 
@@ -220,14 +219,12 @@
   function showTaxonomy() {
     console.log("Start Show Taxonomy:- readyState: " + this.readyState +" status: " + this.status);
 
-    // if (this.readyState == 4 && this.status == 200) {
-    if (this.status == 404) {
+    if (this.readyState == 4 && this.status == 200) {
       //    console.log('showTaxonomy');
       var jsontax = xmlhttp.responseText;
 
 
 jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]';
-
 
 
       console.log('taxonomy: ' + jsontax);
@@ -298,7 +295,7 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     console.log("Loading KB file: " + filename);
     xmlhttp.onreadystatechange = handleLoadFileDone;
     // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
-    xmlhttp.open("GET", "http://" + hostName + ":3000/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
+    xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
     xmlhttp.send();
     console.log("Loading KB file done");
   }
@@ -307,8 +304,9 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
   function getTaxonomyRoots() {
     xmlhttp.onreadystatechange = showTaxonomy;
     // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getTaxonomyRoots", true);
-    xmlhttp.open("GET", "http://" + hostName + ":3000/flora/server?method=getTaxonomyRoots", true);
+    xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getTaxonomyRoots", true);
     xmlhttp.send();
+    console.log("Loading roots done");
   }
 
   function getSubClasses(id) {
@@ -543,22 +541,23 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     selectedNodes = $('#modelHierarchy').jstree('get_selected');
     console.log("Currently selected item count in Model Hierarchy tree:" + selectedNodes.length);
 
-    if(selectedClasses.length == 0) {
+    if (selectedClasses.length == 0) {
       alert("Error! You need to select a class in the Flora taxonomy.");
       return;
     }
-    if(selectedNodes.length == 0) {
+    if (selectedNodes.length == 0) {
       alert("Error! You need to select a node in the 3D model hierarchy.");
       return;
     }
-    if(selectedClasses.length > 1) {
+    if (selectedClasses.length > 1) {
       alert("Error! You can not link more than one class to a node at once.");
       return;
     }
-    if(selectedNodes.length > 1) {
+    if (selectedNodes.length > 1) {
       alert("Error! You can not link more than one node to a class at once");
       return;
     }
+
     createAndAddLink();
   }
 
@@ -570,32 +569,31 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     selectedNodes = $('#modelHierarchy').jstree('get_selected');
     console.log("Currently selected item count in Model Hierarchy tree:" + selectedNodes.length);
 
-    if(selectedClasses.length == 0) {
+    if (selectedClasses.length == 0) {
       alert("Error! You need to select a class in the Flora taxonomy.");
       return;
     }
-    if(selectedNodes.length == 0) {
+    if (selectedNodes.length == 0) {
       alert("Error! You need to select a node in the 3D model hierarchy.");
       return;
     }
-    if(selectedClasses.length > 1) {
+    if (selectedClasses.length > 1) {
       alert("Error! You can not link more than one class to a node at once.");
       return;
     }
-    if(selectedNodes.length > 1) {
+    if (selectedNodes.length > 1) {
       alert("Error! You can not link more than one node to a class at once");
       return;
     }
+
     var found = false;
-    for(var i = 0; i < linkCollection.length; i++) {
+    for (var i = 0; i < linkCollection.length; i++) {
       console.log("Scanning: Flora Class - " + linkCollection[i].floraClass + " Model Node - " + linkCollection[i].modelNode );
 
-      if((currentClass == linkCollection[i].floraClass) && (currentNode == linkCollection[i].modelNode))
-      {
+      if ((currentClass == linkCollection[ i ].floraClass) && (currentNode == linkCollection[ i ].modelNode)) {
         console.log("Found link to remove at index: " + i);
-        linkCollection.splice(i,1);
-
-        table.deleteRow(i+1);
+        linkCollection.splice(i, 1);
+        table.deleteRow(i + 1);
       }
     }
   }
@@ -922,7 +920,7 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     console.log("on Selection():" + JSON.stringify(selectedClasses));
     currentClass = r.join(', ');
 
-    if(data2.selected.length == 1) {
+    if (data2.selected.length == 1) {
       //  console.log("Only one item selected!");        //One item selected so expand subclasses
       //  addSubclassesToTree();   //Expand Subclasses
       var leafNode = $('#taxonomy').jstree('is_leaf', data2.selected[ 0 ]);

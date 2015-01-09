@@ -127,6 +127,13 @@ routes.put(routes.PUTANY, function(req, res) {
     res.send(data, 200, PLAINt);
 });
 
+routes.get('/flora/server', function(req, res) { /* /PutExercise/generateSolution */
+    log('...handling route GET ' + req.reqPath);
+    routes.puteInstructorMode = false;
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send('', 200, PLAINt);
+});
+
 routes.get('/PutExercise/generateSolution', function(req, res) { /* /PutExercise/generateSolution */
     log('...handling route GET ' + req.reqPath);
     routes.puteInstructorMode = false;
