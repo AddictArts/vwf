@@ -294,6 +294,7 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
   function loadFile(filename) {
     console.log("Loading KB file: " + filename);
     xmlhttp.onreadystatechange = handleLoadFileDone;
+    // http://www.semantic3d.com:8080/flora/server?method=loadFile&filename=m4.flr
     // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
     xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
     xmlhttp.send();
@@ -303,23 +304,33 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
   // ["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]
   function getTaxonomyRoots() {
     xmlhttp.onreadystatechange = showTaxonomy;
+    // http://www.semantic3d.com:8080/flora/server?method=getTaxonomyRoots
     // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getTaxonomyRoots", true);
     xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getTaxonomyRoots", true);
     xmlhttp.send();
     console.log("Loading roots done");
   }
 
+  // ChargingHandlePosition => {"superclass":"ChargingHandlePosition","subclasses":[]}
+  // Action => {"superclass":"Action","subclasses":["Pull","PullAndHold","Attach","TightenScrew","Extract","Point","Insert","Lift","Open","Inspect","PushAndHold","Close","Push","Detach","SelectSwitchPosition","Release","Press","LoosenScrew"]}
+  // PhysicalEntity => {"superclass":"PhysicalEntity","subclasses":["SafeTarget","Region","PhysicalObject"]}
+  // PhysicalObject => {"superclass":"PhysicalObject","subclasses":["FiringPin","Hammer","CleaningRodTip","ShootingTarget","M4","Sling","FiringPinRetainingPin","Brush","CleaningRodHandle","LowerHalf","ChargingHandle","SlipRing","LowerReceiverExtension","Trigger","CleaningRodSegment","SlingSwivel","Round","ButtStockLockLever","Extractor","Buffer","PipeCleaner","WipeCloth","CarryHandle","BoltCarrierGroup","BufferRetainer","MagazineReleaseButton","Bolt","SlingLoop","Casing","UpperHalf","CleaningRod","Liquid","Switch","UpperHandGuard","Pin","Screw","BoltCam","ButtStock","LowerHandGuard","CleaningPatch","BoltCatch","Magazine"]}
   function getSubClasses(id) {
     console.log('getSubclasses: ' + id);
     xmlhttp.onreadystatechange = addSubclassesToTree;
-    xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
+    // http://www.semantic3d.com:8080/flora/server?method=getSubClasses&id=ChargingHandlePosition
+    // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
+    xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
     xmlhttp.send();
   }
 
+  // ChargingHandlePosition => {"id":"ChargingHandlePosition","superclasses":[],"classproperties":[],"types":[],"individualproperties":[]}
   function getDetails(id) {
     console.log('getDetails: ' + id);
     xmlhttp.onreadystatechange = showClassDetails;
-    xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
+    // http://www.semantic3d.com:8080/flora/server?method=getClassDetails&id=ChargingHandlePosition
+    // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
+    xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
     xmlhttp.send();
   }
 
@@ -334,8 +345,33 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     getDetails(currentClass);
   }
 
+  function addSubclassesToTree() {
+    var leafNode = $('#taxonomy').jstree('is_leaf', floraClass);
+    console.log("Selected Node is a leaf: " + leafNode);
+
+    if (leafNode != true) return;
+
+    var jsontax = xmlhttp.responseText;
+
+jsontax = '{"superclass":"ChargingHandlePosition","subclasses":[]}';
+
+    if (jsontax) {
+      var tax = JSON.parse(jsontax);
+      console.log('Subclasses to add: ' + jsontax);
+      var parent = $('#taxonomy').jstree('get_selected');
+      console.log("SUPER CLass: " + tax["superclass"]);
+
+      for(index=0; index < tax.subclasses.length; index++) {
+        console.log("   Adding subclass: " + tax.subclasses[index]);
+        $("#taxonomy").jstree("create_node", parent, tax.subclasses[index], "last", null, null);
+      }
+    }
+  }
+
   function showClassDetails() {
     var jsontax = xmlhttp.responseText;
+
+jsontax = '{"id":"ChargingHandlePosition","superclasses":[],"classproperties":[],"types":[],"individualproperties":[]}';
 
     if (jsontax) {
       var tax = JSON.parse(jsontax);
@@ -386,27 +422,6 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     cell.appendChild(val);
     tableRow.appendChild(cell);
     classTableBody.appendChild(tableRow);
-  }
-
-  function addSubclassesToTree() {
-    var leafNode = $('#taxonomy').jstree('is_leaf', floraClass);
-    console.log("Selected Node is a leaf: " + leafNode);
-
-    if (leafNode != true) return;
-
-    var jsontax = xmlhttp.responseText;
-
-    if (jsontax) {
-      var tax = JSON.parse(jsontax);
-      console.log('Subclasses to add: ' + jsontax);
-      var parent = $('#taxonomy').jstree('get_selected');
-      console.log("SUPER CLass: " + tax["superclass"]);
-
-      for(index=0; index < tax.subclasses.length; index++) {
-        console.log("   Adding subclass: " + tax.subclasses[index]);
-        $("#taxonomy").jstree("create_node", parent, tax.subclasses[index], "last", null, null);
-      }
-    }
   }
 
   function loadLinkTable() {
@@ -693,33 +708,32 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     'core' : {
       'data' : [
         { "id" : "M4 Carbine",                          "parent" : "#",           "text" : "M4 Carbine" },
-        { "id" : "parts",                               "parent" : "M4 Carbine",  "text" : "parts" },
-        { "id" : "Sling",                               "parent" : "parts",       "text" : "Sling" },
-        { "id" : "Barrel_Assembly",                     "parent" : "parts",       "text" : "Barrel_Assembly" },
-        { "id" : "Upper_Handguard",                     "parent" : "parts",       "text" : "Upper_Handguard" },
-        { "id" : "Lower_Handguard",                     "parent" : "parts",       "text" : "Lower_Handguard" },
-        { "id" : "Small_Sling_Swivel",                  "parent" : "parts",       "text" : "Small_Sling_Swivel" },
-        { "id" : "Compensator",                         "parent" : "parts",       "text" : "Compensator" },
-        { "id" : "Recessed_Washer__OOCompensator",      "parent" : "parts",       "text" : "Recessed_Washer__OOCompensator" },
-        { "id" : "Spring_Pin2",                         "parent" : "parts",       "text" : "Spring_Pin2" },
-        { "id" : "Spring_Pin3",                         "parent" : "parts",       "text" : "Spring_Pin3" },
-        { "id" : "Rear_Handguard_Clamp",                "parent" : "parts",       "text" : "Rear_Handguard_Clamp" },
-        { "id" : "Screw",                               "parent" : "parts",       "text" : "Screw" },
-        { "id" : "Gas_Tube_Spring_Pin",                 "parent" : "parts",       "text" : "Gas_Tube_Spring_Pin" },
-        { "id" : "Gas_Tube",                            "parent" : "parts",       "text" : "Gas_Tube" },
-        { "id" : "Handguard_Slip_Ring_Spring",          "parent" : "parts",       "text" : "Handguard_Slip_Ring_Spring" },
-        { "id" : "Handguard_Slip_Ring_Retaining_Ring",  "parent" : "parts",       "text" : "Handguard_Slip_Ring_Retaining_Ring" },
-        { "id" : "Handguard_Slip_Ring_LAMA918813252",   "parent" : "parts",       "text" : "Handguard_Slip_Ring_LAMA918813252" },
-        { "id" : "Front_Sight_Post",                    "parent" : "parts",       "text" : "Front_Sight_Post" },
-        { "id" : "Headless_Shoulder_Pin",               "parent" : "parts",       "text" : "Headless_Shoulder_Pin" },
-        { "id" : "Spring3",                             "parent" : "parts",       "text" : "Spring3" },
-        { "id" : "Tubular_Rivet",                       "parent" : "parts",       "text" : "Tubular_Rivet" },
-        { "id" : "Synchro_Clamp",                       "parent" : "parts",       "text" : "Synchro_Clamp" },
-        { "id" : "Spring_Pin1",                         "parent" : "parts",       "text" : "Spring_Pin1" },
-        { "id" : "Spring_Pin",                          "parent" : "parts",       "text" : "Spring_Pin" },
-        { "id" : "Swivel_Mount",                        "parent" : "parts",       "text" : "Swivel_Mount" },
-        { "id" : "Flat_Spring",                         "parent" : "parts",       "text" : "Flat_Spring" },
-        { "id" : "Special_Shaped_Spacer",               "parent" : "parts",       "text" : "Special_Shaped_Spacer" },
+        { "id" : "Sling",                               "parent" : "M4 Carbine",       "text" : "Sling" },
+        { "id" : "Barrel_Assembly",                     "parent" : "M4 Carbine",       "text" : "Barrel_Assembly" },
+        { "id" : "Upper_Handguard",                     "parent" : "M4 Carbine",       "text" : "Upper_Handguard" },
+        { "id" : "Lower_Handguard",                     "parent" : "M4 Carbine",       "text" : "Lower_Handguard" },
+        { "id" : "Small_Sling_Swivel",                  "parent" : "M4 Carbine",       "text" : "Small_Sling_Swivel" },
+        { "id" : "Compensator",                         "parent" : "M4 Carbine",       "text" : "Compensator" },
+        { "id" : "Recessed_Washer__OOCompensator",      "parent" : "M4 Carbine",       "text" : "Recessed_Washer__OOCompensator" },
+        { "id" : "Spring_Pin2",                         "parent" : "M4 Carbine",       "text" : "Spring_Pin2" },
+        { "id" : "Spring_Pin3",                         "parent" : "M4 Carbine",       "text" : "Spring_Pin3" },
+        { "id" : "Rear_Handguard_Clamp",                "parent" : "M4 Carbine",       "text" : "Rear_Handguard_Clamp" },
+        { "id" : "Screw",                               "parent" : "M4 Carbine",       "text" : "Screw" },
+        { "id" : "Gas_Tube_Spring_Pin",                 "parent" : "M4 Carbine",       "text" : "Gas_Tube_Spring_Pin" },
+        { "id" : "Gas_Tube",                            "parent" : "M4 Carbine",       "text" : "Gas_Tube" },
+        { "id" : "Handguard_Slip_Ring_Spring",          "parent" : "M4 Carbine",       "text" : "Handguard_Slip_Ring_Spring" },
+        { "id" : "Handguard_Slip_Ring_Retaining_Ring",  "parent" : "M4 Carbine",       "text" : "Handguard_Slip_Ring_Retaining_Ring" },
+        { "id" : "Handguard_Slip_Ring_LAMA918813252",   "parent" : "M4 Carbine",       "text" : "Handguard_Slip_Ring_LAMA918813252" },
+        { "id" : "Front_Sight_Post",                    "parent" : "M4 Carbine",       "text" : "Front_Sight_Post" },
+        { "id" : "Headless_Shoulder_Pin",               "parent" : "M4 Carbine",       "text" : "Headless_Shoulder_Pin" },
+        { "id" : "Spring3",                             "parent" : "M4 Carbine",       "text" : "Spring3" },
+        { "id" : "Tubular_Rivet",                       "parent" : "M4 Carbine",       "text" : "Tubular_Rivet" },
+        { "id" : "Synchro_Clamp",                       "parent" : "M4 Carbine",       "text" : "Synchro_Clamp" },
+        { "id" : "Spring_Pin1",                         "parent" : "M4 Carbine",       "text" : "Spring_Pin1" },
+        { "id" : "Spring_Pin",                          "parent" : "M4 Carbine",       "text" : "Spring_Pin" },
+        { "id" : "Swivel_Mount",                        "parent" : "M4 Carbine",       "text" : "Swivel_Mount" },
+        { "id" : "Flat_Spring",                         "parent" : "M4 Carbine",       "text" : "Flat_Spring" },
+        { "id" : "Special_Shaped_Spacer",               "parent" : "M4 Carbine",       "text" : "Special_Shaped_Spacer" },
         // Buttstock Group 0
         { "id" : "Buttstock Group",                               "parent" : "M4 Carbine",      "text" : "Buttstock Group" },
         { "id" : "Buttstock",                                     "parent" : "Buttstock Group", "text" : "Buttstock" },
@@ -903,9 +917,6 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
     selectedNodes = r;
   });
 
-  // Load an initial KB file
-  loadFile("m4.flr");
-
   $('#taxonomy').on('changed.jstree', function(e, data2) {
     var i, j, r = [ ];
     selectedClasses = [ ]; //Reset the selected classes
@@ -932,6 +943,9 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
       }
     }
   });
+
+  // Load an initial KB file
+  loadFile("m4.flr");
 
   //--------------Load Table-----------------------------
   loadLinkTable();
