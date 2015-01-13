@@ -5,7 +5,7 @@
 var sax = require("sax"),
     strict = true, // set to false for html-mode
     parser = sax.parser(strict),
-    groupingObj,
+    groupingObj = { },
     currentObj,
     parseOnEnd = function(data) { ex.groupingObj = data },
     ex = {
@@ -51,3 +51,25 @@ parser.onend = function() { // parser stream is done, and ready to have more stu
 
 console.log(parser);
 console.log(this);
+
+var xml = '<grouping name="M4 Carbine">\
+    <part node="Bling"/>\
+    <group name="Empty"/>\
+    <group node="M4" name="M4 Group">\
+        <group name="B Group">\
+            <part node="A"/>\
+            <part node="B"/>\
+            <group name="B_N Group">\
+                <part node="B_N"/>\
+            </group>\
+        </group>\
+        <group name="Mag Group">\
+            <part node="C1"/>\
+        </group>\
+        <part node="Sling"/>\
+    </group>\
+</grouping>';
+
+parser.write(xml).close(); // xml => groupingObj
+
+console.log(groupingObj);
