@@ -248,7 +248,7 @@ scripts:
 
     this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.003344 ], 0.5);
     // arguments: thingPushed
-    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ], names: [ 'Takedown_Pin' ] });
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });
   };
 
   this.PullTakedownPin = function() {
