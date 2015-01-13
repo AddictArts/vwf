@@ -182,6 +182,18 @@
           vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);
           handleContextMenu();
         },
+        Detach: function(name) {
+          switch (name) {
+          case 'Small_Sling_Swivel':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');
+            break;
+          case 'Swivel_LAMA1259863095':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSwivel');
+            break;
+          }
+
+          handleContextMenu();
+        },
         Inspect: function(name) {
           switch (name) {
           case 'Ejection_Port_Cover':
@@ -470,6 +482,32 @@
               };
               view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'SelectSwitchPosition'));
               break;
+            case 'Sling':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.contextActive = true;
+
+                var options = {
+                  Small_Sling_Swivel: function() { view.Detach('Small_Sling_Swivel'); },
+                  Swivel_LAMA1259863095: function() { view.Detach('Swivel_LAMA1259863095'); }
+                };
+
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+                view.guiref.ctx.push(view.contextGUI.add(options, 'Small_Sling_Swivel').name('Small Sling Swivel'));
+                view.guiref.ctx.push(view.contextGUI.add(options, 'Swivel_LAMA1259863095').name('Swivel LAMA1259863095'));
+              }
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
+            case 'Small_Sling_Swivel':
+            case 'Swivel_LAMA1259863095':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach(objectName);
+              }
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
             case 'Trigger':
               contextMenu.Pull = function() {
                 handleContextMenu();
@@ -524,6 +562,12 @@
   </div>
   <script type='text/javascript'>
     $('#wrapper').appendTo('#vwf-root');
+
+    if (__EUI) {
+      $('#euiMsg .actionDesc').text('EUI Configured');
+      $('#euiMsg .actionKey').text('baseServerAddress');
+      $('#euiMsg .actionArgs').text(__EUI.baseServerAddress);
+    }
   </script>
   <!--script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);var monkeyPatchTimer = setInterval(function() { console.info('Waiting to monkey patch the LR reloader...'); if (LiveReload) { LiveReload.reloader.reloadPage = function() { window.document.location.href = '../'; }; clearInterval(monkeyPatchTimer); }}, 100);</script-->
 </body>
