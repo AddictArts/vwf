@@ -8,7 +8,10 @@ var sax = require("sax"),
     groupingObj,
     currentObj,
     parseOnEnd = function(data) { ex.groupingObj = data },
-    ex = { groupingObj: undefined };
+    ex = {
+        parser: parser,
+        groupingObj: undefined
+    };
 
 parser.onerror = function(e) { /* an error happened. */ };
 parser.ontext = function(t) { /* got some text.  t is the string of text. */ };
@@ -44,4 +47,7 @@ parser.onend = function() { // parser stream is done, and ready to have more stu
     parseOnEnd(groupingObj);
 };
 
-module.exports = ex;
+//module.exports = ex;
+
+console.log(parser);
+console.log(this);
