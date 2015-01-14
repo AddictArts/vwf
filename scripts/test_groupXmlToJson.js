@@ -1,6 +1,6 @@
 // Copyright 2014, SRI International
 
-var groupXmlToJson = require('./groupXmlToJson');
+var g2js = require('./groupXmlToJson')({});
 
 var xml = '<grouping name="M4 Carbine">\
     <part node="Bling"/>\
@@ -20,8 +20,6 @@ var xml = '<grouping name="M4 Carbine">\
     </group>\
 </grouping>';
 
-var group2js = groupXmlToJson();
-
-var groupingObj = group2js.grouping2js(xml);
+var groupingObj = g2js.grouping2js(xml);
 
 console.log(groupingObj);
