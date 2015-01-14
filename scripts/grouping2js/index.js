@@ -2,15 +2,15 @@
 
 'use strict';
 
-var g2js = require('./lib/grouping2js')({ }),
+var g2js = require('./lib/grouping2js')({ strict: true }),
     pretty = require('js-object-pretty-print').pretty;
 
-var grouping2html = function(xml) {
-    var groupingObj = g2js.grouping2js(xml),
+var grouping2html = function(sourceXml) {
+    var groupingObj = g2js.grouping2js(sourceXml),
         text = pretty(groupingObj),
         html;
 
-    html =text.replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
+    html = text.replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
     return { html: html, text: text };
 };
 
@@ -20,6 +20,10 @@ module.exports = {
     parser: g2js.parser,
     pretty: pretty
 };
+
+try {
+    window.G2JS = module.exports;
+} catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
 
 var xml = '<grouping name="M4 Carbine">\
     <part node="Bling"/>\
@@ -37,12 +41,13 @@ var xml = '<grouping name="M4 Carbine">\
         </group>\
         <part node="Sling"/>\
     </group>\
-    </grouping>';
+    </grouping>',
+    o = grouping2html(xml);
 
-console.log(grouping2html(xml).text);
+console.log(o.text);
 
 try {
     window.addEventListener('load', function() {
-        window.document.body.innerHTML = grouping2html(xml).html;
+        window.document.body.innerHTML = o.html;
     });
 } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server

@@ -12,7 +12,7 @@ function grouping2js(options) {
         onattribute = options.onattribute || function(attr) { /* an attribute.  attr has "name" and "value" */ },
         onend = options.onend || function() { /* parser stream is done, and ready to have more stuff written to it. */ },
         parser = sax.parser(strict),
-        groupingObj = { },
+        groupingObj,
         currentObj;
 
     parser.onerror = onerror;
@@ -52,6 +52,7 @@ function grouping2js(options) {
 
     return {
         grouping2js: function(xml) {
+            groupingObj = { };
             parser.write(xml).close();
             return groupingObj;
         },
