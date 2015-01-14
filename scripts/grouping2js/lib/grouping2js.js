@@ -60,25 +60,3 @@ function grouping2js(options) {
 };
 
 module.exports = grouping2js;
-
-// var xml = '<grouping name="M4 Carbine">\
-//     <part node="Bling"/>\
-//     <group name="Empty"/>\
-//     <group node="M4" name="M4 Group">\
-//         <group name="B Group">\
-//             <part node="A"/>\
-//             <part node="B"/>\
-//             <group name="B_N Group">\
-//                 <part node="B_N"/>\
-//             </group>\
-//         </group>\
-//         <group name="Mag Group">\
-//             <part node="C1"/>\
-//         </group>\
-//         <part node="Sling"/>\
-//     </group>\
-// </grouping>';
-
-// parser.write(xml).close(); // xml => groupingObj
-
-// console.log(groupingObj);
