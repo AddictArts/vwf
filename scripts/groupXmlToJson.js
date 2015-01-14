@@ -6,15 +6,11 @@ var sax = require("sax"),
     strict = true, // set to false for html-mode
     parser = sax.parser(strict),
     groupingObj = { },
-    currentObj,
-    parseOnEnd = function(data) { ex.groupingObj = data },
-    ex = {
-        parser: parser,
-        groupingObj: undefined
-    };
+    currentObj;
 
 parser.onerror = function(e) { /* an error happened. */ };
 parser.ontext = function(t) { /* got some text.  t is the string of text. */ };
+
 parser.onclosetag = function(name) { // closing a tag.  name is the name from onopentag node.name
     if (name == 'group') {
         var p = currentObj.parent;
@@ -22,6 +18,7 @@ parser.onclosetag = function(name) { // closing a tag.  name is the name from on
         currentObj = p;
     }
 };
+
 parser.onopentag = function(node) { // opened a tag.  node has "name" and "attributes", isSelfClosing
     switch (node.name) {
     case 'grouping':
@@ -42,15 +39,26 @@ parser.onopentag = function(node) { // opened a tag.  node has "name" and "attri
         break;
     }
 };
+
 parser.onattribute = function(attr) { /* an attribute.  attr has "name" and "value" */ };
-parser.onend = function() { // parser stream is done, and ready to have more stuff written to it.
-    parseOnEnd(groupingObj);
+parser.onend = function() { /* parser stream is done, and ready to have more stuff written to it. */ };
+
+module.exports = function(options) {
+    var options = options || { },
+        strict = options.strict || true,
+        onerror,
+        ontext,
+        onattribute,
+        onend;
+
+    return {
+        grouping2js: function(xml) {
+            parser.write(xml).close();
+            return groupingObj;
+        },
+        parser: parser
+    };
 };
-
-//module.exports = ex;
-
-console.log(parser);
-console.log(this);
 
 var xml = '<grouping name="M4 Carbine">\
     <part node="Bling"/>\
