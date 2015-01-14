@@ -1,0 +1,18 @@
+{
+  "name": "grouping2js",
+  "version": "1.0.0",
+  "description": "Transforms the xml grouping in an s3d file into a JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Copyright 2014, SRI International",
+  "dependencies": {
+    "js-object-pretty-print": "^0.1.3",
+    "sax": "^0.6.1"
+  },
+  "devDependencies": {
+    "browserify": "^8.1.0"
+  }
+}
