@@ -26,32 +26,32 @@ try {
     window.G2JS = module.exports;
 } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
 
-var xml = '<grouping name="M4 Carbine">\
-    <part node="Bling"/>\
-    <group name="Empty"/>\
-    <group node="M4" name="M4 Group">\
-        <group name="B Group">\
-            <part node="A"/>\
-            <part node="B"/>\
-            <group name="B_N Group">\
-                <part node="B_N"/>\
-            </group>\
-        </group>\
-        <group name="Mag Group">\
-            <part node="C1"/>\
-        </group>\
-        <part node="Sling"/>\
-    </group>\
-    </grouping>',
-    o = grouping2html(xml);
+// var xml = '<grouping name="M4 Carbine">\
+//     <part node="Bling"/>\
+//     <group name="Empty"/>\
+//     <group node="M4" name="M4 Group">\
+//         <group name="B Group">\
+//             <part node="A"/>\
+//             <part node="B"/>\
+//             <group name="B_N Group">\
+//                 <part node="B_N"/>\
+//             </group>\
+//         </group>\
+//         <group name="Mag Group">\
+//             <part node="C1"/>\
+//         </group>\
+//         <part node="Sling"/>\
+//     </group>\
+//     </grouping>',
+//     o = grouping2html(xml);
 
-console.log(o.text);
+// console.log(o.text);
 
-try {
-    window.addEventListener('load', function() {
-        window.document.body.innerHTML = o.html;
-    });
-} catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
+// try {
+//     window.addEventListener('load', function() {
+//         window.document.body.innerHTML = o.html;
+//     });
+// } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
 
 },{"./lib/grouping2js":"/Users/admin/box/SAVE/vwf/scripts/grouping2js/lib/grouping2js.js","js-object-pretty-print":"/Users/admin/box/SAVE/vwf/scripts/grouping2js/node_modules/js-object-pretty-print/index.js"}],"/Users/admin/box/SAVE/vwf/scripts/grouping2js/lib/grouping2js.js":[function(require,module,exports){
 // Copyright 2014, SRI International
