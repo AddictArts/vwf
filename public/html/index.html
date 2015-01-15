@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title> SAVE - Semantically Enhanced Automated Assessment in Virtual Environments : Workflow</title>
+<link rel="stylesheet" type="text/css" href="save.css">
+<script src="/html/support/jquery-1.11.2.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	<!-- load initial page in dynamic element -->
+	$(function(){
+		$('#dynamic').load('tool-s3d.html');
+	});
+	$(function(){
+		$("#b1").click(function(event){
+			window.open("/published/clearing");
+		}
+	)});
+	$(function(){
+		$("#b2").click(function(event){
+			window.open("/docs/SAVE-UserGuide-1.1.pdf");
+		}
+	)});
+	$(function(){
+		$("#b3").click(function(event){
+			window.open("/docs/M4-Solution-Example.pdf");
+		}
+	)});
+	$(function(){
+		$("#b4").click(function(event){
+			window.open("http://www.sri.com/work/projects/save");
+		}
+	)});
+	$(function(){
+		$("#t1").click(function(event){
+			$('#dynamic').load('tool-s3d.html');
+		}
+	)});
+	$(function(){
+		$("#t2").click(function(event){
+			$('#dynamic').load('tool-cat.html');
+		}
+	)});
+	$(function(){
+		$("#t3").click(function(event){
+			$('#dynamic').load('tool-eui-i.html');
+		}
+	)});
+	$(function(){
+		$("#t4").click(function(event){
+			$('#dynamic').load('tool-ese.html');
+		}
+	)});
+	$(function(){
+		$("#t5").click(function(event){
+			$('#dynamic').load('tool-eui-s.html');
+		}
+	)});
+	$(function(){
+		$("#launch").click(function(event){
+			$('#dynamic').load('junk.html');
+		}
+	)});
+</script>
+</head>
+
+<body>
+<center>
+<div id="wrapper">
+	<div id="header">
+		<img src="images/header-text.png" alt="SAVE" width="814" height="136">
+		<img id="b1" class="img-button" src="images/button01.png">
+		<img id="b2" class="img-button" src="images/button02.png">
+		<img id="b3" class="img-button" src="images/button03.png">
+		<img id="b4" class="img-button" src="images/button04.png">
+	</div>
+
+	<div id="wrap-inner" align="center">
+		<div id="tools">
+			<div id="tools-sidebar">
+				<img src="images/tools-sidebar.png" width="50" height="828">
+			</div>
+			<div id="tools-stack">
+				<img src="images/tools-file-predefined.png" width="381" height="92">
+				<img id="t1" src="images/tools-s3d.png" width="381" height="98">
+				<img src="images/tools-file-s3d.png" width="381" height="54">
+				<img id="t2" src="images/tools-cat.png" width="381" height="96">
+				<img src="images/tools-file-scene.png" width="381" height="57">
+				<img id="t3" src="images/tools-eui-a.png" width="381" height="95">
+				<img src="images/tools-file-xml1.png" width="381" height="55">
+				<img id="t4" src="images/tools-ese.png" width="381" height="98">
+				<img src="images/tools-file-xml2.png" width="381" height="56">
+				<img id="t5" src="images/tools-eui-s.png" width="381" height="94">
+				<img src="images/tools-footer.png" width="381" height="33">
+			</div>
+		</div>
+		<div id="dynamic">
+			<div id="pointer">
+				<img src="images/spacer.png" width="27" height="680">
+				<img src="images/pointer.png" width="20" height="20" align="left">
+			</div>
+			<div id="tool-focus">
+				<img class="img-tool" src="images/tool-cat.png">
+				<div id="tool-header">
+					<div id="tool-title">
+						<h2>Content Assembly Tool (CAT)</h2>
+					</div>
+					<div id="tool-launch">
+<!--					<img src="images/launch0.png" width="64" height="32">
+-->
+						<input type="button" id="launch" value="Load Data" />
+					</div>
+				</div>
+				<div id="tool-text">
+					<li> Launch the S3D tool by clicking HERE</li>
+					<li> Choose a Flora ontology and a 3D model</li>
+					<li> Link a Flora class to a 3D node by selecting and clicking 'Link'</li>
+					<li> To remove links, click 'Delete'</li>
+					<li> Examine properties by right-clicking on class and selecting 'Info'</li>
+					<li> Save annotation</li>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+	<div id="footer">
+		<p>Copyright 2015 SRI International</p>
+	</div>
+</center>
+
+</body>
+</html>

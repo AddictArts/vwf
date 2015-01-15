@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title> SAVE - Semantic 3D Annotation Tool</title>
+<link rel="stylesheet" type="text/css" href="save.css">
+<script src="/html/support/jquery-1.11.2.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#launch").click(function(event){
+			window.open("/S3D.html");
+		}
+	)});
+</script>
+</head>
+
+<body>
+<center>
+	<div id="pointer">
+		<!-- Adjust spacer height to position pointer -->
+		<img src="images/spacer.png" width="27" height="130">
+		<img class="img-pointer" src="images/pointer.png">
+	</div>
+	<div id="tool-focus">
+		<img class="img-tool" src="images/tool-s3d.png">
+		<div id="tool-header">
+			<div id="tool-title">
+				<h2>Semantic 3D Annotation Tool (S3D)</h2>
+			</div>
+			<div id="tool-launch"">
+				<input type="button" id="launch" value="Launch S3D">
+			</div>
+		</div>
+		<div id="tool-text">
+			<li> Launch the S3D tool by clicking HERE</li>
+			<li> Choose a Flora ontology and a 3D model</li>
+			<li> Link a Flora class to a 3D node by selecting and clicking 'Link'</li>
+			<li> To remove links, click 'Delete'</li>
+			<li> Examine properties by right-clicking on class and selecting 'Info'</li>
+			<li> Save annotation</li>
+		</div>
+	</div>
+</center>
+
+</body>
+</html>

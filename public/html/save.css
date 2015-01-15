@@ -1,0 +1,116 @@
+body {
+    background-color: white;
+}
+h2 {
+    color: black;
+	font: arial;
+}
+p {
+    color: black;
+    margin-left: 20px;
+}
+br {
+    color: black;
+    margin-left: 20px;
+}
+li {
+    color: black;
+    margin-left: 20px;
+	text-align: left;
+}
+
+.img-tool {
+	width: 742px;
+	height: 475px;
+}
+.img-button {
+	width: 85px;
+	height: 41px;
+}
+.img-pointer {
+	width: 20 px;
+	height: 20px;
+	float: left;
+}
+
+#wrapper{}
+#header {
+    height: 136px;
+    width: 1200px;
+    background-color:white;
+    color:black;
+    text-align:left;
+    line-height:0px;
+	border: 0px;
+}
+#wrap-inner { 
+    background-color:white;
+	width: 1200px;
+	margin-left: auto;
+    margin-right: auto;
+}
+#tools {
+    background-color:white;
+    width:431px;
+	height:828px;
+    float:left;
+    padding:0px;
+}
+#tools-sidebar {
+    background-color:white;
+    width:50px;
+	height:828px;
+    float:left;
+    padding:0px;
+}
+#tools-stack {
+    background-color:white;
+    width:381px;
+	height:828px;
+    float:left;
+    padding:0px;
+	line-height: 0;
+}
+#dynamic {
+    background-color:white;
+    width:769px;
+    float:left;
+    padding:0px;
+}
+#pointer {
+    background-color:white;
+    width:27px;
+    float:left;
+    padding:0px;
+}
+#tool-focus {
+    background-color:white;
+    width:742px;
+    float:left;
+    padding:0px;
+}
+#tool-header {}
+#tool-title {
+    background-color:white;
+    width:642px;
+	height:64px;
+    float:left;
+    padding:0px;
+}
+#tool-launch {
+    background-color:white;
+    width:100px;
+	height:64px;
+    float:left;
+    padding:0px;
+}
+#tool-text {}
+#footer {
+    background-color:gray;
+    height: 46px;
+    width: 1200px;
+    clear:both;
+    text-align:center;
+    padding:1px;	 	 
+	border: 0px;
+} 
