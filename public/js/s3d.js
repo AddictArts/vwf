@@ -1,33 +1,9 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Test SAX</title>
-<script src="/js/g2js.js"></script>
-</head>
-<body>
-This is a SAX test
-<script type="text/javascript">
-var xml = '<grouping name="M4 Carbine">\
-    <part node="Bling"/>\
-    <group name="Empty"/>\
-    <group node="M4" name="M4 Group">\
-        <group name="B Group">\
-            <part node="A"/>\
-            <part node="B"/>\
-            <group name="B_N Group">\
-                <part node="B_N"/>\
-            </group>\
-        </group>\
-        <group name="Mag Group">\
-            <part node="C1"/>\
-        </group>\
-        <part node="Sling"/>\
-    </group>\
-    </grouping>',
-    o = G2JS.g2html(xml);
+// Copyright 2014, SRI International
 
-// console.log(o.text);
+'use strict';
+
+var G2JS = require('grouping2js'),
+    $ = require('jquery');
 
 var shootingRangeS3D = '\
 <?xml version="1.0" encoding="utf-8"?>\
@@ -65,8 +41,7 @@ var shootingRangeS3D = '\
 ';
 
 console.log(G2JS.g2js(shootingRangeS3D));
-o = G2JS.g2html(shootingRangeS3D);
-document.body.innerHTML = o.html;
-</script>
-</body>
-</html>
+
+var o = G2JS.g2html(shootingRangeS3D);
+
+console.log(o.text);
