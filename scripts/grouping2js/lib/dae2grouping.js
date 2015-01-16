@@ -20,8 +20,6 @@ function dae2grouping(options) {
     parser.ontext = ontext;
 
     parser.onclosetag = function(name) { // closing a tag. name is the name from onopentag node.name
-        console.log('close');
-
         if (name == 'node') {
             // var p = currentObj.parent;
             // delete currentObj.parent;
@@ -32,8 +30,6 @@ function dae2grouping(options) {
     };
 
     parser.onopentag = function(node) { // opened a tag. node has "name" and "attributes", isSelfClosing
-        console.log('open');
-
         switch (node.name) {
         case 'visual_scene':
             groupingObj.name = node.attributes.name;
