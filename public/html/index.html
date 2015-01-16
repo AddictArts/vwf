@@ -57,6 +57,31 @@
 		}
 	)});
 	$(function(){
+		$("#f1").click(function(event){
+			window.open('file-flora.html');
+		}
+	)});
+	$(function(){
+		$("#f2").click(function(event){
+			window.open('file-collada.html');
+		}
+	)});
+	$(function(){
+		$("#f3").click(function(event){
+			window.open('file-s3d.html');
+		}
+	)});
+	$(function(){
+		$("#f5").click(function(event){
+			window.open('file-exercise.html');
+		}
+	)});
+	$(function(){
+		$("#f6").click(function(event){
+			window.open('file-exercise.html');
+		}
+	)});
+	$(function(){
 		$("#launch").click(function(event){
 			$('#dynamic').load('junk.html');
 		}
@@ -81,20 +106,22 @@
 				<img src="images/tools-sidebar.png" width="50" height="828">
 			</div>
 			<div id="tools-stack">
-				<img src="images/tools-file-predefined.png" width="381" height="92">
+				<img src="images/tool-file-predefined.png" width="207" height="92">
+				<img id="f1" src="images/tools-file-flr.png" width="87" height="92">
+				<img id="f2" src="images/tools-file-dae.png" width="87" height="92">
 				<img id="t1" src="images/tools-s3d.png" width="381" height="98">
-				<img src="images/tools-file-s3d.png" width="381" height="54">
+				<img id="f3" src="images/tools-file-s3d.png" width="381" height="54">
 				<img id="t2" src="images/tools-cat.png" width="381" height="96">
-				<img src="images/tools-file-scene.png" width="381" height="57">
+				<img id="f4" src="images/tools-file-scene.png" width="381" height="57">
 				<img id="t3" src="images/tools-eui-a.png" width="381" height="95">
-				<img src="images/tools-file-xml1.png" width="381" height="55">
+				<img id="f5" src="images/tools-file-xml1.png" width="381" height="55">
 				<img id="t4" src="images/tools-ese.png" width="381" height="98">
-				<img src="images/tools-file-xml2.png" width="381" height="56">
+				<img id="f6" src="images/tools-file-xml2.png" width="381" height="56">
 				<img id="t5" src="images/tools-eui-s.png" width="381" height="94">
 				<img src="images/tools-footer.png" width="381" height="33">
 			</div>
 		</div>
-		<div id="dynamic">
+		<div id="dynamic" align="left">
 			<div id="pointer">
 				<img src="images/spacer.png" width="27" height="680">
 				<img src="images/pointer.png" width="20" height="20" align="left">

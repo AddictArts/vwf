@@ -8,11 +8,17 @@ h2 {
 p {
     color: black;
     margin-left: 20px;
+	text-align: left;
 }
 br {
     color: black;
     margin-left: 20px;
+	text-align: left;
 }
+ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+} 
 li {
     color: black;
     margin-left: 20px;
@@ -70,6 +76,7 @@ li {
     float:left;
     padding:0px;
 	line-height: 0;
+	font-size: 0
 }
 #dynamic {
     background-color:white;
@@ -114,3 +121,10 @@ li {
     padding:1px;	 	 
 	border: 0px;
 } 
+#listing {
+    background-color:#dbffff;
+    width:749px;
+    float:left;
+    margin-left:20px;
+    padding:20px;
+	}
