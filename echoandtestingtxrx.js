@@ -33,19 +33,10 @@ var routes = {
     ROOTANY: '/*',
     PUTANY: '/*',
     INV_CLEAR: '/M4clear/inventory',
-    INV_DIS: '/M4dis/inventory',
-    INV_CAT: '/CAT/inventory',
     OBJ_CLEAR: '/M4clear/object',
-    OBJ_DIS: '/M4dis/object',
-    OBJ_CAT: '/CAT/object',
     ACT_CLEAR: '/M4clear/action',
-    ACT_DIS: '/M4dis/action',
     Q_CLEAR: '/M4clear/query',
-    Q_DIS: '/M4dis/query',
-    Q_CAT: '/CAT/query',
-    FIN_CAT: '/CAT/finishExercise',
     ASSESS_CLEAR: '/M4clear/assessment',
-    ASSESS_DIS: '/M4dis/assessment',
     puteInstructorMode: true
 };
 
@@ -63,12 +54,12 @@ routes.get(routes.ROOTANY, function(req, res) {
     log('...handling route GET ' + routes.ROOTANY + ' for ' + req.reqPath);
 
     var file = routes.rootPath + req.reqPath,
-        status = fs.existsSync(file)? 200 : 404,
+        status = 200,
         data = 'The requested URL ' + req.reqPath + ' was not found on this server';
 
     try {
         data = fs.readFileSync(file);
-    } catch (e) { }
+    } catch (e) { status = 404 }
 
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(data, status, req.contentType);
@@ -127,21 +118,38 @@ routes.put(routes.PUTANY, function(req, res) {
     res.send(data, 200, PLAINt);
 });
 
-routes.get('/flora/server', function(req, res) { /* /PutExercise/generateSolution */
+routes.get('/file/list/s3d', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+
+    var data = [ '/SAVE/testdata/s3d/ShootingRange.s3d', '/SAVE/testdata/s3d/M4.s3d' ];
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
+routes.get('/file/list/dae', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+
+    var data = [ '/SAVE/models/environments/range/ShootingRange.dae', '/SAVE/models/weapons/M4/M4_noHierarchy.dae' ];
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
+routes.get('/flora/server', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send('', 200, PLAINt);
+});
+
+routes.get('/PutExercise/generateSolution', function(req, res) {
     log('...handling route GET ' + req.reqPath);
     routes.puteInstructorMode = false;
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send('', 200, PLAINt);
 });
 
-routes.get('/PutExercise/generateSolution', function(req, res) { /* /PutExercise/generateSolution */
-    log('...handling route GET ' + req.reqPath);
-    routes.puteInstructorMode = false;
-    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send('', 200, PLAINt);
-});
-
-routes.get('/PutExercise/inventory', function(req, res) { /* /PutExercise/inventory */
+routes.get('/PutExercise/inventory', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = {
@@ -174,9 +182,9 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.get(routes.INV_DIS, routes.gets[ routes.INV_CLEAR ]);
+routes.get('/M4dis/inventory', routes.gets[ routes.INV_CLEAR ]);
 
-routes.get(routes.INV_CAT, function(req, res) { /* /CAT/inventory */
+routes.get('/CAT/inventory', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = {
@@ -233,8 +241,8 @@ routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.post(routes.OBJ_DIS, routes.posts[ routes.OBJ_CLEAR ]);
-routes.post(routes.OBJ_CAT, routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/M4dis/object', routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/CAT/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/PutExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
 
 routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
@@ -272,8 +280,8 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
         KbIds: kbids
     }), 200, JSONt);
 });
-routes.post(routes.Q_DIS, routes.posts[ routes.Q_CLEAR ]);
-routes.post(routes.Q_CAT, routes.posts[ routes.Q_CLEAR ]);
+routes.post('/M4dis/query', routes.posts[ routes.Q_CLEAR ]);
+routes.post('/CAT/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/PutExercise/query', routes.posts[ routes.Q_CLEAR ]);
 
 routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
@@ -286,16 +294,16 @@ routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send('{ }\n', 200, JSONt);
 });
-routes.post(routes.ACT_DIS, routes.posts[ routes.ACT_CLEAR ]);
+routes.post('/M4dis/action', routes.posts[ routes.ACT_CLEAR ]);
 routes.post('/PutExercise/action', routes.posts[ routes.ACT_CLEAR ]);
 
 routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
     res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul><li>Pull and hold charging handle </li><li>Push and hold bottom of bolt catch </li><li>Release charging handle to cock rifle </li<li>Let go of bolt catch bottom </li><li>Return charging handle to forward position </li><li>Check chamber for ammo </li><li>Select <i>Safe</i> mode </li><li>Release bolt by pushing bolt catch top </li><li>Select <i>Semi</i> mode </li><li>Pull trigger to fire the weapon </li><li>Pull and hold charging handle </li><li>Release charging handle to cock rifle </li><li>Select <i>Safe</i> mode </li></ul></p></div></body></html>', 200, HTMLt);
 });
-routes.get(routes.ASSESS_DIS, routes.gets[ routes.ASSESS_CLEAR ]);
+routes.get('/M4dis/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 routes.get('/PutExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 
-routes.post(routes.FIN_CAT, function(req, res) { /* /CAT/finishExercise */
+routes.post('/CAT/finishExercise', function(req, res) {
     log('...handling route POST ' + req.reqPath);
 
     log(util.inspect(req.param));
@@ -313,6 +321,7 @@ var JSONt = 'application/json',
         '.html': HTMLt,
         '.txt':  PLAINt,
         '.json': JSONt,
+        '.dae':  XMLt,
         '.s3d':  XMLt,
         '.ssg':  XMLt,
         '.xml':  XMLt
