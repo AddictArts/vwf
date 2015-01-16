@@ -90,8 +90,8 @@ var getListOfS3D = function(url) {
         console.log(data[ 0 ]);
         console.log(data[ 1 ]);
 
-        // loadS3D(data[ 0 ]);
-        loadS3D(data[ 1 ]);
+        loadS3D(data[ 0 ]);
+        // loadS3D(data[ 1 ]);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       console.warn(textStatus + ':' + errorThrown);
