@@ -6,11 +6,11 @@
   <script src="/js/tow.js"></script>
   <script src="/js/dat.gui.min.js"></script>
   <script>
-TOW.loadCollada('/models/xyzbar.dae', function() {
+TOW.loadCollada('/SAVE/models/xyzbar.dae', function() {
   $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
   TOW.render();
 });
-TOW.loadColladas([ '/SAVE/models/environments/range/ShootingRange.dae', '/models/M4_lowPoly_06.dae' ], function() { onloadTowDatGui(); });
+TOW.loadColladas([ '/SAVE/models/environments/range/ShootingRange.dae', '/SAVE/models_lowpolygon/M4_lowPoly_06.dae' ], function() { onloadTowDatGui(); });
 TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25); // light, camera => x, y, z
   </script>
 
