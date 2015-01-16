@@ -2,8 +2,8 @@
 
 'use strict';
 
-var G2JS = require('grouping2js'),
-    $ = require('jquery');
+var G2JS = require('../../scripts/grouping2js'),
+    $ = require('../../scripts/node_modules/jquery');
 
 var updateModelTree = function(treeList) {
   $('#tree').jstree({
@@ -76,6 +76,7 @@ var loadS3D = function(url) {
             treeList = transformGroupingTojsTree(grouping);
 
         updateModelTree(treeList);
+        // console.log(grouping);
         // console.log(G2JS.g2html(xmlString).text);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -89,7 +90,8 @@ var getListOfS3D = function(url) {
         console.log(data[ 0 ]);
         console.log(data[ 1 ]);
 
-        loadS3D(data[ 0 ]);
+        // loadS3D(data[ 0 ]);
+        loadS3D(data[ 1 ]);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       console.warn(textStatus + ':' + errorThrown);

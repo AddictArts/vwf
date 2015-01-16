@@ -28,7 +28,7 @@ var qs = require('querystring'),
 
 // ====****====****====****==== ROUTES ====****====****====****==== //
 var routes = {
-    rootPath: 'public',
+    rootPath: '../public',
     ROOT: '/',
     ROOTANY: '/*',
     PUTANY: '/*',

@@ -13,12 +13,15 @@ function grouping2js(options) {
         onend = options.onend || function() { /* parser stream is done, and ready to have more stuff written to it. */ },
         parser = sax.parser(strict),
         groupingObj,
-        currentObj;
+        currentObj,
+        beginGrouping = false;
 
     parser.onerror = onerror;
     parser.ontext = ontext;
 
     parser.onclosetag = function(name) { // closing a tag.  name is the name from onopentag node.name
+        if (!beginGrouping) return;
+
         if (name == 'group') {
             var p = currentObj.parent;
             delete currentObj.parent;
@@ -31,9 +34,12 @@ function grouping2js(options) {
         case 'grouping':
             groupingObj.name = node.attributes.name;
             currentObj = groupingObj;
+            beginGrouping = true;
             break;
         case 'group':
-            var g = { 'name': node.attributes.name || '', 'node': node.attributes.node || '' };
+            if (!beginGrouping) break;
+
+            var g = { 'name': node.attributes.name, 'node': node.attributes.node };
 
             currentObj.groups = currentObj.groups || [ ];
             currentObj.groups.push(g);
@@ -41,6 +47,8 @@ function grouping2js(options) {
             currentObj = currentObj.groups[ currentObj.groups.length - 1 ];
             break;
         case 'part':
+            if (!beginGrouping) break;
+
             currentObj.parts = currentObj.parts || [ ];
             currentObj.parts.push(node.attributes.node);
             break;
