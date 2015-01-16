@@ -28,5 +28,11 @@
 			<part node="ShootingRangeArea7"/>
 			<part node="ShootingRangeArea8"/>
 		</group>
+		<!-- group name="group-2">
+			<part node="g2-a"/>
+			<part node="g2-b"/>
+		</group>
+		<part node="root-part-a"/>
+		<part node="root-part-b"/ -->
 	</grouping>
 </S3D>
