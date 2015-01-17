@@ -31,26 +31,43 @@ try {
     window.G2JS = module.exports;
 } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
 
-var xml = '<grouping name="ShootingRange">\
-        <group name="environment" node="environment">\
-            <part node="grass"/>\
-            <part node="tree_line"/>\
-        </group>\
-    </grouping>',
-    o = grouping2html(xml);
+//XXX tests
+// var xml = '<grouping name="ShootingRange">\
+//         <group name="environment" node="environment">\
+//             <part node="grass"/>\
+//             <part node="tree_line"/>\
+//         </group>\
+//     </grouping>',
+//     o = grouping2html(xml);
 
-console.log(o.text);
+// console.log(o.text);
 
-var dae = '<library_visual_scenes>\
-    <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
-        <node id="enviroment" name="enviroment" type="NODE">\
-            <node id="grass" name="grass" type="NODE">\
-            </node>\
-            <node id="tree_line" name="tree_line" type="NODE">\
-            </node>\
-        </node>\
-    </visual_scene>\
-    </library_visual_scenes>';
+// var dae = '<library_visual_scenes>\
+//     <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
+//         <node id="enviroment" name="enviroment" type="NODE">\
+//             <node id="grass" name="grass" type="NODE">\
+//             </node>\
+//             <node id="tree_line" name="tree_line" type="NODE">\
+//             </node>\
+//             <node id="e" name="e" type="NODE">\
+//                 <node id="g" name="g" type="NODE">\
+//                 </node>\
+//                 <node id="t" name="t" type="NODE">\
+//                 </node>\
+//             </node>\
+//         </node>\
+//         <node id="aaa" name="aaa" type="NODE">\
+//         </node>\
+//         <node id="bbb" name="bbb" type="NODE">\
+//         </node>\
+//         <node id="zzz" name="zzz" type="NODE">\
+//             <node id="xxx" name="xxx" type="NODE">\
+//             </node>\
+//             <node id="yyy" name="yyy" type="NODE">\
+//             </node>\
+//         </node>\
+//     </visual_scene>\
+//     </library_visual_scenes>';
 
-o = groupingObj2html(dae2g.dae2grouping(dae));
-console.log(o.text);
+// o = groupingObj2html(dae2g.dae2grouping(dae));
+// console.log(o.text);

@@ -14,18 +14,27 @@ function dae2grouping(options) {
         parser = sax.parser(strict),
         groupingObj,
         currentObj,
-        beginGroup = false;
+        currentGroup,
+        currentPart,
+        beginNode = false,
+        endNode = false;
 
     parser.onerror = onerror;
     parser.ontext = ontext;
 
     parser.onclosetag = function(name) { // closing a tag. name is the name from onopentag node.name
         if (name == 'node') {
-            // var p = currentObj.parent;
-            // delete currentObj.parent;
-            // currentObj = p;
-
-            beginGroup = false;
+            if (beginNode && !endNode) {
+                currentObj.parts = currentObj.parts || [ ];
+                currentObj.parts.push(currentPart);
+                beginNode = false;
+                endNode = true;
+            } else {
+                var p = currentObj.parent;
+                delete currentObj.parent;
+                currentObj = p;
+                endNode = false;
+            }
         }
     };
 
@@ -36,16 +45,19 @@ function dae2grouping(options) {
             currentObj = groupingObj;
             break;
         case 'node':
-            // At this point we don't know if it is a new group or a list of parts
-            var groups = [ { 'name': node.attributes.name, 'node': node.attributes.name } ];
-            var parts = [ node.attributes.name ];
+            if (beginNode) { // nested node means it is goruping node elements
+                currentObj.groups = currentObj.groups || [ ];
+                currentObj.groups.push(currentGroup);
+                currentGroup.parent = currentObj;
+                currentObj = currentGroup;
+            } else {
+                beginNode = true;
+                endNode = false;
+            }
 
-            beginGroup = true;
+            currentGroup = { name: node.attributes.name, node: node.attributes.name, parent: undefined }; // parent is a temporary reference, removed on ending the group
+            currentPart = node.attributes.name;
 
-            // currentObj.groups = currentObj.groups || [ ];
-            // currentObj.groups.push(g);
-            // g.parent = currentObj;
-            // currentObj = currentObj.groups[ currentObj.groups.length - 1 ];
             break;
         }
     };

@@ -39,12 +39,12 @@ function grouping2js(options) {
         case 'group':
             if (!beginGrouping) break;
 
-            var g = { 'name': node.attributes.name, 'node': node.attributes.node };
+            var g = { name: node.attributes.name, node: node.attributes.node };
 
             currentObj.groups = currentObj.groups || [ ];
             currentObj.groups.push(g);
             g.parent = currentObj;
-            currentObj = currentObj.groups[ currentObj.groups.length - 1 ];
+            currentObj = g;
             break;
         case 'part':
             if (!beginGrouping) break;
