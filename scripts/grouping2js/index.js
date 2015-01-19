@@ -3,11 +3,17 @@
 'use strict';
 
 var g2js = require('./lib/grouping2js')({ strict: true }),
+    dae2g = require('./lib/dae2grouping')({ strict: true }),
     pretty = require('js-object-pretty-print').pretty;
 
 var grouping2html = function(sourceXml) {
-    var groupingObj = g2js.grouping2js(sourceXml),
-        text = pretty(groupingObj),
+    var groupingObj = g2js.grouping2js(sourceXml);
+
+    return groupingObj2html(groupingObj);
+};
+
+var groupingObj2html = function(groupingObj) {
+    var text = pretty(groupingObj),
         html;
 
     html = text.replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
@@ -17,37 +23,51 @@ var grouping2html = function(sourceXml) {
 module.exports = {
     g2js: g2js.grouping2js,
     g2html: grouping2html,
-    parser: g2js.parser,
-    pretty: pretty
+    go2html: groupingObj2html,
+    dae2g: dae2g.dae2grouping
 };
 
 try {
     window.G2JS = module.exports;
 } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
 
-// var xml = '<grouping name="M4 Carbine">\
-//     <part node="Bling"/>\
-//     <group name="Empty"/>\
-//     <group node="M4" name="M4 Group">\
-//         <group name="B Group">\
-//             <part node="A"/>\
-//             <part node="B"/>\
-//             <group name="B_N Group">\
-//                 <part node="B_N"/>\
-//             </group>\
+//XXX tests
+// var xml = '<grouping name="ShootingRange">\
+//         <group name="environment" node="environment">\
+//             <part node="grass"/>\
+//             <part node="tree_line"/>\
 //         </group>\
-//         <group name="Mag Group">\
-//             <part node="C1"/>\
-//         </group>\
-//         <part node="Sling"/>\
-//     </group>\
 //     </grouping>',
 //     o = grouping2html(xml);
 
 // console.log(o.text);
 
-// try {
-//     window.addEventListener('load', function() {
-//         window.document.body.innerHTML = o.html;
-//     });
-// } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
+// var dae = '<library_visual_scenes>\
+//     <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
+//         <node id="enviroment" name="enviroment" type="NODE">\
+//             <node id="grass" name="grass" type="NODE">\
+//             </node>\
+//             <node id="tree_line" name="tree_line" type="NODE">\
+//             </node>\
+//             <node id="e" name="e" type="NODE">\
+//                 <node id="g" name="g" type="NODE">\
+//                 </node>\
+//                 <node id="t" name="t" type="NODE">\
+//                 </node>\
+//             </node>\
+//         </node>\
+//         <node id="aaa" name="aaa" type="NODE">\
+//         </node>\
+//         <node id="bbb" name="bbb" type="NODE">\
+//         </node>\
+//         <node id="zzz" name="zzz" type="NODE">\
+//             <node id="xxx" name="xxx" type="NODE">\
+//             </node>\
+//             <node id="yyy" name="yyy" type="NODE">\
+//             </node>\
+//         </node>\
+//     </visual_scene>\
+//     </library_visual_scenes>';
+
+// o = groupingObj2html(dae2g.dae2grouping(dae));
+// console.log(o.text);
