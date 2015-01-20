@@ -74,63 +74,11 @@ module.exports = {
     go2html: groupingObj2html,
     go2xml: groupingObj2xml,
     gx2html: groupingXml2html,
-    dae2g: dae2g.dae2grouping
+    dae2g: dae2g.dae2grouping,
+    s3dParser: g2js.parser,
+    daeParser: dae2g.parser
 };
 
 try {
     window.G2JS = module.exports;
 } catch(e) { } // ignore "ReferenceError: window is not defined" when running on the server
-
-// XXX tests
-// var xml = '<grouping name="ShootingRange">\
-//         <group name="environment" node="environment">\
-//             <part node="grass"/>\
-//             <part node="tree_line"/>\
-//         </group>\
-//         <group name="environment">\
-//             <part node="grass"/>\
-//             <part node="tree_line"/>\
-//         </group>\
-//     </grouping>',
-//     o = grouping2html(xml),
-//     gx = groupingObj2xml(g2js.grouping2js(xml));
-
-// console.log(o.text);
-// console.log(gx);
-// console.log(groupingXml2html(gx).text);
-
-// var dae = '<library_visual_scenes>\
-//     <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
-//         <node id="enviroment" name="enviroment" type="NODE">\
-//             <node id="grass" name="grass" type="NODE">\
-//             </node>\
-//             <node id="tree_line" name="tree_line" type="NODE">\
-//             </node>\
-//             <node id="e" name="e" type="NODE">\
-//                 <node id="g" name="g" type="NODE">\
-//                 </node>\
-//                 <node id="t" name="t" type="NODE">\
-//                 </node>\
-//             </node>\
-//         </node>\
-//         <node id="aaa" name="aaa" type="NODE">\
-//         </node>\
-//         <node id="bbb" name="bbb" type="NODE">\
-//         </node>\
-//         <node id="zzz" name="zzz" type="NODE">\
-//             <node id="xxx" name="xxx" type="NODE">\
-//             </node>\
-//             <node id="yyy" name="yyy" type="NODE">\
-//             </node>\
-//         </node>\
-//     </visual_scene>\
-//     </library_visual_scenes>',
-//     go = dae2g.dae2grouping(dae),
-//     gx = groupingObj2xml(go);
-
-// o = groupingObj2html(go);
-// console.log(o.text);
-// console.log(gx);
-// o = groupingXml2html(gx);
-// console.log(o.text);
-// console.log(o.html);
