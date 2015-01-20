@@ -25,6 +25,9 @@ li {
 	text-align: left;
 }
 
+p.foot {
+	text-align: center;
+}
 .img-tool {
 	width: 742px;
 	height: 475px;
