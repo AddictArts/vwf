@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>S3D Annotation</title>
+  <style type="text/css">
+    html, body {
+      margin: 0px;
+      padding: 0px;
+      border: 0px;
+      background-color: #F2EFE4;
+      color: white;
+    }
+    #mainContainer {
+      width: 1450px;
+      margin: 0 0 0 20px; /* top right bottom left */
+      padding: 0;
+      background-color: #CB8C1D;
+      color: white;
+    }
+    #mainContainer h1 {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 50px;
+      float: left;
+      border-bottom: #c00 solid 3px;
+      background-color: #4C3327;    /*S3D Editor Header*/
+      color: white;
+    }
+    #mainContainer #col1 {
+      width: 300px;
+      height: 500px;
+      overflow: auto;
+      float: left;
+      background-color: #F2EFE4;    /*Flora background*/
+      color: #4C3327;
+    }
+    #mainContainer #col2outer {
+      width: 1150px;
+      float: right;
+      margin: 0;
+      padding: 0;
+      background-color: #F2EFE4;   /*VWF Window background*/
+      color: #4C3327;
+    }
+    #col2outer #col2mid {
+      width: 400px;
+      height: 500px;
+      overflow: auto;
+      float: left;
+      background-color: #F2EFE4;   /*3D Hierarchy background*/
+      color: #4C3327;
+    }
+    #col2outer #col2side {
+      width: 740px;
+      float: right;
+      background-color: #F2EFE4;  /*VWF Rendering window header*/
+      color: #4C3327;
+    }
+    #mainContainer #footer {
+      float: left;
+      width: 1450px;
+      border-top: #c00 solid 3px;
+      background-color: #4C3327;    /*Footer*/
+      color: white;
+      overflow: auto;
+    height: 300;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+    table.names {
+      width: 100%;
+      background-color: #f1f1c1;
+    }
+    .footer-left { float: left; width: 50%; }
+    .footer-right { float: right; width: 50%; }
+  </style>
+  <link rel="stylesheet" href="/js/themes/default/style.min.css" />
+  <!-- s3d.bundle.js includes jQuery -->
+  <script src="/js/s3d.bundle.js"></script>
+  <script src="/js/jstree.min.js"></script>
+</head>
+<body>
+  <div id="mainContainer">
+    <h1>S3D Annotation</h1>
+
+    <div id="col1"> <!-- Flora Taxonomy Container -->
+      <h3>Flora Taxonomy</h3>
+      <div id="taxonomy">
+        <p>Flora taxonomy loading...</p>
+        <button onclick="updateTaxonomy()">Update</button>
+      </div>
+    </div>
+
+    <div id="col2outer">
+      <div id="col2mid"> <!-- 3D Hierarchy Container -->
+        <h3>3D Hierarchy</h3>
+        <div id="modelHierarchy">
+          <p>Model hierarchy loading....</p>
+        </div>
+      </div>
+      <!-- VWF Rendering Window -->
+      <div id="col2side"> <!-- VWF Rendering Window Container -->
+        <h3>3D</h3>
+        <iframe class="vwf-frame" id="app1" src="" frameborder="2" height="500" width="740"></iframe>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+      <div class="toolstyle" id="toolbar">
+        <input name="AddLink" value="Link" onClick="addLink()" type=button>
+        <!-- <input name="RemoveLink" value="Unlink" onClick="removeLink()" type=button> -->
+        <input name="Save" value="Save" onClick="saveData()" type=button>
+      </div>
+      <div id="tableArea">
+        <div class="footer-left">
+          <div>
+            <h3>Semantic Link(s)</h3>
+          </div>
+          <div id="tableContainer"></div>
+        </div>
+        <div class="footer-right">
+          <div>
+            <h3>Class Details</h3>
+          </div>
+          <div id="classContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="/js/s3d.refactor.js"></script>
+<script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);</script>
+</body>
+</html>
