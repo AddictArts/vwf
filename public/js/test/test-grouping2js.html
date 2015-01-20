@@ -66,9 +66,9 @@ var shootingRangeS3D = '\
 
 console.log(G2JS.g2js(shootingRangeS3D));
 o = G2JS.g2html(shootingRangeS3D);
+document.body.innerHTML += '<br>' + o.html;
 
-var html = o.html,
-    dae = '<library_visual_scenes>\
+var dae = '<library_visual_scenes>\
     <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
         <node id="enviroment" name="enviroment" type="NODE">\
             <node id="grass" name="grass" type="NODE">\
@@ -98,12 +98,11 @@ var html = o.html,
     gx = G2JS.go2xml(go);
 
 o = G2JS.go2html(go);
-console.log(o.text);
+document.body.innerHTML += '<br>' + o.html;
 console.log(gx);
 o = G2JS.gx2html(gx);
-console.log(o.text);
-html += '<br>' + '<pre>' + o.text + '</pre>';
-document.body.innerHTML = html;
+document.body.innerHTML += '<br>' + o.html;
 </script>
+<script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);</script>
 </body>
 </html>
