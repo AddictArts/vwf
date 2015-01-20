@@ -7,8 +7,9 @@
 <link rel="stylesheet" type="text/css" href="save.css">
 <script src="/html/support/jquery-1.11.2.js"></script>
 <script type="text/javascript">
+	var hostName = document.location.hostname;
 	$(document).ready(function() {
-		$("#listing").load("http://localhost:3001/listfiles/eui"); 
+		$("#listing").load("http://" + hostName + ":3001/listfiles/eui");
 	}); 
 </script>
 </head>
