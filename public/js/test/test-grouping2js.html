@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Test SAX</title>
+<title>Test grouping2js module</title>
 <script src="/js/g2js.bundle.js"></script>
 </head>
 <body>
-This is a SAX test
+grouping2js test...
 <script type="text/javascript">
 var xml = '<grouping name="M4 Carbine">\
     <part node="Bling"/>\
@@ -27,7 +27,7 @@ var xml = '<grouping name="M4 Carbine">\
     </grouping>',
     o = G2JS.g2html(xml);
 
-// console.log(o.text);
+console.log(o.text);
 
 var shootingRangeS3D = '\
 <?xml version="1.0" encoding="utf-8"?>\
@@ -66,7 +66,43 @@ var shootingRangeS3D = '\
 
 console.log(G2JS.g2js(shootingRangeS3D));
 o = G2JS.g2html(shootingRangeS3D);
-document.body.innerHTML = o.html;
+document.body.innerHTML += '<br>' + o.html;
+
+var dae = '<library_visual_scenes>\
+    <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
+        <node id="enviroment" name="enviroment" type="NODE">\
+            <node id="grass" name="grass" type="NODE">\
+            </node>\
+            <node id="tree_line" name="tree_line" type="NODE">\
+            </node>\
+            <node id="e" name="e" type="NODE">\
+                <node id="g" name="g" type="NODE">\
+                </node>\
+                <node id="t" name="t" type="NODE">\
+                </node>\
+            </node>\
+        </node>\
+        <node id="aaa" name="aaa" type="NODE">\
+        </node>\
+        <node id="bbb" name="bbb" type="NODE">\
+        </node>\
+        <node id="zzz" name="zzz" type="NODE">\
+            <node id="xxx" name="xxx" type="NODE">\
+            </node>\
+            <node id="yyy" name="yyy" type="NODE">\
+            </node>\
+        </node>\
+    </visual_scene>\
+    </library_visual_scenes>',
+    go = G2JS.dae2g(dae),
+    gx = G2JS.go2xml(go);
+
+o = G2JS.go2html(go);
+document.body.innerHTML += '<br>' + o.html;
+console.log(gx);
+o = G2JS.gx2html(gx);
+document.body.innerHTML += '<br>' + o.html;
 </script>
+<script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);</script>
 </body>
 </html>

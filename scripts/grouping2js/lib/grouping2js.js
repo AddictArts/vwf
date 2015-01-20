@@ -1,4 +1,4 @@
-// Copyright 2014, SRI International
+// Copyright 2015, SRI International
 
 'use strict';
 
