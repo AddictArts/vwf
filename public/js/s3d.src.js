@@ -109,9 +109,36 @@ var getListOfDAE = function(url) {
 var showListOfS3D = function(names) {
 };
 
+var createAssetMenuSelectionGUI = function() {
+    var assetGUI = new dat.GUI(),
+        assetMenu = { };
+
+    assetGUI.name = 'Asset Menu';
+    // assetGUI.add(assetMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+    // assetGUI.add(assetMenu, 'reset').name('Reset');
+    // assetGUI.add(assetMenu, 'path').name('Path');
+
+    var s3dFolder = assetGUI.addFolder('S3D');
+    var floraFolder = assetGUI.addFolder('Flora');
+    var daeFolder = assetGUI.addFolder('COLLADA (dae)');
+
+    // var s3dFolderRef = assetGUI.add(assetMenu, 'saveExercise').name('Save Exercise');
+
+    // s3dFolder.add(assetMenu.camxyz, 'default').name('Default');
+
+    // cameraFolder.add(assetMenu.camxyz, 'x').onFinishChange(
+    //    function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, assetMenu.camxyz.y, assetMenu.camxyz.z ]); }
+    // );
+    // cameraFolder.add(assetMenu.camxyz, 'rotation').onFinishChange(function(val) {
+    //     var rx = assetMenu.camxyz.rotX? 1 : 0;
+    //     if (rx || ry || rz) vwf_view.kernel.callMethod(vwfapp.cameraId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
+    // });
+};
+
 window.$ = $;
 window.jQuery = $;
 window.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
     getListOfS3D();
+    createAssetMenuSelectionGUI();
 });
