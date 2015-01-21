@@ -3,7 +3,8 @@
 'use strict';
 
 var G2JS = require('../../scripts/grouping2js'),
-    $ = require('../../scripts/node_modules/jquery');
+    $ = require('../../scripts/node_modules/jquery'),
+    hostname;
 
 var updateModelTree = function(treeList) {
     var instance = $('#modelHierarchy').jstree(true); 
@@ -85,55 +86,44 @@ var loadS3D = function(url) {
     });
 };
 
-var getListOfS3D = function() {
+var loadDAE = function(url) {
+};
+
+var loadFlora = function(url) {
+};
+
+var getListOfRepoFiles = function(type) {
     return $.ajax({
-        url: 'http://localhost:3001/file/list/s3d',
+        url: 'http://' + hostname + ':3001/file/list/' + type,
         type: 'get',
         cache: false
     })
     .fail(ajaxFail);
 };
 
-var getListOfDAE = function() {
-    return $.ajax({
-        url: 'http://localhost:3001/file/list/dae',
-        type: 'get',
-        cache: false
-    })
-    .fail(ajaxFail);
-};
-
-var getListOfFlora = function() {
-    return $.ajax({
-        url: 'http://localhost:3001/file/list/flora',
-        type: 'get',
-        cache: false
-    })
-    .fail(ajaxFail);
-};
-
-var createS3DRepoTree = function(data) {
-    var treeList = [{
-            id: 'S3D Repository',
+var createRepoTree = function(data, elemSelector, repoName, onSelect) {
+    var repo = repoName + ' Repository',
+        treeList = [{
+            id: repo,
             parent: '#',
-            text: 'S3D Repository'
+            text: repo
         }],
         treeId2Url = { };
 
     data.forEach(function(url) {
-        console.info('Adding: ' + url + ' to s3d repo tree');
+        console.info('Adding: ' + url + ' to ' + repo + ' tree');
 
         var lslashIdx = url.lastIndexOf('/'),
             name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
 
         treeList.push({
             id: name,
-            parent: 'S3D Repository',
+            parent: repo,
             text: name
         });
         treeId2Url[ name ] = url;
     });
-    $('#s3ds').jstree({
+    $(elemSelector).jstree({
         core : {
             multiple : false,
             data : treeList,
@@ -145,73 +135,27 @@ var createS3DRepoTree = function(data) {
             var id = data.selected[ 0 ];
 
             console.info('Loading: ' + id + ' from:' + treeId2Url[ id ]);
-            loadS3D(treeId2Url[ id ]);
+            onSelect(treeId2Url[ id ]);
         }
     });
 };
 
+var createS3DRepoTree = function(data) {
+    createRepoTree(data, '#s3ds', 'S3D', loadS3D);
+};
+
 var createDAERepoTree = function(data) {
-    var treeList = [{
-        id: '3D Repository',
-        parent: '#',
-        text: '3D Repository'
-    }];
-
-    data.forEach(function(url) {
-        console.info('Adding: ' + url + ' to dae repo tree');
-
-        var lslashIdx = url.lastIndexOf('/'),
-            name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
-
-        treeList.push({
-            id: name,
-            parent: '3D Repository',
-            text: name
-        });
-    });
-    $('#daes').jstree({
-        core : {
-            multiple : false,
-            data : treeList,
-            check_callback: true
-        },
-        plugins : [ ]
-    });
+    createRepoTree(data, '#daes', '3D', loadDAE);
 };
 
 var createFloraRepoTree = function(data) {
-    var treeList = [{
-        id: 'Flora Repository',
-        parent: '#',
-        text: 'Flora Repository'
-    }];
-
-    data.forEach(function(url) {
-        console.info('Adding: ' + url + ' to flora repo tree');
-
-        var lslashIdx = url.lastIndexOf('/'),
-            name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
-
-        treeList.push({
-            id: name,
-            parent: 'Flora Repository',
-            text: name
-        });
-    });
-    $('#floras').jstree({
-        core : {
-            multiple : false,
-            data : treeList,
-            check_callback: true
-        },
-        plugins : [ ]
-    });
+    createRepoTree(data, '#floras', 'Flora', loadFlora);
 };
 
 var createAssetMenuSelectionGUI = function() {
-    getListOfDAE().done(createDAERepoTree);
-    getListOfFlora().done(createFloraRepoTree);
-    getListOfS3D().done(createS3DRepoTree);
+    getListOfRepoFiles('s3d').done(createS3DRepoTree);
+    getListOfRepoFiles('dae').done(createDAERepoTree);
+    getListOfRepoFiles('flora').done(createFloraRepoTree);
 };
 
 var ajaxFail = function(jqXHR, textStatus, errorThrown) {
@@ -222,5 +166,6 @@ window.$ = $;
 window.jQuery = $;
 window.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
+    hostname = window.document.location.hostname;
     createAssetMenuSelectionGUI();
 });
