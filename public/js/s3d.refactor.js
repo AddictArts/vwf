@@ -107,7 +107,7 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
         'core' : {
           'check_callback': true
         },
-        "plugins" : ["state", "contextmenu" ],
+        "plugins" : [ "contextmenu" ],
         contextmenu : {
           items : {
             "Link" : {
@@ -554,7 +554,7 @@ function saveData() {
   //console.log("----------------------------End File-------------------------------");
   //var fileData = JSON.stringify(s3dFile);
   jQuery.ajax({
-      url:'http://'+hostName+':3001/s3d/M4_Carbine.s3d',
+      url:'http://' + hostName + ':3001/s3d/M4_Carbine.s3d',
       type:'put',
       data: s3dFile,
       cache: false,
@@ -565,206 +565,34 @@ function saveData() {
   .done(function(data) { console.log("Result from PUT operation: " + data)  });
 }
 
-$('#modelHierarchy').jstree({
-  'core' : {
-    'data' : [
-      { "id" : "M4 Carbine",                          "parent" : "#",           "text" : "M4 Carbine" },
-      { "id" : "Sling",                               "parent" : "M4 Carbine",       "text" : "Sling" },
-      { "id" : "Barrel_Assembly",                     "parent" : "M4 Carbine",       "text" : "Barrel_Assembly" },
-      { "id" : "Upper_Handguard",                     "parent" : "M4 Carbine",       "text" : "Upper_Handguard" },
-      { "id" : "Lower_Handguard",                     "parent" : "M4 Carbine",       "text" : "Lower_Handguard" },
-      { "id" : "Small_Sling_Swivel",                  "parent" : "M4 Carbine",       "text" : "Small_Sling_Swivel" },
-      { "id" : "Compensator",                         "parent" : "M4 Carbine",       "text" : "Compensator" },
-      { "id" : "Recessed_Washer__OOCompensator",      "parent" : "M4 Carbine",       "text" : "Recessed_Washer__OOCompensator" },
-      { "id" : "Spring_Pin2",                         "parent" : "M4 Carbine",       "text" : "Spring_Pin2" },
-      { "id" : "Spring_Pin3",                         "parent" : "M4 Carbine",       "text" : "Spring_Pin3" },
-      { "id" : "Rear_Handguard_Clamp",                "parent" : "M4 Carbine",       "text" : "Rear_Handguard_Clamp" },
-      { "id" : "Screw",                               "parent" : "M4 Carbine",       "text" : "Screw" },
-      { "id" : "Gas_Tube_Spring_Pin",                 "parent" : "M4 Carbine",       "text" : "Gas_Tube_Spring_Pin" },
-      { "id" : "Gas_Tube",                            "parent" : "M4 Carbine",       "text" : "Gas_Tube" },
-      { "id" : "Handguard_Slip_Ring_Spring",          "parent" : "M4 Carbine",       "text" : "Handguard_Slip_Ring_Spring" },
-      { "id" : "Handguard_Slip_Ring_Retaining_Ring",  "parent" : "M4 Carbine",       "text" : "Handguard_Slip_Ring_Retaining_Ring" },
-      { "id" : "Handguard_Slip_Ring_LAMA918813252",   "parent" : "M4 Carbine",       "text" : "Handguard_Slip_Ring_LAMA918813252" },
-      { "id" : "Front_Sight_Post",                    "parent" : "M4 Carbine",       "text" : "Front_Sight_Post" },
-      { "id" : "Headless_Shoulder_Pin",               "parent" : "M4 Carbine",       "text" : "Headless_Shoulder_Pin" },
-      { "id" : "Spring3",                             "parent" : "M4 Carbine",       "text" : "Spring3" },
-      { "id" : "Tubular_Rivet",                       "parent" : "M4 Carbine",       "text" : "Tubular_Rivet" },
-      { "id" : "Synchro_Clamp",                       "parent" : "M4 Carbine",       "text" : "Synchro_Clamp" },
-      { "id" : "Spring_Pin1",                         "parent" : "M4 Carbine",       "text" : "Spring_Pin1" },
-      { "id" : "Spring_Pin",                          "parent" : "M4 Carbine",       "text" : "Spring_Pin" },
-      { "id" : "Swivel_Mount",                        "parent" : "M4 Carbine",       "text" : "Swivel_Mount" },
-      { "id" : "Flat_Spring",                         "parent" : "M4 Carbine",       "text" : "Flat_Spring" },
-      { "id" : "Special_Shaped_Spacer",               "parent" : "M4 Carbine",       "text" : "Special_Shaped_Spacer" },
-      // Buttstock Group 0
-      { "id" : "Buttstock Group",                               "parent" : "M4 Carbine",      "text" : "Buttstock Group" },
-      { "id" : "Buttstock",                                     "parent" : "Buttstock Group", "text" : "Buttstock" },
-      { "id" : "Swivel_LAMA1259863095",                         "parent" : "Buttstock Group", "text" : "Swivel_LAMA1259863095k" },
-      { "id" : "Machine_Screw",                                 "parent" : "Buttstock Group", "text" : "Machine_Screw" },
-      { "id" : "Buttstock_Release_Lever_Nut",                   "parent" : "Buttstock Group", "text" : "Buttstock_Release_Lever_Nut" },
-      { "id" : "Buttstock_Release_Lever",                       "parent" : "Buttstock Group", "text" : "Buttstock_Release_Lever" },
-      { "id" : "Buttstock_Release_Lever_Screw_LAMA1417807796",  "parent" : "Buttstock Group", "text" : "Buttstock_Release_Lever_Screw_LAMA1417807796" },
-      { "id" : "Buttstock_Release_Lever_Spring_Pin",            "parent" : "Buttstock Group", "text" : "Buttstock_Release_Lever_Spring_Pin" },
-      { "id" : "Buttstock_Release_Lever_Spring",                "parent" : "Buttstock Group", "text" : "Buttstock_Release_Lever_Spring" },
-      // Magazine_g Group 1
-      { "id" : "Magazine_g Group",  "parent" : "M4 Carbine",        "text" : "Magazine_g Group" },
-      { "id" : "Tube",              "parent" : "Magazine_g Group",  "text" : "Tube" },
-      { "id" : "Clip_Spring1",      "parent" : "Magazine_g Group",  "text" : "Clip_Spring1" },
-      { "id" : "Base",              "parent" : "Magazine_g Group",  "text" : "Base" },
-      { "id" : "Clip_Spring",       "parent" : "Magazine_g Group",  "text" : "Clip_Spring" },
-      { "id" : "Follower",          "parent" : "Magazine_g Group",  "text" : "Follower" },
-      { "id" : "Casing1 Group",     "parent" : "Magazine_g Group",  "text" : "Casing1 Group" },
-      { "id" : "Casing1",           "parent" : "Casing1 Group",     "text" : "Casing1" },
-      { "id" : "Projectile1",       "parent" : "Casing1 Group",     "text" : "Projectile1" },
-      { "id" : "Casing2 Group",     "parent" : "Magazine_g Group",  "text" : "Casing2 Group" },
-      { "id" : "Casing2",           "parent" : "Casing2 Group",     "text" : "Casing2" },
-      { "id" : "Projectile2",       "parent" : "Casing2 Group",     "text" : "Projectile2" },
-      { "id" : "Casing3 Group",     "parent" : "Magazine_g Group",  "text" : "Casing3 Group" },
-      { "id" : "Casing3",           "parent" : "Casing3 Group",     "text" : "Casing3" },
-      { "id" : "Projectile3",       "parent" : "Casing3 Group",     "text" : "Projectile3" },
-      // Lower_Receiver Group 2
-      { "id" : "Lower_Receiver Group",  "parent" : "M4 Carbine",    "text" : "Lower_Receiver Group" },
-      { "id" : "Lower_Receiver",    "parent" : "Lower_Receiver Group",  "text" : "Lower_Receiver" },
-      { "id" : "Trigger",       "parent" : "Lower_Receiver Group",  "text" : "Trigger" },
-      { "id" : "Trigger_Spring",    "parent" : "Lower_Receiver Group",  "text" : "Trigger_Spring" },
-      { "id" : "Disconnector_Spring__OOBurst__CC",    "parent" : "Lower_Receiver Group",  "text" : "Disconnector_Spring__OOBurst__CC" },
-      { "id" : "Disconnector_Spring__OOSemi__CC",     "parent" : "Lower_Receiver Group",  "text" : "Disconnector_Spring__OOSemi__CC" },
-      { "id" : "Trigger_Spring1",     "parent" : "Lower_Receiver Group",  "text" : "Trigger_Spring1" },
-      { "id" : "Trigger_Pin",     "parent" : "Lower_Receiver Group",  "text" : "Trigger_Pin" },
-      { "id" : "Disconnector__Burst",   "parent" : "Lower_Receiver Group",  "text" : "Disconnector__Burst" },
-      { "id" : "Disconnector__Semi",    "parent" : "Lower_Receiver Group",  "text" : "Disconnector__Semi" },
-      { "id" : "Magazine_Catch",    "parent" : "Lower_Receiver Group",  "text" : "Magazine_Catch" },
-      { "id" : "Magazine_Catch_Spring",   "parent" : "Lower_Receiver Group",  "text" : "Magazine_Catch_Spring" },
-      { "id" : "Magazine_Catch_Button",   "parent" : "Lower_Receiver Group",  "text" : "Magazine_Catch_Button" },
-      { "id" : "Pivot_Pin",       "parent" : "Lower_Receiver Group",  "text" : "Pivot_Pin" },
-      { "id" : "Pivot_Pin_Detent",    "parent" : "Lower_Receiver Group",  "text" : "Pivot_Pin_Detent" },
-      { "id" : "Pivot_Pin_Spring",    "parent" : "Lower_Receiver Group",  "text" : "Pivot_Pin_Spring" },
-      { "id" : "Takedown_Pin",    "parent" : "Lower_Receiver Group",  "text" : "Takedown_Pin" },
-      { "id" : "Takedown_Pin_Detent",   "parent" : "Lower_Receiver Group",  "text" : "Takedown_Pin_Detent" },
-      { "id" : "Takedown_Pin_Detent_Spring",  "parent" : "Lower_Receiver Group",  "text" : "Takedown_Pin_Detent_Spring" },
-      { "id" : "Selector_Lever",    "parent" : "Lower_Receiver Group",  "text" : "Selector_Lever" },
-      { "id" : "Safety_Detent__OOSelector_Lever__CC",     "parent" : "Lower_Receiver Group",  "text" : "Safety_Detent__OOSelector_Lever__CC" },
-      { "id" : "Safety_Spring__OOSelector_Lever__CC",     "parent" : "Lower_Receiver Group",  "text" : "Safety_Spring__OOSelector_Lever__CC" },
-      { "id" : "Automatic_Sear",    "parent" : "Lower_Receiver Group",  "text" : "Automatic_Sear" },
-      { "id" : "Automatic_Sear_Spring",   "parent" : "Lower_Receiver Group",  "text" : "Automatic_Sear_Spring" },
-      { "id" : "Sear_Pin",      "parent" : "Lower_Receiver Group",  "text" : "Sear_Pin" },
-      { "id" : "Hammer",      "parent" : "Lower_Receiver Group",  "text" : "Hammer" },
-      { "id" : "Hammer_Spring1",    "parent" : "Lower_Receiver Group",  "text" : "Hammer_Spring1" },
-      { "id" : "Hammer_Pin",      "parent" : "Lower_Receiver Group",  "text" : "Hammer_Pin" },
-      { "id" : "Burst_Cam",       "parent" : "Lower_Receiver Group",  "text" : "Burst_Cam" },
-      { "id" : "Burst_Cam_Clutch_Spring",   "parent" : "Lower_Receiver Group",  "text" : "Burst_Cam_Clutch_Spring" },
-      { "id" : "Hammer_Spring",     "parent" : "Lower_Receiver Group",  "text" : "Hammer_Spring" },
-      { "id" : "Lower_Receiver_Extension",  "parent" : "Lower_Receiver Group",  "text" : "Lower_Receiver_Extension" },
-      { "id" : "Buffer",      "parent" : "Lower_Receiver Group",  "text" : "Buffer" },
-      { "id" : "Action_Spring",     "parent" : "Lower_Receiver Group",  "text" : "Action_Spring" },
-      { "id" : "Plain_Round_Nut",     "parent" : "Lower_Receiver Group",  "text" : "Plain_Round_Nut" },
-      { "id" : "Receiver_End_Plate",    "parent" : "Lower_Receiver Group",  "text" : "Receiver_End_Plate" },
-      { "id" : "Buffer_Retainer",     "parent" : "Lower_Receiver Group",  "text" : "Buffer_Retainer" },
-      { "id" : "Buffer_Retainer_Spring",  "parent" : "Lower_Receiver Group",  "text" : "Buffer_Retainer_Spring" },
-      { "id" : "Trigger_Guard",     "parent" : "Lower_Receiver Group",  "text" : "Trigger_Guard" },
-      { "id" : "Trigger_Guard_Spring_Pin_Retaining_Pin",    "parent" : "Lower_Receiver Group",  "text" : "Trigger_Guard_Spring_Pin_Retaining_Pin" },
-      { "id" : "Trigger_Guard_Detent",  "parent" : "Lower_Receiver Group",  "text" : "Trigger_Guard_Detent" },
-      { "id" : "Trigger_Guard_Detent_Spring", "parent" : "Lower_Receiver Group",  "text" : "Trigger_Guard_Detent_Spring" },
-      { "id" : "Pistol_Grip",     "parent" : "Lower_Receiver Group",  "text" : "Pistol_Grip" },
-      { "id" : "Pistol_Grip_Screw",     "parent" : "Lower_Receiver Group",  "text" : "Pistol_Grip_Screw" },
-      { "id" : "Pistol_Grip_Lock_Washer",   "parent" : "Lower_Receiver Group",  "text" : "Pistol_Grip_Lock_Washer" },
-      { "id" : "Bolt_Catch Group",    "parent" : "Lower_Receiver Group",  "text" : "Bolt_Catch Group" },
-      { "id" : "Bolt_Catch",      "parent" : "Bolt_Catch Group",  "text" : "Bolt_Catch" },
-      { "id" : "Bolt_Catch_Spring_Pin",   "parent" : "Bolt_Catch Group",  "text" : "Bolt_Catch_Spring_Pin" },
-      { "id" : "Bolt_Catch_Plunger",    "parent" : "Bolt_Catch Group",  "text" : "Bolt_Catch_Plunger" },
-      { "id" : "Bolt_Catch_Spring",     "parent" : "Bolt_Catch Group",  "text" : "Bolt_Catch_Spring" },
-      { "id" : "Bolt_Catch_Bottom Group",   "parent" : "Bolt_Catch Group",  "text" : "Bolt_Catch_Bottom Group" },
-      { "id" : "Bolt_Catch_Top Group",  "parent" : "Bolt_Catch Group",  "text" : "Bolt_Catch_Top Group" },
-      { "id" : "PivotPinHead Group",  "parent" : "Lower_Receiver Group",  "text" : "PivotPinHead Group" },
-      { "id" : "PivotPinTail Group",  "parent" : "Lower_Receiver Group",  "text" : "PivotPinTail Group" },
-      { "id" : "TakedownPinHead Group",   "parent" : "Lower_Receiver Group",  "text" : "TakedownPinHead Group" },
-      { "id" : "TakedownPinTail Group",   "parent" : "Lower_Receiver Group",  "text" : "TakedownPinTail Group" },
-      // Upper_Receiver Group 3
-      { "id" : "Upper_Receiver Group",  "parent" : "M4 Carbine",    "text" : "Upper_Receiver Group" },
-      { "id" : "Upper_Receiver",    "parent" : "Upper_Receiver Group",  "text" : "Plunger_Assembly" },
-      { "id" : "Plunger_Assembly",    "parent" : "Upper_Receiver Group",  "text" : "Upper_Receiver" },
-      { "id" : "Pawl__Forward_Assist",  "parent" : "Upper_Receiver Group",  "text" : "Pawl__Forward_Assist" },
-      { "id" : "Forward_Assist_Spring",   "parent" : "Upper_Receiver Group",  "text" : "Forward_Assist_Spring" },
-      { "id" : "Forward_Assist_Spring1",  "parent" : "Upper_Receiver Group",  "text" : "Forward_Assist_Spring1" },
-      { "id" : "Pawl_Spring_Pin",     "parent" : "Upper_Receiver Group",  "text" : "Pawl_Spring_Pin" },
-      { "id" : "Pawl_Detent",     "parent" : "Upper_Receiver Group",  "text" : "Pawl_Detent" },
-      { "id" : "Pawl_Spring",     "parent" : "Upper_Receiver Group",  "text" : "Pawl_Spring" },
-      { "id" : "Cover_Pin",       "parent" : "Upper_Receiver Group",  "text" : "Cover_Pin" },
-      { "id" : "Ejection_Port_Cover",   "parent" : "Upper_Receiver Group",  "text" : "Ejection_Port_Cover" },
-      { "id" : "Cover_Spring",    "parent" : "Upper_Receiver Group",  "text" : "Cover_Spring" },
-      { "id" : "Cover_Retaining_Ring__OOC_Clip__CC",    "parent" : "Upper_Receiver Group",  "text" : "Cover_Retaining_Ring__OOC_Clip__CC" },
-      { "id" : "Chamber Group",     "parent" : "Upper_Receiver Group",  "text" : "Chamber Group" },
-      { "id" : "Charging_Handle Group",   "parent" : "Upper_Receiver Group",  "text" : "Charging_Handle Group" },
-      { "id" : "Charging_Handle",     "parent" : "Charging_Handle Group", "text" : "Charging_Handle" },
-      { "id" : "Charging_Handle_Latch",   "parent" : "Charging_Handle Group", "text" : "Charging_Handle_Latch" },
-      { "id" : "Charging_Handle_Spring",  "parent" : "Charging_Handle Group", "text" : "Charging_Handle_Spring" },
-      { "id" : "Charging_Handle_Spring_Pin",  "parent" : "Charging_Handle Group", "text" : "Charging_Handle_Spring_Pin" },
-      { "id" : "Key_and_Bolt_Carrier_Assembly Group", "parent" : "Upper_Receiver Group",  "text" : "Key_and_Bolt_Carrier_Assembly Group" },
-      { "id" : "Key_and_Bolt_Carrier_Assembly",   "parent" : "Key_and_Bolt_Carrier_Assembly Group", "text" : "Key_and_Bolt_Carrier_Assembly" },
-      { "id" : "Firing_Pin_Retaining_Pin",    "parent" : "Key_and_Bolt_Carrier_Assembly Group", "text" : "Firing_Pin_Retaining_Pin" },
-      { "id" : "Firing_Pin",    "parent" : "Key_and_Bolt_Carrier_Assembly Group", "text" : "Firing_Pin" },
-      { "id" : "Bolt Group",    "parent" : "Key_and_Bolt_Carrier_Assembly Group", "text" : "Bolt Group" },
-      { "id" : "Bolt",    "parent" : "Bolt Group",  "text" : "Bolt" },
-      { "id" : "Bolt_Cam_Pin",  "parent" : "Bolt Group",  "text" : "Bolt_Cam_Pin" },
-      { "id" : "Ejector_Spring_Pin",  "parent" : "Bolt Group",  "text" : "Ejector_Spring_Pin" },
-      { "id" : "Bolt_Ring",     "parent" : "Bolt Group",  "text" : "Bolt_Ring" },
-      { "id" : "Bolt_Ring2",    "parent" : "Bolt Group",  "text" : "Bolt_Ring2" },
-      { "id" : "Bolt_Ring1",    "parent" : "Bolt Group",  "text" : "Bolt_Ring1" },
-      { "id" : "Ejector",     "parent" : "Bolt Group",  "text" : "Ejector" },
-      { "id" : "Ejector_Spring",  "parent" : "Bolt Group",  "text" : "Ejector_Spring" },
-      { "id" : "Extractor",     "parent" : "Bolt Group",  "text" : "Extractorp" },
-      { "id" : "Extractor_Spring",  "parent" : "Bolt Group",  "text" : "Extractor_Spring" },
-      { "id" : "Extractor_Pin",   "parent" : "Bolt Group",  "text" : "Extractor_Pin" },
-      { "id" : "Casing4",     "parent" : "Bolt Group",  "text" : "Casing4" },
-      { "id" : "Projectile4",   "parent" : "Bolt Group",  "text" : "Projectile4" },
-      { "id" : "Gun_Carrying_Handle Group",   "parent" : "Upper_Receiver Group",  "text" : "Gun_Carrying_Handle Group" },
-      { "id" : "Gun_Carrying_Handle",   "parent" : "Gun_Carrying_Handle Group", "text" : "Gun_Carrying_Handle" },
-      { "id" : "Windage_Spring_Pin",    "parent" : "Gun_Carrying_Handle Group", "text" : "Windage_Spring_Pin" },
-      { "id" : "Rear_Sight_Screw",    "parent" : "Gun_Carrying_Handle Group", "text" : "Rear_Sight_Screw" },
-      { "id" : "Flat_Rear_Sight_Spring",  "parent" : "Gun_Carrying_Handle Group", "text" : "Flat_Rear_Sight_Spring" },
-      { "id" : "Rear_Sight_Base",     "parent" : "Gun_Carrying_Handle Group", "text" : "Rear_Sight_Base" },
-      { "id" : "Sight_Aperture",    "parent" : "Gun_Carrying_Handle Group", "text" : "Sight_Aperture" },
-      { "id" : "Windage_Knob",    "parent" : "Gun_Carrying_Handle Group", "text" : "Windage_Knob" },
-      { "id" : "Spring__Helical__Compression",    "parent" : "Gun_Carrying_Handle Group", "text" : "Spring__Helical__Compression" },
-      { "id" : "Knob",    "parent" : "Gun_Carrying_Handle Group", "text" : "Knob" },
-      { "id" : "Ball_Bearing1",   "parent" : "Gun_Carrying_Handle Group", "text" : "Ball_Bearing1" },
-      { "id" : "Elevating_Mechanism", "parent" : "Gun_Carrying_Handle Group", "text" : "Elevating_Mechanism" },
-      { "id" : "Spring2",     "parent" : "Gun_Carrying_Handle Group", "text" : "Spring2" },
-      { "id" : "Spring1",     "parent" : "Gun_Carrying_Handle Group", "text" : "Spring1" },
-      { "id" : "Index_Screw",   "parent" : "Gun_Carrying_Handle Group", "text" : "Index_Screw" },
-      { "id" : "Ball_Bearing",  "parent" : "Gun_Carrying_Handle Group", "text" : "Ball_Bearing" },
-      { "id" : "Pin_Spring",    "parent" : "Gun_Carrying_Handle Group", "text" : "Pin_Spring" },
-      { "id" : "Spring",    "parent" : "Gun_Carrying_Handle Group", "text" : "Spring" },
-      { "id" : "Ball_Bearing2",   "parent" : "Gun_Carrying_Handle Group", "text" : "Ball_Bearing2" },
-      { "id" : "Round_Nut1",    "parent" : "Gun_Carrying_Handle Group", "text" : "Round_Nut1" },
-      { "id" : "Washer1",     "parent" : "Gun_Carrying_Handle Group", "text" : "Washer1" },
-      { "id" : "Washer",    "parent" : "Gun_Carrying_Handle Group", "text" : "Washer" },
-      { "id" : "Clamping_Bar",  "parent" : "Gun_Carrying_Handle Group", "text" : "Clamping_Bar" },
-      { "id" : "Round_Nut",     "parent" : "Gun_Carrying_Handle Group", "text" : "Round_Nut" }
-    ],
-    'check_callback': true
-  },
-  "plugins" : [ "state", "contextmenu" ],
-  contextmenu : {
-    items : {
-      "Link" : {
-        "label" : "Link",
-        "action" : function (obj) { addLink(); }
-      },
-      "Unlink" : {
-        "label" : "Unlink",
-        "action" : function (obj) { removeLink(); }
-      },
-      "Info" : {
-        "label" : "Info",
-        "action" : function (obj) { getInfo(); }
-      },
-      "ccp" : false,
-      "create" : false,
-      "rename" : false,
-      "remove" : false
-    }
-  }
-});
+// $('#modelHierarchy').jstree({
+//   'core' : {
+//     'data' : [
+//     ],
+//     'check_callback': true
+//   },
+//   "plugins" : [ "state", "contextmenu" ],
+//   contextmenu : {
+//     items : {
+//       "Link" : {
+//         "label" : "Link",
+//         "action" : function (obj) { addLink(); }
+//       },
+//       "Unlink" : {
+//         "label" : "Unlink",
+//         "action" : function (obj) { removeLink(); }
+//       },
+//       "Info" : {
+//         "label" : "Info",
+//         "action" : function (obj) { getInfo(); }
+//       },
+//       "ccp" : false,
+//       "create" : false,
+//       "rename" : false,
+//       "remove" : false
+//     }
+//   }
+// });
 
 $('#modelHierarchy').on('changed.jstree', function(e, data2) {
   var i, j, r = [ ];

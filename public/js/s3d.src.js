@@ -6,12 +6,12 @@ var G2JS = require('../../scripts/grouping2js'),
     $ = require('../../scripts/node_modules/jquery');
 
 var updateModelTree = function(treeList) {
-  $('#tree').jstree({
+  $('#modelHierarchy').jstree({
     core : {
         data : treeList,
         check_callback: true
     },
-    plugins : [ 'state', 'contextmenu' ], //XXX consider not using state...
+    plugins : [ 'contextmenu' ],
     contextmenu : {
         items : { },
         ccp : false,
@@ -56,9 +56,6 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
     }
 
     return treeList;
-};
-
-var showListOfS3D = function(names) {
 };
 
 var loadS3D = function(url) {
@@ -107,6 +104,9 @@ var getListOfDAE = function(url) {
     .fail(function(jqXHR, textStatus, errorThrown) {
       console.warn(textStatus + ':' + errorThrown);
     });
+};
+
+var showListOfS3D = function(names) {
 };
 
 window.$ = $;
