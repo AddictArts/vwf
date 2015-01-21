@@ -435,7 +435,7 @@ var notCuidId = 0, // cuid npm package for collision resistant
             method: hreq.method,
             headers: hreq.headers,
             body: '',
-            xhr: hreq.headers['x-requested-with'] == 'XMLHttpRequest',
+            xhr: hreq.headers[ 'x-requested-with' ] == 'XMLHttpRequest',
             reqPath: decodeURIComponent(pltqs),
             contentType: req2ContentType(pltqs, hreq.headers[ 'content-type' ]),
             queryString: getTheQueryString(hreq.url),

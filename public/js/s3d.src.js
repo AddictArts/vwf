@@ -64,7 +64,7 @@ var loadS3D = function(url) {
     .done(function(data) {
         var xmlString;
 
-        if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString( data );
+        if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
         else xmlString = data;
 
         // console.log(xmlString);
@@ -81,58 +81,54 @@ var loadS3D = function(url) {
     });
 };
 
-var getListOfS3D = function(url) {
-    $.ajax({ url: 'http://localhost:3001/file/list/s3d', type: 'get', cache: false })
-    .done(function(data) {
-        console.log(data[ 0 ]);
-        console.log(data[ 1 ]);
-
-        // loadS3D(data[ 0 ]);
-        loadS3D(data[ 1 ]);
+var getListOfS3D = function() {
+    return $.ajax({
+        url: 'http://localhost:3001/file/list/s3d',
+        type: 'get',
+        cache: false
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      console.warn(textStatus + ':' + errorThrown);
-    });
+    .fail(ajaxFail);
 };
 
-var getListOfDAE = function(url) {
-    $.ajax({ url: 'http://localhost:3001/file/list/dae', type: 'get', cache: false })
-    .done(function(data) {
-        console.log(data[ 0 ]);
-        console.log(data[ 1 ]);
+var getListOfDAE = function() {
+    return $.ajax({
+        url: 'http://localhost:3001/file/list/dae',
+        type: 'get',
+        cache: false
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      console.warn(textStatus + ':' + errorThrown);
-    });
+    .fail(ajaxFail);
 };
 
-var showListOfS3D = function(names) {
+var addDataToFolder = function(data, folder) {
+    console.log(data[ 0 ]);
+    console.log(data[ 1 ]);
+
+    data.forEach(function(url) {
+        var lslashIdx = url.lastIndexOf('/'),
+            name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
+
+        folder.add({ f: function() { } }, 'f').name(name);
+    });
 };
 
 var createAssetMenuSelectionGUI = function() {
     var assetGUI = new dat.GUI(),
-        assetMenu = { };
+        assetMenu = { },
+        data;
 
     assetGUI.name = 'Asset Menu';
-    // assetGUI.add(assetMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
-    // assetGUI.add(assetMenu, 'reset').name('Reset');
-    // assetGUI.add(assetMenu, 'path').name('Path');
+    // assetGUI.domElement.style.width = '300px';
 
-    var s3dFolder = assetGUI.addFolder('S3D');
-    var floraFolder = assetGUI.addFolder('Flora');
-    var daeFolder = assetGUI.addFolder('COLLADA (dae)');
+    var s3dFolder = assetGUI.addFolder('S3D'),
+        floraFolder = assetGUI.addFolder('Flora'),
+        daeFolder = assetGUI.addFolder('COLLADA (dae)');
 
-    // var s3dFolderRef = assetGUI.add(assetMenu, 'saveExercise').name('Save Exercise');
+    getListOfDAE().done(function(data) { addDataToFolder(data, daeFolder); });
+    getListOfS3D().done(function(data) { addDataToFolder(data, s3dFolder); });
+};
 
-    // s3dFolder.add(assetMenu.camxyz, 'default').name('Default');
-
-    // cameraFolder.add(assetMenu.camxyz, 'x').onFinishChange(
-    //    function(newX) { vwf.setProperty(vwfapp.cameraId, 'translation', [ newX, assetMenu.camxyz.y, assetMenu.camxyz.z ]); }
-    // );
-    // cameraFolder.add(assetMenu.camxyz, 'rotation').onFinishChange(function(val) {
-    //     var rx = assetMenu.camxyz.rotX? 1 : 0;
-    //     if (rx || ry || rz) vwf_view.kernel.callMethod(vwfapp.cameraId, 'rotateBy', [ [ rx, ry, rz, val ], 0 ]);
-    // });
+var ajaxFail = function(jqXHR, textStatus, errorThrown) {
+  console.warn(textStatus + ':' + errorThrown);
 };
 
 window.$ = $;
