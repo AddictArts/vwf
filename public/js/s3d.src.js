@@ -6,20 +6,24 @@ var G2JS = require('../../scripts/grouping2js'),
     $ = require('../../scripts/node_modules/jquery');
 
 var updateModelTree = function(treeList) {
-  $('#modelHierarchy').jstree({
-    core : {
-        data : treeList,
-        check_callback: true
-    },
-    plugins : [ 'contextmenu' ],
-    contextmenu : {
-        items : { },
-        ccp : false,
-        create : false,
-        rename : false,
-        remove : false
-    }
-  });
+    var instance = $('#modelHierarchy').jstree(true); 
+
+    if (instance) instance.destroy();
+
+    $('#modelHierarchy').jstree({
+        core : {
+            data : treeList,
+            check_callback: true
+        },
+        plugins : [ 'contextmenu' ],
+        contextmenu : {
+            items : { },
+            ccp : false,
+            create : false,
+            rename : false,
+            remove : false
+        }
+    });
 };
 
 var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
@@ -99,32 +103,115 @@ var getListOfDAE = function() {
     .fail(ajaxFail);
 };
 
-var addDataToFolder = function(data, folder) {
-    console.log(data[ 0 ]);
-    console.log(data[ 1 ]);
+var getListOfFlora = function() {
+    return $.ajax({
+        url: 'http://localhost:3001/file/list/flora',
+        type: 'get',
+        cache: false
+    })
+    .fail(ajaxFail);
+};
+
+var createS3DRepoTree = function(data) {
+    var treeList = [{
+            id: 'S3D Repository',
+            parent: '#',
+            text: 'S3D Repository'
+        }],
+        treeId2Url = { };
 
     data.forEach(function(url) {
+        console.info('Adding: ' + url + ' to s3d repo tree');
+
         var lslashIdx = url.lastIndexOf('/'),
             name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
 
-        folder.add({ f: function() { } }, 'f').name(name);
+        treeList.push({
+            id: name,
+            parent: 'S3D Repository',
+            text: name
+        });
+        treeId2Url[ name ] = url;
+    });
+    $('#s3ds').jstree({
+        core : {
+            multiple : false,
+            data : treeList,
+            check_callback: true
+        },
+        plugins : [ ]
+    }).on('changed.jstree', function(jqe, data) {
+        if (data.action == 'select_node') {
+            var id = data.selected[ 0 ];
+
+            console.info('Loading: ' + id + ' from:' + treeId2Url[ id ]);
+            loadS3D(treeId2Url[ id ]);
+        }
+    });
+};
+
+var createDAERepoTree = function(data) {
+    var treeList = [{
+        id: '3D Repository',
+        parent: '#',
+        text: '3D Repository'
+    }];
+
+    data.forEach(function(url) {
+        console.info('Adding: ' + url + ' to dae repo tree');
+
+        var lslashIdx = url.lastIndexOf('/'),
+            name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
+
+        treeList.push({
+            id: name,
+            parent: '3D Repository',
+            text: name
+        });
+    });
+    $('#daes').jstree({
+        core : {
+            multiple : false,
+            data : treeList,
+            check_callback: true
+        },
+        plugins : [ ]
+    });
+};
+
+var createFloraRepoTree = function(data) {
+    var treeList = [{
+        id: 'Flora Repository',
+        parent: '#',
+        text: 'Flora Repository'
+    }];
+
+    data.forEach(function(url) {
+        console.info('Adding: ' + url + ' to flora repo tree');
+
+        var lslashIdx = url.lastIndexOf('/'),
+            name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
+
+        treeList.push({
+            id: name,
+            parent: 'Flora Repository',
+            text: name
+        });
+    });
+    $('#floras').jstree({
+        core : {
+            multiple : false,
+            data : treeList,
+            check_callback: true
+        },
+        plugins : [ ]
     });
 };
 
 var createAssetMenuSelectionGUI = function() {
-    var assetGUI = new dat.GUI(),
-        assetMenu = { },
-        data;
-
-    assetGUI.name = 'Asset Menu';
-    // assetGUI.domElement.style.width = '300px';
-
-    var s3dFolder = assetGUI.addFolder('S3D'),
-        floraFolder = assetGUI.addFolder('Flora'),
-        daeFolder = assetGUI.addFolder('COLLADA (dae)');
-
-    getListOfDAE().done(function(data) { addDataToFolder(data, daeFolder); });
-    getListOfS3D().done(function(data) { addDataToFolder(data, s3dFolder); });
+    getListOfDAE().done(createDAERepoTree);
+    getListOfFlora().done(createFloraRepoTree);
+    getListOfS3D().done(createS3DRepoTree);
 };
 
 var ajaxFail = function(jqXHR, textStatus, errorThrown) {
@@ -135,6 +222,5 @@ window.$ = $;
 window.jQuery = $;
 window.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
-    getListOfS3D();
     createAssetMenuSelectionGUI();
 });

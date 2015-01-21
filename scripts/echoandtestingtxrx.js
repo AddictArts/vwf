@@ -127,6 +127,15 @@ routes.get('/file/list/s3d', function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 
+routes.get('/file/list/flora', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+
+    var data = [ '/SAVE/testdata/m4.flr' ];
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
 routes.get('/file/list/dae', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
