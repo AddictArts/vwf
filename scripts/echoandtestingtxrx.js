@@ -118,7 +118,7 @@ routes.put(routes.PUTANY, function(req, res) {
     res.send(data, 200, PLAINt);
 });
 
-routes.get('/file/list/s3d', function(req, res) {
+routes.get('/listfiles/s3d/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = [ '/SAVE/testdata/s3d/ShootingRange.s3d', '/SAVE/testdata/s3d/M4.s3d' ];
@@ -127,7 +127,7 @@ routes.get('/file/list/s3d', function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 
-routes.get('/file/list/flora', function(req, res) {
+routes.get('/listfiles/flora/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = [ '/SAVE/testdata/m4.flr' ];
@@ -136,7 +136,7 @@ routes.get('/file/list/flora', function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 
-routes.get('/file/list/dae', function(req, res) {
+routes.get('/listfiles/collada/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = [ '/SAVE/models/environments/range/ShootingRange.dae', '/SAVE/models/weapons/M4/M4_noHierarchy.dae' ];

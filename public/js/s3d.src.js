@@ -6,27 +6,6 @@ var G2JS = require('../../scripts/grouping2js'),
     $ = require('../../scripts/node_modules/jquery'),
     hostname;
 
-var updateModelTree = function(treeList) {
-    var instance = $('#modelHierarchy').jstree(true); 
-
-    if (instance) instance.destroy();
-
-    $('#modelHierarchy').jstree({
-        core : {
-            data : treeList,
-            check_callback: true
-        },
-        plugins : [ 'contextmenu' ],
-        contextmenu : {
-            items : { },
-            ccp : false,
-            create : false,
-            rename : false,
-            remove : false
-        }
-    });
-};
-
 var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
     var treeList = treeList || [ ],
         parent = parent || groupingObj.name;
@@ -63,8 +42,34 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
     return treeList;
 };
 
+var updateModelTree = function(treeList) {
+    // var instance = $('#assetHierarchy').jstree(true); 
+
+    // if (instance) instance.destroy();
+
+    $('#assetHierarchy').jstree({
+        core : {
+            data : treeList,
+            check_callback: true
+        },
+        plugins : [ 'contextmenu' ],
+        contextmenu : {
+            items : { },
+            ccp : false,
+            create : false,
+            rename : false,
+            remove : false
+        }
+    });
+};
+
+// $.ajax({ url:  '/SAVE/testdata/s3d/ShootingRange.xml', type: 'get', cache: false })
 var loadS3D = function(url) {
-    // $.ajax({ url:  '/SAVE/testdata/s3d/ShootingRange.xml', type: 'get', cache: false })
+    var instance = $('#assetHierarchy').jstree(true); 
+
+    if (instance) instance.destroy();
+
+    $('#assetHierarchy').html('<p>Loading selected asset...</p>');
     $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
         var xmlString;
@@ -72,14 +77,10 @@ var loadS3D = function(url) {
         if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
         else xmlString = data;
 
-        // console.log(xmlString);
-
         var grouping = G2JS.g2js(xmlString),
             treeList = transformGroupingTojsTree(grouping);
 
         updateModelTree(treeList);
-        // console.log(grouping);
-        // console.log(G2JS.g2html(xmlString).text);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
       console.warn(textStatus + ':' + errorThrown);
@@ -87,6 +88,26 @@ var loadS3D = function(url) {
 };
 
 var loadDAE = function(url) {
+    var instance = $('#assetHierarchy').jstree(true); 
+
+    if (instance) instance.destroy();
+
+    $('#assetHierarchy').html('<p>Loading selected asset...</p>');
+    $.ajax({ url: url, type: 'get', cache: false })
+    .done(function(data) {
+        var xmlString;
+
+        if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
+        else xmlString = data;
+
+        var grouping = G2JS.dae2g(xmlString),
+            treeList = transformGroupingTojsTree(grouping);
+
+        updateModelTree(treeList);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.warn(textStatus + ':' + errorThrown);
+    });
 };
 
 var loadFlora = function(url) {
@@ -94,7 +115,7 @@ var loadFlora = function(url) {
 
 var getListOfRepoFiles = function(type) {
     return $.ajax({
-        url: 'http://' + hostname + ':3001/file/list/' + type,
+        url: 'http://' + hostname + ':3001/listfiles/' + type + '/json',
         type: 'get',
         cache: false
     })
@@ -154,7 +175,7 @@ var createFloraRepoTree = function(data) {
 
 var createAssetMenuSelectionGUI = function() {
     getListOfRepoFiles('s3d').done(createS3DRepoTree);
-    getListOfRepoFiles('dae').done(createDAERepoTree);
+    getListOfRepoFiles('collada').done(createDAERepoTree);
     getListOfRepoFiles('flora').done(createFloraRepoTree);
 };
 

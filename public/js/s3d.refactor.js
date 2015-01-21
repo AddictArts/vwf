@@ -395,7 +395,7 @@ function addLinkToTable(currentClass, currentNode) {
 
 function createAndAddLink() {
   //selectedClasses = $('#taxonomy').jstree('get_selected');
-  //selectedNodes = $('#modelHierarchy').jstree('get_selected');
+  //selectedNodes = $('#assetHierarchy').jstree('get_selected');
   console.log("createAndAddLinki(): " + JSON.stringify(selectedClasses));
   //var currentClass = selectedClasses[0];
   //var currentNode = selectedNodes[0];
@@ -414,7 +414,7 @@ function addLink() {
   console.log("The host name is:" + hostName);
   selectedClasses = $('#taxonomy').jstree('get_selected');
   console.log("Currently selected item count in Taxonomy tree:" + selectedClasses.length);
-  selectedNodes = $('#modelHierarchy').jstree('get_selected');
+  selectedNodes = $('#assetHierarchy').jstree('get_selected');
   console.log("Currently selected item count in Model Hierarchy tree:" + selectedNodes.length);
 
   if (selectedClasses.length == 0) {
@@ -442,7 +442,7 @@ function removeLink() {
 
   selectedClasses = $('#taxonomy').jstree('get_selected');
   console.log("Currently selected item count in Taxonomy tree:" + selectedClasses.length);
-  selectedNodes = $('#modelHierarchy').jstree('get_selected');
+  selectedNodes = $('#assetHierarchy').jstree('get_selected');
   console.log("Currently selected item count in Model Hierarchy tree:" + selectedNodes.length);
 
   if (selectedClasses.length == 0) {
@@ -565,7 +565,7 @@ function saveData() {
   .done(function(data) { console.log("Result from PUT operation: " + data)  });
 }
 
-// $('#modelHierarchy').jstree({
+// $('#assetHierarchy').jstree({
 //   'core' : {
 //     'data' : [
 //     ],
@@ -594,7 +594,7 @@ function saveData() {
 //   }
 // });
 
-$('#modelHierarchy').on('changed.jstree', function(e, data2) {
+$('#assetHierarchy').on('changed.jstree', function(e, data2) {
   var i, j, r = [ ];
 
   for (i = 0, j = data2.selected.length; i < j; i++) {
