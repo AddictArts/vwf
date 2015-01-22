@@ -270,6 +270,11 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
             check_callback: true
         }
     }).on('changed.jstree', function(jqe, data) {
+        if (data.node.parent == '#') { // The repository titled root deselect if selected
+            $.jstree.reference(elemSelector).deselect_node(data.selected);
+            return;
+        }
+
         if (data.action == 'select_node') {
             var id = data.selected[ 0 ];
 
@@ -297,7 +302,7 @@ var createFloraRepoTree = function(data) {
     createRepoTree(data, '#floras', 'Flora', loadFlora);
 };
 
-var createAssetMenuSelectionGUI = function() {
+var createAssetTreeSelectionGUI = function() {
     getListOfRepoFiles('s3d').done(createS3DRepoTree);
     getListOfRepoFiles('collada').done(createDAERepoTree);
     getListOfRepoFiles('flora').done(createFloraRepoTree);
@@ -312,5 +317,5 @@ window.jQuery = $;
 window.addEventListener('DOMContentLoaded', function(event) {
     console.log('DOM fully loaded and parsed');
     hostname = window.document.location.hostname;
-    createAssetMenuSelectionGUI();
+    createAssetTreeSelectionGUI();
 });
