@@ -57,7 +57,6 @@ function dae2grouping(options) {
 
             currentGroup = { name: node.attributes.name, node: node.attributes.name, parent: undefined }; // parent is a temporary reference, removed on ending the group
             currentPart = node.attributes.name;
-
             break;
         }
     };

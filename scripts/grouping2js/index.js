@@ -4,6 +4,7 @@
 
 var g2js = require('./lib/grouping2js')({ strict: true }),
     dae2g = require('./lib/dae2grouping')({ strict: true }),
+    s2js = require('./lib/semantic2js')({ strict: true }),
     pretty = require('js-object-pretty-print').pretty,
     beautify_html = require('js-beautify').html;
 
@@ -33,6 +34,19 @@ var groupingObj2xml = function(groupingObj) {
 
     groupingXml = groupsparts2xml(groupingObj, groupingXml);
     return groupingXml + '</grouping>';
+};
+
+var semantic2html = function(sourceXml) {
+    var semanticObj = g2js.grouping2js(sourceXml);
+
+    return semanticObj2html(semanticObj);
+};
+
+var semanticObj2html = function(semanticObj) {
+    var text = pretty(semanticObj),
+        html = simpleText2html(text);
+
+    return { html: html, text: text };
 };
 
 // private
@@ -75,6 +89,9 @@ module.exports = {
     go2xml: groupingObj2xml,
     gx2html: groupingXml2html,
     dae2g: dae2g.dae2grouping,
+    s2js: s2js.semantic2js,
+    s2html: semantic2html,
+    so2html: semanticObj2html,
     s3dParser: g2js.parser,
     daeParser: dae2g.parser
 };

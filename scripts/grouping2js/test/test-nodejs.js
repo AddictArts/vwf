@@ -9,6 +9,8 @@ var g2js = require('../index.js'),
     groupingObj2html = g2js.go2html,
     groupingObj2xml = g2js.go2xml,
     groupingXml2html = g2js.gx2html,
+    semantic2js = g2js.s2js,
+    semanticObj2html = g2js.so2html,
     s3dp = g2js.s3dParser,
     daep = g2js.daeParser;
 
@@ -100,3 +102,31 @@ dae = '<library_visual_scenes>\
 try {
     go = dae2grouping(dae);
 } catch(err) { }
+
+console.log('================================================\nsemantic2js s3d tests\n================================================');
+
+var s3d = '<?xml version="1.0" encoding="utf-8"?>\
+    <!-- Copyright 2015, SRI International -->\
+    <S3D>\
+        <head>\
+            <description>Semantic 3D mapping file for: Shooting Range environment</description>\
+            <author>cgreuel</author>\
+            <created>2014-08-13</created>\
+            <modified>2014-11-13</modified>\
+        </head>\
+        <flora_base id="M4_ont" uri="../../../knowledge/weapons/M4/m4.flr" />\
+        <semantic_mapping>\
+            <asset name="ShootingRange" uri="/SAVE/models/environments/range/ShootingRange.dae" sid="M4_ont" flora_ref="ShootingRange">\
+                <object name="targets" node="targets" sid="M4_ont" flora_ref="ShootingTarget" />\
+            </asset>\
+        </semantic_mapping>\
+        <grouping name="ShootingRange">\
+            <group name="environment" node="environment">\
+                <part node="targets"/>\
+            </group>\
+        </grouping>\
+    </S3D>',
+    so = semantic2js(s3d);
+
+o = semanticObj2html(so);
+console.log(o.text);
