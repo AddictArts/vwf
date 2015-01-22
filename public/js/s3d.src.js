@@ -45,6 +45,7 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
 var updateModelTree = function(treeList) {
     $('#assetHierarchy').jstree({
         core : {
+            multiple : false,
             data : treeList,
             check_callback: true
         },
@@ -72,7 +73,7 @@ var updateModelTree = function(treeList) {
     });
 };
 
-var updateTaxonomyTree =  function(tax) {
+var createTaxonomyTree =  function(tax) {
     var taxdiv = document.getElementById("taxonomy");
     var classList = document.createElement("ul");
     var rootNode = document.createElement("li");
@@ -89,6 +90,7 @@ var updateTaxonomyTree =  function(tax) {
     taxdiv.appendChild(classList);
     $('#taxonomy').jstree({
         core : {
+            multiple : false,
             check_callback: true
         },
         plugins : [ 'contextmenu' ],
@@ -111,6 +113,28 @@ var updateTaxonomyTree =  function(tax) {
                 rename : false,
                 remove : false
             }
+        }
+    }).on('changed.jstree', function(jqe, data2) {
+        var r = [ ];
+ 
+        window.selectedClasses = [ ]; // reset the selected classes, from s3d.refactor.js todo: future refactor
+
+        for (var i = 0, j = data2.selected.length; i < j; i++) {
+            r.push(data2.instance.get_node(data2.selected[ i ]).text);
+            window.selectedClasses.push(data2.instance.get_node(data2.selected[ i ]).text); // from s3d.refactor.js todo: future refactor
+        }
+
+        console.log('Selected: ' + r.join(', '));
+        console.log("on Selection():" + JSON.stringify(window.selectedClasses)); // from s3d.refactor.js todo: future refactor
+        window.currentClass = r.join(', '); // from s3d.refactor.js todo: future refactor
+
+        var leafNode = $('#taxonomy').jstree('is_leaf', data2.selected[ 0 ]);
+
+        window.floraClass = data2.selected[ 0 ]; // from s3d.refactor.js todo: future refactor
+        console.log("Is Leaf: " + leafNode);
+
+        if (leafNode == true) {
+            window.getSubClasses(r.join(', ')); // from s3d.refactor.js todo: future refactor
         }
     });
 };
@@ -187,7 +211,7 @@ var getTaxonomyRoots = function(data) {
         if (Object.prototype.toString.call(data) != '[object Array]') data = JSON.parse(data);
 
         console.info('Fetched taxonomy roots: ' + JSON.stringify(data));
-        updateTaxonomyTree(data); // from s3d.refactor.js todo: future refactor
+        createTaxonomyTree(data); // from s3d.refactor.js todo: future refactor
     })
     .fail(ajaxFail);
 };

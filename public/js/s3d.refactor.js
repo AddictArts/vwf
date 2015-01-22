@@ -1,3 +1,5 @@
+//--------------Initialization-------------------------
+// Global variables
 
 var selectedNodes = [ ]; //This is the array that will have the JSTree selections from the 3D model hierarchy
 var currentNode;
@@ -7,6 +9,18 @@ var tableBody;    //Global var for Semantic Link table body
 var classTable;     //Global var for Class details table
 var classTableBody; //Global var fro class details table body
 var hostName = document.location.hostname;
+
+var selectedClasses = [ ];
+var currentClass; //global var for currently selected class
+var floraClass;
+var linkCollection = [ ];
+var s3dfile = "";   //global var for storing the .s3d file content
+var xmlhttp = createCORSRequest('GET', "http://"+hostName+":8080/flora");
+
+if (!xmlhttp) {
+  throw new Error('CORS not supported');
+}
+
 
 //--------------Flora/XSB Loading----------------------
 //--------------Utility functions----------------------
@@ -228,20 +242,6 @@ function loadClassTable() {
   tableDiv.appendChild(classTable);
 }
 
-//--------------Initialization-------------------------
-// Global variables
-//     var xmlhttp = getXmlHttp();
-var selectedClasses = [ ];
-    var currentClass; //global var for currently selected class
-var floraClass;
-var linkCollection = [ ];
-var s3dfile = "";   //global var for storing the .s3d file content
-var xmlhttp = createCORSRequest('GET', "http://"+hostName+":8080/flora");
-
-if (!xmlhttp) {
-  throw new Error('CORS not supported');
-}
-    
 //--------------UI Control Logic-----------------------
 function createTableRow(currentClass, currentNode) {
   var tableRow = document.createElement( 'TR' );
@@ -462,33 +462,6 @@ $('#assetHierarchy').on('changed.jstree', function(e, data2) {
   console.log('Selected: ' + r.join(', '));
   currentNode = r.join(', ');
   selectedNodes = r;
-});
-
-$('#taxonomy').on('changed.jstree', function(e, data2) {
-  var i, j, r = [ ];
-  selectedClasses = [ ]; //Reset the selected classes
-
-  for (i = 0, j = data2.selected.length; i < j; i++) {
-    r.push(data2.instance.get_node(data2.selected[ i ]).text);
-    selectedClasses.push(data2.instance.get_node(data2.selected[ i ]).text);
-  }
-
-  console.log('Selected: ' + r.join(', '));
-  // selectedClasses = r;
-  console.log("on Selection():" + JSON.stringify(selectedClasses));
-  currentClass = r.join(', ');
-
-  if (data2.selected.length == 1) {
-    //  console.log("Only one item selected!");        //One item selected so expand subclasses
-    //  addSubclassesToTree();   //Expand Subclasses
-    var leafNode = $('#taxonomy').jstree('is_leaf', data2.selected[ 0 ]);
-    floraClass = data2.selected[ 0 ];
-    console.log("Is Leaf: " + leafNode);
-
-    if (leafNode == true) {
-      getSubClasses(r.join(', '));
-    }
-  }
 });
 
 //--------------Load Table-----------------------------
