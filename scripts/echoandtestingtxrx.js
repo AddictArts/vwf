@@ -147,8 +147,22 @@ routes.get('/listfiles/collada/json', function(req, res) {
 
 routes.get('/flora/server', function(req, res) {
     log('...handling route GET ' + req.reqPath);
+
+    var param = req.param,
+        method = param[ 'method' ],
+        data;
+
+    switch (method) {
+    case 'loadFile':
+        data = [ ];
+        break;
+    case 'getTaxonomyRoots':
+        data = [ "ChargingHandlePosition", "Action", "SwitchPosition", "ActionType", "PhysicalEntity", "EnumeratedType", "PinState", "BoltCarrierGroupState", "RoundLocation", "ActionParameter" ];
+        break;
+    }
+
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send('', 200, PLAINt);
+    res.send(JSON.stringify(data), 200, JSONt);
 });
 
 routes.get('/PutExercise/generateSolution', function(req, res) {

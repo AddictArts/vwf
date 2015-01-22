@@ -72,6 +72,49 @@ var updateModelTree = function(treeList) {
     });
 };
 
+var updateTaxonomyTree =  function(tax) {
+    var taxdiv = document.getElementById("taxonomy");
+    var classList = document.createElement("ul");
+    var rootNode = document.createElement("li");
+
+    rootNode.appendChild(document.createTextNode("m4"));
+
+    var elementList = document.createElement("ul");
+
+    rootNode.appendChild(elementList);
+    classList.appendChild(rootNode);
+
+    for (var i = 0; i < tax.length; i++) elementList.appendChild(createListItem(tax[ i ]));
+
+    taxdiv.appendChild(classList);
+    $('#taxonomy').jstree({
+        core : {
+            check_callback: true
+        },
+        plugins : [ 'contextmenu' ],
+        contextmenu : {
+            items : {
+                Link : {
+                    label : 'Link',
+                    action : function(obj) { window.addLink(); } // from s3d.refactor.js todo: future refactor
+                },
+                Unlink : {
+                    label : 'Unlink',
+                    action : function(obj) { window.removeLink(); } // from s3d.refactor.js todo: future refactor
+                },
+                Info : {
+                    label : 'Info',
+                    action : function(obj) { window.getInfo(); } // from s3d.refactor.js todo: future refactor
+                },
+                ccp : false,
+                create : false,
+                rename : false,
+                remove : false
+            }
+        }
+    });
+};
+
 // $.ajax({ url:  '/SAVE/testdata/s3d/ShootingRange.xml', type: 'get', cache: false })
 var loadS3D = function(url, s3dname) {
     var instance = $('#assetHierarchy').jstree(true); 
@@ -131,8 +174,20 @@ var loadFlora = function(url, floraname) {
     console.info('Requesting ' + floraname);
     $('#taxonomy').html('<p>Loading selected taxonomy...</p>');
     $.ajax({ url: url, type: 'get', cache: false })
+    .done(getTaxonomyRoots)
+    .fail(ajaxFail);
+};
+
+// -> ["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]
+var getTaxonomyRoots = function(data) {
+    var url = 'http://' + hostname + ':3001/flora/server?method=getTaxonomyRoots';
+
+    $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
-        window.getTaxonomyRoots(); // from s3d.refactor.js todo: future refactor
+        if (Object.prototype.toString.call(data) != '[object Array]') data = JSON.parse(data);
+
+        console.info('Fetched taxonomy roots: ' + JSON.stringify(data));
+        updateTaxonomyTree(data); // from s3d.refactor.js todo: future refactor
     })
     .fail(ajaxFail);
 };
@@ -191,14 +246,20 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
 };
 
 var createS3DRepoTree = function(data) {
+    if (Object.prototype.toString.call(data) != '[object Array]') console.warn('S3D listfiles request not an array, data: ' + Object.prototype.toString.call(data));
+
     createRepoTree(data, '#s3ds', 'S3D', loadS3D);
 };
 
 var createDAERepoTree = function(data) {
+    if (Object.prototype.toString.call(data) != '[object Array]') console.warn('S3D listfiles request not an array, data: ' + Object.prototype.toString.call(data));
+
     createRepoTree(data, '#daes', '3D', loadDAE);
 };
 
 var createFloraRepoTree = function(data) {
+    if (Object.prototype.toString.call(data) != '[object Array]') console.warn('S3D listfiles request not an array, data: ' + Object.prototype.toString.call(data));
+
     createRepoTree(data, '#floras', 'Flora', loadFlora);
 };
 

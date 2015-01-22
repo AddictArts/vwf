@@ -64,91 +64,7 @@ function createListItem(floraTerm) {
   return item;
 }
 
-function showTaxonomy() {
-  console.log("Start Show Taxonomy:- readyState: " + this.readyState +" status: " + this.status);
-
-  if (this.readyState == 4 && this.status == 200) {
-    //    console.log('showTaxonomy');
-    var jsontax = xmlhttp.responseText;
-
-
-jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]';
-
-
-    console.log('taxonomy: ' + jsontax);
-    var taxdiv = document.getElementById("taxonomy");
-    var tax = JSON.parse(jsontax);
-    var classList = document.createElement("ul");
-    var rootNode = document.createElement("li");
-    rootNode.appendChild(document.createTextNode("m4"));
-    var elementList = document.createElement("ul");
-    rootNode.appendChild(elementList);
-    classList.appendChild(rootNode);
-            
-    for (var i = 0; i < tax.length; i++) {
-      elementList.appendChild(createListItem(tax[ i ]));
-    }
-
-    taxdiv.appendChild(classList);
-    $('#taxonomy').jstree({
-        'core' : {
-          'check_callback': true
-        },
-        "plugins" : [ "contextmenu" ],
-        contextmenu : {
-          items : {
-            "Link" : {
-              "label" : "Link",
-              "action" : function(obj) { addLink(); }
-            },
-            "Unlink" : {
-              "label" : "Unlink",
-              "action" : function(obj) { removeLink(); }
-            },
-            "Info" : {
-              "label" : "Info",
-              "action" : function(obj) { getInfo(); }
-            },
-            "ccp" : false,
-            "create" : false,
-            "rename" : false,
-            "remove" : false
-          }
-        }
-    });
-    /*
-    $('#taxonomy').jstree({
-                "core" : {
-                "themes" : {
-                    "stripes" : true
-                }
-                },
-                "checkbox" : {
-                "keep_selected_style" : false
-                },
-                "plugins" : [ "wholerow", "checkbox" ]
-            });
-    */
-  } else if (this.readyState == 4) {
-    // error case
-    console.log("Show Taxonomy:- Error, code: " + this.status + " text: " + xmlhttp.responseText);
-  } else {
-    // wait for the call to complete
-    //console.log("Waiting...");
-  }
-}
-
 //--------------Server call (controller) functions------
-
-// ["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]
-function getTaxonomyRoots() {
-  xmlhttp.onreadystatechange = showTaxonomy;
-  // http://www.semantic3d.com:8080/flora/server?method=getTaxonomyRoots
-  // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getTaxonomyRoots", true);
-  xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getTaxonomyRoots", true);
-  xmlhttp.send();
-  console.log("Loading roots done");
-}
 
 // ChargingHandlePosition => {"superclass":"ChargingHandlePosition","subclasses":[]}
 // Action => {"superclass":"Action","subclasses":["Pull","PullAndHold","Attach","TightenScrew","Extract","Point","Insert","Lift","Open","Inspect","PushAndHold","Close","Push","Detach","SelectSwitchPosition","Release","Press","LoosenScrew"]}
@@ -170,13 +86,6 @@ function getDetails(id) {
   // http://www.semantic3d.com:8080/flora/server?method=getClassDetails&id=ChargingHandlePosition
   // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
   xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
-  xmlhttp.send();
-}
-
-function query(qstring) {
-  console.log('query: ' + qstring);
-  xmlhttp.onreadystatechange = showQueryResult;
-  xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=query&queryString=" + encodeURIComponent(qstring), true);
   xmlhttp.send();
 }
 
