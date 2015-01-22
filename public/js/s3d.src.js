@@ -50,7 +50,20 @@ var updateModelTree = function(treeList) {
         },
         plugins : [ 'contextmenu' ],
         contextmenu : {
-            items : { },
+            items : {
+                Link : {
+                    label : 'Link',
+                    action : function (obj) { window.addLink(); } // from s3d.refactor.js todo: future refactor
+                },
+                Unlink : {
+                    label : 'Unlink',
+                    action : function (obj) { window.removeLink(); } // from s3d.refactor.js todo: future refactor
+                },
+                Info : {
+                    label : 'Info',
+                    action : function (obj) { window.getInfo(); } // from s3d.refactor.js todo: future refactor
+                },
+            },
             ccp : false,
             create : false,
             rename : false,
@@ -65,7 +78,7 @@ var loadS3D = function(url, s3dname) {
 
     if (instance) instance.destroy();
 
-    $('#assetHierarchy').html('<p>Loading selected asset...</p>');
+    $('#assetHierarchy').html('<p>Loading selected s3d...</p>');
     console.info('Loading ' + url);
     $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
@@ -84,9 +97,7 @@ var loadS3D = function(url, s3dname) {
         loadFlora(florauri, getNameFromUrl(florauri));
         updateModelTree(treeList);
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      console.warn(textStatus + ':' + errorThrown);
-    });
+    .fail(ajaxFail);
 };
 
 var loadDAE = function(url, daename) {
@@ -108,17 +119,22 @@ var loadDAE = function(url, daename) {
 
         updateModelTree(treeList);
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-      console.warn(textStatus + ':' + errorThrown);
-    });
+    .fail(ajaxFail);
 };
 
 var loadFlora = function(url, floraname) {
-    var instance = $('#taxonomy').jstree(true); 
+    var instance = $('#taxonomy').jstree(true),
+        url = 'http://' + hostname + ':3001/flora/server?method=loadFile&filename=' + encodeURIComponent(floraname);
 
     if (instance) instance.destroy();
 
     console.info('Requesting ' + floraname);
+    $('#taxonomy').html('<p>Loading selected taxonomy...</p>');
+    $.ajax({ url: url, type: 'get', cache: false })
+    .done(function(data) {
+        window.getTaxonomyRoots(); // from s3d.refactor.js todo: future refactor
+    })
+    .fail(ajaxFail);
 };
 
 var getListOfRepoFiles = function(type) {
@@ -198,8 +214,8 @@ var ajaxFail = function(jqXHR, textStatus, errorThrown) {
 
 window.$ = $;
 window.jQuery = $;
-window.addEventListener("DOMContentLoaded", function(event) {
-    console.log("DOM fully loaded and parsed");
+window.addEventListener('DOMContentLoaded', function(event) {
+    console.log('DOM fully loaded and parsed');
     hostname = window.document.location.hostname;
     createAssetMenuSelectionGUI();
 });

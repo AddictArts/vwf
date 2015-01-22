@@ -55,19 +55,6 @@ function getXmlHttp() {
   return xhttp;
 }
 
-function handleLoadFileDone() {
-  if (this.readyState == 4 && this.status == 200) {
-    console.log('handleLoadFileDone()');
-    getTaxonomyRoots();
-  } else if (this.readyState == 4) {
-    // error case
-    console.log("Handle load file:- Error, code: " + this.status + " text: " + xmlhttp.responseText);
-  } else {
-    // wait for the call to complete
-    console.log("Waiting...");
-  }
-}
-
 // Takes a flora term string and returns an HTML DOM representation of it
 // with buttons for selecting and expanding the identifier
 function createListItem(floraTerm) {
@@ -152,15 +139,6 @@ jsontax = '["ChargingHandlePosition","Action","SwitchPosition","ActionType","Phy
 }
 
 //--------------Server call (controller) functions------
-function loadFile(filename) {
-  console.log("Loading KB file: " + filename);
-  xmlhttp.onreadystatechange = handleLoadFileDone;
-  // http://www.semantic3d.com:8080/flora/server?method=loadFile&filename=m4.flr
-  // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
-  xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=loadFile&filename=" + encodeURIComponent(filename), true);
-  xmlhttp.send();
-  console.log("Loading KB file done");
-}
 
 // ["ChargingHandlePosition","Action","SwitchPosition","ActionType","PhysicalEntity","EnumeratedType","PinState","BoltCarrierGroupState","RoundLocation","ActionParameter"]
 function getTaxonomyRoots() {
@@ -565,35 +543,6 @@ function saveData() {
   .done(function(data) { console.log("Result from PUT operation: " + data)  });
 }
 
-// $('#assetHierarchy').jstree({
-//   'core' : {
-//     'data' : [
-//     ],
-//     'check_callback': true
-//   },
-//   "plugins" : [ "state", "contextmenu" ],
-//   contextmenu : {
-//     items : {
-//       "Link" : {
-//         "label" : "Link",
-//         "action" : function (obj) { addLink(); }
-//       },
-//       "Unlink" : {
-//         "label" : "Unlink",
-//         "action" : function (obj) { removeLink(); }
-//       },
-//       "Info" : {
-//         "label" : "Info",
-//         "action" : function (obj) { getInfo(); }
-//       },
-//       "ccp" : false,
-//       "create" : false,
-//       "rename" : false,
-//       "remove" : false
-//     }
-//   }
-// });
-
 $('#assetHierarchy').on('changed.jstree', function(e, data2) {
   var i, j, r = [ ];
 
@@ -632,9 +581,6 @@ $('#taxonomy').on('changed.jstree', function(e, data2) {
     }
   }
 });
-
-// Load an initial KB file
-loadFile("m4.flr");
 
 //--------------Load Table-----------------------------
 loadLinkTable();
