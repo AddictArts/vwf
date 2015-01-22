@@ -117,16 +117,21 @@ var s3d = '<?xml version="1.0" encoding="utf-8"?>\
         <flora_base id="M4_ont" uri="../../../knowledge/weapons/M4/m4.flr" />\
         <semantic_mapping>\
             <asset name="ShootingRange" uri="/SAVE/models/environments/range/ShootingRange.dae" sid="M4_ont" flora_ref="ShootingRange">\
+                <group name="environment" node="environment" sid="M4_ont" flora_ref="BoltCarrierGroup" />\
+                <group name="Meta Group" sid="M4_ont" flora_ref="Meta" />\
                 <object name="targets" node="targets" sid="M4_ont" flora_ref="ShootingTarget" />\
+                <object name="grass" node="grass" sid="M4_ont" flora_ref="Grass" />\
             </asset>\
         </semantic_mapping>\
         <grouping name="ShootingRange">\
             <group name="environment" node="environment">\
                 <part node="targets"/>\
+                <part node="grass"/>\
             </group>\
         </grouping>\
     </S3D>',
     so = semantic2js(s3d);
 
 o = semanticObj2html(so);
+console.log('semantic (s3d mapping only) 2 js text\n------------------------');
 console.log(o.text);

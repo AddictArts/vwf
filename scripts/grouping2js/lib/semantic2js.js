@@ -17,7 +17,7 @@ function semantic2js(options) {
 
     parser.onerror = onerror;
 
-    parser.ontext = function(text) {
+    parser.ontext = function(text) { // got some text. text is the string body of the tag, called twice after open and before end 
         if (!beginS3D) return;
 
         beginOntext = !beginOntext;
@@ -46,20 +46,12 @@ function semantic2js(options) {
         currentNode = name;
 
         if (name == 'head') currentObj = semanticObj;
+        else if (name == 'semantic_mapping') beginS3D = false;
 
-        // if (name == 'node') {
-        //     if (beginNode && !endNode) {
-        //         currentObj.parts = currentObj.parts || [ ];
-        //         currentObj.parts.push(currentPart);
-        //         beginNode = false;
-        //         endNode = true;
-        //     } else {
-        //         var p = currentObj.parent;
-        //         delete currentObj.parent;
-        //         currentObj = p;
-        //         endNode = false;
-        //     }
-        // }
+        // var p = currentObj.parent;
+        // delete currentObj.parent;
+        // currentObj = p;
+        // endNode = false;
     };
 
     parser.onopentag = function(node) { // opened a tag. node has "name" and "attributes", isSelfClosing
@@ -108,11 +100,23 @@ function semantic2js(options) {
                 groups: [ ],
                 objs: [ ]
             };
-            currentObj = currentObj.asset.obj;
+            currentObj = currentObj.asset;
             break;
         case 'group':
+            currentObj.groups.push({
+                name: node.attributes.name,
+                node: node.attributes.node,
+                sid: node.attributes.sid,
+                flora_ref: node.attributes.flora_ref
+            });
             break;
         case 'object':
+            currentObj.objs.push({
+                name: node.attributes.name,
+                node: node.attributes.node,
+                sid: node.attributes.sid,
+                flora_ref: node.attributes.flora_ref
+            });
             break;
         }
     };

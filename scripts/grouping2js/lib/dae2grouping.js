@@ -7,10 +7,10 @@ var sax = require("sax");
 function dae2grouping(options) {
     var options = options || { },
         strict = options.strict || true,
-        onerror = options.onerror || function(error) { /* an error happened. */ },
-        ontext = options.ontext || function(text) { /* got some text.  t is the string of text. */ },
+        onerror = options.onerror || function(error) { /* an error happened */ },
+        ontext = options.ontext || function(text) { /* got some text. text is the string body of the tag, called twice after open and before end */ },
         onattribute = options.onattribute || function(attr) { /* an attribute.  attr has "name" and "value" */ },
-        onend = options.onend || function() { /* parser stream is done, and ready to have more stuff written to it. */ },
+        onend = options.onend || function() { /* parser stream is done, and ready to have more stuff written to it */ },
         parser = sax.parser(strict),
         groupingObj,
         currentObj,
