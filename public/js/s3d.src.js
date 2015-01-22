@@ -43,10 +43,6 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
 };
 
 var updateModelTree = function(treeList) {
-    // var instance = $('#assetHierarchy').jstree(true); 
-
-    // if (instance) instance.destroy();
-
     $('#assetHierarchy').jstree({
         core : {
             data : treeList,
@@ -64,12 +60,13 @@ var updateModelTree = function(treeList) {
 };
 
 // $.ajax({ url:  '/SAVE/testdata/s3d/ShootingRange.xml', type: 'get', cache: false })
-var loadS3D = function(url) {
+var loadS3D = function(url, s3dname) {
     var instance = $('#assetHierarchy').jstree(true); 
 
     if (instance) instance.destroy();
 
     $('#assetHierarchy').html('<p>Loading selected asset...</p>');
+    console.info('Loading ' + url);
     $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
         var xmlString;
@@ -79,10 +76,12 @@ var loadS3D = function(url) {
 
         var semantic = G2JS.s2js(xmlString),
             grouping = G2JS.g2js(xmlString),
-            treeList = transformGroupingTojsTree(grouping);
+            treeList = transformGroupingTojsTree(grouping),
+            florauri = semantic.flora_base.uri;
 
-        console.info('S3D references taxonomy: ' + semantic.flora_base.uri);
+        console.info('S3D references taxonomy: ' + florauri);
         console.info('S3D references asset: ' + semantic.semantic_mapping.asset.uri);
+        loadFlora(florauri, getNameFromUrl(florauri));
         updateModelTree(treeList);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -90,12 +89,13 @@ var loadS3D = function(url) {
     });
 };
 
-var loadDAE = function(url) {
+var loadDAE = function(url, daename) {
     var instance = $('#assetHierarchy').jstree(true); 
 
     if (instance) instance.destroy();
 
     $('#assetHierarchy').html('<p>Loading selected asset...</p>');
+    console.info('Loading ' + url);
     $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
         var xmlString;
@@ -113,7 +113,12 @@ var loadDAE = function(url) {
     });
 };
 
-var loadFlora = function(url) {
+var loadFlora = function(url, floraname) {
+    var instance = $('#taxonomy').jstree(true); 
+
+    if (instance) instance.destroy();
+
+    console.info('Requesting ' + floraname);
 };
 
 var getListOfRepoFiles = function(type) {
@@ -123,6 +128,13 @@ var getListOfRepoFiles = function(type) {
         cache: false
     })
     .fail(ajaxFail);
+};
+
+var getNameFromUrl = function(url) {
+    var lslashIdx = url.lastIndexOf('/'),
+        name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
+
+    return name;
 };
 
 var createRepoTree = function(data, elemSelector, repoName, onSelect) {
@@ -137,8 +149,7 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
     data.forEach(function(url) {
         console.info('Adding: ' + url + ' to ' + repo + ' tree');
 
-        var lslashIdx = url.lastIndexOf('/'),
-            name = lslashIdx === -1 ? url : url.substring(lslashIdx + 1, url.length);
+        var name = getNameFromUrl(url);
 
         treeList.push({
             id: name,
@@ -152,14 +163,13 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
             multiple : false,
             data : treeList,
             check_callback: true
-        },
-        plugins : [ ]
+        }
     }).on('changed.jstree', function(jqe, data) {
         if (data.action == 'select_node') {
             var id = data.selected[ 0 ];
 
-            console.info('Loading: ' + id + ' from:' + treeId2Url[ id ]);
-            onSelect(treeId2Url[ id ]);
+            console.info('Repository selection: ' + id);
+            onSelect(treeId2Url[ id ], id);
         }
     });
 };
