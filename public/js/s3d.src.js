@@ -45,7 +45,7 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
 var updateModelTree = function(treeList) {
     $('#assetHierarchy').jstree({
         core : {
-            multiple : false,
+            // multiple : false,
             data : treeList,
             check_callback: true
         },
@@ -70,6 +70,16 @@ var updateModelTree = function(treeList) {
             rename : false,
             remove : false
         }
+    }).on('changed.jstree', function(e, data2) {
+        var r = [ ];
+
+        for (var i = 0, j = data2.selected.length; i < j; i++) {
+            r.push(data2.instance.get_node(data2.selected[ i ]).text);
+        }
+
+        console.log('Selected: ' + r.join(', '));
+        window.currentNode = r.join(', '); // from s3d.refactor.js todo: future refactor
+        selectedNodes = r;
     });
 };
 

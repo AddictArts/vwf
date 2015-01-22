@@ -452,17 +452,6 @@ function saveData() {
   .done(function(data) { console.log("Result from PUT operation: " + data)  });
 }
 
-$('#assetHierarchy').on('changed.jstree', function(e, data2) {
-  var i, j, r = [ ];
-
-  for (i = 0, j = data2.selected.length; i < j; i++) {
-    r.push(data2.instance.get_node(data2.selected[ i ]).text);
-  }
-
-  console.log('Selected: ' + r.join(', '));
-  currentNode = r.join(', ');
-  selectedNodes = r;
-});
 
 //--------------Load Table-----------------------------
 loadLinkTable();
