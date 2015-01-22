@@ -77,9 +77,12 @@ var loadS3D = function(url) {
         if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
         else xmlString = data;
 
-        var grouping = G2JS.g2js(xmlString),
+        var semantic = G2JS.s2js(xmlString),
+            grouping = G2JS.g2js(xmlString),
             treeList = transformGroupingTojsTree(grouping);
 
+        console.info('S3D references taxonomy: ' + semantic.flora_base.uri);
+        console.info('S3D references asset: ' + semantic.semantic_mapping.asset.uri);
         updateModelTree(treeList);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {

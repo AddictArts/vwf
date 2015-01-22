@@ -47,11 +47,6 @@ function semantic2js(options) {
 
         if (name == 'head') currentObj = semanticObj;
         else if (name == 'semantic_mapping') beginS3D = false;
-
-        // var p = currentObj.parent;
-        // delete currentObj.parent;
-        // currentObj = p;
-        // endNode = false;
     };
 
     parser.onopentag = function(node) { // opened a tag. node has "name" and "attributes", isSelfClosing
