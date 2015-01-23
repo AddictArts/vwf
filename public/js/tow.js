@@ -232,14 +232,14 @@ TOW.findMeshAndVisibleMesh = function(name, scene) {
 };
 
 TOW.invisibleSceneChildren = function(scene) {
-  scene = scene || TOW.scene;
+  scene = scene || TOW.Scene;
   scene.traverse(function(child) {
     child.visible = false;
   });
 };
 
 TOW.visibleSceneChildren = function(scene) {
-  scene = scene || TOW.scene;
+  scene = scene || TOW.Scene;
   scene.traverse(function(child) {
     child.visible = true;
   });

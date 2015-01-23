@@ -73,7 +73,10 @@ var updateModelTree = function(treeList) {
         for (var i = 0, j = data.selected.length; i < j; i++) r.push(data.instance.get_node(data.selected[ i ]).text);
 
         window.currentNode = r.join(', '); // from s3d.refactor.js todo: future refactor
-        selectedNodes = r;
+
+        if (r.length == 1) focusSelected(window.currentNode);
+
+        window.selectedNodes = r; // from s3d.refactor.js todo: future refactor
     });
 };
 
@@ -355,6 +358,19 @@ var createAssetTreeSelectionGUI = function() {
 
 var ajaxFail = function(jqXHR, textStatus, errorThrown) {
   console.warn(textStatus + ':' + errorThrown);
+};
+
+var focusSelected = function(n, onRender) {
+    var logged = false;
+
+    TOW.invisibleSceneChildren($dae);
+    onRender = onRender || function(delta, pivot) {
+        if (!logged) { console.log(pivot.children[ 0 ].matrix.elements); logged = true; } // log the offset matrix
+
+        pivot.rotation.y += 0.005;
+    };
+    // if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
+    TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
 };
 
 window.$ = $;
