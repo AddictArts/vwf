@@ -5,12 +5,12 @@
 <head>
 <title> SAVE - Exercise Solution Editor</title>
 <link rel="stylesheet" type="text/css" href="save.css">
-<script src="/html/support/jquery-1.11.2.js"></script>
+<!-- <script src="/html/support/jquery-1.11.2.js"></script> -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$("#launch").click(function(event){
-			window.open("/404.html");
+			window.open("/foo.html");
 		}
 	)});
 </script>
@@ -27,7 +27,7 @@
 		<img class="img-tool" src="images/tool-ese.png">
 		<div id="tool-header">
 			<div id="tool-title">
-				<h2>Exercise Solution Editor</h2>
+				<h2>Exercise Solution Editor (ESE)</h2>
 			</div>
 			<div id="tool-launch"">
 				<!-- ESE is Java-based and must be launched outside the browser by the user.
@@ -36,17 +36,17 @@
 			</div>
 		</div>
 		<div id="tool-text">
-			<p>The ESE enables the content author to view demonstrated action traces (created with the EUI in the previous step) and add annotations to the action traces to capture allowed generalizations.</p>
+			<p>The ESE enables you to view demonstrated action traces (created with the EUI in the previous step) and add annotations to the action traces to capture allowed generalizations.</p>
 			<p>Note, the ESE is Java-based and must be manually launched outside the browser by the user. The ESE requires Java 7, due to an incompatible change to JavaFX in Java 8.</p>
 			<ol>
-				<li>Run "ese.bat" (Windows) or "ese" (Linux) in the ese/bin directory.</li>
+				<li>From the start menu or desktop, run the Exercise Solution Editor on your local machine.</li>
 				<li>Use the 'Open URL' button to load the exercise solution, previously written to the SAVE repository.</li>
 				<li>The ESE displays the generalized action trace from the content developer's solution demonstration</li>
 				<li>Add annotations to the solution to indicate allowed generalities.</li>
 				<li>Click on the 'Put As to Server' button. Specify a new file name for the revised exercise file.</li>
 			</ol>
 			<p>Result: the revised exercise file is written back to the exercise repository.</p>
-			<p>Next, the student will be able to run the exercie in the EUI.</p>
+			<p>Next, the student will be able to run the exercise in the Exercise UI.</p>
 		</div>
 	</div>
 </center>
