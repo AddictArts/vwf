@@ -77,13 +77,13 @@ var updateModelTree = function(treeList) {
 };
 
 var createTaxonomyTree =  function(tax) {
-    var taxdiv = document.getElementById("taxonomy");
-    var classList = document.createElement("ul");
-    var rootNode = document.createElement("li");
+    var taxdiv = window.document.getElementById("taxonomy");
+    var classList = window.document.createElement("ul");
+    var rootNode = window.document.createElement("li");
 
-    rootNode.appendChild(document.createTextNode("m4"));
+    rootNode.appendChild(window.document.createTextNode("m4"));
 
-    var elementList = document.createElement("ul");
+    var elementList = window.document.createElement("ul");
 
     rootNode.appendChild(elementList);
     classList.appendChild(rootNode);
