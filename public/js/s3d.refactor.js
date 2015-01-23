@@ -4,7 +4,6 @@
 var selectedNodes = [ ]; //This is the array that will have the JSTree selections from the 3D model hierarchy
 var currentNode;
 var linkCount = 0;      //Link count used in the Semantic Links table
-var table;    //Global var for Semantic Link table
 var tableBody;    //Global var for Semantic Link table body
 var classTable;     //Global var for Class details table
 var classTableBody; //Global var fro class details table body
@@ -36,41 +35,45 @@ function createListItem(floraTerm) {
 function addClassDetailsToTable(tax) {
   if (classTable.rows.length > 1) classTable.deleteRow(1);
 
-  var tableRow = document.createElement( 'TR' );
-  var cell = document.createElement( 'TD' );
-  var val = document.createTextNode(tax.id);
+  var tableRow = document.createElement('TR'),
+      cell = document.createElement('TD'),
+      val = document.createTextNode(tax.id);
+
   cell.appendChild(val);
   tableRow.appendChild(cell);
-  var superClasses = tax.superclasses;
-  var classes ="";
+
+  var superClasses = tax.superclasses,
+      classes = "";
 
   for (index = 0; index < superClasses.length; index++) classes += superClasses[ index ] + ", ";
 
   if (classes == "") classes = "None";
 
-  cell = document.createElement( 'TD' );
+  cell = document.createElement('TD');
   val = document.createTextNode(classes);
   cell.appendChild(val);
   tableRow.appendChild(cell);
-  var types = tax.types;
-  var typeList="";
 
-  for (index = 0; index < types.length; index++) typeList += types[index] + ", ";
+  var types = tax.types,
+      typeList="";
+
+  for (index = 0; index < types.length; index++) typeList += types[ index ] + ", ";
 
   if (typeList == "") typeList = "None";
 
-  cell = document.createElement( 'TD' );
+  cell = document.createElement('TD');
   val = document.createTextNode(typeList);
   cell.appendChild(val);
   tableRow.appendChild(cell);
-  var properties = tax.individualproperties;
-  var propertyList="";
 
-  for (index = 0; index < properties.length; index++) propertyList += properties[index] + ", ";
+  var properties = tax.individualproperties,
+      propertyList="";
+
+  for (index = 0; index < properties.length; index++) propertyList += properties[ index ] + ", ";
 
   if (propertyList == "") propertyList = "None";
 
-  cell = document.createElement( 'TD' );
+  cell = document.createElement('TD');
   val = document.createTextNode(propertyList);
   cell.appendChild(val);
   tableRow.appendChild(cell);
@@ -78,54 +81,78 @@ function addClassDetailsToTable(tax) {
 }
 
 function createLinkTable() {
-  var tableDiv = document.getElementById('tableContainer');
-  table = document.createElement( 'TABLE' );
-  table.border='1';
-  tableBody = document.createElement( 'TBODY' );
+  var tableDiv = document.getElementById('tableContainer'),
+      table = document.createElement('TABLE');
+
+  table.border = '1';
+  tableBody = document.createElement('TBODY');
   table.appendChild(tableBody);
-  var headerRow = document.createElement( 'TR' );
+  
+  var headerRow = document.createElement('TR');
+  
   tableBody.appendChild(headerRow);
-  var header1 = document.createElement( 'TH' );
-  var temp1 = document.createTextNode("Count");
+  
+  var header1 = document.createElement('TH'),
+      temp1 = document.createTextNode("Count");
+  
   header1.appendChild(temp1);
   headerRow.appendChild(header1);
-  var header2 = document.createElement( 'TH' );
-  var temp2 = document.createTextNode("Flora Class");
+  
+  var header2 = document.createElement('TH'),
+      temp2 = document.createTextNode("Flora Class");
+  
   header2.appendChild(temp2);
   headerRow.appendChild(header2);
-  var header3 = document.createElement( 'TH' );
+  
+  var header3 = document.createElement('TH');
+  
   headerRow.appendChild(header3);
-  var header4 = document.createElement( 'TH' );
-  var temp4 = document.createTextNode("3D Node");
+  
+  var header4 = document.createElement('TH'),
+      temp4 = document.createTextNode("3D Node");
+  
   header4.appendChild(temp4);
   headerRow.appendChild(header4);
-  var header5 = document.createElement( 'TH' );
+  
+  var header5 = document.createElement('TH');
+  
   headerRow.appendChild(header5);
   tableDiv.appendChild(table);
 }
 
 function createClassTable() {
   var tableDiv = document.getElementById('classContainer');
-  classTable = document.createElement( 'TABLE' );
+
+  classTable = document.createElement('TABLE');
   classTable.border='1';
-  classTableBody = document.createElement( 'TBODY' );
+  classTableBody = document.createElement('TBODY');
   classTable.appendChild(classTableBody);
-  var headerRow = document.createElement( 'TR' );
+
+  var headerRow = document.createElement('TR');
+
   classTableBody.appendChild(headerRow);
-  var header1 = document.createElement( 'TH' );
-  var temp1 = document.createTextNode("Class ID");
+
+  var header1 = document.createElement('TH'),
+      temp1 = document.createTextNode("Class ID");
+
   header1.appendChild(temp1);
   headerRow.appendChild(header1);
-  var header2 = document.createElement( 'TH' );
-  var temp2 = document.createTextNode("Super Classes");
+  
+  var header2 = document.createElement('TH'),
+      temp2 = document.createTextNode("Super Classes");
+  
   header2.appendChild(temp2);
   headerRow.appendChild(header2);
-  var header4 = document.createElement( 'TH' );
-  var temp4 = document.createTextNode("Types");
+  
+  var header4 = document.createElement('TH'),
+      temp4 = document.createTextNode("Types");
+
   header4.appendChild(temp4);
   headerRow.appendChild(header4);
-  var header5 = document.createElement( 'TH' );
-  var temp5 = document.createTextNode("Individual Properties");
+
+  var header5 = document.createElement('TH'),
+      temp5 = document.createTextNode("Individual Properties");
+
   header5.appendChild(temp5);
   headerRow.appendChild(header5);
   tableDiv.appendChild(classTable);
@@ -133,36 +160,43 @@ function createClassTable() {
 
 //--------------UI Control Logic-----------------------
 function createTableRow(currentClass, currentNode) {
-  var tableRow = document.createElement( 'TR' );
-  var countCell = document.createElement( 'TD' );
+  var tableRow = document.createElement('TR'),
+      countCell = document.createElement('TD');
+
   linkCount++;
+
   var countVal = document.createTextNode(linkCount);
+  
   countCell.appendChild(countVal);
   tableRow.appendChild(countCell);
-  var classCell = document.createElement( 'TD' );
-  var classVal = document.createTextNode(currentClass);
+  
+  var classCell = document.createElement('TD'),
+      classVal = document.createTextNode(currentClass);
+  
   classCell.appendChild(classVal);
   tableRow.appendChild(classCell);
-  var sepCell = document.createElement( 'TD' );
-  var sepVal = document.createTextNode(":");
+
+  var sepCell = document.createElement('TD'),
+      sepVal = document.createTextNode(":");
+
   sepCell.appendChild(sepVal);
   tableRow.appendChild(sepCell);
-  var nodeCell = document.createElement( 'TD' );
-  var nodeVal = document.createTextNode(currentNode);
+
+  var nodeCell = document.createElement('TD'),
+      nodeVal = document.createTextNode(currentNode);
+
   nodeCell.appendChild(nodeVal);
   tableRow.appendChild(nodeCell);
-  var delCell = document.createElement( 'TD' );
-  var delButton = document.createElement("Input");
+
+  var delCell = document.createElement('TD'),
+      delButton = document.createElement("Input");
+
   delButton.setAttribute("value", "Delete");
   delButton.setAttribute("type", "button");
-  delButton.setAttribute("onclick", "deleteLink()");
+  // delButton.setAttribute("onclick", "deleteLink()"); // console.log("Delete button pressed!");
   delCell.appendChild(delButton);
   tableRow.appendChild(delCell);
   return tableRow;
-}
-
-function deleteLink() {
-  console.log("Delete button pressed!");
 }
 
 function addLinkToTable(currentClass, currentNode) {
@@ -173,14 +207,16 @@ function createAndAddLink() {
   //selectedClasses = $('#taxonomy').jstree('get_selected');
   //selectedNodes = $('#assetHierarchy').jstree('get_selected');
   console.log("createAndAddLinki(): " + JSON.stringify(selectedClasses));
-  //var currentClass = selectedClasses[0];
-  //var currentNode = selectedNodes[0];
-  console.log("Link creation: " + currentClass +"->" +currentNode);
+
+  //var currentClass = selectedClasses[ 0 ];
+  //var currentNode = selectedNodes[ 0 ];
+
+  console.log("Link creation: " + currentClass + "->" + currentNode);
+
   var link = {floraClass:currentClass, modelNode:currentNode};
+
   linkCollection.push(link);
   console.log("Created link: " + JSON.stringify(link));
-  //console.log("createAndAddLink() currentClass:" + currentClass);
-  //console.log("createAndAddLink() currentNode:" + currentNode);
   addLinkToTable(currentClass, currentNode);
 }
 
@@ -239,7 +275,8 @@ function removeLink() {
   }
 
   var found = false;
-  for (var i = 0; i < linkCollection.length; i++) {
+
+  for (var i = 0, l = linkCollection.length; i < l; i++) {
     console.log("Scanning: Flora Class - " + linkCollection[i].floraClass + " Model Node - " + linkCollection[i].modelNode );
 
     if ((currentClass == linkCollection[ i ].floraClass) && (currentNode == linkCollection[ i ].modelNode)) {
@@ -250,95 +287,47 @@ function removeLink() {
   }
 }
 
-function createSemanticLink(name, node, sid, floraRef)
-{
-  //<object name="Extractor" node="Extractor" sid="M4_ont" flora_ref="Extractor"/>
-  var semanticLink = "<object name=\"" + name + "\" node=\"" + node + "\" sid=\"" + sid + "\" flora_ref=\"" +floraRef +"\" />\n";
-  return semanticLink;
-}
-
-function addHead() {
-  s3dFile += "<S3D>";
-  s3dFile += "<head>";
-
-  s3dFile += "<description>Semantic 3D mapping file for: M4 Series Carbine</description>";
-  s3dFile += "<author>S3D Editor</author>";
-  s3dFile += "<created>2014-11-23</created>";
-  s3dFile += "<modified>2014-11-24</modified>";
-
-  s3dFile += "</head>";
-}
-
-function addFloraBase() {
-  s3dFile += "<flora_base id=\"M4_ont\" uri=\"../../../knowledge/weapons/M4/m4.flr\" />";
-}
-
-function addNodeGroups() {
-  s3dFile += "<group name=\"Upper_Receiver Group\" sid=\"M4_ont\" flora_ref=\"UpperHalf\"/>\n<group name=\"Key_and_Bolt_Carrier_Assembly Group\" sid=\"M4_ont\" flora_ref=\"BoltCarrierGroup\"/>\n<group name=\"Bolt Group\" sid=\"M4_ont\" flora_ref=\"Bolt\"/>\n<group name=\"Charging_Handle Group\" sid=\"M4_ont\" flora_ref=\"ChargingHandle\"/>\n<group name=\"Gun_Carrying_Handle Group\" sid=\"M4_ont\" flora_ref=\"CarryHandle\"/>\n<group name=\"Chamber Group\" sid=\"M4_ont\" flora_ref=\"Chamber\"/>\n<group name=\"Lower_Receiver Group\" sid=\"M4_ont\" flora_ref=\"LowerHalf\"/>\n<group name=\"Magazine_g Group\" sid=\"M4_ont\" flora_ref=\"Magazine\"/>\n<group name=\"Buttstock Group\" sid=\"M4_ont\" flora_ref=\"ButtStock\"/>\n<group name=\"Bolt_Catch Group\" sid=\"M4_ont\" flora_ref=\"BoltCatch\"/>\n<group name=\"Bolt_Catch_Bottom Group\" sid=\"M4_ont\" flora_ref=\"BoltCatchBottom\"/>\n<group name=\"Bolt_Catch_Top Group\" sid=\"M4_ont\" flora_ref=\"BoltCatchTop\"/>\n<group name=\"PivotPinHead Group\" sid=\"M4_ont\" flora_ref=\"PivotPinHead\"/>\n<group name=\"PivotPinTail Group\" sid=\"M4_ont\" flora_ref=\"PivotPinTail\"/>\n<group name=\"TakedownPinHead Group\" sid=\"M4_ont\" flora_ref=\"TakedownPinHead\"/>\n<group name=\"TakedownPinTail Group\" sid=\"M4_ont\" flora_ref=\"TakedownPinTail\"/>";
-}
-
 function addSemLinks() {
-  for(var i = 0; i < linkCollection.length; i++) {
-    var node = linkCollection[i].modelNode;
-    var floraClass = linkCollection[i].floraClass;
-    var semanticLink = createSemanticLink(node, node, "M4_ont", floraClass);
+  for (var i = 0, l = linkCollection.length; i < l; i++) {
+    var node = linkCollection[ i ].modelNode;
+    var floraClass = linkCollection[ i ].floraClass;
+    // var semanticLink = createSemanticLink(node, node, "M4_ont", floraClass); // <object name=...
     s3dFile += semanticLink;
   }
 }
 
 function addSemanticMapping() {
-  s3dFile += "<semantic_mapping>";
-  s3dFile += "<asset name=\"M4 Carbine\" uri=\"/SAVE/models/weapons/M4/M4_noHierarchy.dae\" sid=\"M4_ont\" flora_ref=\"M4\">";
-  addNodeGroups();
-  addSemLinks();
-  s3dFile += "</asset>";
-  s3dFile += "</semantic_mapping>";
-}
-
-function addGrouping() {
-  s3dFile += "<grouping name=\"M4 Carbine\">\n<part node=\"Sling\"/>\n<part node=\"Barrel_Assembly\"/>\n<part node=\"Upper_Handguard\"/>\n<part node=\"Lower_Handguard\"/>\n<part node=\"Small_Sling_Swivel\"/>\n<part node=\"Compensator\"/>\n<part node=\"Recessed_Washer__OOCompensator\"/>\n<part node=\"Spring_Pin2\"/>\n<part node=\"Spring_Pin3\"/>\n<part node=\"Rear_Handguard_Clamp\"/>\n<part node=\"Screw\"/>\n<part node=\"Gas_Tube_Spring_Pin\"/>\n<part node=\"Gas_Tube\"/>\n<part node=\"Handguard_Slip_Ring_Spring\"/>\n<part node=\"Handguard_Slip_Ring_Retaining_Ring\"/>\n<part node=\"Handguard_Slip_Ring_LAMA918813252\"/>\n<part node=\"Front_Sight_Post\"/>\n<part node=\"Headless_Shoulder_Pin\"/>\n<part node=\"Spring3\"/>\n<part node=\"Tubular_Rivet\"/>\n<part node=\"Synchro_Clamp\"/>\n<part node=\"Spring_Pin1\"/>\n<part node=\"Spring_Pin\"/>\n<part node=\"Swivel_Mount\"/>\n<part node=\"Flat_Spring\"/>\n<part node=\"Special_Shaped_Spacer\"/>\n";
-  s3dFile += "<group name=\"Buttstock Group\">\n<part node=\"Buttstock\"/>\n<part node=\"Swivel_LAMA1259863095\"/>\n<part node=\"Machine_Screw\"/>\n<part node=\"Buttstock_Release_Lever_Nut\"/>\n<part node=\"Buttstock_Release_Lever\"/>\n<part node=\"Buttstock_Release_Lever_Screw_LAMA1417807796\"/>\n<part node=\"Buttstock_Release_Lever_Spring_Pin\"/>\n<part node=\"Buttstock_Release_Lever_Spring\"/>\n</group>\n";
-  s3dFile += "<group name=\"Magazine_g Group\">\n<part node=\"Tube\"/>\n<part node=\"Clip_Spring1\"/>\n<part node=\"Base\"/>\n<part node=\"Clip_Spring\"/>\n<part node=\"Follower\"/>\n<group name=\"Casing1 Group\">\n<part node=\"Casing1\"/>\n<part node=\"Projectile1\"/>\n</group>\n<group name=\"Casing2 Group\">\n<part node=\"Casing2\"/>\n<part node=\"Projectile2\"/>\n</group>\n<group name=\"Casing3 Group\">\n<part node=\"Casing3\"/>\n<part node=\"Projectile3\"/>\n</group>\n</group>\n";
-  s3dFile += "<group name=\"Lower_Receiver Group\">\n<part node=\"Lower_Receiver\"/>\n<part node=\"Trigger\"/>\n<part node=\"Trigger_Spring\"/>\n<part node=\"Disconnector_Spring__OOBurst__CC\"/>\n<part node=\"Disconnector_Spring__OOSemi__CC\"/>\n<part node=\"Trigger_Spring1\"/>\n<part node=\"Trigger_Pin\"/>\n<part node=\"Disconnector__Burst\"/>\n<part node=\"Disconnector__Semi\"/>\n<part node=\"Magazine_Catch\"/>\n<part node=\"Magazine_Catch_Spring\"/>\n<part node=\"Magazine_Catch_Button\"/>\n<part node=\"Pivot_Pin\"/>\n<part node=\"Pivot_Pin_Detent\"/>\n<part node=\"Pivot_Pin_Spring\"/>\n<part node=\"Takedown_Pin\"/>\n<part node=\"Takedown_Pin_Detent\"/>\n<part node=\"Takedown_Pin_Detent_Spring\"/>\n<part node=\"Selector_Lever\"/>\n<part node=\"Safety_Detent__OOSelector_Lever__CC\"/>\n<part node=\"Safety_Spring__OOSelector_Lever__CC\"/>\n<part node=\"Automatic_Sear\"/>\n<part node=\"Automatic_Sear_Spring\"/>\n<part node=\"Sear_Pin\"/>\n<part node=\"Hammer\"/>\n<part node=\"Hammer_Spring1\"/>\n<part node=\"Hammer_Pin\"/>\n<part node=\"Burst_Cam\"/>\n<part node=\"Burst_Cam_Clutch_Spring\"/>\n<part node=\"Hammer_Spring\"/>\n<part node=\"Lower_Receiver_Extension\"/>\n<part node=\"Buffer\"/>\n<part node=\"Action_Spring\"/>\n<part node=\"Plain_Round_Nut\"/>\n<part node=\"Receiver_End_Plate\"/>\n<part node=\"Buffer_Retainer\"/>\n<part node=\"Buffer_Retainer_Spring\"/>\n<part node=\"Trigger_Guard\"/>\n<part node=\"Trigger_Guard_Spring_Pin_Retaining_Pin\"/>\n<part node=\"Trigger_Guard_Detent\"/>\n<part node=\"Trigger_Guard_Detent_Spring\"/>\n<part node=\"Pistol_Grip\"/>\n<part node=\"Pistol_Grip_Screw\"/>\n<part node=\"Pistol_Grip_Lock_Washer\"/>\n";
-  s3dFile += "<group name=\"Bolt_Catch Group\">\n<part node=\"Bolt_Catch\"/>\n<part node=\"Bolt_Catch_Spring_Pin\"/>\n<part node=\"Bolt_Catch_Plunger\"/>\n<part node=\"Bolt_Catch_Spring\"/>\n<group name=\"Bolt_Catch_Bottom Group\"/>\n<group name=\"Bolt_Catch_Top Group\"/>\n</group>\n<group name=\"PivotPinHead Group\"/>\n<group name=\"PivotPinTail Group\"/>\n<group name=\"TakedownPinHead Group\"/>\n<group name=\"TakedownPinTail Group\"/>\n</group>\n";
-  s3dFile += "<group name=\"Upper_Receiver Group\">\n<part node=\"Upper_Receiver\"/>\n<part node=\"Plunger_Assembly\"/>\n<part node=\"Pawl__Forward_Assist\"/>\n<part node=\"Forward_Assist_Spring\"/>\n<part node=\"Forward_Assist_Spring1\"/>\n<part node=\"Pawl_Spring_Pin\"/>\n<part node=\"Pawl_Detent\"/>\n<part node=\"Pawl_Spring\"/>\n<part node=\"Cover_Pin\"/>\n<part node=\"Ejection_Port_Cover\"/>\n<part node=\"Cover_Spring\"/>\n<part node=\"Cover_Retaining_Ring__OOC_Clip__CC\"/>\n<group name=\"Chamber Group\"/>\n<group name=\"Charging_Handle Group\">\n<part node=\"Charging_Handle\"/>\n<part node=\"Charging_Handle_Latch\"/>\n<part node=\"Charging_Handle_Spring\"/>\n<part node=\"Charging_Handle_Spring_Pin\"/>\n</group>\n<group name=\"Key_and_Bolt_Carrier_Assembly Group\">\n<part node=\"Key_and_Bolt_Carrier_Assembly\"/>\n<part node=\"Firing_Pin_Retaining_Pin\"/>\n<part node=\"Firing_Pin\"/>\n<group name=\"Bolt Group\">\n<part node=\"Bolt\"/>\n<part node=\"Bolt_Cam_Pin\"/>\n<part node=\"Ejector_Spring_Pin\"/>\n<part node=\"Bolt_Ring\"/>\n<part node=\"Bolt_Ring2\"/>\n<part node=\"Bolt_Ring1\"/>\n<part node=\"Ejector\"/>\n<part node=\"Ejector_Spring\"/>\n<part node=\"Extractor\"/>\n<part node=\"Extractor_Spring\"/>\n<part node=\"Extractor_Pin\"/>\n<part node=\"Casing4\"/>\n<part node=\"Projectile4\"/>\n</group>\n</group>\n";
-  s3dFile += "<group name=\"Gun_Carrying_Handle Group\">\n<part node=\"Gun_Carrying_Handle\"/>\n<part node=\"Windage_Spring_Pin\"/>\n<part node=\"Rear_Sight_Screw\"/>\n<part node=\"Flat_Rear_Sight_Spring\"/>\n<part node=\"Rear_Sight_Base\"/>\n<part node=\"Sight_Aperture\"/>\n<part node=\"Windage_Knob\"/>\n<part node=\"Spring__Helical__Compression\"/>\n<part node=\"Knob\"/>\n<part node=\"Ball_Bearing1\"/>\n<part node=\"Elevating_Mechanism\"/>\n<part node=\"Spring2\"/>\n<part node=\"Spring1\"/>\n<part node=\"Index_Screw\"/>\n<part node=\"Ball_Bearing\"/>\n<part node=\"Pin_Spring\"/>\n<part node=\"Spring\"/>\n<part node=\"Ball_Bearing2\"/>\n<part node=\"Round_Nut1\"/>\n<part node=\"Washer1\"/>\n<part node=\"Washer\"/>\n<part node=\"Clamping_Bar\"/>\n<part node=\"Round_Nut\"/>\n</group>\n</group>\n</grouping>\n";
-}
-
-function addEnd() {
-  s3dFile += "</S3D>";
+  // TODO: Use grouping2js s2xml via s3d.src.js
+  // addNodeGroups(); // <group name ...
+  // addSemLinks();
 }
 
 function buildS3DFile() {
   s3dFile = "";
-  addHead();
-  addFloraBase();
-  addSemanticMapping();
-  addGrouping();
-  addEnd();
+  // TODO: Use grouping2js s2xml via s3d.src.js
+  // addHead(); // <S3D><head>...
+  // addFloraBase(); // <flora_base ...
+  // addSemanticMapping();
+  // TODO: Use grouping2js go2xml via s3d.src.js
+  // addGrouping();
+  // addEnd(); // </S3D>
 }
 
 function saveData() {
   buildS3DFile();
   console.log("Writing S3D file to SAVE repository!");
 
-  //  var myData = "";
-  //  for(var i = 0; i < s3dFile.length; i++) {            
-  //    console.log(s3dFile[i]);
-  //    myDAta = myData + s3dFile[i] + "";
-  //  }
-  //console.log("----------------------------End File-------------------------------");
-  //var fileData = JSON.stringify(s3dFile);
-  jQuery.ajax({
-      url:'http://' + hostName + ':3001/s3d/M4_Carbine.s3d',
-      type:'put',
-      data: s3dFile,
-      cache: false,
-      processData: false,
-      crossDomain: true,
-      xhrFields: { withCredentials: true } // prompt
-  })
-  .done(function(data) { console.log("Result from PUT operation: " + data)  });
+  // TODO: Move this to s3d.src.js and allow the name and path to be entered
+  // jQuery.ajax({
+  //     url:'http://' + hostName + ':3001/s3d/M4_Carbine.s3d',
+  //     type:'put',
+  //     data: s3dFile,
+  //     cache: false,
+  //     processData: false,
+  //     crossDomain: true,
+  //     xhrFields: { withCredentials: true } // prompt
+  // })
+  // .done(function(data) { console.log("Result from PUT operation: " + data)  });
 }
 
 
