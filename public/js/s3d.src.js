@@ -76,14 +76,14 @@ var updateModelTree = function(treeList) {
     });
 };
 
-var createTaxonomyTree =  function(tax) {
-    var taxdiv = window.document.getElementById("taxonomy");
-    var classList = window.document.createElement("ul");
-    var rootNode = window.document.createElement("li");
+var createTaxonomyTree =  function(tax, floraname) {
+    var taxdiv = window.document.getElementById("taxonomy"), // from s3d.refactor.js todo: future refactor
+        classList = window.document.createElement("ul"), // from s3d.refactor.js todo: future refactor
+        rootNode = window.document.createElement("li"); // from s3d.refactor.js todo: future refactor
 
-    rootNode.appendChild(window.document.createTextNode("m4"));
+    rootNode.appendChild(window.document.createTextNode(floraname)); // from s3d.refactor.js todo: future refactor
 
-    var elementList = window.document.createElement("ul");
+    var elementList = window.document.createElement("ul"); // from s3d.refactor.js todo: future refactor
 
     rootNode.appendChild(elementList);
     classList.appendChild(rootNode);
@@ -215,12 +215,14 @@ var loadFlora = function(url, floraname) {
     console.info('Requesting ' + floraname);
     $('#taxonomy').html('<p>Loading selected taxonomy...</p>');
     $.ajax({ url: url, type: 'get', cache: false })
-    .done(getTaxonomyRoots)
+    .done(function(data) {
+        getTaxonomyRoots(data, floraname)
+    })
     .fail(ajaxFail);
 };
 
 // => [ "ChargingHandlePosition", "Action", "SwitchPosition", "ActionType", "PhysicalEntity", "EnumeratedType", "PinState", "BoltCarrierGroupState", "RoundLocation", "ActionParameter" ]
-var getTaxonomyRoots = function(data) {
+var getTaxonomyRoots = function(data, floraname) {
     var url = 'http://' + hostname + ':3001/flora/server?method=getTaxonomyRoots';
 
     $.ajax({ url: url, type: 'get', cache: false })
@@ -228,7 +230,7 @@ var getTaxonomyRoots = function(data) {
         if (Object.prototype.toString.call(data) != '[object Array]') data = JSON.parse(data);
 
         console.info('Fetched taxonomy roots: ' + JSON.stringify(data));
-        createTaxonomyTree(data); // from s3d.refactor.js todo: future refactor
+        createTaxonomyTree(data, floraname); // from s3d.refactor.js todo: future refactor
     })
     .fail(ajaxFail);
 };
