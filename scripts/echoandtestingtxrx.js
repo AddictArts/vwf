@@ -150,6 +150,7 @@ routes.get('/flora/server', function(req, res) {
 
     var param = req.param,
         method = param[ 'method' ],
+        id = param[ 'id' ],
         data;
 
     switch (method) {
@@ -158,6 +159,9 @@ routes.get('/flora/server', function(req, res) {
         break;
     case 'getTaxonomyRoots':
         data = [ "ChargingHandlePosition", "Action", "SwitchPosition", "ActionType", "PhysicalEntity", "EnumeratedType", "PinState", "BoltCarrierGroupState", "RoundLocation", "ActionParameter" ];
+        break;
+    case 'getSubClasses':
+        data = { };
         break;
     }
 
