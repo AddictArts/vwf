@@ -6,6 +6,8 @@
 /*
 EXAMPLE:
 
+TOW.changeContainerById('divOrCanvasId');
+
 TOW.loadCollada('xyz.dae', function() {
   $xyz_dae.scale.set(0.005, 0.005, 0.005);
   TOW.render();
@@ -47,7 +49,7 @@ release.chain(pull);
 pull.start();
 */
 
-var TOW = { REVISION: '0.1' };
+var TOW = { REVISION: '0.2' };
 
 TOW.Fov = 40;
 TOW.Near = 0.1;
@@ -86,6 +88,7 @@ TOW.changeContainerById = function(id) {
   TOW.ContainerWidth = container.clientWidth; //style.width;
   TOW.ContainerHeight = container.clientHeight; //style.height;
   TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);;
+  TOW.Canvas = container;
 
   if (container.tagName == 'CANVAS') {
     TOW.Renderer = new THREE.WebGLRenderer({ canvas: TOW.Canvas, width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
@@ -95,8 +98,6 @@ TOW.changeContainerById = function(id) {
     TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
     container.appendChild(TOW.Renderer.domElement);
   }
-
-  TOW.Canvas = container;
 };
 
 TOW.addGrid = function(size, step, lineColor) {

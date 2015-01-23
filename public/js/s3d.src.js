@@ -4,6 +4,7 @@
 
 var G2JS = require('../../scripts/grouping2js'),
     $ = require('../../scripts/node_modules/jquery'),
+    $dae,
     hostname;
 
 var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
@@ -202,6 +203,10 @@ var loadDAE = function(url, daename) {
             treeList = transformGroupingTojsTree(grouping);
 
         updateModelTree(treeList);
+
+        if ($dae) TOW.Scene.remove($dae);
+
+        TOW.loadCollada(url, function(dae) { $dae = dae; TOW.render(); });
     })
     .fail(ajaxFail);
 };
