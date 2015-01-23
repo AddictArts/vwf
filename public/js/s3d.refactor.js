@@ -15,12 +15,6 @@ var currentClass; //global var for currently selected class
 var floraClass;
 var linkCollection = [ ];
 var s3dfile = "";   //global var for storing the .s3d file content
-var xmlhttp = createCORSRequest('GET', "http://"+hostName+":8080/flora");
-
-if (!xmlhttp) {
-  throw new Error('CORS not supported');
-}
-
 
 //--------------Flora/XSB Loading----------------------
 //--------------Utility functions----------------------
@@ -30,45 +24,6 @@ function updateTaxonomy() {
   showTaxonomy();
 }
 
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-
-  if ("withCredentials" in xhr) {
-    // Check if the XMLHttpRequest object has a "withCredentials" property.
-    // "withCredentials" only exists on XMLHTTPRequest2 objects.
-    xhr.open(method, url, true);
-  } else if (typeof XDomainRequest != "undefined") {
-    // Otherwise, check if XDomainRequest.
-    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-  } else {
-    // Otherwise, CORS is not supported by the browser.
-    xhr = null;
-  }
-
-  return xhr;
-}
-
-function getXmlHttp() {
-  var xhttp;
-
-  if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-
-    if (typeof xhttp.overrideMimeType !== 'undefined') {
-      xhttp.overrideMimeType('text/xml');
-    }
-  } else if (window.ActiveXObject) {
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  } else {
-    alert('Perhaps your browser does not support xmlhttprequests?');
-  }
-
-  console.log("getXmlHttp: " + xhttp);
-  return xhttp;
-}
-
 // Takes a flora term string and returns an HTML DOM representation of it
 // with buttons for selecting and expanding the identifier
 function createListItem(floraTerm) {
@@ -76,70 +31,6 @@ function createListItem(floraTerm) {
 
   item.appendChild(document.createTextNode(floraTerm));
   return item;
-}
-
-//--------------Server call (controller) functions------
-
-// ChargingHandlePosition => {"superclass":"ChargingHandlePosition","subclasses":[]}
-// Action => {"superclass":"Action","subclasses":["Pull","PullAndHold","Attach","TightenScrew","Extract","Point","Insert","Lift","Open","Inspect","PushAndHold","Close","Push","Detach","SelectSwitchPosition","Release","Press","LoosenScrew"]}
-// PhysicalEntity => {"superclass":"PhysicalEntity","subclasses":["SafeTarget","Region","PhysicalObject"]}
-// PhysicalObject => {"superclass":"PhysicalObject","subclasses":["FiringPin","Hammer","CleaningRodTip","ShootingTarget","M4","Sling","FiringPinRetainingPin","Brush","CleaningRodHandle","LowerHalf","ChargingHandle","SlipRing","LowerReceiverExtension","Trigger","CleaningRodSegment","SlingSwivel","Round","ButtStockLockLever","Extractor","Buffer","PipeCleaner","WipeCloth","CarryHandle","BoltCarrierGroup","BufferRetainer","MagazineReleaseButton","Bolt","SlingLoop","Casing","UpperHalf","CleaningRod","Liquid","Switch","UpperHandGuard","Pin","Screw","BoltCam","ButtStock","LowerHandGuard","CleaningPatch","BoltCatch","Magazine"]}
-function getSubClasses(id) {
-  console.log('getSubclasses: ' + id);
-  xmlhttp.onreadystatechange = addSubclassesToTree;
-  // http://www.semantic3d.com:8080/flora/server?method=getSubClasses&id=ChargingHandlePosition
-  // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
-  xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
-  xmlhttp.send();
-}
-
-// ChargingHandlePosition => {"id":"ChargingHandlePosition","superclasses":[],"classproperties":[],"types":[],"individualproperties":[]}
-function getDetails(id) {
-  console.log('getDetails: ' + id);
-  xmlhttp.onreadystatechange = showClassDetails;
-  // http://www.semantic3d.com:8080/flora/server?method=getClassDetails&id=ChargingHandlePosition
-  // xmlhttp.open("GET", "http://" + hostName + ":8080/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
-  xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getClassDetails&id=" + encodeURIComponent(id), true);
-  xmlhttp.send();
-}
-
-function getInfo() {
-  getDetails(currentClass);
-}
-
-function addSubclassesToTree() {
-  var leafNode = $('#taxonomy').jstree('is_leaf', floraClass);
-  console.log("Selected Node is a leaf: " + leafNode);
-
-  if (leafNode != true) return;
-
-  var jsontax = xmlhttp.responseText;
-
-jsontax = '{"superclass":"ChargingHandlePosition","subclasses":[]}';
-
-  if (jsontax) {
-    var tax = JSON.parse(jsontax);
-    console.log('Subclasses to add: ' + jsontax);
-    var parent = $('#taxonomy').jstree('get_selected');
-    console.log("SUPER CLass: " + tax["superclass"]);
-
-    for(index=0; index < tax.subclasses.length; index++) {
-      console.log("   Adding subclass: " + tax.subclasses[index]);
-      $("#taxonomy").jstree("create_node", parent, tax.subclasses[index], "last", null, null);
-    }
-  }
-}
-
-function showClassDetails() {
-  var jsontax = xmlhttp.responseText;
-
-jsontax = '{"id":"ChargingHandlePosition","superclasses":[],"classproperties":[],"types":[],"individualproperties":[]}';
-
-  if (jsontax) {
-    var tax = JSON.parse(jsontax);
-    console.log("Class details: " + jsontax);
-    addClassDetailsToTable(tax);
-  }
 }
 
 function addClassDetailsToTable(tax) {
@@ -186,8 +77,7 @@ function addClassDetailsToTable(tax) {
   classTableBody.appendChild(tableRow);
 }
 
-function loadLinkTable() {
-  console.log("Adding Semantic Link table!");
+function createLinkTable() {
   var tableDiv = document.getElementById('tableContainer');
   table = document.createElement( 'TABLE' );
   table.border='1';
@@ -214,8 +104,7 @@ function loadLinkTable() {
   tableDiv.appendChild(table);
 }
 
-function loadClassTable() {
-  console.log("Adding Class Details table!");
+function createClassTable() {
   var tableDiv = document.getElementById('classContainer');
   classTable = document.createElement( 'TABLE' );
   classTable.border='1';
@@ -454,7 +343,7 @@ function saveData() {
 
 
 //--------------Load Table-----------------------------
-loadLinkTable();
-loadClassTable();
+createLinkTable();
+createClassTable();
 
-$('table').on('click', 'input[type="button"]', function(e) { $(this).closest('tr').remove() });
+$('table').on('click', 'input[type="button"]', function(jqe) { $(this).closest('tr').remove() });

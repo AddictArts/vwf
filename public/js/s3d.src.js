@@ -59,11 +59,7 @@ var updateModelTree = function(treeList) {
                 Unlink : {
                     label : 'Unlink',
                     action : function (obj) { window.removeLink(); } // from s3d.refactor.js todo: future refactor
-                },
-                Info : {
-                    label : 'Info',
-                    action : function (obj) { window.getInfo(); } // from s3d.refactor.js todo: future refactor
-                },
+                }
             },
             ccp : false,
             create : false,
@@ -73,11 +69,8 @@ var updateModelTree = function(treeList) {
     }).on('changed.jstree', function(e, data) {
         var r = [ ];
 
-        for (var i = 0, j = data.selected.length; i < j; i++) {
-            r.push(data.instance.get_node(data.selected[ i ]).text);
-        }
+        for (var i = 0, j = data.selected.length; i < j; i++) r.push(data.instance.get_node(data.selected[ i ]).text);
 
-        console.log('Selected: ' + r.join(', '));
         window.currentNode = r.join(', '); // from s3d.refactor.js todo: future refactor
         selectedNodes = r;
     });
@@ -116,7 +109,7 @@ var createTaxonomyTree =  function(tax) {
                 },
                 Info : {
                     label : 'Info',
-                    action : function(obj) { window.getInfo(); } // from s3d.refactor.js todo: future refactor
+                    action : function(obj) { getTaxonomyInfo(); }
                 },
                 ccp : false,
                 create : false,
@@ -125,50 +118,42 @@ var createTaxonomyTree =  function(tax) {
             }
         }
     }).on('changed.jstree', function(jqe, data) {
-        var r = [ ];
- 
         window.selectedClasses = [ ]; // reset the selected classes, from s3d.refactor.js todo: future refactor
 
         for (var i = 0, j = data.selected.length; i < j; i++) {
             var nodeText = data.instance.get_node(data.selected[ i ]).text;
 
-            r.push(nodeText);
             window.selectedClasses.push(nodeText); // from s3d.refactor.js todo: future refactor
         }
 
-console.log('Selected: ' + r.join(', '));
-        window.currentClass = r.join(', '); // from s3d.refactor.js todo: future refactor
+        window.currentClass = window.selectedClasses.join(', '); // from s3d.refactor.js todo: future refactor
+
+        var fclass = window.selectedClasses[ 0 ];
 
         if (data.selected.length === 1) {
-            var leafNode = $.jstree.reference('#taxonomy').is_leaf(data.selected[ 0 ]);
+            window.floraClass = fclass; // from s3d.refactor.js todo: future refactor
 
-            // window.floraClass = data.selected[ 0 ]; // from s3d.refactor.js todo: future refactor
-            window.floraClass = r[ 0 ]; // from s3d.refactor.js todo: future refactor
-// console.log("Is Leaf: " + leafNode);
-
-            if (leafNode == true) getSubClasses(r[ 0 ]); // from s3d.refactor.js todo: future refactor
+            if ($.jstree.reference('#taxonomy').is_leaf(data.selected[ 0 ]) === true) getSubClasses(fclass); // from s3d.refactor.js todo: future refactor
         }
     });
 };
 
-var updateTaxonomyTreeSubclasses = function(data) {
-    var leafNode = $('#taxonomy').jstree('is_leaf', floraClass);
+var updateTaxonomyTreeSubclasses = function(tax) {
+    if (tax.subclasses === undefined) return
 
-    if (leafNode != true) return;
+    var tref = $.jstree.reference('#taxonomy');
 
-    // var jsontax = xmlhttp.responseText;
-    // var tax = JSON.parse(jsontax);
+    if (tref.is_leaf(window.floraClass) != true) return; // from s3d.refactor.js todo: future refactor
 
-console.log('Subclasses to add: ' + jsontax);
+    var parent = tref.get_selected();
 
-    var parent = $('#taxonomy').jstree('get_selected');
+    console.info("Updating taxonomy super class: " + tax.superclass + ' with: ' + tax.subclasses.join(', '));
 
-console.log("SUPER CLass: " + tax["superclass"]);
+    for (var i = 0, l = tax.subclasses.length; i < l; i++) tref.create_node(parent, tax.subclasses[ i ], 'last', null, null);
+};
 
-    for (index = 0; index < tax.subclasses.length; index++) {
-        console.log("   Adding subclass: " + tax.subclasses[ index ]);
-        $("#taxonomy").jstree("create_node", parent, tax.subclasses[ index ], "last", null, null);
-    }
+var showTaxonomyClassDetails = function(details) {
+    window.addClassDetailsToTable(details); // from s3d.refactor.js todo: future refactor
 };
 
 // $.ajax({ url:  '/SAVE/testdata/s3d/ShootingRange.xml', type: 'get', cache: false })
@@ -248,21 +233,33 @@ var getTaxonomyRoots = function(data) {
     .fail(ajaxFail);
 };
 
-// ChargingHandlePosition => { "superclass": "ChargingHandlePosition", "subclasses":[ ] }
-// Action => { "superclass": "Action", "subclasses": [ "Pull", "PullAndHold", "Attach", "TightenScrew", "Extract", "Point", "Insert", "Lift", "Open", "Inspect", "PushAndHold", "Close", "Push", "Detach", "SelectSwitchPosition", "Release", "Press", "LoosenScrew" ] }
-// PhysicalEntity => { "superclass": "PhysicalEntity", "subclasses": [ "SafeTarget", "Region", "PhysicalObject" ] }
-// PhysicalObject => { "superclass": "PhysicalObject", "subclasses": [ "FiringPin", "Hammer", "CleaningRodTip", "ShootingTarget", "M4", "Sling", "FiringPinRetainingPin", "Brush", "CleaningRodHandle", "LowerHalf", "ChargingHandle", "SlipRing", "LowerReceiverExtension", "Trigger", "CleaningRodSegment", "SlingSwivel", "Round", "ButtStockLockLever", "Extractor", "Buffer", "PipeCleaner", "WipeCloth", "CarryHandle", "BoltCarrierGroup", "BufferRetainer", "MagazineReleaseButton", "Bolt", "SlingLoop", "Casing", "UpperHalf", "CleaningRod", "Liquid", "Switch", "UpperHandGuard", "Pin", "Screw", "BoltCam", "ButtStock", "LowerHandGuard", "CleaningPatch", "BoltCatch", "Magazine" ] }
+// ChargingHandlePosition => { superclass: "ChargingHandlePosition", subclasses: [ ] }
+// Action => { superclass: "Action", subclasses: [ "Pull", "PullAndHold", "Attach", "TightenScrew", "Extract", "Point", "Insert", "Lift", "Open", "Inspect", "PushAndHold", "Close", "Push", "Detach", "SelectSwitchPosition", "Release", "Press", "LoosenScrew" ] }
+// PhysicalEntity => { superclass: "PhysicalEntity", subclasses: [ "SafeTarget", "Region", "PhysicalObject" ] }
+// PhysicalObject => { superclass: "PhysicalObject", subclasses: [ "FiringPin", "Hammer", "CleaningRodTip", "ShootingTarget", "M4", "Sling", "FiringPinRetainingPin", "Brush", "CleaningRodHandle", "LowerHalf", "ChargingHandle", "SlipRing", "LowerReceiverExtension", "Trigger", "CleaningRodSegment", "SlingSwivel", "Round", "ButtStockLockLever", "Extractor", "Buffer", "PipeCleaner", "WipeCloth", "CarryHandle", "BoltCarrierGroup", "BufferRetainer", "MagazineReleaseButton", "Bolt", "SlingLoop", "Casing", "UpperHalf", "CleaningRod", "Liquid", "Switch", "UpperHandGuard", "Pin", "Screw", "BoltCam", "ButtStock", "LowerHandGuard", "CleaningPatch", "BoltCatch", "Magazine" ] }
 var getSubClasses = function(id) {
-    // xmlhttp.onreadystatechange = addSubclassesToTree;
-    // xmlhttp.open("GET", "http://" + hostName + ":3001/flora/server?method=getSubClasses&id=" + encodeURIComponent(id), true);
     var url = 'http://' + hostname + ':3001/flora/server?method=getSubClasses&id=' + encodeURIComponent(id);
 
     $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
         if (Object.prototype.toString.call(data) != '[object Object]') data = JSON.parse(data);
 
-        console.info('Fetched subclasses: ' + JSON.stringify(data));
+        console.info('Fetched ' + id + ' subclasses: ' + JSON.stringify(data));
         updateTaxonomyTreeSubclasses(data);
+    })
+    .fail(ajaxFail);
+};
+
+// ChargingHandlePosition => { id: "ChargingHandlePosition", superclasses: [ ], classproperties: [ ], types: [ ], individualproperties: [ ] }
+var getTaxonomyInfo = function() {
+    var url = 'http://' + hostname + ':3001/flora/server?method=getClassDetails&id=' + encodeURIComponent(window.currentClass); // from s3d.refactor.js todo: future refactor
+
+    $.ajax({ url: url, type: 'get', cache: false })
+    .done(function(data) {
+        if (Object.prototype.toString.call(data) != '[object Object]') data = JSON.parse(data);
+
+        console.info('Fetched ' + window.currentClass + ' class details: ' + JSON.stringify(data)); // from s3d.refactor.js todo: future refactor
+        showTaxonomyClassDetails(data);
     })
     .fail(ajaxFail);
 };
@@ -356,7 +353,7 @@ var ajaxFail = function(jqXHR, textStatus, errorThrown) {
 window.$ = $;
 window.jQuery = $;
 window.addEventListener('DOMContentLoaded', function(event) {
-    console.log('DOM fully loaded and parsed');
+    console.info('DOM fully loaded and parsed, ready to create the asset selection trees');
     hostname = window.document.location.hostname;
     createAssetTreeSelectionGUI();
 });

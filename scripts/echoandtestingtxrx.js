@@ -151,7 +151,7 @@ routes.get('/flora/server', function(req, res) {
     var param = req.param,
         method = param[ 'method' ],
         id = param[ 'id' ],
-        data;
+        data = { };
 
     switch (method) {
     case 'loadFile':
@@ -161,7 +161,28 @@ routes.get('/flora/server', function(req, res) {
         data = [ "ChargingHandlePosition", "Action", "SwitchPosition", "ActionType", "PhysicalEntity", "EnumeratedType", "PinState", "BoltCarrierGroupState", "RoundLocation", "ActionParameter" ];
         break;
     case 'getSubClasses':
-        data = { };
+        switch (id) {
+        case 'ChargingHandlePosition':
+            data = { superclass: 'ChargingHandlePosition', subclasses: [ ] };
+            break;
+        case 'Action':
+            data = { superclass: "Action", subclasses: [ "Pull", "PullAndHold", "Attach", "TightenScrew", "Extract", "Point", "Insert", "Lift", "Open", "Inspect", "PushAndHold", "Close", "Push", "Detach", "SelectSwitchPosition", "Release", "Press", "LoosenScrew" ] };
+            break;
+        case 'PhysicalEntity':
+            data = { superclass: "PhysicalEntity", subclasses: [ "SafeTarget", "Region", "PhysicalObject" ] };
+            break;
+        case 'PhysicalObject':
+            data = { superclass: "PhysicalObject", subclasses: [ "FiringPin", "Hammer", "CleaningRodTip", "ShootingTarget", "M4", "Sling", "FiringPinRetainingPin", "Brush", "CleaningRodHandle", "LowerHalf", "ChargingHandle", "SlipRing", "LowerReceiverExtension", "Trigger", "CleaningRodSegment", "SlingSwivel", "Round", "ButtStockLockLever", "Extractor", "Buffer", "PipeCleaner", "WipeCloth", "CarryHandle", "BoltCarrierGroup", "BufferRetainer", "MagazineReleaseButton", "Bolt", "SlingLoop", "Casing", "UpperHalf", "CleaningRod", "Liquid", "Switch", "UpperHandGuard", "Pin", "Screw", "BoltCam", "ButtStock", "LowerHandGuard", "CleaningPatch", "BoltCatch", "Magazine" ] };
+            break;
+        }
+
+        break;
+    case 'getClassDetails':
+        switch (id) {
+        case 'ChargingHandlePosition':
+            data = { id: "ChargingHandlePosition", superclasses: [ ], classproperties: [ ], types: [ ], individualproperties: [ ] };
+            break;
+        }
         break;
     }
 
