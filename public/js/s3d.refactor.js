@@ -1,3 +1,5 @@
+// Copyright 2015, SRI International
+
 //--------------Initialization-------------------------
 // Global variables
 

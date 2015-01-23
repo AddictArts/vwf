@@ -1,3 +1,5 @@
+// Copyright 2015, SRI International
+
 'use strict';
 
 var sax = require("sax");
