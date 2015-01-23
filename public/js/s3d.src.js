@@ -363,4 +363,13 @@ window.addEventListener('DOMContentLoaded', function(event) {
     console.info('DOM fully loaded and parsed, ready to create the asset selection trees');
     hostname = window.document.location.hostname;
     createAssetTreeSelectionGUI();
+
+    TOW.changeContainerById('3d');
+    TOW.loadCollada('/SAVE/models/xyzbar.dae', function() {
+        $xyzbar_dae.scale.set(0.005, 0.005, 0.005);
+        TOW.render();
+        TOW.cancelRender(); // clear the requestAnimationFrame interval, not needed initially until dae loaded
+    });
+    TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25); // light, camera => x, y, z
+    // TOW.intow(-1, 0.5, 0.5, -2, 2, 10); // light, camera => x, y, z
 });
