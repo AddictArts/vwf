@@ -16,10 +16,10 @@ function dae2grouping(options) {
         currentObj,
         currentGroup,
         currentPart,
-        beginNode = false,
-        endNode = false;
+        beginNode, // false
+        endNode; // false
 
-    parser.onerror = onerror;
+    parser.onerror = onerror; // be sure to parser.close() or parser.resume()
     parser.ontext = ontext;
 
     parser.onclosetag = function(name) { // closing a tag. name is the name from onopentag node.name
@@ -67,6 +67,11 @@ function dae2grouping(options) {
     return {
         dae2grouping: function(xml) {
             groupingObj = { };
+            currentObj = undefined;
+            currentGroup = undefined;
+            currentPart = undefined;
+            beginNode = false;
+            endNode = false;
             parser.write(xml).close();
             return groupingObj;
         },

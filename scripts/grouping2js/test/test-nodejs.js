@@ -10,7 +10,9 @@ var g2js = require('../index.js'),
     groupingObj2xml = g2js.go2xml,
     groupingXml2html = g2js.gx2html,
     semantic2js = g2js.s2js,
+    semanticObj2xml = g2js.so2xml,
     semanticObj2html = g2js.so2html,
+    semanticXml2html = g2js.sx2html,
     s3dp = g2js.s3dParser,
     daep = g2js.daeParser;
 
@@ -69,28 +71,36 @@ gx = groupingObj2xml(go);
 o = groupingObj2html(go);
 console.log('dae 2 js text\n------------------------');
 console.log(o.text);
-console.log('------------------------\ndae 2 s3d xml\n------------------------');
+console.log('------------------------\ndae 2 grouping xml\n------------------------');
 console.log(gx);
 o = groupingXml2html(gx);
-console.log('------------------------\ndae 2 s3d xml text\n------------------------');
+console.log('------------------------\ndae 2 grouping xml text\n------------------------');
 console.log(o.text);
-console.log('------------------------\ndae 2 s3d xml (html)\n------------------------');
+console.log('------------------------\ndae 2 grouping xml (html)\n------------------------');
 console.log(o.html);
 console.log('================================================\ngrouping2js s3d parse error tests\n================================================');
 s3dp.onerror = daep.onerror = function(error) {
     console.log(error);
+    console.log('Parser resumed...');
+    s3dp.resume();
 };
+daep.onerror = function(error) {
+    console.log(error);
+    console.log('Parser resumed...');
+    daep.resume();
+};
+
 // <- missing / self-closed on the part, unexpected close tag
-xml = '<grouping name="ShootingRange"><group name="environment" node="environment"><part node="grass"></group></grouping>';
+var badxml = '<grouping name="ShootingRange"><group name="environment" node="environment"><part node="grass"></group></grouping>';
 
 try {
-    o = grouping2js(xml);
+    o = grouping2js(badxml);
 } catch(err) { }
 
 console.log('================================================\ngrouping2js dae parse error tests\n================================================');
 
 // <- type attribute not assigned for node zzz, attribute without value
-dae = '<library_visual_scenes>\
+var baddae = '<library_visual_scenes>\
     <visual_scene id="VisualSceneNode" name="ShootingRange_05">\
         <node id="zzz" name="zzz" type>\
             <node id="xxx" name="xxx" type="NODE">\
@@ -100,7 +110,7 @@ dae = '<library_visual_scenes>\
 </library_visual_scenes>';
 
 try {
-    go = dae2grouping(dae);
+    go = dae2grouping(baddae);
 } catch(err) { }
 
 console.log('================================================\nsemantic2js s3d tests\n================================================');
@@ -125,13 +135,22 @@ var s3d = '<?xml version="1.0" encoding="utf-8"?>\
         </semantic_mapping>\
         <grouping name="ShootingRange">\
             <group name="environment" node="environment">\
+                <group name="Meta Group"/>\
                 <part node="targets"/>\
                 <part node="grass"/>\
             </group>\
         </grouping>\
     </S3D>',
-    so = semantic2js(s3d);
+    so = semantic2js(s3d),
+    sx = semanticObj2xml(so);
 
 o = semanticObj2html(so);
 console.log('semantic (s3d mapping only) 2 js text\n------------------------');
+console.log(o.text);
+o = semanticXml2html(sx);
+console.log('------------------------\nsemantic 2 xml (s3d mapping only) 2 text\n------------------------');
+console.log(o.text);
+sx = semanticObj2xml(so, grouping2js(s3d))
+o = semanticXml2html(sx);
+console.log('------------------------\nsemantic 2 xml (with grouping) 2 text\n------------------------');
 console.log(o.text);

@@ -14,9 +14,9 @@ function grouping2js(options) {
         parser = sax.parser(strict),
         groupingObj,
         currentObj,
-        beginGrouping = false;
+        beginGrouping; // false
 
-    parser.onerror = onerror;
+    parser.onerror = onerror; // be sure to parser.close() or parser.resume()
     parser.ontext = ontext;
 
     parser.onclosetag = function(name) { // closing a tag. name is the name from onopentag node.name
@@ -61,6 +61,8 @@ function grouping2js(options) {
     return {
         grouping2js: function(xml) {
             groupingObj = { };
+            currentObj = undefined;
+            beginGrouping = false;
             parser.write(xml).close();
             return groupingObj;
         },

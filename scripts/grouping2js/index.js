@@ -30,6 +30,8 @@ var groupingXml2html = function(sourceXml) {
 };
 
 var groupingObj2xml = function(groupingObj) {
+    groupingObj = groupingObj || { };
+
     var groupingXml = '<grouping name="' + groupingObj.name + '">';
 
     groupingXml = groupsparts2xml(groupingObj, groupingXml);
@@ -47,6 +49,54 @@ var semanticObj2html = function(semanticObj) {
         html = simpleText2html(text);
 
     return { html: html, text: text };
+};
+
+var semanticXml2html = function(sourceXml) {
+    var text =  beautify_html(sourceXml),
+        html = simpleText2html(text);
+
+    return { html: html, text: text };    
+};
+
+var semanticObj2xml = function(semanticObj, groupingObj) {
+    semanticObj = semanticObj || { };
+
+    var semanticXml = '<S3D>';
+
+    for (var p in semanticObj) {
+        if (p == 'head') {
+            semanticXml += '<head>';
+            semanticXml += '<description>' + semanticObj.head.description + '</description>';
+            semanticXml += '<author>' + semanticObj.head.author + '</author>';
+            semanticXml += '<created>' + semanticObj.head.created + '</created>';
+            semanticXml += '<modified>' + semanticObj.head.modified + '</modified>';
+            semanticXml += '</head>';
+        } else if (p == 'flora_base') {
+            semanticXml += '<flora_base id="' + semanticObj.flora_base.id  + '" uri="' + semanticObj.flora_base.uri + '"/>';
+        } else if (p == 'semantic_mapping') {
+            var assetObj = semanticObj.semantic_mapping.asset;
+
+            semanticXml += '<semantic_mapping>';
+            semanticXml += '<asset name="' + assetObj.name + '" uri="' + assetObj.uri + '" sid="' + assetObj.sid + '" flora_ref="' + assetObj.flora_ref + '">';
+
+            assetObj.groups.forEach(function(group) {
+                var node = group.node === undefined? '' : ' node="' + group.node + '"';
+
+                semanticXml += '<group name="' + group.name + '"' + node + ' sid="' + group.sid + '" flora_ref="' + group.flora_ref + '"/>';
+            });
+
+            assetObj.objs.forEach(function(obj) {
+                semanticXml += '<object name="' + obj.name + '" node="' + obj.node + '" sid="' + obj.sid + '" flora_ref="' + obj.flora_ref + '"/>';
+            });
+
+            semanticXml += '</asset>';
+            semanticXml += '</semantic_mapping>';
+
+            if (groupingObj) semanticXml += groupingObj2xml(groupingObj);
+        }
+    }
+
+    return semanticXml + '</S3D>';
 };
 
 // private
@@ -92,6 +142,30 @@ module.exports = {
     s2js: s2js.semantic2js,
     s2html: semantic2html,
     so2html: semanticObj2html,
+    so2xml: semanticObj2xml,
+    sx2html: semanticXml2html,
+    emptySjs: {
+        head: {
+            description: undefined,
+            author: undefined,
+            created: undefined,
+            modified: undefined
+        },
+        flora_base: {
+            id: undefined,
+            uri: undefined
+        },
+        semantic_mapping: {
+            asset: {
+                name: undefined,
+                uri: undefined,
+                sid: undefined,
+                flora_ref: undefined,
+                groups: [ ], // { name:, node:, sid:, flora_ref: }, ...
+                objs: [ ] // { name:, node:, sid:, flora_ref: }, ...
+            }
+        }
+    },
     s3dParser: g2js.parser,
     daeParser: dae2g.parser
 };

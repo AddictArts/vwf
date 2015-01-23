@@ -12,10 +12,10 @@ function semantic2js(options) {
         semanticObj,
         currentObj,
         currentNode,
-        beginS3D = false,
-        beginOntext = false;;
+        beginS3D, // false
+        beginOntext; // false
 
-    parser.onerror = onerror;
+    parser.onerror = onerror; // be sure to parser.close() or parser.resume()
 
     parser.ontext = function(text) { // got some text. text is the string body of the tag, called twice after open and before end 
         if (!beginS3D) return;
@@ -122,6 +122,10 @@ function semantic2js(options) {
     return {
         semantic2js: function(xml) {
             semanticObj = { };
+            currentObj = undefined;
+            currentNode = undefined;
+            beginS3D = false;
+            beginOntext = false;
             parser.write(xml).close();
             return semanticObj;
         },
