@@ -118,7 +118,7 @@ routes.put(routes.PUTANY, function(req, res) {
     res.send(data, 200, PLAINt);
 });
 
-routes.get('/file/list/s3d', function(req, res) {
+routes.get('/listfiles/s3d/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = [ '/SAVE/testdata/s3d/ShootingRange.s3d', '/SAVE/testdata/s3d/M4.s3d' ];
@@ -127,7 +127,16 @@ routes.get('/file/list/s3d', function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 
-routes.get('/file/list/dae', function(req, res) {
+routes.get('/listfiles/flora/json', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+
+    var data = [ '/SAVE/testdata/m4.flr' ];
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
+routes.get('/listfiles/collada/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
     var data = [ '/SAVE/models/environments/range/ShootingRange.dae', '/SAVE/models/weapons/M4/M4_noHierarchy.dae' ];
@@ -138,8 +147,47 @@ routes.get('/file/list/dae', function(req, res) {
 
 routes.get('/flora/server', function(req, res) {
     log('...handling route GET ' + req.reqPath);
+
+    var param = req.param,
+        method = param[ 'method' ],
+        id = param[ 'id' ],
+        data = { };
+
+    switch (method) {
+    case 'loadFile':
+        data = [ ];
+        break;
+    case 'getTaxonomyRoots':
+        data = [ "ChargingHandlePosition", "Action", "SwitchPosition", "ActionType", "PhysicalEntity", "EnumeratedType", "PinState", "BoltCarrierGroupState", "RoundLocation", "ActionParameter" ];
+        break;
+    case 'getSubClasses':
+        switch (id) {
+        case 'ChargingHandlePosition':
+            data = { superclass: 'ChargingHandlePosition', subclasses: [ ] };
+            break;
+        case 'Action':
+            data = { superclass: "Action", subclasses: [ "Pull", "PullAndHold", "Attach", "TightenScrew", "Extract", "Point", "Insert", "Lift", "Open", "Inspect", "PushAndHold", "Close", "Push", "Detach", "SelectSwitchPosition", "Release", "Press", "LoosenScrew" ] };
+            break;
+        case 'PhysicalEntity':
+            data = { superclass: "PhysicalEntity", subclasses: [ "SafeTarget", "Region", "PhysicalObject" ] };
+            break;
+        case 'PhysicalObject':
+            data = { superclass: "PhysicalObject", subclasses: [ "FiringPin", "Hammer", "CleaningRodTip", "ShootingTarget", "M4", "Sling", "FiringPinRetainingPin", "Brush", "CleaningRodHandle", "LowerHalf", "ChargingHandle", "SlipRing", "LowerReceiverExtension", "Trigger", "CleaningRodSegment", "SlingSwivel", "Round", "ButtStockLockLever", "Extractor", "Buffer", "PipeCleaner", "WipeCloth", "CarryHandle", "BoltCarrierGroup", "BufferRetainer", "MagazineReleaseButton", "Bolt", "SlingLoop", "Casing", "UpperHalf", "CleaningRod", "Liquid", "Switch", "UpperHandGuard", "Pin", "Screw", "BoltCam", "ButtStock", "LowerHandGuard", "CleaningPatch", "BoltCatch", "Magazine" ] };
+            break;
+        }
+
+        break;
+    case 'getClassDetails':
+        switch (id) {
+        case 'ChargingHandlePosition':
+            data = { id: "ChargingHandlePosition", superclasses: [ ], classproperties: [ ], types: [ ], individualproperties: [ ] };
+            break;
+        }
+        break;
+    }
+
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send('', 200, PLAINt);
+    res.send(JSON.stringify(data), 200, JSONt);
 });
 
 routes.get('/PutExercise/generateSolution', function(req, res) {
@@ -435,7 +483,7 @@ var notCuidId = 0, // cuid npm package for collision resistant
             method: hreq.method,
             headers: hreq.headers,
             body: '',
-            xhr: hreq.headers['x-requested-with'] == 'XMLHttpRequest',
+            xhr: hreq.headers[ 'x-requested-with' ] == 'XMLHttpRequest',
             reqPath: decodeURIComponent(pltqs),
             contentType: req2ContentType(pltqs, hreq.headers[ 'content-type' ]),
             queryString: getTheQueryString(hreq.url),

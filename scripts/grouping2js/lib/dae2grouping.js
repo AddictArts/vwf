@@ -7,19 +7,19 @@ var sax = require("sax");
 function dae2grouping(options) {
     var options = options || { },
         strict = options.strict || true,
-        onerror = options.onerror || function(error) { /* an error happened. */ },
-        ontext = options.ontext || function(text) { /* got some text.  t is the string of text. */ },
+        onerror = options.onerror || function(error) { /* an error happened */ },
+        ontext = options.ontext || function(text) { /* got some text. text is the string body of the tag, called twice after open and before end */ },
         onattribute = options.onattribute || function(attr) { /* an attribute.  attr has "name" and "value" */ },
-        onend = options.onend || function() { /* parser stream is done, and ready to have more stuff written to it. */ },
+        onend = options.onend || function() { /* parser stream is done, and ready to have more stuff written to it */ },
         parser = sax.parser(strict),
         groupingObj,
         currentObj,
         currentGroup,
         currentPart,
-        beginNode = false,
-        endNode = false;
+        beginNode, // false
+        endNode; // false
 
-    parser.onerror = onerror;
+    parser.onerror = onerror; // be sure to parser.close() or parser.resume()
     parser.ontext = ontext;
 
     parser.onclosetag = function(name) { // closing a tag. name is the name from onopentag node.name
@@ -57,7 +57,6 @@ function dae2grouping(options) {
 
             currentGroup = { name: node.attributes.name, node: node.attributes.name, parent: undefined }; // parent is a temporary reference, removed on ending the group
             currentPart = node.attributes.name;
-
             break;
         }
     };
@@ -68,6 +67,11 @@ function dae2grouping(options) {
     return {
         dae2grouping: function(xml) {
             groupingObj = { };
+            currentObj = undefined;
+            currentGroup = undefined;
+            currentPart = undefined;
+            beginNode = false;
+            endNode = false;
             parser.write(xml).close();
             return groupingObj;
         },
