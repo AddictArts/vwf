@@ -84,6 +84,12 @@
     .footer-right { float: right; width: 50%; }
   </style>
   <link rel="stylesheet" href="/js/themes/default/style.min.css" />
+
+  <script src="/js/three.js"></script>
+  <script src="/js/ColladaLoader.js"></script>
+  <script src="/js/tween.min.js"></script>
+  <script src="/js/tow.js"></script>
+
   <!-- s3d.bundle.js includes jQuery -->
   <script type="text/javascript" src="/js/s3d.bundle.js"></script>
   <script type="text/javascript" src="/js/jstree.min.js"></script>
@@ -119,7 +125,8 @@
       <!-- VWF Rendering Window -->
       <div id="col2side"> <!-- VWF Rendering Window Container -->
         <h3>3D</h3>
-        <iframe class="vwf-frame" id="app1" src="" frameborder="2" height="500" width="740"></iframe>
+        <!-- iframe class="vwf-frame" id="app1" src="" frameborder="2" height="500" width="740"></iframe -->
+        <canvas id="3d" style="border-width: 2px" height="500" width="740"></camvas>
       </div>
     </div>
 
@@ -147,6 +154,6 @@
     </div>
   </div>
 <script src="/js/s3d.refactor.js"></script>
-<!-- script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);</script -->
+<script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);</script>
 </body>
 </html>
