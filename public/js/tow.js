@@ -49,7 +49,7 @@ release.chain(pull);
 pull.start();
 */
 
-var TOW = { REVISION: '0.2' };
+var TOW = { REVISION: '0.3' };
 
 TOW.Fov = 40;
 TOW.Near = 0.1;
