@@ -5,6 +5,7 @@
 var G2JS = require('../../scripts/grouping2js'),
     $ = require('../../scripts/node_modules/jquery'),
     $dae,
+    tween,
     hostname;
 
 var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
@@ -73,7 +74,13 @@ var updateModelTree = function(treeList) {
         for (var i = 0, j = data.selected.length; i < j; i++) r.push(data.instance.get_node(data.selected[ i ]).text);
 
         window.currentNode = r.join(', '); // from s3d.refactor.js todo: future refactor
-        selectedNodes = r;
+
+        if (r.length == 1) {
+            if (window.currentNode == 'Trigger') focusTween(window.currentNode);
+            else focusSelected(window.currentNode);
+        }
+
+        window.selectedNodes = r; // from s3d.refactor.js todo: future refactor
     });
 };
 
@@ -355,6 +362,49 @@ var createAssetTreeSelectionGUI = function() {
 
 var ajaxFail = function(jqXHR, textStatus, errorThrown) {
   console.warn(textStatus + ':' + errorThrown);
+};
+
+var focusSelected = function(n, onRender) {
+    var logged = false;
+
+    TOW.cancelOnRenders();
+    TOW.invisibleSceneChildren($dae);
+    onRender = onRender || function(delta, pivot) {
+        if (!logged) { console.log(pivot.children[ 0 ].matrix.elements); logged = true; } // log the offset matrix
+
+        pivot.rotation.y += 0.005;
+    };
+    // if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
+    TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
+};
+
+
+var focusTween = function(n) {
+    TOW.cancelOnRenders();
+    TOW.invisibleSceneChildren($dae);
+
+    if (tween) tween.stop();
+
+    var pivot = TOW.findMeshAndVisibleMesh(n, $dae);
+
+    TOW.render(function(delta) { pivot.rotation.x += Math.PI / 2 * delta; });
+    pivot.position.set(0, 0, 0);
+
+    var curY = { y:  pivot.rotation.y },
+        pull = new TWEEN.Tween(curY)
+            .to({ y: 0.52 }, 1000) // radians and milliseconds
+            // .easing(TWEEN.Easing.Elastic.InOut)
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .onUpdate(function() { curY = pivot.rotation.y = this.y; }),
+        release = new TWEEN.Tween(curY)
+            .to({ y: 0 }, 500)
+            .onUpdate(function() { curY =  pivot.rotation.y = this.y })
+            .delay(250);
+
+    pull.chain(release);
+    release.chain(pull);
+    pull.start();
+    tween = pull;
 };
 
 window.$ = $;

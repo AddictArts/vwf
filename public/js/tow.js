@@ -49,7 +49,7 @@ release.chain(pull);
 pull.start();
 */
 
-var TOW = { REVISION: '0.2' };
+var TOW = { REVISION: '0.3' };
 
 TOW.Fov = 40;
 TOW.Near = 0.1;
@@ -232,14 +232,14 @@ TOW.findMeshAndVisibleMesh = function(name, scene) {
 };
 
 TOW.invisibleSceneChildren = function(scene) {
-  scene = scene || TOW.scene;
+  scene = scene || TOW.Scene;
   scene.traverse(function(child) {
     child.visible = false;
   });
 };
 
 TOW.visibleSceneChildren = function(scene) {
-  scene = scene || TOW.scene;
+  scene = scene || TOW.Scene;
   scene.traverse(function(child) {
     child.visible = true;
   });
