@@ -34,7 +34,8 @@ p.foot {
 }
 .img-button {
 	width: 85px;
-	height: 41px;
+	height: 38px;
+	float: right;
 }
 .img-pointer {
 	width: 20 px;
@@ -52,6 +53,12 @@ p.foot {
     line-height:0px;
 	border: 0px;
 }
+#logo {
+    height: 136px;
+    width: 814px;
+    float:left;
+}
+#buttons {}
 #wrap-inner { 
     background-color:white;
 	width: 1200px;
