@@ -6,6 +6,8 @@ var G2JS = require('../../scripts/grouping2js'),
     $ = require('../../scripts/node_modules/jquery'),
     $dae,
     tween,
+    focusedNodeName,
+    meshCache = { },
     hostname;
 
 var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
@@ -75,11 +77,14 @@ var updateModelTree = function(treeList) {
 
         window.currentNode = r.join(', '); // from s3d.refactor.js todo: future refactor
 
-        if (r.length == 1) {
-            if (window.currentNode == 'Trigger') focusTween(window.currentNode);
-            else focusSelected(window.currentNode);
-        }
+        if (data.node.parent == '#') {
+            TOW.cancelOnRenders();
+            // TOW.restoreCenteredGeometryOffsetPivot(TOW.findMeshByName(focusedNodeName, $dae), $dae); // Experimental, not functioning
+            TOW.visibleSceneChildren($dae);
+        } else if (data.node.id == 'Trigger') focusTween(data.node.id); // Experimental tween support, will need ui for it
+        else focusSelected(data.node.id);
 
+        focusedNodeName = data.node.id;
         window.selectedNodes = r; // from s3d.refactor.js todo: future refactor
     });
 };
@@ -182,40 +187,53 @@ var loadS3D = function(url, s3dname) {
         var semantic = G2JS.s2js(xmlString),
             grouping = G2JS.g2js(xmlString),
             treeList = transformGroupingTojsTree(grouping),
-            florauri = semantic.flora_base.uri;
+            florauri = semantic.flora_base.uri,
+            daename = getNameFromUrl(semantic.semantic_mapping.asset.uri);
 
         console.info('S3D references taxonomy: ' + florauri);
-        console.info('S3D references asset: ' + semantic.semantic_mapping.asset.uri);
+        console.info('S3D references asset: ' + daename);
         loadFlora(florauri, getNameFromUrl(florauri));
-        updateModelTree(treeList);
+
+        if (semantic.semantic_mapping.asset.uri) loadDAE(semantic.semantic_mapping.asset.uri, daename, treeList);
     })
     .fail(ajaxFail);
 };
 
-var loadDAE = function(url, daename) {
+var loadDAE = function(url, daename, treeList) {
     var instance = $.jstree.reference('#assetHierarchy');
 
     if (instance) instance.destroy();
 
     $('#assetHierarchy').html('<p>Loading selected asset...</p>');
     console.info('Loading ' + url);
-    $.ajax({ url: url, type: 'get', cache: false })
-    .done(function(data) {
-        var xmlString;
 
-        if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
-        else xmlString = data;
+    if ($dae) TOW.Scene.remove($dae);
 
-        var grouping = G2JS.dae2g(xmlString),
+    if (treeList) {
+        TOW.loadCollada(url, function(dae) {
+            updateModelTree(treeList);
+            $dae = dae;
+            TOW.render();
+        });
+    } else {
+        $.ajax({ url: url, type: 'get', cache: false })
+        .done(function(data) {
+            var xmlString;
+
+            if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
+            else xmlString = data;
+
+            var grouping = G2JS.dae2g(xmlString),
+
             treeList = transformGroupingTojsTree(grouping);
-
-        updateModelTree(treeList);
-
-        if ($dae) TOW.Scene.remove($dae);
-
-        TOW.loadCollada(url, function(dae) { $dae = dae; TOW.render(); });
-    })
-    .fail(ajaxFail);
+            TOW.loadCollada(url, function(dae) {
+                updateModelTree(treeList);
+                $dae = dae;
+                TOW.render();
+            });
+        })
+        .fail(ajaxFail);
+    }
 };
 
 var loadFlora = function(url, floraname) {
@@ -369,13 +387,22 @@ var focusSelected = function(n, onRender) {
 
     TOW.cancelOnRenders();
     TOW.invisibleSceneChildren($dae);
-    onRender = onRender || function(delta, pivot) {
-        if (!logged) { console.log(pivot.children[ 0 ].matrix.elements); logged = true; } // log the offset matrix
 
-        pivot.rotation.y += 0.005;
-    };
-    // if (self.meshCache[ n ] === undefined) self.meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
-    TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
+    if (tween) tween.stop();
+
+    if (meshCache[ n ] === undefined) {
+        onRender = onRender || function(delta, pivot) {
+            if (!logged) { console.log(pivot.children[ 0 ].matrix.elements); logged = true; } // log the offset matrix
+
+            pivot.rotation.y += Math.PI / 6 * delta;
+        };
+        
+        meshCache[ n ] = TOW.findMeshVisibleAndCenterRender(n, $dae, onRender);
+    } else {
+        var pivot = TOW.findMeshByName(n, $dae, { visible: true }).parent.parent;
+
+        TOW.render(function(delta) { pivot.rotation.y += Math.PI / 6 * delta; });
+    }
 };
 
 
@@ -383,11 +410,16 @@ var focusTween = function(n) {
     TOW.cancelOnRenders();
     TOW.invisibleSceneChildren($dae);
 
-    if (tween) tween.stop();
+    var pivot = TOW.findMeshAndVisibleMesh(n, $dae); // "n" has local transform, "pivot" point, not at world 0, 0, 0
 
-    var pivot = TOW.findMeshAndVisibleMesh(n, $dae);
+    if (meshCache[ n ] === undefined) {
+        meshCache[ n ] = pivot;
+        // TOW.render(function(delta) { pivot.rotation.x += Math.PI / 2 * delta; });
+    } else {
+        if (tween) tween.start();
+        return;
+    }
 
-    TOW.render(function(delta) { pivot.rotation.x += Math.PI / 2 * delta; });
     pivot.position.set(0, 0, 0);
 
     var curY = { y:  pivot.rotation.y },
@@ -421,5 +453,5 @@ window.addEventListener('DOMContentLoaded', function(event) {
         TOW.cancelRender(); // clear the requestAnimationFrame interval, not needed initially until dae loaded
     });
     TOW.intow(-1, 0.5, 0.5, -0.25, 0.025, 0.25); // light, camera => x, y, z
-    // TOW.intow(-1, 0.5, 0.5, -2, 2, 10); // light, camera => x, y, z
+    // TOW.intow(-1, 0.5, 0.5, -10, 2, 10); // light, camera => x, y, z
 });
