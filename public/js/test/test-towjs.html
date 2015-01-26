@@ -63,7 +63,7 @@ var TowDatMenu = function() {
     var pivot;
 
     if (self.meshCache[ n ] === undefined) {
-      var pivot =  self.meshCache[ n ] = TOW.findMeshAndVisibleMesh(n, dae);
+      var pivot =  self.meshCache[ n ] = TOW.findMeshAndVisibleMesh(n, dae); // trigger has local transform, "pivot" point, not at world 0, 0, 0
 
       TOW.render(function(delta) { pivot.rotation.y += Math.PI * delta; });
     } else {

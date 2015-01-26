@@ -49,7 +49,7 @@ release.chain(pull);
 pull.start();
 */
 
-var TOW = { REVISION: '0.3' };
+var TOW = { REVISION: '0.4' };
 
 TOW.Fov = 40;
 TOW.Near = 0.1;
@@ -173,7 +173,7 @@ TOW.loadColladas = function(urls, onLoaded, visible) {
   urls.forEach(function(url) { TOW.loadCollada(url, onCompleted, visible); });
 };
 
-// there is a strange bug were it works for the one mesh in a collada scene, the first, but for the next.
+// there is a strange bug were it works for one mesh in a collada scene, i.e. the first, but not for the next.
 // subsequent calls do not center, suspect in THREE.GeometryUtils.center it does
 // ... geometry.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) ); cause?
 // why is clone not preventing it, need deep clone?
@@ -189,6 +189,7 @@ TOW.centerGeometry = function(mesh, scene) {
 
 TOW.centerGeometryOffsetPivot = function(mesh, scene) {
   scene = scene || TOW.Scene;
+  // mesh.__prematrix = mesh.matrix.clone();
   mesh.position.set(0, 0, 0);
 
   var offset = new THREE.Object3D();
@@ -200,6 +201,21 @@ TOW.centerGeometryOffsetPivot = function(mesh, scene) {
   offset.add(mesh);
   pivot.add(offset);
   scene.add(pivot);
+};
+
+// Experimental and not working correct in dae tests
+TOW.restoreCenteredGeometryOffsetPivot = function(mesh, scene) {
+  scene = scene || TOW.Scene;
+  mesh.applyMatrix(mesh.__prematrix);
+
+  var offset = mesh.parent;
+  var pivot = mesh.parent.parent;
+
+  mesh.parent.remove(mesh);
+  pivot.remove(offset);
+  scene.remove(pivot);
+  scene.add(mesh);
+  delete mesh.__prematrix;
 };
 
 TOW.findMeshAndInvisibleChildren = function(name, scene) {
@@ -217,6 +233,23 @@ TOW.findMeshAndInvisibleChildren = function(name, scene) {
   return mesh;
 };
 
+TOW.findMeshByName = function(name, scene, options) {
+  scene = scene || TOW.Scene;
+  options = options || { };
+
+  var mesh;
+
+  scene.traverse(function(child) {
+    if (child instanceof THREE.Mesh && child.name == name) {
+      mesh = child;
+
+      if (options.visible) child.visible = options.visible;
+    }
+  });
+  return mesh;
+};
+
+// Deprecated, refactor soon
 TOW.findMeshAndVisibleMesh = function(name, scene) {
   scene = scene || TOW.Scene;
 
@@ -253,10 +286,10 @@ TOW.findMeshVisibleAndCenter = function(name, scene) {
 };
 
 TOW.findMeshVisibleAndCenterRender = function(name, scene, onRender) {
-  var mesh = TOW.findMeshVisibleAndCenter(name, scene);
+  var pivot = TOW.findMeshVisibleAndCenter(name, scene);
 
-  TOW.render(function(delta) { onRender(delta, mesh); });
-  return mesh;
+  TOW.render(function(delta) { onRender(delta, pivot); });
+  return pivot;
 };
 
 TOW.cancelOnRenders = function() {
