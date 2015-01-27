@@ -52,6 +52,14 @@ THREE.ColladaLoader = function () {
 	var colladaUp = 'Y';
 	var upConversion = null;
 
+	function loadFromXmlString(xmlString, url, readyCallback) {
+		var xmlParser = new DOMParser();
+		var responseXML = xmlParser.parseFromString( xmlString, "application/xml" );
+
+		readyCallbackFunc = readyCallback;
+		parse( responseXML, undefined, url );
+	}
+
 	function load ( url, readyCallback, progressCallback ) {
 
 		var length = 0;
@@ -5071,6 +5079,7 @@ THREE.ColladaLoader = function () {
 
 	return {
 
+		loadFromXmlString: loadFromXmlString,
 		load: load,
 		parse: parse,
 		setPreferredShading: setPreferredShading,

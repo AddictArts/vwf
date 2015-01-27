@@ -226,7 +226,7 @@ var loadDAE = function(url, daename, treeList) {
             var grouping = G2JS.dae2g(xmlString),
 
             treeList = transformGroupingTojsTree(grouping);
-            TOW.loadCollada(url, function(dae) {
+            TOW.loadColladaFromXmlString(xmlString, url, function(dae) {
                 updateModelTree(treeList);
                 $dae = dae;
                 TOW.render();
