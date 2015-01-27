@@ -506,7 +506,7 @@ var onClickDeleteMappingRow = function(jqe) {
         fclass = tr.children('td:nth-child(2)').text(),
         node = tr.children('td:nth-child(4)').text();
 
-    window.removeLinkByClassAndNode(fclass, node);
+    window.removeLinkByClassAndNode(fclass, node); // from s3d.refactor.js todo: refactor
     tr.remove();
 };
 
