@@ -274,50 +274,6 @@ function removeLink() {
   if (!removeLinkByClassAndNode(currentClass, currentNode, true)) alert('No rows were removed, mapping is not available.');
 }
 
-function addSemLinks() {
-  for (var i = 0, l = linkCollection.length; i < l; i++) {
-    var node = linkCollection[ i ].modelNode;
-    var floraClass = linkCollection[ i ].floraClass;
-    // var semanticLink = createSemanticLink(node, node, "M4_ont", floraClass); // <object name=...
-    s3dFile += semanticLink;
-  }
-}
-
-function addSemanticMapping() {
-  // TODO: Use grouping2js s2xml via s3d.src.js
-  // addNodeGroups(); // <group name ...
-  // addSemLinks();
-}
-
-function buildS3DFile() {
-  var s3dFile = "";
-  // TODO: Use grouping2js s2xml via s3d.src.js
-  // addHead(); // <S3D><head>...
-  // addFloraBase(); // <flora_base ...
-  // addSemanticMapping();
-  // TODO: Use grouping2js go2xml via s3d.src.js
-  // addGrouping();
-  // addEnd(); // </S3D>
-}
-
-function saveData() {
-  buildS3DFile();
-  console.log("Writing S3D file to SAVE repository!");
-
-  // TODO: Move this to s3d.src.js and allow the name and path to be entered
-  // jQuery.ajax({
-  //     url:'http://' + hostName + ':3001/s3d/M4_Carbine.s3d',
-  //     type:'put',
-  //     data: s3dFile,
-  //     cache: false,
-  //     processData: false,
-  //     crossDomain: true,
-  //     xhrFields: { withCredentials: true } // prompt
-  // })
-  // .done(function(data) { console.log("Result from PUT operation: " + data)  });
-}
-
-
-//--------------Load Table-----------------------------
+//--------------Create Tables-----------------------------
 createLinkTable();
 createClassTable();

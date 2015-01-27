@@ -216,6 +216,7 @@ var loadS3D = function(url, s3dname) {
         $('#semantic_auth').prop('value', semantic.head.author);
         $('#semantic_created').prop('value', semantic.head.created);
         $('#semantic_modified').prop('value', semantic.head.modified);
+        $('#semantic_flora_base_id').prop('value', semantic.flora_base.id);
 
         var asset = semantic.semantic_mapping.asset;
 
@@ -480,6 +481,12 @@ var focusTween = function(n) {
     tween = pull;
 };
 
+var onClickSaveS3D = function(jqe) {
+    var sx = G2JS.so2xml(semantic);
+
+    console.log(G2JS.sx2html(sx).text);
+};
+
 var onClickDeleteMappingRow = function(jqe) {
     var tr = $(this).closest('tr'),
         fclass = tr.children('td:nth-child(2)').text(),
@@ -497,6 +504,7 @@ window.addEventListener('DOMContentLoaded', function(event) {
     hostname = window.document.location.hostname;
     createAssetTreeSelectionGUI();
 
+    $('#save_s3d').click(onClickSaveS3D);
     $('table').on('click', 'input[type="button"]', onClickDeleteMappingRow); // from s3d.refactor.js todo: more refactor needed, broad selector
 
     TOW.changeContainerById('3d');
