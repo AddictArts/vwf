@@ -3,15 +3,13 @@
 //--------------Initialization-------------------------
 // Global variables
 
-var selectedNodes = [ ]; //This is the array that will have the JSTree selections from the 3D model hierarchy
 var currentNode;
 var linkCount = 0;      //Link count used in the Semantic Links table
 var tableBody;    //Global var for Semantic Link table body
+var table;
 var classTable;     //Global var for Class details table
 var classTableBody; //Global var fro class details table body
-var hostName = document.location.hostname;
 
-var selectedClasses = [ ];
 var currentClass; //global var for currently selected class
 var floraClass;
 var linkCollection = [ ];
@@ -19,21 +17,6 @@ var s3dfile = "";   //global var for storing the .s3d file content
 
 //--------------Flora/XSB Loading----------------------
 //--------------Utility functions----------------------
-function updateTaxonomy() {
-  console.log("Updating taxonomy!");
-  getTaxonomyRoots();
-  showTaxonomy();
-}
-
-// Takes a flora term string and returns an HTML DOM representation of it
-// with buttons for selecting and expanding the identifier
-function createListItem(floraTerm) {
-  var item = document.createElement("li");
-
-  item.appendChild(document.createTextNode(floraTerm));
-  return item;
-}
-
 function addClassDetailsToTable(tax) {
   if (classTable.rows.length > 1) classTable.deleteRow(1);
 
@@ -83,9 +66,9 @@ function addClassDetailsToTable(tax) {
 }
 
 function createLinkTable() {
-  var tableDiv = document.getElementById('tableContainer'),
-      table = document.createElement('TABLE');
-
+  var tableDiv = document.getElementById('tableContainer');
+  
+  table = document.createElement('TABLE');
   table.border = '1';
   tableBody = document.createElement('TBODY');
   table.appendChild(tableBody);
@@ -201,35 +184,37 @@ function createTableRow(currentClass, currentNode) {
   return tableRow;
 }
 
-function addLinkToTable(currentClass, currentNode) {
-  tableBody.appendChild(createTableRow(currentClass, currentNode));
-}
-
 function createAndAddLink() {
-  //selectedClasses = $('#taxonomy').jstree('get_selected');
-  //selectedNodes = $('#assetHierarchy').jstree('get_selected');
-  console.log("createAndAddLinki(): " + JSON.stringify(selectedClasses));
-
-  //var currentClass = selectedClasses[ 0 ];
-  //var currentNode = selectedNodes[ 0 ];
-
-  console.log("Link creation: " + currentClass + "->" + currentNode);
-
-  var link = {floraClass:currentClass, modelNode:currentNode};
+  var link = { floraClass: currentClass, modelNode: currentNode };
 
   linkCollection.push(link);
-  console.log("Created link: " + JSON.stringify(link));
-  addLinkToTable(currentClass, currentNode);
+  tableBody.appendChild(createTableRow(currentClass, currentNode));
+
+  var asset = window.__sjs.semantic_mapping.asset;
+
+  asset.objs.push({
+    name: currentNode,
+    node: currentNode,
+    sid: asset.sid,
+    flora_ref: currentClass
+  });
 }
 
 function addLink() {
-  var selectedItems = [];
+  var selectedItems = [ ];
 
-  console.log("The host name is:" + hostName);
-  selectedClasses = $('#taxonomy').jstree('get_selected');
-  console.log("Currently selected item count in Taxonomy tree:" + selectedClasses.length);
-  selectedNodes = $('#assetHierarchy').jstree('get_selected');
-  console.log("Currently selected item count in Model Hierarchy tree:" + selectedNodes.length);
+  if ($.jstree.reference('#taxonomy') === null) {
+    alert("Error! No taxonomy is loaded.");
+    return;
+  }
+
+  if ($.jstree.reference('#assetHierarchy') === null) {
+    alert("Error! No 3D model in hierarchy.");
+    return;
+  }
+
+  var selectedClasses = $('#taxonomy').jstree('get_selected'),
+      selectedNodes = $('#assetHierarchy').jstree('get_selected');
 
   if (selectedClasses.length == 0) {
     alert("Error! You need to select a class in the Flora taxonomy.");
@@ -237,14 +222,6 @@ function addLink() {
   }
   if (selectedNodes.length == 0) {
     alert("Error! You need to select a node in the 3D model hierarchy.");
-    return;
-  }
-  if (selectedClasses.length > 1) {
-    alert("Error! You can not link more than one class to a node at once.");
-    return;
-  }
-  if (selectedNodes.length > 1) {
-    alert("Error! You can not link more than one node to a class at once");
     return;
   }
 
@@ -252,12 +229,20 @@ function addLink() {
 }
 
 function removeLink() {
-  var selectedItems = [];
+  var selectedItems = [ ];
 
-  selectedClasses = $('#taxonomy').jstree('get_selected');
-  console.log("Currently selected item count in Taxonomy tree:" + selectedClasses.length);
-  selectedNodes = $('#assetHierarchy').jstree('get_selected');
-  console.log("Currently selected item count in Model Hierarchy tree:" + selectedNodes.length);
+  if ($.jstree.reference('#taxonomy') === null) {
+    alert("Error! No taxonomy is loaded.");
+    return;
+  }
+
+  if ($.jstree.reference('#assetHierarchy') === null) {
+    alert("Error! No 3D model in hierarchy.");
+    return;
+  }
+
+  var selectedClasses = $('#taxonomy').jstree('get_selected'),
+      selectedNodes = $('#assetHierarchy').jstree('get_selected');
 
   if (selectedClasses.length == 0) {
     alert("Error! You need to select a class in the Flora taxonomy.");
@@ -267,19 +252,11 @@ function removeLink() {
     alert("Error! You need to select a node in the 3D model hierarchy.");
     return;
   }
-  if (selectedClasses.length > 1) {
-    alert("Error! You can not link more than one class to a node at once.");
-    return;
-  }
-  if (selectedNodes.length > 1) {
-    alert("Error! You can not link more than one node to a class at once");
-    return;
-  }
 
   var found = false;
 
   for (var i = 0, l = linkCollection.length; i < l; i++) {
-    console.log("Scanning: Flora Class - " + linkCollection[i].floraClass + " Model Node - " + linkCollection[i].modelNode );
+    console.log("Scanning: Flora Class - " + linkCollection[ i ].floraClass + " Model Node - " + linkCollection[ i ].modelNode );
 
     if ((currentClass == linkCollection[ i ].floraClass) && (currentNode == linkCollection[ i ].modelNode)) {
       console.log("Found link to remove at index: " + i);

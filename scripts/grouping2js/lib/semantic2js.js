@@ -24,7 +24,7 @@ function semantic2js(options) {
 
         beginOntext = !beginOntext;
 
-        if (!beginOntext) return;
+        if (!beginOntext || text.trim() == '') return;
 
         switch (currentNode) {
         case 'description':

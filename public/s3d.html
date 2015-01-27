@@ -26,7 +26,7 @@
       height: 50px;
       float: left;
       border-bottom: #c00 solid 3px;
-      background-color: #4C3327;    /*S3D Editor Header*/
+      background-color: #4C3327;    /* S3D Editor Header */
       color: white;
     }
     #mainContainer #col1 {
@@ -34,7 +34,7 @@
       height: 500px;
       overflow: auto;
       float: left;
-      background-color: #F2EFE4;    /*Flora background*/
+      background-color: #F2EFE4;    /* Flora background */
       color: #4C3327;
     }
     #mainContainer #col2outer {
@@ -42,7 +42,7 @@
       float: right;
       margin: 0;
       padding: 0;
-      background-color: #F2EFE4;   /*VWF Window background*/
+      background-color: #F2EFE4;   /* Canvas background */
       color: #4C3327;
     }
     #col2outer #col2mid {
@@ -50,20 +50,20 @@
       height: 500px;
       overflow: auto;
       float: left;
-      background-color: #F2EFE4;   /*3D Hierarchy background*/
+      background-color: #F2EFE4;   /* 3D Hierarchy background */
       color: #4C3327;
     }
     #col2outer #col2side {
       width: 740px;
       float: right;
-      background-color: #F2EFE4;  /*VWF Rendering window header*/
+      background-color: #F2EFE4;  /* Rendering header */
       color: #4C3327;
     }
     #mainContainer #footer {
       float: left;
       width: 1450px;
       border-top: #c00 solid 3px;
-      background-color: #4C3327;    /*Footer*/
+      background-color: #4C3327;    /* Footer */
       color: white;
       overflow: auto;
     height: 300;
@@ -106,9 +106,11 @@
         <p>Repository flora list loading...</p>
       </div>
       <h3>Flora Taxonomy</h3>
+      <form id="searchTaxonomy">
+        <input id="queryTaxonomy" name="Search" value="" type="text" placeholder="Search:" size="32">
+      </form>
       <div id="taxonomy">
         <p>Select a file from the repository</p>
-        <!-- button onclick="updateTaxonomy()">Update</button XXX -->
       </div>
     </div>
 
@@ -118,24 +120,25 @@
           <p>Repository dae list loading....</p>
         </div>
         <h3>3D Hierarchy</h3>
+        <form id="searchHierarchy">
+          <input id="queryHierarchy" name="Search" value="" type="text" placeholder="Search:" size="32">
+        </form>
         <div id="assetHierarchy">
           <p>Select a file from the repository</p>
         </div>
       </div>
-      <!-- VWF Rendering Window -->
-      <div id="col2side"> <!-- VWF Rendering Window Container -->
+      <div id="col2side">
         <h3>3D</h3>
-        <!-- iframe class="vwf-frame" id="app1" src="" frameborder="2" height="500" width="740"></iframe -->
-        <canvas id="3d" style="border-width: 2px" height="500" width="740"></camvas>
+        <canvas id="3d" height="500" width="740"></canvas>
       </div>
     </div>
 
     <!-- Footer -->
     <div id="footer">
       <div class="toolstyle" id="toolbar">
-        <input name="AddLink" value="Link" onClick="addLink()" type=button>
-        <!-- <input name="RemoveLink" value="Unlink" onClick="removeLink()" type=button> -->
-        <input name="Save" value="Save" onClick="saveData()" type=button>
+        <input name="AddLink" value="Link" onClick="addLink()" type="button">
+        <input name="RemoveLink" value="Unlink" onClick="removeLink()" type="button">
+        <input name="Save" value="Save" onClick="saveData()" type="button">
       </div>
       <div id="tableArea">
         <div class="footer-left">
@@ -151,7 +154,15 @@
           <div id="classContainer"></div>
         </div>
       </div>
+
+      <div id="semantic_head">
+        <input id="semantic_desc" name="Description" value="" type="text" placeholder="Description:" size="32"><br>
+        <input id="semantic_auth" name="Description" value="" type="text" placeholder="Author:" size="32"><br>
+        <input id="semantic_created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
+        <input id="semantic_modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
+      </div>
     </div>
+
   </div>
 <script src="/js/s3d.refactor.js"></script>
 </body>
