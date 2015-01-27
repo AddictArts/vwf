@@ -49,7 +49,7 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
 var updateModelTree = function(treeList) {
     $('#assetHierarchy').jstree({
         core : {
-            // multiple : false,
+            multiple : false,
             data : treeList,
             check_callback: true
         },
@@ -85,7 +85,6 @@ var updateModelTree = function(treeList) {
         else focusSelected(data.node.id);
 
         focusedNodeName = data.node.id;
-        window.selectedNodes = r; // from s3d.refactor.js todo: future refactor
     });
 };
 
@@ -101,12 +100,20 @@ var createTaxonomyTree =  function(tax, floraname) {
     rootNode.appendChild(elementList);
     classList.appendChild(rootNode);
 
+    // Takes a flora term string and returns an HTML DOM representation of it
+    function createListItem(floraTerm) {
+        var item = window.document.createElement("li");
+
+        item.appendChild(window.document.createTextNode(floraTerm));
+        return item;
+    }
+
     for (var i = 0; i < tax.length; i++) elementList.appendChild(createListItem(tax[ i ]));
 
     taxdiv.appendChild(classList);
     $('#taxonomy').jstree({
         core : {
-            // multiple : false,
+            multiple : false,
             check_callback: true
         },
         plugins : [ 'contextmenu' ],
@@ -131,17 +138,17 @@ var createTaxonomyTree =  function(tax, floraname) {
             }
         }
     }).on('changed.jstree', function(jqe, data) {
-        window.selectedClasses = [ ]; // reset the selected classes, from s3d.refactor.js todo: future refactor
+        var r = [ ]; // reset the selected classes, from s3d.refactor.js todo: future refactor
 
         for (var i = 0, j = data.selected.length; i < j; i++) {
             var nodeText = data.instance.get_node(data.selected[ i ]).text;
 
-            window.selectedClasses.push(nodeText); // from s3d.refactor.js todo: future refactor
+            r.push(nodeText); // from s3d.refactor.js todo: future refactor
         }
 
-        window.currentClass = window.selectedClasses.join(', '); // from s3d.refactor.js todo: future refactor
+        window.currentClass = r.join(', '); // from s3d.refactor.js todo: future refactor
 
-        var fclass = window.selectedClasses[ 0 ];
+        var fclass = r[ 0 ];
 
         if (data.selected.length === 1) {
             window.floraClass = fclass; // from s3d.refactor.js todo: future refactor
