@@ -212,6 +212,7 @@ var loadS3D = function(url, s3dname) {
         semantic = window.__sjs = sjs; // for s3d.refactor.js todo: future refactor
         semantic.grouping = grouping;
         loadFlora(florauri, getNameFromUrl(florauri));
+        $('#semantic_filename').prop('value', url);
         $('#semantic_desc').prop('value', semantic.head.description);
         $('#semantic_auth').prop('value', semantic.head.author);
         $('#semantic_created').prop('value', semantic.head.created);
@@ -482,9 +483,22 @@ var focusTween = function(n) {
 };
 
 var onClickSaveS3D = function(jqe) {
-    var sx = G2JS.so2xml(semantic);
+    var sx = G2JS.so2xml(semantic, semantic.grouping),
+        url = 'http://' + hostname + ':3001' + $('#semantic_filename').val();
 
-    console.log(G2JS.sx2html(sx).text);
+    console.info('s3d:\n' + G2JS.sx2html(sx).text);
+    console.info('Saving s3d to: ' + url);
+    $.ajax({
+        url: url,
+        type: 'put',
+        data: sx,
+        cache: false,
+        processData: false,
+        crossDomain: true,
+        xhrFields: { withCredentials: true } // prompt
+    })
+    .done(function(data) { console.info(data); })
+    .fail(ajaxFail);
 };
 
 var onClickDeleteMappingRow = function(jqe) {
