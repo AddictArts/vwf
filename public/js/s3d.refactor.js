@@ -185,13 +185,19 @@ function createTableRow(currentClass, currentNode) {
 }
 
 function createAndAddLink() {
-  console.log("Link creation: " + currentClass + "->" + currentNode);
-
   var link = { floraClass: currentClass, modelNode: currentNode };
 
   linkCollection.push(link);
-  console.log("Created link: " + JSON.stringify(link));
   tableBody.appendChild(createTableRow(currentClass, currentNode));
+
+  var asset = window.__sjs.semantic_mapping.asset;
+
+  asset.objs.push({
+    name: currentNode,
+    node: currentNode,
+    sid: asset.sid,
+    flora_ref: currentClass
+  });
 }
 
 function addLink() {

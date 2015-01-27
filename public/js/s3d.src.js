@@ -8,6 +8,7 @@ var G2JS = require('../../scripts/grouping2js'),
     tween,
     focusedNodeName,
     meshCache = { },
+    semantic = G2JS.emptySjs,
     hostname;
 
 var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
@@ -53,7 +54,7 @@ var updateModelTree = function(treeList) {
             data : treeList,
             check_callback: true
         },
-        plugins : [ 'contextmenu' ],
+        plugins : [ 'contextmenu', 'search' ],
         contextmenu : {
             items : {
                 Link : {
@@ -86,6 +87,10 @@ var updateModelTree = function(treeList) {
 
         focusedNodeName = data.node.id;
     });
+    $("#searchHierarchy").submit(function(e) {
+        e.preventDefault();
+        $("#assetHierarchy").jstree(true).search($("#queryHierarchy").val());
+    });
 };
 
 var createTaxonomyTree =  function(tax, floraname) {
@@ -116,7 +121,7 @@ var createTaxonomyTree =  function(tax, floraname) {
             multiple : false,
             check_callback: true
         },
-        plugins : [ 'contextmenu' ],
+        plugins : [ 'contextmenu', 'search' ],
         contextmenu : {
             items : {
                 Link : {
@@ -156,6 +161,10 @@ var createTaxonomyTree =  function(tax, floraname) {
             if ($.jstree.reference('#taxonomy').is_leaf(data.selected[ 0 ]) === true) getSubClasses(fclass); // from s3d.refactor.js todo: future refactor
         }
     });
+    $("#searchTaxonomy").submit(function(e) {
+        e.preventDefault();
+        $("#taxonomy").jstree(true).search($("#queryTaxonomy").val());
+    });
 };
 
 var updateTaxonomyTreeSubclasses = function(tax) {
@@ -191,17 +200,36 @@ var loadS3D = function(url, s3dname) {
         if ($.isXMLDoc(data)) xmlString = (new window.XMLSerializer()).serializeToString(data);
         else xmlString = data;
 
-        var semantic = G2JS.s2js(xmlString),
+        var sjs = G2JS.s2js(xmlString),
             grouping = G2JS.g2js(xmlString),
             treeList = transformGroupingTojsTree(grouping),
-            florauri = semantic.flora_base.uri,
-            daename = getNameFromUrl(semantic.semantic_mapping.asset.uri);
+            florauri = sjs.flora_base.uri,
+            daename = getNameFromUrl(sjs.semantic_mapping.asset.uri);
 
         console.info('S3D references taxonomy: ' + florauri);
         console.info('S3D references asset: ' + daename);
+        // semantic = G2JS._sjs = sjs;
+        semantic = window.__sjs = sjs; // for s3d.refactor.js todo: future refactor
+        semantic.grouping = grouping;
         loadFlora(florauri, getNameFromUrl(florauri));
+        $('#semantic_desc').prop('value', semantic.head.description);
+        $('#semantic_auth').prop('value', semantic.head.author);
+        $('#semantic_created').prop('value', semantic.head.created);
+        $('#semantic_modified').prop('value', semantic.head.modified);
 
-        if (semantic.semantic_mapping.asset.uri) loadDAE(semantic.semantic_mapping.asset.uri, daename, treeList);
+        var asset = semantic.semantic_mapping.asset;
+
+        if (asset.uri) {
+            loadDAE(asset.uri, daename, treeList);
+            window.tableBody.appendChild(window.createTableRow(asset.flora_ref, semantic.grouping.name)); // from s3d.refactor.js todo: future refactor
+            window.linkCollection.push({ floraClass: asset.flora_ref,  modelNode: semantic.grouping.name }); // from s3d.refactor.js todo: future refactor
+            semantic.semantic_mapping.asset.objs.forEach(function(obj) {
+                window.tableBody.appendChild(window.createTableRow(obj.flora_ref, obj.node)); // from s3d.refactor.js todo: future refactor
+                window.linkCollection.push({ floraClass: obj.flora_ref,  modelNode: obj.node }); // from s3d.refactor.js todo: future refactor
+            });
+        } else {
+            console.warn('S3D semantic_mapping asset uri is missing or invalid');
+        }
     })
     .fail(ajaxFail);
 };
@@ -231,8 +259,12 @@ var loadDAE = function(url, daename, treeList) {
             else xmlString = data;
 
             var grouping = G2JS.dae2g(xmlString),
+                treeList = transformGroupingTojsTree(grouping);
 
-            treeList = transformGroupingTojsTree(grouping);
+            semantic.semantic_mapping.asset.name = grouping.name;
+            semantic.semantic_mapping.asset.uri = url;
+            semantic.semantic_mapping.asset.sid = semantic.flora_base.id;
+            semantic.grouping = grouping;
             TOW.loadColladaFromXmlString(xmlString, url, function(dae) {
                 updateModelTree(treeList);
                 $dae = dae;
@@ -245,14 +277,15 @@ var loadDAE = function(url, daename, treeList) {
 
 var loadFlora = function(url, floraname) {
     var instance = $.jstree.reference('#taxonomy'),
-        url = 'http://' + hostname + ':3001/flora/server?method=loadFile&filename=' + encodeURIComponent(floraname);
+        loadurl = 'http://' + hostname + ':3001/flora/server?method=loadFile&filename=' + encodeURIComponent(floraname);
 
     if (instance) instance.destroy();
 
     console.info('Requesting ' + floraname);
     $('#taxonomy').html('<p>Loading selected taxonomy...</p>');
-    $.ajax({ url: url, type: 'get', cache: false })
+    $.ajax({ url: loadurl, type: 'get', cache: false })
     .done(function(data) {
+        semantic.flora_base.uri = url;
         getTaxonomyRoots(data, floraname)
     })
     .fail(ajaxFail);
@@ -448,6 +481,7 @@ var focusTween = function(n) {
 
 window.$ = $;
 window.jQuery = $;
+window.__sjs = semantic; // for s3d.refactor.js todo: future refactor
 window.addEventListener('DOMContentLoaded', function(event) {
     console.info('DOM fully loaded and parsed, ready to create the asset selection trees');
     hostname = window.document.location.hostname;
