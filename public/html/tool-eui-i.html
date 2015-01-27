@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!-- Copyright 2015, SRI International -->
+<html>
+
+<head>
+<title> SAVE - Exercise UI (Instructor Mode)</title>
+<link rel="stylesheet" type="text/css" href="save.css">
+<!-- <script src="/html/support/jquery-1.11.2.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#launch").click(function(event){
+			window.open("/foo.html");
+		}
+	)});
+</script>
+</head>
+
+<body>
+<center>
+	<div id="pointer">
+		<!-- Adjust spacer height to position pointer -->
+		<img src="images/spacer.png" width="27" height="430">
+		<img class="img-pointer" src="images/pointer.png">
+	</div>
+	<div id="tool-focus">
+		<img class="img-tool" src="images/tool-eui-i.png">
+		<div id="tool-header">
+			<div id="tool-title">
+				<h2>Exercise UI (EUI) - Instructor Mode</h2>
+			</div>
+			<div id="tool-launch"">
+				<!-- EUI requires the user defined URL to launch.
+				<input type="button" id="launch" value="Launch">
+				 -->
+			</div>
+		</div>
+		<div id="tool-text">
+			<p>The EUI allows you, as the instructor, to record interactions that serve as the basis for a solution, 
+			which the student will later be assessed against. Note the EUI in instructor mode has a red bar at the top.</p>
+			<ol>
+				<li>The EUI for the instructor is launched via the CAT (previous step).</li>
+				<li>Hit the Reset button to refresh the assessment engine.</li>
+				<li>Load the M4 model by selecting the M4 Carbine button in the upper-right corner.</li>
+				<li>Click on the relevant areas of the M4 to initiate actions. A context menu shows the available actions.</li>
+				<li>Perform the exercise steps in sequence. Click 'M4 Exercise Steps' above for the correct order.</li>
+				<li>If you make a mistake during the exercise, select the Reset button to start over.</li>
+				<li>Select the "Save Solution" button when done to write the exercise file to the repository.</li>
+			</ol>
+			<p>Result: the exercise file is written to the exercise repository.</p>
+			<p>Next, you will refine the solution in the Exercise Solution Editor.</p>
+		</div>
+	</div>
+</center>
+
+</body>
+</html>

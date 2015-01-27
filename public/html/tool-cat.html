@@ -1,0 +1,56 @@
+	<!DOCTYPE html>
+<!-- Copyright 2015, SRI International -->
+<html>
+
+<head>
+<title> SAVE - Content Assembly Tool</title>
+<link rel="stylesheet" type="text/css" href="save.css">
+<!-- <script src="/html/support/jquery-1.11.2.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#launch").click(function(event){
+			window.open("/CAT");
+		}
+	)});
+</script>
+</head>
+
+<body>
+<center>
+	<div id="pointer">
+		<!-- Adjust spacer height to position pointer -->
+		<img src="images/spacer.png" width="27" height="280">
+		<img class="img-pointer" src="images/pointer.png">
+	</div>
+	<div id="tool-focus">
+		<img class="img-tool" src="images/tool-cat.png">
+		<div id="tool-header">
+			<div id="tool-title">
+				<h2>Content Assembly Tool (CAT)</h2>
+			</div>
+			<div id="tool-launch"">
+				<input type="button" id="launch" value="Launch CAT">
+			</div>
+		</div>
+		<div id="tool-text">
+			<p>The CAT allows you to build a 3D scenario for an interactive training exercise. 
+			You can load the semantically annotated models (from the previous step) and place them in the scene.</p>
+			<ol>
+				<li>Start the tool by clicking the 'Launch CAT' button below the image. The empty scene will start out gray.</li>
+				<li>Select and load the example background asset 'Shooting Range'.</li>
+				<li>Open the 'Shooting Range' menu on the left. Ensure that 'visible' and 'auto load' are checked.</li>
+				<li>Select and load the example asset: M4 Carbine.</li>
+				<li>Move the M4 one-half unit high by entering the number 0.5 in the Z field under the M4 Carbine menu.</li>
+				<li>Orient the M4: Check rotZ. Enter 90 in the rotation. Uncheck rotZ. Repeat for rotY with -90 rotation.
+				<li>Move the camera higher by entering the number 0.75 in the Z field under the Camera menu.</li>
+				<li>Enter a path and exercise name in the 'Path' field. Then select Save Exercise at the bottom.</li>
+				<li>Click the Open button to work on this scene in the Exercise UI.</li>
+			</ol>
+			<p>Next, you will specify the exercise solution in the Exercise UI.</p>
+		</div>
+	</div>
+</center>
+
+</body>
+</html>

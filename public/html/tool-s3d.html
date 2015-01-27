@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- Copyright 2015, SRI International -->
+<html>
+
+<head>
+<title> SAVE - Semantic 3D Annotation Tool</title>
+<link rel="stylesheet" type="text/css" href="save.css">
+<!-- <script src="/html/support/jquery-1.11.2.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#launch").click(function(event){
+			window.open("../s3d.html");
+		}
+	)});
+</script>
+</head>
+
+<body>
+<center>
+	<div id="pointer">
+		<!-- Adjust spacer height to position pointer -->
+		<img src="images/spacer.png" width="27" height="130">
+		<img class="img-pointer" src="images/pointer.png">
+	</div>
+	<div id="tool-focus">
+		<img class="img-tool" src="images/tool-s3d.png">
+		<div id="tool-header">
+			<div id="tool-title">
+				<h2>Semantic 3D Annotation Tool (S3D)</h2>
+			</div>
+			<div id="tool-launch"">
+				<input type="button" id="launch" value="Launch S3D">
+			</div>
+		</div>
+		<div id="tool-text">
+			<p>The S3D annotation tool enables you, as a 3D content author, to associate semantic classes with corresponding nodes of a 3D model.</p>
+			<ol>
+				<li> Start the tool by clicking the 'Launch S3D' button below the image.</li>
+				<li> Choose a Flora ontology and a 3D model from the corresponding repository menu.</li>
+				<li> Note: a previously saved S3D annotation (e.g. M4.s3d) may instead be loaded from the S3D repository.</li>
+				<li> Link an ontology class to a 3D node by selecting one of each and then clicking 'Link'.</li>
+				<li> To remove links, click 'Delete' next to the listed link pair.</li>
+				<li> Class properties may be examined by right-clicking on the class and selecting 'Info'.</li>
+				<li> Save the annotation file (.s3d format) by clicking 'Save'.</li>
+			</ol>
+			<p>Result: The .s3d file containing your link information is written to the server and becomes available for use by the Content Assembly Tool.</p>
+			<p>Next, you will assemble the exercise scene.</p>
+		</div>
+	</div>
+</center>
+
+</body>
+</html>

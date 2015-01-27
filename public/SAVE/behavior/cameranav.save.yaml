@@ -88,4 +88,4 @@ scripts:
     this.future(0).cameraClearLookAt();
     // console.info('camera rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
   };
-  //# sourceURL=index.vwf
+  //# sourceURL=cameranav.save

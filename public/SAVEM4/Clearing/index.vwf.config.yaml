@@ -1,7 +1,0 @@
-# Copyright 2014, SRI International
---- 
-model:
-  vwf/model/threejs:
-view:
-  vwf/view/threejs: "#vwf-root"
-  # vwf/view/editor:
