@@ -482,6 +482,14 @@ var focusTween = function(n) {
     tween = pull;
 };
 
+var onClickSaveShow = function(jqe) {
+    $('#semantic_info').show();
+}
+
+var onClickSaveHide = function(jqe) {
+    $('#semantic_info').hide();
+}
+
 var onClickSaveS3D = function(jqe) {
     var sx = G2JS.so2xml(semantic, semantic.grouping),
         url = 'http://' + hostname + ':3001' + $('#semantic_filename').val();
@@ -497,7 +505,10 @@ var onClickSaveS3D = function(jqe) {
         crossDomain: true,
         xhrFields: { withCredentials: true } // prompt
     })
-    .done(function(data) { console.info(data); })
+    .done(function(data) {
+        console.info(data); 
+        onClickSaveHide();
+    })
     .fail(ajaxFail);
 };
 
@@ -518,7 +529,10 @@ window.addEventListener('DOMContentLoaded', function(event) {
     hostname = window.document.location.hostname;
     createAssetTreeSelectionGUI();
 
-    $('#save_s3d').click(onClickSaveS3D);
+    $('#semantic_info').hide();
+    $('#cancel_s3d_window').click(onClickSaveHide);
+    $('#save_s3d').click(onClickSaveShow);
+    $('#save_s3d_window').click(onClickSaveS3D);
     $('table').on('click', 'input[type="button"]', onClickDeleteMappingRow); // from s3d.refactor.js todo: more refactor needed, broad selector
 
     TOW.changeContainerById('3d');
