@@ -82,6 +82,20 @@
     }
     .footer-left { float: left; width: 50%; }
     .footer-right { float: right; width: 50%; }
+
+    #semantic_info {
+      background-color: grey;
+      position: absolute;
+      padding: 10px 10px 10px 10px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #save_s3d_buttons {
+      float: right;
+    }
+
   </style>
   <link rel="stylesheet" href="/js/themes/default/style.min.css" />
 
@@ -154,18 +168,20 @@
           <div id="classContainer"></div>
         </div>
       </div>
-
-      <div id="semantic_head">
-        <input id="semantic_filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
-        <input id="semantic_desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
-        <input id="semantic_auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
-        <input id="semantic_created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
-        <input id="semantic_modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
-        <input id="semantic_flora_base_id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
-      </div>
-    </div>
-
   </div>
+  <div id="semantic_info">
+    <input id="semantic_filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
+    <input id="semantic_desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
+    <input id="semantic_auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
+    <input id="semantic_created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
+    <input id="semantic_modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
+    <input id="semantic_flora_base_id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
+    <div id="save_s3d_buttons">
+      <input id="cancel_s3d_window" name="Cancel" value="Cancel" type="button">
+      <input id="save_s3d_window" name="Save" value="Save" type="button">
+    </div>
+  </div>
+</div>
 <script src="/js/s3d.refactor.js"></script>
 </body>
 </html>
