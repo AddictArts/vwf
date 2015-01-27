@@ -4,16 +4,13 @@
 // Global variables
 
 var currentNode;
-var linkCount = 0;      //Link count used in the Semantic Links table
-var tableBody;    //Global var for Semantic Link table body
+var tableBody; // global var for Semantic Link table body
 var table;
-var classTable;     //Global var for Class details table
-var classTableBody; //Global var fro class details table body
-
-var currentClass; //global var for currently selected class
+var classTable; // global var for Class details table
+var classTableBody; // global var fro class details table body
+var currentClass; // global var for currently selected class
 var floraClass;
 var linkCollection = [ ];
-var s3dfile = "";   //global var for storing the .s3d file content
 
 //--------------Flora/XSB Loading----------------------
 //--------------Utility functions----------------------
@@ -109,7 +106,7 @@ function createClassTable() {
   var tableDiv = document.getElementById('classContainer');
 
   classTable = document.createElement('TABLE');
-  classTable.border='1';
+  classTable.border = '1';
   classTableBody = document.createElement('TBODY');
   classTable.appendChild(classTableBody);
 
@@ -144,13 +141,10 @@ function createClassTable() {
 }
 
 //--------------UI Control Logic-----------------------
-function createTableRow(currentClass, currentNode) {
+function createTableRow(currentClass, currentNode, count) {
   var tableRow = document.createElement('TR'),
-      countCell = document.createElement('TD');
-
-  linkCount++;
-
-  var countVal = document.createTextNode(linkCount);
+      countCell = document.createElement('TD'),
+      countVal = document.createTextNode(count);
   
   countCell.appendChild(countVal);
   tableRow.appendChild(countCell);
@@ -188,7 +182,7 @@ function createAndAddLink() {
   var link = { floraClass: currentClass, modelNode: currentNode };
 
   linkCollection.push(link);
-  tableBody.appendChild(createTableRow(currentClass, currentNode));
+  tableBody.appendChild(createTableRow(currentClass, currentNode, linkCollection.length));
 
   var asset = window.__sjs.semantic_mapping.asset;
 
@@ -228,9 +222,33 @@ function addLink() {
   createAndAddLink();
 }
 
-function removeLink() {
-  var selectedItems = [ ];
+function removeLinkByClassAndNode(fclass, node, deleteRow) {
+  var objs = window.__sjs.semantic_mapping.asset.objs,
+      deleteRow = deleteRow || false,
+      removed = false;
 
+  for (var i = 0, l = linkCollection.length; i < l; i++) {
+    if (linkCollection[ i ]) {
+      if (fclass == linkCollection[ i ].floraClass && node == linkCollection[ i ].modelNode) {
+        linkCollection.splice(i, 1);
+        removed = true;
+
+        if (deleteRow) table.deleteRow(i + 1);
+      }
+    }
+
+    if (objs[ i ]) {
+      if (objs[ i ].flora_ref == fclass && objs[ i ].node == node) {
+        console.info("Removing semantic mapping object " + objs[ i ] + " at index: " + i);
+        objs.splice(i, 1);
+      }
+    }
+  }
+
+  return removed;
+}
+
+function removeLink() {
   if ($.jstree.reference('#taxonomy') === null) {
     alert("Error! No taxonomy is loaded.");
     return;
@@ -253,65 +271,9 @@ function removeLink() {
     return;
   }
 
-  var found = false;
-
-  for (var i = 0, l = linkCollection.length; i < l; i++) {
-    console.log("Scanning: Flora Class - " + linkCollection[ i ].floraClass + " Model Node - " + linkCollection[ i ].modelNode );
-
-    if ((currentClass == linkCollection[ i ].floraClass) && (currentNode == linkCollection[ i ].modelNode)) {
-      console.log("Found link to remove at index: " + i);
-      linkCollection.splice(i, 1);
-      table.deleteRow(i + 1);
-    }
-  }
+  if (!removeLinkByClassAndNode(currentClass, currentNode, true)) alert('No rows were removed, mapping is not available.');
 }
 
-function addSemLinks() {
-  for (var i = 0, l = linkCollection.length; i < l; i++) {
-    var node = linkCollection[ i ].modelNode;
-    var floraClass = linkCollection[ i ].floraClass;
-    // var semanticLink = createSemanticLink(node, node, "M4_ont", floraClass); // <object name=...
-    s3dFile += semanticLink;
-  }
-}
-
-function addSemanticMapping() {
-  // TODO: Use grouping2js s2xml via s3d.src.js
-  // addNodeGroups(); // <group name ...
-  // addSemLinks();
-}
-
-function buildS3DFile() {
-  s3dFile = "";
-  // TODO: Use grouping2js s2xml via s3d.src.js
-  // addHead(); // <S3D><head>...
-  // addFloraBase(); // <flora_base ...
-  // addSemanticMapping();
-  // TODO: Use grouping2js go2xml via s3d.src.js
-  // addGrouping();
-  // addEnd(); // </S3D>
-}
-
-function saveData() {
-  buildS3DFile();
-  console.log("Writing S3D file to SAVE repository!");
-
-  // TODO: Move this to s3d.src.js and allow the name and path to be entered
-  // jQuery.ajax({
-  //     url:'http://' + hostName + ':3001/s3d/M4_Carbine.s3d',
-  //     type:'put',
-  //     data: s3dFile,
-  //     cache: false,
-  //     processData: false,
-  //     crossDomain: true,
-  //     xhrFields: { withCredentials: true } // prompt
-  // })
-  // .done(function(data) { console.log("Result from PUT operation: " + data)  });
-}
-
-
-//--------------Load Table-----------------------------
+//--------------Create Tables-----------------------------
 createLinkTable();
 createClassTable();
-
-$('table').on('click', 'input[type="button"]', function(jqe) { $(this).closest('tr').remove() });

@@ -138,7 +138,7 @@
       <div class="toolstyle" id="toolbar">
         <input name="AddLink" value="Link" onClick="addLink()" type="button">
         <input name="RemoveLink" value="Unlink" onClick="removeLink()" type="button">
-        <input name="Save" value="Save" onClick="saveData()" type="button">
+        <input id="save_s3d" name="Save" value="Save" type="button">
       </div>
       <div id="tableArea">
         <div class="footer-left">
@@ -156,14 +156,17 @@
       </div>
 
       <div id="semantic_head">
-        <input id="semantic_desc" name="Description" value="" type="text" placeholder="Description:" size="32"><br>
-        <input id="semantic_auth" name="Description" value="" type="text" placeholder="Author:" size="32"><br>
+        <input id="semantic_filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
+        <input id="semantic_desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
+        <input id="semantic_auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
         <input id="semantic_created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
         <input id="semantic_modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
+        <input id="semantic_flora_base_id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
       </div>
     </div>
 
   </div>
 <script src="/js/s3d.refactor.js"></script>
+<script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);</script>
 </body>
 </html>

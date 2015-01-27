@@ -212,20 +212,22 @@ var loadS3D = function(url, s3dname) {
         semantic = window.__sjs = sjs; // for s3d.refactor.js todo: future refactor
         semantic.grouping = grouping;
         loadFlora(florauri, getNameFromUrl(florauri));
+        $('#semantic_filename').prop('value', url);
         $('#semantic_desc').prop('value', semantic.head.description);
         $('#semantic_auth').prop('value', semantic.head.author);
         $('#semantic_created').prop('value', semantic.head.created);
         $('#semantic_modified').prop('value', semantic.head.modified);
+        $('#semantic_flora_base_id').prop('value', semantic.flora_base.id);
 
         var asset = semantic.semantic_mapping.asset;
 
         if (asset.uri) {
             loadDAE(asset.uri, daename, treeList);
-            window.tableBody.appendChild(window.createTableRow(asset.flora_ref, semantic.grouping.name)); // from s3d.refactor.js todo: future refactor
             window.linkCollection.push({ floraClass: asset.flora_ref,  modelNode: semantic.grouping.name }); // from s3d.refactor.js todo: future refactor
+            window.tableBody.appendChild(window.createTableRow(asset.flora_ref, semantic.grouping.name, window.linkCollection.length)); // from s3d.refactor.js todo: future refactor
             semantic.semantic_mapping.asset.objs.forEach(function(obj) {
-                window.tableBody.appendChild(window.createTableRow(obj.flora_ref, obj.node)); // from s3d.refactor.js todo: future refactor
                 window.linkCollection.push({ floraClass: obj.flora_ref,  modelNode: obj.node }); // from s3d.refactor.js todo: future refactor
+                window.tableBody.appendChild(window.createTableRow(obj.flora_ref, obj.node, window.linkCollection.length)); // from s3d.refactor.js todo: future refactor
             });
         } else {
             console.warn('S3D semantic_mapping asset uri is missing or invalid');
@@ -457,6 +459,7 @@ var focusTween = function(n) {
         // TOW.render(function(delta) { pivot.rotation.x += Math.PI / 2 * delta; });
     } else {
         if (tween) tween.start();
+
         return;
     }
 
@@ -479,6 +482,34 @@ var focusTween = function(n) {
     tween = pull;
 };
 
+var onClickSaveS3D = function(jqe) {
+    var sx = G2JS.so2xml(semantic, semantic.grouping),
+        url = 'http://' + hostname + ':3001' + $('#semantic_filename').val();
+
+    console.info('s3d:\n' + G2JS.sx2html(sx).text);
+    console.info('Saving s3d to: ' + url);
+    $.ajax({
+        url: url,
+        type: 'put',
+        data: sx,
+        cache: false,
+        processData: false,
+        crossDomain: true,
+        xhrFields: { withCredentials: true } // prompt
+    })
+    .done(function(data) { console.info(data); })
+    .fail(ajaxFail);
+};
+
+var onClickDeleteMappingRow = function(jqe) {
+    var tr = $(this).closest('tr'),
+        fclass = tr.children('td:nth-child(2)').text(),
+        node = tr.children('td:nth-child(4)').text();
+
+    window.removeLinkByClassAndNode(fclass, node); // from s3d.refactor.js todo: refactor
+    tr.remove();
+};
+
 window.$ = $;
 window.jQuery = $;
 window.__sjs = semantic; // for s3d.refactor.js todo: future refactor
@@ -486,6 +517,9 @@ window.addEventListener('DOMContentLoaded', function(event) {
     console.info('DOM fully loaded and parsed, ready to create the asset selection trees');
     hostname = window.document.location.hostname;
     createAssetTreeSelectionGUI();
+
+    $('#save_s3d').click(onClickSaveS3D);
+    $('table').on('click', 'input[type="button"]', onClickDeleteMappingRow); // from s3d.refactor.js todo: more refactor needed, broad selector
 
     TOW.changeContainerById('3d');
     TOW.loadCollada('/SAVE/models/xyzbar.dae', function() {
