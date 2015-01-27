@@ -139,7 +139,7 @@ routes.get('/listfiles/flora/json', function(req, res) {
 routes.get('/listfiles/collada/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
-    var data = [ '/SAVE/models/environments/range/ShootingRange.dae', '/SAVE/models/weapons/M4/M4_noHierarchy.dae' ];
+    var data = [ '/SAVE/models/environments/range/ShootingRange.dae', '/SAVE/models/weapons/M4/M4_noHierarchy.dae', '/SAVE/models/weapons/M4/M4.dae', '/SAVE/models_lowpolygon/M4_lowPoly_06.dae' ];
 
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);

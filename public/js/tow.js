@@ -49,7 +49,7 @@ release.chain(pull);
 pull.start();
 */
 
-var TOW = { REVISION: '0.4' };
+var TOW = { REVISION: '0.5' };
 
 TOW.Fov = 40;
 TOW.Near = 0.1;
@@ -140,14 +140,27 @@ TOW.addLight = function(options) {
   return light;
 };
 
+TOW.getRootName = function(url) {
+  var parts = url.split('/');
+
+  return parts[ parts.length - 1 ].replace('.', '_');
+};
+
+TOW.loadColladaFromXmlString = function(xmlString, url, onLoad, visible, rootName) {
+  rootName = rootName || TOW.getRootName(url);
+  visible = visible === undefined? true : visible;
+  TOW.Loader.loadFromXmlString(xmlString, url, function(collada) {
+    collada.scene.name = rootName;
+    TOW.Scene.add(collada.scene);
+    eval('$' + rootName + ' = collada.scene');
+
+    if (!visible) TOW.invisibleSceneChildren(collada.scene);
+    if (onLoad !== undefined) onLoad(collada.scene);
+  });
+};
+
 TOW.loadCollada = function(url, onLoad, visible, rootName) {
-  function getRootName(url) {
-    var parts = url.split('/');
-
-    return parts[ parts.length - 1 ].replace('.', '_');
-  }
-
-  rootName = rootName || getRootName(url);
+  rootName = rootName || TOW.getRootName(url);
   visible = visible === undefined? true : visible;
   TOW.Loader.load(url, function(collada) {
     collada.scene.name = rootName;
