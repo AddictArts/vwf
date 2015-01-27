@@ -122,7 +122,7 @@ var s3d = '<?xml version="1.0" encoding="utf-8"?>\
             <description>Semantic 3D mapping file for: Shooting Range environment</description>\
             <author>cgreuel</author>\
             <created>2014-08-13</created>\
-            <modified>2014-11-13</modified>\
+            <modified>2014-11-13</modified> <!-- John Pywtorak -->\
         </head>\
         <flora_base id="M4_ont" uri="../../../knowledge/weapons/M4/m4.flr" />\
         <semantic_mapping>\
