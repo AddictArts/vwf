@@ -14,6 +14,17 @@
 		}
 	)});
 </script>
+<!-- Position the numbers over the main image -->
+<style>
+.n1 { position: relative; left: 330px; top: 20px; z-index: 1; }
+.n2a { position: relative; left: -220px; top: -401px; z-index: 1; }
+.n2b { position: relative; left: -100px; top: -417px; z-index: 1; }
+.n3 { position: relative; left: -260px; top: -417px; z-index: 1; }
+.n4 { position: relative; left: -357px; top: -149px; z-index: 1; }
+.n5 { position: relative; left: -150px; top: -77px; z-index: 1; }
+.n6 { position: relative; left: -320px; top: -299px; z-index: 1; }
+.n7 { position: relative; left: -395px; top: -149px; z-index: 1; }
+</style>
 </head>
 
 <body>
@@ -25,6 +36,14 @@
 	</div>
 	<div id="tool-focus">
 		<img class="img-tool" src="images/tool-s3d.png">
+		<img class="n1" src="images/n1.png">
+		<img class="n2a" src="images/n2.png">
+		<img class="n2b" src="images/n2.png">
+		<img class="n3" src="images/n3.png">
+		<img class="n4" src="images/n4.png">
+		<img class="n5" src="images/n5.png">
+		<img class="n6" src="images/n6.png">
+		<img class="n7" src="images/n7.png">
 		<div id="tool-header">
 			<div id="tool-title">
 				<h2>Semantic 3D Annotation Tool (S3D)</h2>
@@ -39,10 +58,10 @@
 				<li> Start the tool by clicking the 'Launch S3D' button below the image.</li>
 				<li> Choose a Flora ontology and a 3D model from the corresponding repository menu.</li>
 				<li> Note: a previously saved S3D annotation (e.g. M4.s3d) may instead be loaded from the S3D repository.</li>
-				<li> Link an ontology class to a 3D node by selecting one of each and then clicking 'Link'.</li>
+				<li> Link an ontology class to a 3D node by selecting one of each (blue highlights) and then clicking 'Link'.</li>
 				<li> To remove links, click 'Delete' next to the listed link pair.</li>
 				<li> Class properties may be examined by right-clicking on the class and selecting 'Info'.</li>
-				<li> Save the annotation file (.s3d format) by clicking 'Save'.</li>
+				<li> Save the annotation file (.s3d format) by clicking 'Save' and entering the requested info.</li>
 			</ol>
 			<p>Result: The .s3d file containing your link information is written to the server and becomes available for use by the Content Assembly Tool.</p>
 			<p>Next, you will assemble the exercise scene.</p>
