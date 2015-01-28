@@ -212,12 +212,12 @@ var loadS3D = function(url, s3dname) {
         semantic = window.__sjs = sjs; // for s3d.refactor.js todo: future refactor
         semantic.grouping = grouping;
         loadFlora(florauri, getNameFromUrl(florauri));
-        $('#semantic_filename').prop('value', url);
-        $('#semantic_desc').prop('value', semantic.head.description);
-        $('#semantic_auth').prop('value', semantic.head.author);
-        $('#semantic_created').prop('value', semantic.head.created);
-        $('#semantic_modified').prop('value', semantic.head.modified);
-        $('#semantic_flora_base_id').prop('value', semantic.flora_base.id);
+        $('#semantic-filename').prop('value', url);
+        $('#semantic-desc').prop('value', semantic.head.description);
+        $('#semantic-auth').prop('value', semantic.head.author);
+        $('#semantic-created').prop('value', semantic.head.created);
+        $('#semantic-modified').prop('value', semantic.head.modified);
+        $('#semantic-florabase-id').prop('value', semantic.flora_base.id);
 
         var asset = semantic.semantic_mapping.asset;
 
@@ -483,16 +483,18 @@ var focusTween = function(n) {
 };
 
 var onClickSaveShow = function(jqe) {
-    $('#semantic_info').show();
+    $('#b-semantic-info').show();
 }
 
 var onClickSaveHide = function(jqe) {
-    $('#semantic_info').hide();
+    $('#b-semantic-info').hide();
 }
 
 var onClickSaveS3D = function(jqe) {
+    updateSemanticInfoFromHtml();
+
     var sx = G2JS.so2xml(semantic, semantic.grouping),
-        url = 'http://' + hostname + ':3001' + $('#semantic_filename').val();
+        url = 'http://' + hostname + ':3001' + $('#semantic-filename').val();
 
     console.info('s3d:\n' + G2JS.sx2html(sx).text);
     console.info('Saving s3d to: ' + url);
@@ -512,6 +514,31 @@ var onClickSaveS3D = function(jqe) {
     .fail(ajaxFail);
 };
 
+var updateSemanticInfoFromHtml = function() {
+    var desc = $('#semantic-desc').val(),
+        auth = $('#semantic-auth').val(),
+        created = $('#semantic-created').val(),
+        modified = $('#semantic-modified').val(),
+        flora_base_id = $('#semantic-florabase-id').val();
+
+    semantic.head.description = desc;
+    semantic.head.author = auth;
+    semantic.head.created = created;
+    semantic.head.modified = modified;
+    semantic.flora_base.id = flora_base_id;
+
+    var asset = semantic.semantic_mapping.asset;
+
+    asset.sid = flora_base_id;
+    asset.objs.forEach(function(obj) {
+        obj.sid = flora_base_id;
+    })
+};
+
+var onBlurSemanticInfo = function(jqe) {
+    updateSemanticInfoFromHtml();
+};
+
 var onClickDeleteMappingRow = function(jqe) {
     var tr = $(this).closest('tr'),
         fclass = tr.children('td:nth-child(2)').text(),
@@ -529,10 +556,11 @@ window.addEventListener('DOMContentLoaded', function(event) {
     hostname = window.document.location.hostname;
     createAssetTreeSelectionGUI();
 
-    $('#semantic_info').hide();
-    $('#cancel_s3d_window').click(onClickSaveHide);
-    $('#save_s3d').click(onClickSaveShow);
-    $('#save_s3d_window').click(onClickSaveS3D);
+    $('#b-semantic-info').hide();
+    $('#save-button').click(onClickSaveShow);
+    $('#cancel-button').click(onClickSaveHide);
+    $('#save-button-s3d').click(onClickSaveS3D);
+    $('#b-semantic-info input[type=text]').on('blur', onBlurSemanticInfo);
     $('table').on('click', 'input[type="button"]', onClickDeleteMappingRow); // from s3d.refactor.js todo: more refactor needed, broad selector
 
     TOW.changeContainerById('3d');

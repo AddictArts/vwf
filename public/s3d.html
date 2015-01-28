@@ -83,7 +83,7 @@
     .footer-left { float: left; width: 50%; }
     .footer-right { float: right; width: 50%; }
 
-    #semantic_info {
+    #b-semantic-info {
       background-color: grey;
       position: absolute;
       padding: 10px 10px 10px 10px;
@@ -92,7 +92,7 @@
       transform: translate(-50%, -50%);
     }
 
-    #save_s3d_buttons {
+    #b-save-buttons {
       float: right;
     }
 
@@ -152,7 +152,7 @@
       <div class="toolstyle" id="toolbar">
         <input name="AddLink" value="Link" onClick="addLink()" type="button">
         <input name="RemoveLink" value="Unlink" onClick="removeLink()" type="button">
-        <input id="save_s3d" name="Save" value="Save" type="button">
+        <input id="save-button" name="Save" value="Save" type="button">
       </div>
       <div id="tableArea">
         <div class="footer-left">
@@ -169,16 +169,16 @@
         </div>
       </div>
   </div>
-  <div id="semantic_info">
-    <input id="semantic_filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
-    <input id="semantic_desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
-    <input id="semantic_auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
-    <input id="semantic_created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
-    <input id="semantic_modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
-    <input id="semantic_flora_base_id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
-    <div id="save_s3d_buttons">
-      <input id="cancel_s3d_window" name="Cancel" value="Cancel" type="button">
-      <input id="save_s3d_window" name="Save" value="Save" type="button">
+  <div id="b-semantic-info">
+    <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
+    <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
+    <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
+    <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
+    <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
+    <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
+    <div id="b-save-buttons">
+      <input id="cancel-button" name="Cancel" value="Ok" type="button">
+      <input id="save-button-s3d" name="Save" value="Save" type="button">
     </div>
   </div>
 </div>
