@@ -14,6 +14,14 @@
 		}
 	)});
 </script>
+<!-- Position the numbers over the main image -->
+<style>
+.n1 { position: relative; left: 290px; top: 20px; z-index: 1; }
+.n2 { position: relative; left: -345px; top: -420px; z-index: 1; }
+.n3 { position: relative; left: 235px; top: -445px; z-index: 1; }
+.n4 { position: relative; left: 45px; top: -237px; z-index: 1; }
+.n6 { position: relative; left: -405px; top: -357px; z-index: 1; }
+</style>
 </head>
 
 <body>
@@ -25,6 +33,11 @@
 	</div>
 	<div id="tool-focus">
 		<img class="img-tool" src="images/tool-eui-s.png">
+		<img class="n1" src="images/n1.png">
+		<img class="n2" src="images/n2.png">
+		<img class="n3" src="images/n3.png">
+		<img class="n4" src="images/n4.png">
+		<img class="n6" src="images/n6.png">
 		<div id="tool-header">
 			<div id="tool-title">
 				<h2>Exercise UI (EUI) - Student Mode</h2>
@@ -38,9 +51,9 @@
 			<ol>
 				<li>The EUI is launched by selecting an exercise URL. Click the 'Select Exercise' button below the image.</li>
 				<li>Click the Reset button once after the scene loads to refresh the assessment engine.</li>
-				<li>Load objects into the scene by selecting available buttons (e.g. M4 Carbine) in the EUI upper-right corner.</li>
+				<li>Load objects into the scene by selecting available assets (e.g. M4 Carbine) in the EUI upper-right corner.</li>
 				<li>Click on the relevant areas of the object to initiate actions. A context menu shows the available actions.</li>
-				<li>Perform the exercise steps in sequence.</li>
+				<li>Perform the exercise steps in the proper sequence.</li>
 				<li>When complete, select the Assessment button in the EUI upper-left corner to receive feedback.</li>
 			</ol>
 			<p>Result: the assessment is displayed in a window within the EUI, summarizing any errors that made.</p>

@@ -14,6 +14,13 @@
 		}
 	)});
 </script>
+<!-- Position the numbers over the main image -->
+<style>
+.n2 { position: relative; left: -142px; top: -430px; z-index: 1; }
+.n3 { position: relative; left: -340px; top: -390px; z-index: 1; }
+.n4 { position: relative; left: 210px; top: -410px; z-index: 1; }
+.n5 { position: relative; left: -143px; top: -430px; z-index: 1; }
+</style>
 </head>
 
 <body>
@@ -25,6 +32,10 @@
 	</div>
 	<div id="tool-focus">
 		<img class="img-tool" src="images/tool-ese.png">
+		<img class="n2" src="images/n2.png">
+		<img class="n3" src="images/n3.png">
+		<img class="n4" src="images/n4.png">
+		<img class="n5" src="images/n5.png">
 		<div id="tool-header">
 			<div id="tool-title">
 				<h2>Exercise Solution Editor (ESE)</h2>
@@ -39,7 +50,7 @@
 			<p>The ESE enables you to view demonstrated action traces (created with the EUI in the previous step) and add annotations to the action traces to capture allowed generalizations.</p>
 			<p>Note, the ESE is Java-based and must be manually launched outside the browser by the user. The ESE requires Java 7, due to an incompatible change to JavaFX in Java 8.</p>
 			<ol>
-				<li>From the start menu or desktop, run the Exercise Solution Editor on your local machine.</li>
+				<li>From your Windows Start menu or desktop, run the Exercise Solution Editor on your local machine.</li>
 				<li>Use the 'Open URL' button to load the exercise solution, previously written to the SAVE repository.</li>
 				<li>The ESE displays the generalized action trace from the content developer's solution demonstration</li>
 				<li>Add annotations to the solution to indicate allowed generalities.</li>
