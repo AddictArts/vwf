@@ -189,11 +189,17 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         },\n\
         Detach: function(name) {\n\
           switch (name) {\n\
+          case 'Lower_Handguard':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachLowerHandguard');\n\
+            break;\n\
           case 'Small_Sling_Swivel':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');\n\
             break;\n\
           case 'Swivel_LAMA1259863095':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSwivel');\n\
+            break;\n\
+          case 'Upper_Handguard':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperHandguard');\n\
             break;\n\
           }\n\
 \n\
@@ -206,8 +212,25 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             break;\n\
           }\n\
         },\n\
+        Pivot: function(name) {\n\
+          switch (name) {\n\
+          case 'Receiver Group':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PivotUpperFromLowerReceiver');\n\
+            break;\n\
+          }\n\
+        },\n\
+        Press: function(name) {\n\
+          switch (name) {\n\
+          case 'Handguard_Slip_Ring_LAMA918813252':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PressHandguardSlipRing');\n\
+            break;\n\
+          }          \n\
+        },\n\
         Pull: function(name) {\n\
           switch (name) {\n\
+          case 'Takedown_Pin':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTakedownPin');\n\
+            break;\n\
           case 'Trigger':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');\n\
             break;\n\
@@ -237,6 +260,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             break;\n\
           case 'Magazine_Catch':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');\n\
+            break;\n\
+          case 'Takedown_Pin':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTakedownPin');\n\
             break;\n\
           }\n\
         },\n\
@@ -436,9 +462,11 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 view.Release(objectName);\n\
               };\n\
 \n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PushAndHold'));\n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
+              if (!controlMenu.allActions) {\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PushAndHold'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
+              }\n\
               break;\n\
             case 'Charging_Handle_Latch':\n\
             case 'Charging_Handle':\n\
@@ -455,9 +483,11 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 view.Release('Charging_Handle');\n\
               };\n\
 \n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));\n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
+              if (!controlMenu.allActions) {\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
+              }\n\
               break;\n\
             case 'Ejection_Port_Cover':\n\
               contextMenu.Inspect = function() {\n\
@@ -466,6 +496,22 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               };\n\
 \n\
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));\n\
+              break;\n\
+            case 'Handguard_Slip_Ring_LAMA918813252':\n\
+              contextMenu.Press = function() {\n\
+                handleContextMenu();\n\
+                view.Press('Handguard_Slip_Ring_LAMA918813252');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Press'));\n\
+              break;\n\
+            case 'Lower_Handguard':\n\
+              contextMenu.Detach = function() {\n\
+                handleContextMenu();\n\
+                view.Detach('Lower_Handguard');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
               break;\n\
             case 'Magazine_Catch':\n\
             case 'Magazine_Catch_Button':\n\
@@ -513,6 +559,21 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 \n\
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
               break;\n\
+            case 'Takedown_Pin':\n\
+              contextMenu.Pull = function() {\n\
+                handleContextMenu();\n\
+                view.Pull('Takedown_Pin');\n\
+              };\n\
+              contextMenu.Push = function() {\n\
+                handleContextMenu();\n\
+                view.Push('Takedown_Pin');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) {\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+              }\n\
+              break;\n\
             case 'Trigger':\n\
               contextMenu.Pull = function() {\n\
                 handleContextMenu();\n\
@@ -520,6 +581,23 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               };\n\
 \n\
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));\n\
+              break;\n\
+            case 'Upper_Handguard':\n\
+              contextMenu.Detach = function() {\n\
+                handleContextMenu();\n\
+                view.Detach('Upper_Handguard');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
+              break;\n\
+            case 'Upper_Receiver':\n\
+            case 'Lower_Receiver':\n\
+              contextMenu.Pivot = function() {\n\
+                handleContextMenu();\n\
+                view.Pivot('Receiver Group');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pivot'));\n\
               break;\n\
             default: // Everything else... is just the point action point at selection\n\
               contextMenu.Point = function() {\n\
@@ -654,6 +732,8 @@ methods:\n\
   DetachLowerHandguard:\n\
   PushTakedownPin:\n\
   PullTakedownPin:\n\
+  PivotUpperFromLowerReceiver:\n\
+  PushPivotPin:\n\
 scripts:\n\
 - |\n\
   this.setup = function() {\n\
@@ -882,7 +962,7 @@ scripts:\n\
   };\n\
 \n\
   this.PullTakedownPin = function() {\n\
-    console.info(this.id + ' Pull TakedownPin');\n\
+    console.info(this.id + ' Pull Takedown_Pin');\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {\n\
         console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');\n\
@@ -892,6 +972,30 @@ scripts:\n\
     this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.018927 ], 0.5);\n\
     // arguments: thingPulled\n\
     this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });\n\
+  };\n\
+\n\
+  this.PivotUpperFromLowerReceiver = function() {\n\
+    console.info(this.id + ' Pivot Upper_Reveiver From Lower_Receiver');\n\
+    this.children[ 'Lower_Receiver Group' ].rotateBy([ 0, 0, 1, -16 ], 1);\n\
+    this.children[ 'Buttstock Group' ].rotateBy([ 0, 0, 1, -16 ], 1);\n\
+\n\
+    // arguments: pivot from, thing pivoted ???\n\
+    // this.activity({ action: 'Pivot', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Upper_Reveiver Group', 'Lower_Receiver Group' ] });\n\
+    // arguments: thing opened ???\n\
+    this.activity({ action: 'Open', arguments: [ this.M4_Carbine_dae_KbId ], names: [ 'M4_Carbine_dae' ] });\n\
+  };\n\
+\n\
+  this.PushPivotPin = function() {\n\
+    console.info(this.id + ' Push Pivot_Pin');\n\
+\n\
+    if (this.children[ 'Lower_Receiver Group' ].children[ 12 ].name != 'Pivot_Pin') {\n\
+        console.warn(this.id + ' Lower_Receiver Group child 12 is not the Pivot_Pin');\n\
+        return;\n\
+    }\n\
+\n\
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, 1 ], 1);\n\
+    // arguments: thingPushed\n\
+    this.activity({ action: 'Pivot', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });\n\
   };\n\
   //# sourceURL=M4_Carbine_dae.eui\n\
 ";

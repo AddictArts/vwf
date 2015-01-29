@@ -24,6 +24,8 @@ methods:
   DetachLowerHandguard:
   PushTakedownPin:
   PullTakedownPin:
+  PivotUpperFromLowerReceiver:
+  PushPivotPin:
 scripts:
 - |
   this.setup = function() {
@@ -252,7 +254,7 @@ scripts:
   };
 
   this.PullTakedownPin = function() {
-    console.info(this.id + ' Pull TakedownPin');
+    console.info(this.id + ' Pull Takedown_Pin');
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {
         console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');
@@ -262,5 +264,29 @@ scripts:
     this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.018927 ], 0.5);
     // arguments: thingPulled
     this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });
+  };
+
+  this.PivotUpperFromLowerReceiver = function() {
+    console.info(this.id + ' Pivot Upper_Reveiver From Lower_Receiver');
+    this.children[ 'Lower_Receiver Group' ].rotateBy([ 0, 0, 1, -16 ], 1);
+    this.children[ 'Buttstock Group' ].rotateBy([ 0, 0, 1, -16 ], 1);
+
+    // arguments: pivot from, thing pivoted ???
+    // this.activity({ action: 'Pivot', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Upper_Reveiver Group', 'Lower_Receiver Group' ] });
+    // arguments: thing opened ???
+    this.activity({ action: 'Open', arguments: [ this.M4_Carbine_dae_KbId ], names: [ 'M4_Carbine_dae' ] });
+  };
+
+  this.PushPivotPin = function() {
+    console.info(this.id + ' Push Pivot_Pin');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 12 ].name != 'Pivot_Pin') {
+        console.warn(this.id + ' Lower_Receiver Group child 12 is not the Pivot_Pin');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, 1 ], 1);
+    // arguments: thingPushed
+    this.activity({ action: 'Pivot', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });
   };
   //# sourceURL=M4_Carbine_dae.eui
