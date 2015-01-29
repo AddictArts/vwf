@@ -568,7 +568,6 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
   <script type='text/javascript'>\n\
     $('#wrapper').appendTo('#vwf-root');\n\
 \n\
-\n\
     if (__EUI) {\n\
       $('#euiMsg .actionDesc').text('EUI Configured');\n\
       $('#euiMsg .actionKey').text('baseServerAddress');\n\
@@ -879,7 +878,7 @@ scripts:\n\
 \n\
     this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.003344 ], 0.5);\n\
     // arguments: thingPushed\n\
-    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ], names: [ 'Takedown_Pin' ] });\n\
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });\n\
   };\n\
 \n\
   this.PullTakedownPin = function() {\n\
