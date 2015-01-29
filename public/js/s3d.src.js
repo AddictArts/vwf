@@ -87,9 +87,9 @@ var updateModelTree = function(treeList) {
 
         focusedNodeName = data.node.id;
     });
-    $("#searchHierarchy").submit(function(e) {
+    $('#searchHierarchy').submit(function(e) {
         e.preventDefault();
-        $("#assetHierarchy").jstree(true).search($("#queryHierarchy").val());
+        $('#assetHierarchy').jstree(true).search($('#queryHierarchy').val());
     });
 };
 
@@ -161,9 +161,9 @@ var createTaxonomyTree =  function(tax, floraname) {
             if ($.jstree.reference('#taxonomy').is_leaf(data.selected[ 0 ]) === true) getSubClasses(fclass); // from s3d.refactor.js todo: future refactor
         }
     });
-    $("#searchTaxonomy").submit(function(e) {
+    $('#searchTaxonomy').submit(function(e) {
         e.preventDefault();
-        $("#taxonomy").jstree(true).search($("#queryTaxonomy").val());
+        $('#taxonomy').jstree(true).search($('#queryTaxonomy').val());
     });
 };
 
@@ -208,7 +208,7 @@ var loadS3D = function(url, s3dname) {
 
         console.info('S3D references taxonomy: ' + florauri);
         console.info('S3D references asset: ' + daename);
-        // semantic = G2JS._sjs = sjs;
+        clearMappingRows();
         semantic = window.__sjs = sjs; // for s3d.refactor.js todo: future refactor
         semantic.grouping = grouping;
         loadFlora(florauri, getNameFromUrl(florauri));
@@ -241,7 +241,7 @@ var loadDAE = function(url, daename, treeList) {
 
     if (instance) instance.destroy();
 
-    $('#assetHierarchy').html('<p>Loading selected asset...</p>');
+    $('#assetHierarchy').html('<img src="/js/themes/default/throbber.gif">Loading selected asset...</img>');
     console.info('Loading ' + url);
 
     if ($dae) TOW.Scene.remove($dae);
@@ -380,7 +380,8 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
             multiple : false,
             data : treeList,
             check_callback: true
-        }
+        },
+        plugins : [ 'search' ]
     }).on('changed.jstree', function(jqe, data) {
         if (data.node.parent == '#') { // The repository titled root deselect if selected
             $.jstree.reference(elemSelector).deselect_node(data.selected);
@@ -393,6 +394,10 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
             console.info('Repository selection: ' + id);
             onSelect(treeId2Url[ id ], id);
         }
+    });
+    $(elemSelector + '-search').submit(function(e) {
+        e.preventDefault();
+        $(elemSelector).jstree(true).search($(elemSelector + '-query').val());
     });
 };
 
@@ -446,7 +451,6 @@ var focusSelected = function(n, onRender) {
         TOW.render(function(delta) { pivot.rotation.y += Math.PI / 6 * delta; });
     }
 };
-
 
 var focusTween = function(n) {
     TOW.cancelOnRenders();
@@ -537,6 +541,12 @@ var updateSemanticInfoFromHtml = function() {
 
 var onBlurSemanticInfo = function(jqe) {
     updateSemanticInfoFromHtml();
+};
+
+var clearMappingRows = function() {
+    for (var i = 0, l = window.linkCollection.length; l > i; l--) window.table.deleteRow(l); // from s3d.refactor.js todo: refactor
+
+    window.linkCollection = [ ]; // from s3d.refactor.js todo: refactor
 };
 
 var onClickDeleteMappingRow = function(jqe) {

@@ -113,15 +113,21 @@
     <h1>S3D Annotation</h1>
 
     <div id="col1"> <!-- Flora Taxonomy Container -->
+      <form id="s3ds-search">
+        <input id="s3ds-query" name="Search" value="" type="text" placeholder="S3D Search:" size="32">
+      </form>
       <div id="s3ds">
         <p>Repository s3d list loading...</p>
       </div>
+      <form id="floras-search">
+        <input id="floras-query" name="Search" value="" type="text" placeholder="Flora Search:" size="32">
+      </form>
       <div id="floras">
         <p>Repository flora list loading...</p>
       </div>
       <h3>Flora Taxonomy</h3>
       <form id="searchTaxonomy">
-        <input id="queryTaxonomy" name="Search" value="" type="text" placeholder="Search:" size="32">
+        <input id="queryTaxonomy" name="Search" value="" type="text" placeholder="Taxonomy Search:" size="32">
       </form>
       <div id="taxonomy">
         <p>Select a file from the repository</p>
@@ -130,12 +136,15 @@
 
     <div id="col2outer">
       <div id="col2mid"> <!-- 3D Hierarchy Container -->
+        <form id="daes-search">
+          <input id="daes-query" name="Search" value="" type="text" placeholder="Asset Search:" size="32">
+        </form>
         <div id="daes">
           <p>Repository dae list loading....</p>
         </div>
         <h3>3D Hierarchy</h3>
         <form id="searchHierarchy">
-          <input id="queryHierarchy" name="Search" value="" type="text" placeholder="Search:" size="32">
+          <input id="queryHierarchy" name="Search" value="" type="text" placeholder="Hierarchy Search:" size="32">
         </form>
         <div id="assetHierarchy">
           <p>Select a file from the repository</p>
