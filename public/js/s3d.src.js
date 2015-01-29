@@ -48,7 +48,7 @@ var transformGroupingTojsTree = function(groupingObj, parent, treeList) {
 };
 
 var updateModelTree = function(treeList) {
-    $('#assetHierarchy').jstree({
+    $('#hierarchy').jstree({
         core : {
             multiple : false,
             data : treeList,
@@ -87,9 +87,9 @@ var updateModelTree = function(treeList) {
 
         focusedNodeName = data.node.id;
     });
-    $('#searchHierarchy').submit(function(e) {
+    $('#hierarchy-search').submit(function(e) {
         e.preventDefault();
-        $('#assetHierarchy').jstree(true).search($('#queryHierarchy').val());
+        $('#hierarchy').jstree(true).search($('#hierarchy-query').val());
     });
 };
 
@@ -161,9 +161,9 @@ var createTaxonomyTree =  function(tax, floraname) {
             if ($.jstree.reference('#taxonomy').is_leaf(data.selected[ 0 ]) === true) getSubClasses(fclass); // from s3d.refactor.js todo: future refactor
         }
     });
-    $('#searchTaxonomy').submit(function(e) {
+    $('#taxonomy-search').submit(function(e) {
         e.preventDefault();
-        $('#taxonomy').jstree(true).search($('#queryTaxonomy').val());
+        $('#taxonomy').jstree(true).search($('#taxonomy-query').val());
     });
 };
 
@@ -187,11 +187,11 @@ var showTaxonomyClassDetails = function(details) {
 
 // $.ajax({ url:  '/SAVE/testdata/s3d/ShootingRange.xml', type: 'get', cache: false })
 var loadS3D = function(url, s3dname) {
-    var instance = $.jstree.reference('#assetHierarchy'); 
+    var instance = $.jstree.reference('#hierarchy'); 
 
     if (instance) instance.destroy();
 
-    $('#assetHierarchy').html('<p>Loading selected s3d...</p>');
+    $('#hierarchy').html('<p>Loading selected s3d...</p>');
     console.info('Loading ' + url);
     $.ajax({ url: url, type: 'get', cache: false })
     .done(function(data) {
@@ -237,11 +237,11 @@ var loadS3D = function(url, s3dname) {
 };
 
 var loadDAE = function(url, daename, treeList) {
-    var instance = $.jstree.reference('#assetHierarchy');
+    var instance = $.jstree.reference('#hierarchy');
 
     if (instance) instance.destroy();
 
-    $('#assetHierarchy').html('<img src="/js/themes/default/throbber.gif">Loading selected asset...</img>');
+    $('#hierarchy').html('<img src="/js/themes/default/throbber.gif">Loading selected asset...</img>');
     console.info('Loading ' + url);
 
     if ($dae) TOW.Scene.remove($dae);

@@ -12,14 +12,14 @@
       background-color: #F2EFE4;
       color: white;
     }
-    #mainContainer {
+    #container {
       width: 1450px;
       margin: 0 0 0 20px; /* top right bottom left */
       padding: 0;
       background-color: #CB8C1D;
       color: white;
     }
-    #mainContainer h1 {
+    #container h1 {
       margin: 0;
       padding: 0;
       width: 100%;
@@ -29,7 +29,7 @@
       background-color: #4C3327;    /* S3D Editor Header */
       color: white;
     }
-    #mainContainer #col1 {
+    #container #col1 {
       width: 300px;
       height: 500px;
       overflow: auto;
@@ -37,7 +37,7 @@
       background-color: #F2EFE4;    /* Flora background */
       color: #4C3327;
     }
-    #mainContainer #col2outer {
+    #container #col2outer {
       width: 1150px;
       float: right;
       margin: 0;
@@ -59,7 +59,7 @@
       background-color: #F2EFE4;  /* Rendering header */
       color: #4C3327;
     }
-    #mainContainer #footer {
+    #container #footer {
       float: left;
       width: 1450px;
       border-top: #c00 solid 3px;
@@ -109,7 +109,7 @@
   <script type="text/javascript" src="/js/jstree.min.js"></script>
 </head>
 <body>
-  <div id="mainContainer">
+  <div id="container">
     <h1>S3D Annotation</h1>
 
     <div id="col1"> <!-- Flora Taxonomy Container -->
@@ -126,8 +126,8 @@
         <p>Repository flora list loading...</p>
       </div>
       <h3>Flora Taxonomy</h3>
-      <form id="searchTaxonomy">
-        <input id="queryTaxonomy" name="Search" value="" type="text" placeholder="Taxonomy Search:" size="32">
+      <form id="taxonomy-search">
+        <input id="taxonomy-query" name="Search" value="" type="text" placeholder="Taxonomy Search:" size="32">
       </form>
       <div id="taxonomy">
         <p>Select a file from the repository</p>
@@ -143,10 +143,10 @@
           <p>Repository dae list loading....</p>
         </div>
         <h3>3D Hierarchy</h3>
-        <form id="searchHierarchy">
-          <input id="queryHierarchy" name="Search" value="" type="text" placeholder="Hierarchy Search:" size="32">
+        <form id="hierarchy-search">
+          <input id="hierarchy-query" name="Search" value="" type="text" placeholder="Hierarchy Search:" size="32">
         </form>
-        <div id="assetHierarchy">
+        <div id="hierarchy">
           <p>Select a file from the repository</p>
         </div>
       </div>
@@ -156,7 +156,6 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <div id="footer">
       <div class="toolstyle" id="toolbar">
         <input name="AddLink" value="Link" onClick="addLink()" type="button">
@@ -178,17 +177,17 @@
         </div>
       </div>
   </div>
-  <div id="b-semantic-info">
-    <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
-    <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
-    <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
-    <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
-    <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
-    <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
-    <div id="b-save-buttons">
-      <input id="cancel-button" name="Cancel" value="Ok" type="button">
-      <input id="save-button-s3d" name="Save" value="Save" type="button">
-    </div>
+</div>
+<div id="b-semantic-info">
+  <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
+  <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
+  <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
+  <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
+  <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
+  <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
+  <div id="b-save-buttons">
+    <input id="cancel-button" name="Cancel" value="Ok" type="button">
+    <input id="save-button-s3d" name="Save" value="Save" type="button">
   </div>
 </div>
 <script src="/js/s3d.refactor.js"></script>
