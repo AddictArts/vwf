@@ -1588,7 +1588,7 @@
     </geometry>
   </library_geometries>
   <library_visual_scenes>
-    <visual_scene id="VisualSceneNode" name="ShootingRange_05">
+    <visual_scene id="VisualSceneNode" name="ShootingRange">
       <node id="enviroment" name="enviroment" type="NODE">
         <translate sid="translate">0 0.63634 0</translate>
         <rotate sid="rotateZ">0 0 1 0</rotate>
