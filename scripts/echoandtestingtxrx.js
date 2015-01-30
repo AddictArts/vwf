@@ -230,7 +230,8 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.get('/M4dis/inventory', routes.gets[ routes.INV_CLEAR ]);
+routes.get('/published/clearing/inventory', routes.gets[ routes.INV_CLEAR ]);
+routes.get('/published/disassembly/inventory', routes.gets[ routes.INV_CLEAR ]);
 
 routes.get('/CAT/inventory', function(req, res) {
     log('...handling route GET ' + req.reqPath);
@@ -289,7 +290,8 @@ routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.post('/M4dis/object', routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/published/clearing/object', routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/published/disassembly/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/CAT/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/PutExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
 
@@ -328,7 +330,8 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
         KbIds: kbids
     }), 200, JSONt);
 });
-routes.post('/M4dis/query', routes.posts[ routes.Q_CLEAR ]);
+routes.post('/published/clearing/query', routes.posts[ routes.Q_CLEAR ]);
+routes.post('/published/disassembly/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/CAT/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/PutExercise/query', routes.posts[ routes.Q_CLEAR ]);
 
@@ -342,7 +345,8 @@ routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send('{ }\n', 200, JSONt);
 });
-routes.post('/M4dis/action', routes.posts[ routes.ACT_CLEAR ]);
+routes.post('/published/clearing/action', routes.posts[ routes.ACT_CLEAR ]);
+routes.post('/published/disassembly/action', routes.posts[ routes.ACT_CLEAR ]);
 routes.post('/PutExercise/action', routes.posts[ routes.ACT_CLEAR ]);
 
 routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
