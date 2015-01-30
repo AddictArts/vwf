@@ -32,11 +32,11 @@ var routes = {
     ROOT: '/',
     ROOTANY: '/*',
     PUTANY: '/*',
-    INV_CLEAR: '/M4clear/inventory',
-    OBJ_CLEAR: '/M4clear/object',
-    ACT_CLEAR: '/M4clear/action',
-    Q_CLEAR: '/M4clear/query',
-    ASSESS_CLEAR: '/M4clear/assessment',
+    INV_CLEAR: '/exercises/071-100-0032/step01/m4_flora_clear/inventory',
+    OBJ_CLEAR: '/exercises/071-100-0032/step01/m4_flora_clear/object',
+    ACT_CLEAR: '/exercises/071-100-0032/step01/m4_flora_clear/action',
+    Q_CLEAR: '/exercises/071-100-0032/step01/m4_flora_clear/query',
+    ASSESS_CLEAR: '/exercises/071-100-0032/step01/m4_flora_clear/assessment',
     puteInstructorMode: true
 };
 
@@ -197,6 +197,23 @@ routes.get('/PutExercise/generateSolution', function(req, res) {
     res.send('', 200, PLAINt);
 });
 
+routes.get('/CAT/inventory', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+
+    var data = {
+       tooltray: [{
+           name: "Shooting Range",
+           ID: "myRange"
+        }, {
+           name: "M4 Carbine",
+           ID: "myM4"
+        }]
+    };
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
 routes.get('/PutExercise/inventory', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
@@ -207,7 +224,7 @@ routes.get('/PutExercise/inventory', function(req, res) {
            ID: "myM4"
         }
         , {
-           name: "* Shooting Range",
+           name: "* Shooting Range", // for testing a not auto-load range instancing
            ID: "myRange"
         }]
     };
@@ -230,25 +247,7 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.get('/published/clearing/inventory', routes.gets[ routes.INV_CLEAR ]);
 routes.get('/exercises/071-100-0032/step02/m4_flora_disassembly/inventory', routes.gets[ routes.INV_CLEAR ]);
-
-routes.get('/CAT/inventory', function(req, res) {
-    log('...handling route GET ' + req.reqPath);
-
-    var data = {
-       tooltray: [{
-           name: "Shooting Range",
-           ID: "myRange"
-        }, {
-           name: "M4 Carbine",
-           ID: "myM4"
-        }]
-    };
-
-    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send(JSON.stringify(data), 200, JSONt);
-});
 
 routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
     log('...handling route POST ' + req.reqPath);
@@ -290,7 +289,6 @@ routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
 });
-routes.post('/published/clearing/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/exercises/071-100-0032/step02/m4_flora_disassembly/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/CAT/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/PutExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
@@ -330,7 +328,6 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
         KbIds: kbids
     }), 200, JSONt);
 });
-routes.post('/published/clearing/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/exercises/071-100-0032/step02/m4_flora_disassembly/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/CAT/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/PutExercise/query', routes.posts[ routes.Q_CLEAR ]);
@@ -345,14 +342,13 @@ routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send('{ }\n', 200, JSONt);
 });
-routes.post('/published/clearing/action', routes.posts[ routes.ACT_CLEAR ]);
 routes.post('/exercises/071-100-0032/step02/m4_flora_disassembly/action', routes.posts[ routes.ACT_CLEAR ]);
 routes.post('/PutExercise/action', routes.posts[ routes.ACT_CLEAR ]);
 
 routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */
     res.send('<html><body><div id="content"><p><b>You forgot these steps:</b><br/><ul><li>Pull and hold charging handle </li><li>Push and hold bottom of bolt catch </li><li>Release charging handle to cock rifle </li<li>Let go of bolt catch bottom </li><li>Return charging handle to forward position </li><li>Check chamber for ammo </li><li>Select <i>Safe</i> mode </li><li>Release bolt by pushing bolt catch top </li><li>Select <i>Semi</i> mode </li><li>Pull trigger to fire the weapon </li><li>Pull and hold charging handle </li><li>Release charging handle to cock rifle </li><li>Select <i>Safe</i> mode </li></ul></p></div></body></html>', 200, HTMLt);
 });
-routes.get('/M4dis/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
+routes.get('/exercises/071-100-0032/step02/m4_flora_disassembly/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 routes.get('/PutExercise/assessment', routes.gets[ routes.ASSESS_CLEAR ]);
 
 routes.post('/CAT/finishExercise', function(req, res) {
