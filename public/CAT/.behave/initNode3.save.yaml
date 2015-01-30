@@ -1,0 +1,60 @@
+# Copyright 2014, SRI International
+--- 
+properties:
+  __idToName: { }
+methods:
+  init:
+scripts:
+- |
+  // Don't use initialize() like you might want to...this is implemented behavior for a JavaScript created component.
+  // Since this init depends on another implemented behavior that could be loaded before this and may fix the
+  // undefined reference error, I will just handle init myself. I did not test the order in the array of implements theory.
+  this.init = function(KbId, mgroups) {
+    console.info(this.id + ' ' + this.name + ' init');
+
+    var self = this;
+    var comps = [ ];
+
+    self.checkForServerProperty(); // set the server address for the interfaces from parent if we need to
+
+    // Map vwf component children id's (aka transforms) to object names and add the backend id as a property to each child
+    //TODO Would findByID be better thank the cache __idToName? post 1.0
+    // var clickedNode = this.findByID( this, pickInfo.pickID );
+    self.__idToName[ self.id ] = self.name;
+    self.properties.create(self.name +  '_KbId', KbId);
+
+    //TODO need to look into all the children (depth), new function and recursive call, post 1.0, or just use the grouping data rather than the children, post 1.0
+    for (var i = 0, l = self.children.length; i < l; i++) {
+      var child = self.children[ i ]; 
+      var name = child.name;
+      var name_KbId = name + '_KbId';
+      var id = child.id;
+
+      self.__idToName[ id ] = name;
+      self.properties.create(name_KbId, undefined);
+      comps.push(name);
+    }
+
+    console.info('__idToName:');
+    console.log(self.__idToName);
+
+    if (self.parent.__CAT) return;
+
+    mgroups.forEach(function(group) {
+      var name_KbId = group + '_KbId';
+
+      self.properties.create(name_KbId, undefined);
+      comps.push(group);
+    })
+
+    self.query(
+      { type: 'KbId', parent: KbId, query: comps },
+      function(data) {
+        console.info(self.id + " KbId query received data " + JSON.stringify(data).slice(0, 272) + '...');
+
+        for (var i = 0, l = data.KbIds.length; i < l; i++) {
+          self[ comps[ i ] + '_KbId' ] = data.KbIds[ i ];
+        }
+      }
+    );
+  }; //# sourceURL=initNode3.save

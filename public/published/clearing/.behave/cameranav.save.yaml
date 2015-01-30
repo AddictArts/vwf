@@ -1,0 +1,91 @@
+# Copyright 2014, SRI International
+---
+extends: http://vwf.example.com/scene.vwf
+methods:
+  cameraZoom:
+  cameraOrbit:
+  cameraClearLookAt:
+  cameraLookAt:
+properties:
+  cameraZoomedValue: 0
+  cameraScaling: 0
+  cameraTarget: undefined
+scripts:
+- |
+  this.cameraZoom = function(value) {
+    // console.info('camera zoom ' + value);
+
+    var EPS = 0.00001;
+    var scale = 1 - value / 100; // normalize the value
+    var tmp = scale;
+
+    if (this.cameraZoomedValue > 0) {
+      if (value < EPS) {
+        scale = (1 / this.cameraScaling);
+        this.cameraScaling = 0;
+        value = 0;
+      } else {
+        scale = (1 / this.cameraScaling) * tmp;
+        this.cameraScaling = tmp;
+      }
+    } else {
+      this.cameraScaling = scale;
+    }
+
+    this.cameraZoomedValue = value;
+    // console.info('camera scale: ' + scale + ', cameraScaling: ' + this.cameraScaling);
+    // Note: assuming target is the origin for now!
+    var x = this.camera.translation[ 0 ];
+    var y = this.camera.translation[ 1 ];
+    var z = this.camera.translation[ 2 ]; // we keep the z as the target z
+    var theta = Math.atan2(x, y); // radians
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), 0); // radians
+    var radius = Math.sqrt(x * x + y * y) * scale;
+
+    //console.info('radius: ' + radius);
+    x = radius * Math.sin(phi) * Math.sin(theta);
+    y = radius * Math.sin(phi) * Math.cos(theta);
+    //console.info('camera new translation x ' + x + ', y ' + y + ', z ' + z);
+    this.camera.translateTo([ x, y, z ], 0.125);
+
+    // if (this.cameraTarget !== undefined) this.future(0).cameraLookAt(this.cameraTarget); // Note does not work well in the vwf currently for an unknown reason, call look at when done zooming!
+  };
+
+  this.cameraOrbit = function(theta) {
+    // console.info('orbit ' + theta + ' degrees');
+
+    // Note: assuming target is the origin for now!
+    var x = this.camera.translation[ 0 ];
+    var y = this.camera.translation[ 1 ];
+    var z = this.camera.translation[ 2 ];
+    var theta = theta * (Math.PI / 180);
+
+    //console.info('offset x ' + x + ', y ' + y + ', z ' + z);
+    var phi = Math.atan2(Math.sqrt(x * x + y * y), z); // radians
+    var radius = Math.sqrt(x * x + y * y + z * z); // again the origin is the target
+
+    //console.info('theta: ' + theta + ', phi: ' + phi + ' radians, ' + 'radius: ' + radius);
+    x = radius * Math.sin(phi) * Math.sin(theta);
+    y = radius * Math.sin(phi) * Math.cos(theta);
+    z = radius * Math.cos(phi);
+    // console.info('new offset x ' + x + ', y ' + y + ', z ' + z);
+    this.camera.translation = [ x, y, z ];
+    // console.info('target theta ' + theta * (180 / Math.PI));
+    // console.info('camera rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+
+    if (this.cameraTarget !== undefined) this.future(0).cameraLookAt(this.cameraTarget);
+  };
+
+  this.cameraClearLookAt = function() {
+    this.camera.lookAt = null;
+  };
+
+  this.cameraLookAt = function(what) {
+    what = what || this.cameraTarget;
+
+    if (what !== undefined && this[ what ] !== undefined ) this.camera.lookAt = this[ what ].id;
+
+    this.future(0).cameraClearLookAt();
+    // console.info('camera rot quat z2, z3 ' + this.camera.rotation[ 2 ] + ', ' + this.camera.rotation[ 3 ]);
+  };
+  //# sourceURL=cameranav.save

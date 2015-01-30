@@ -1,0 +1,36 @@
+# Copyright 2014, SRI International
+---
+properties:
+  __initializeStep: -1
+  baseServerAddress:
+  objectServerAddress:
+  queryServerAddress:
+  activityServerAddress:
+methods:
+  processSaveDotJson:
+scripts:
+- |
+  this.initialize = function() {
+    if (this.__initializeStep++ == -1) return; // VWF scene is the first initialize call, then our scene component additions are next, so -1, then 0
+  };
+
+  this.processSaveDotJson = function(data) {
+    this.__initializeStep == 1; // processing the save config json data is step 1
+    console.info(this.id + " begin.save completed initialize move on to process step " + this.__initializeStep);
+    console.info(this.id + " begin.save process json data:" + JSON.stringify(data));
+    this.baseServerAddress = data.baseServerAddress;
+    console.info(this.id + ' base server ' + this.baseServerAddress);
+
+    if (this.baseServerAddress != null) {
+      this.objectServerAddress = data.baseServerAddress + '/object'; // POST
+      this.queryServerAddress = data.baseServerAddress + '/query'; // POST
+      this.activityServerAddress = data.baseServerAddress + '/action'; // POST
+
+      console.info(this.id + " begin.save objectServerAddress:" + this.objectServerAddress);
+      console.info(this.id + " begin.save queryServerAddress:" + this.queryServerAddress);
+      console.info(this.id + " begin.save activityServerAddress:" + this.activityServerAddress);
+    }
+
+    this.__initializeStep = 2;
+    console.info(this.id + "begin.save completed move on to initialize step " + this.__initializeStep);
+  };//# sourceURL=begin.save
