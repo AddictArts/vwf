@@ -5,7 +5,7 @@ properties:
   actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]
 methods:
   setup:
-  detach:
+  detachSling:
   Point:
   SelectSwitchPosition:
   PushMagazineReleaseButton:
@@ -26,6 +26,10 @@ methods:
   PullTakedownPin:
   PivotUpperFromLowerReceiver:
   PushPivotPin:
+  PullPivotPin:
+  DetachUpperFromLowerReceiver:
+  LoosenNut:
+  DetachTheCarryHandle:
 scripts:
 - |
   this.setup = function() {
@@ -49,7 +53,7 @@ scripts:
   };
 
   this.SelectSwitchPosition = function(position) {
-    console.info(this.id + ' SelectSwitchPosition ' + position);
+    console.info(this.id + ' Selector_Lever ' + position);
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 18 ].name != 'Selector_Lever') {
         console.warn(this.id + ' Lower_Receiver Group child 18 is not the Selector_Lever');
@@ -72,7 +76,7 @@ scripts:
   };
 
   this.PushMagazineReleaseButton = function() {
-    console.info(this.id + ' Push MagazineReleaseButton');
+    console.info(this.id + ' Push Magazine_Release_Button');
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 9 ].name != 'Magazine_Catch') {
         console.warn(this.id + ' Lower_Receiver Group child 9 is not the Magazine_Catch');
@@ -91,31 +95,31 @@ scripts:
   };
 
   this.PullAndHoldChargingHandle = function() {
-    console.info(this.id + ' PullAndHold ChargingHandle');
+    console.info(this.id + ' PullAndHold Charging_Handle');
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.005, 0, 0 ], 0.25);
     this.activity({ action: 'PullAndHold', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
   };
 
   this.PushAndHoldBoltCatchBottom = function() {
-    console.info(this.id + ' PushAndHold BoltCatchBottom');
+    console.info(this.id + ' PushAndHold Bolt_Catch_Bottom');
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, -12 ];
     this.activity({ action: 'PushAndHold', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });
   };
 
   this.ReleaseChargingHandle = function() {
-    console.info(this.id + ' Release ChargingHandle');
+    console.info(this.id + ' Release Charging_Handle');
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0., 0, 0 ], 0.25);
     this.activity({ action: 'Release', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
   };
 
   this.ReleaseBoltCatchBottom = function() {
-    console.info(this.id + ' Release BoltCatchBottom');
+    console.info(this.id + ' Release Bolt_Catch_Bottom');
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 0 ];
     this.activity({ action: 'Release', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });
   };
 
   this.PushChargingHandle = function() {
-    console.info(this.id + ' Push ChargingHandle');
+    console.info(this.id + ' Push Charging_Handle');
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0.005, 0, 0 ], 0.25);
     this.activity({ action: 'Push', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
   };
@@ -152,7 +156,7 @@ scripts:
   };
 
   this.PushBoltCatchTop = function() {
-    console.info(this.id + ' Push BoltCatchTop');
+    console.info(this.id + ' Push Bolt_Catch_Top');
 
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 12 ];
     this.activity({ action: 'Push', arguments: [ this[ 'Bolt_Catch_Top Group_KbId' ] ], names: [ 'Bolt_Catch_Top Group' ] });
@@ -171,7 +175,7 @@ scripts:
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);
   };
 
-  this.detach = function(detached) {
+  this.detachSling = function(detached) {
     console.info(this.id + 'DetachSling 2 detach actions detaching:' + detached);
 
     var detachSling = false;
@@ -201,9 +205,9 @@ scripts:
   };
 
   this.DetachSmallSlingSwivel = function() {
-    console.info(this.id + ' Detach SmallSlingSwivel');
+    console.info(this.id + ' Detach Small_Sling_Swivel');
 
-    this.detach('Small_Sling_Swivel');
+    this.detachSling('Small_Sling_Swivel');
     // arguments: detached from, thing detached
     this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ], names: [ 'Small_Sling_Swivel' ] });
   };
@@ -211,13 +215,13 @@ scripts:
   this.DetachSwivel = function() {
     console.info(this.id + ' Detach Swivel');
 
-    this.detach('Swivel_LAMA1259863095');
+    this.detachSling('Swivel_LAMA1259863095');
     // arguments: detached from, thing detached
     this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ], names: [ 'Swivel_LAMA1259863095' ] });
   };
 
   this.PressHandguardSlipRing = function() {
-    console.info(this.id + ' Press HandguardSlipRing');
+    console.info(this.id + ' Press Handguard_Slip_Ring');
 
     this.Handguard_Slip_Ring_LAMA918813252.translateTo([ -0.0034912, 0, 0 ], 0.125);
     // arguments: thingPressed
@@ -225,7 +229,7 @@ scripts:
   };
 
   this.DetachUpperHandguard = function() {
-    console.info(this.id + ' Detach UpperHandguard');
+    console.info(this.id + ' Detach Upper_Handguard');
 
     this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);
     // arguments: detached from, thing detached
@@ -233,7 +237,7 @@ scripts:
   };
 
   this.DetachLowerHandguard = function() {
-    console.info(this.id + ' Detach LowerHandguard');
+    console.info(this.id + ' Detach Lower_Handguard');
 
     this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);
     // arguments: detached from, thing detached
@@ -241,7 +245,7 @@ scripts:
   };
 
   this.PushTakedownPin = function() {
-    console.info(this.id + ' Push TakedownPin');
+    console.info(this.id + ' Push Takedown_Pin');
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {
         console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');
@@ -273,7 +277,7 @@ scripts:
 
     // arguments: pivot from, thing pivoted ???
     // this.activity({ action: 'Pivot', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Upper_Reveiver Group', 'Lower_Receiver Group' ] });
-    // arguments: thing opened ???
+    // arguments: thingOpened
     this.activity({ action: 'Open', arguments: [ this.M4_Carbine_dae_KbId ], names: [ 'M4_Carbine_dae' ] });
   };
 
@@ -285,8 +289,63 @@ scripts:
         return;
     }
 
-    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, 1 ], 1);
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, -0.003344 ], 1);
     // arguments: thingPushed
-    this.activity({ action: 'Pivot', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });
+    this.activity({ action: 'Push', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });
+  };
+
+  this.PullPivotPin = function() {
+    console.info(this.id + ' Pull Pivot_Pin');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 12 ].name != 'Pivot_Pin') {
+        console.warn(this.id + ' Lower_Receiver Group child 12 is not the Pivot_Pin');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, -0.018927 ], 1);
+    // arguments: thingPushed
+    this.activity({ action: 'Pull', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });
+  };
+
+  this.DetachUpperFromLowerReceiver = function() {
+    console.info(this.id + ' Detach Lower_Reveiver From Upper_Receiver');
+    this.children[ 'Lower_Receiver Group' ].translateBy([ 0, 0.15, 0 ], 1);
+    this.children[ 'Buttstock Group' ].translateBy([ 0, 0.15, 0 ], 1);
+
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Lower_Receiver Group' ] });
+  };
+
+  this.LoosenNut = function(name) {
+    console.info(this.id + ' Loosen ' + name);
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 18 ].name != 'Round_Nut1') {
+        console.warn(this.id + ' Upper_Receiver Group child 18 is not the Round_Nut1');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 22 ].name != 'Round_Nut') {
+        console.warn(this.id + ' Upper_Receiver Group child 22 is not the Round_Nut');
+        return;
+    }
+
+    switch (name) {
+    case 'Round_Nut1':
+      this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 18 ].translateBy([ 0, 0, 0.01 ], 1);
+      break;
+    case 'Round_Nut':
+      this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 22 ].translateBy([ 0, 0, 0.01 ], 1);
+      break;
+    }
+
+    // arguments: screwLoosened
+    this.activity({ action: 'Loosen', arguments: [ this[ name + '_KbId' ] ], names: [ name ] });
+  };
+
+  this.DetachTheCarryHandle = function() {
+    console.info(this.id + ' Detach Gun_Carrying_Handle From Upper_Receiver');
+    this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].translateBy([ 0, -0.25, 0 ], 1);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Gun_Carrying_Handle Group_KbId' ] ], names: [ 'Gun_Carrying_Handle Group' ] });
   };
   //# sourceURL=M4_Carbine_dae.eui

@@ -189,8 +189,14 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         },\n\
         Detach: function(name) {\n\
           switch (name) {\n\
+          case 'Gun_Carrying_Handle':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachTheCarryHandle');\n\
+            break;\n\
           case 'Lower_Handguard':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachLowerHandguard');\n\
+            break;\n\
+          case 'Receiver Group':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperFromLowerReceiver');\n\
             break;\n\
           case 'Small_Sling_Swivel':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');\n\
@@ -212,6 +218,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             break;\n\
           }\n\
         },\n\
+        Loosen: function(name) {\n\
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'LoosenNut', [ name ]);\n\
+        },\n\
         Pivot: function(name) {\n\
           switch (name) {\n\
           case 'Receiver Group':\n\
@@ -228,6 +237,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         },\n\
         Pull: function(name) {\n\
           switch (name) {\n\
+          case 'Pivot_Pin':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullPivotPin');\n\
+            break;\n\
           case 'Takedown_Pin':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTakedownPin');\n\
             break;\n\
@@ -260,6 +272,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             break;\n\
           case 'Magazine_Catch':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');\n\
+            break;\n\
+          case 'Pivot_Pin':\n\
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushPivotPin');\n\
             break;\n\
           case 'Takedown_Pin':\n\
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTakedownPin');\n\
@@ -497,6 +512,14 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 \n\
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));\n\
               break;\n\
+            case 'Gun_Carrying_Handle':\n\
+              contextMenu.Detach = function() {\n\
+                handleContextMenu();\n\
+                view.Detach('Gun_Carrying_Handle');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
+              break;\n\
             case 'Handguard_Slip_Ring_LAMA918813252':\n\
               contextMenu.Press = function() {\n\
                 handleContextMenu();\n\
@@ -521,6 +544,30 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               };\n\
 \n\
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+              break;\n\
+            case 'Pivot_Pin':\n\
+              contextMenu.Push = function() {\n\
+                handleContextMenu();\n\
+                view.Push('Pivot_Pin');\n\
+              };\n\
+              contextMenu.Pull = function() {\n\
+                handleContextMenu();\n\
+                view.Pull('Pivot_Pin');\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) {\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));\n\
+              }\n\
+              break;\n\
+            case 'Round_Nut1':\n\
+            case 'Round_Nut':\n\
+              contextMenu.Loosen = function() {\n\
+                handleContextMenu();\n\
+                view.Loosen(objectName);\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Loosen'));\n\
               break;\n\
             case 'Selector_Lever':\n\
               contextMenu.SelectSwitchPosition = function() {\n\
@@ -596,8 +643,15 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
                 handleContextMenu();\n\
                 view.Pivot('Receiver Group');\n\
               };\n\
+              contextMenu.Detach = function() {\n\
+                handleContextMenu();\n\
+                view.Detach('Receiver Group');\n\
+              };\n\
 \n\
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pivot'));\n\
+              if (!controlMenu.allActions) {\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pivot'));\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));\n\
+              }\n\
               break;\n\
             default: // Everything else... is just the point action point at selection\n\
               contextMenu.Point = function() {\n\
@@ -713,7 +767,7 @@ properties:\n\
   actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]\n\
 methods:\n\
   setup:\n\
-  detach:\n\
+  detachSling:\n\
   Point:\n\
   SelectSwitchPosition:\n\
   PushMagazineReleaseButton:\n\
@@ -734,6 +788,10 @@ methods:\n\
   PullTakedownPin:\n\
   PivotUpperFromLowerReceiver:\n\
   PushPivotPin:\n\
+  PullPivotPin:\n\
+  DetachUpperFromLowerReceiver:\n\
+  LoosenNut:\n\
+  DetachTheCarryHandle:\n\
 scripts:\n\
 - |\n\
   this.setup = function() {\n\
@@ -757,7 +815,7 @@ scripts:\n\
   };\n\
 \n\
   this.SelectSwitchPosition = function(position) {\n\
-    console.info(this.id + ' SelectSwitchPosition ' + position);\n\
+    console.info(this.id + ' Selector_Lever ' + position);\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 18 ].name != 'Selector_Lever') {\n\
         console.warn(this.id + ' Lower_Receiver Group child 18 is not the Selector_Lever');\n\
@@ -780,7 +838,7 @@ scripts:\n\
   };\n\
 \n\
   this.PushMagazineReleaseButton = function() {\n\
-    console.info(this.id + ' Push MagazineReleaseButton');\n\
+    console.info(this.id + ' Push Magazine_Release_Button');\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 9 ].name != 'Magazine_Catch') {\n\
         console.warn(this.id + ' Lower_Receiver Group child 9 is not the Magazine_Catch');\n\
@@ -799,31 +857,31 @@ scripts:\n\
   };\n\
 \n\
   this.PullAndHoldChargingHandle = function() {\n\
-    console.info(this.id + ' PullAndHold ChargingHandle');\n\
+    console.info(this.id + ' PullAndHold Charging_Handle');\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.005, 0, 0 ], 0.25);\n\
     this.activity({ action: 'PullAndHold', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
   };\n\
 \n\
   this.PushAndHoldBoltCatchBottom = function() {\n\
-    console.info(this.id + ' PushAndHold BoltCatchBottom');\n\
+    console.info(this.id + ' PushAndHold Bolt_Catch_Bottom');\n\
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, -12 ];\n\
     this.activity({ action: 'PushAndHold', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });\n\
   };\n\
 \n\
   this.ReleaseChargingHandle = function() {\n\
-    console.info(this.id + ' Release ChargingHandle');\n\
+    console.info(this.id + ' Release Charging_Handle');\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0., 0, 0 ], 0.25);\n\
     this.activity({ action: 'Release', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
   };\n\
 \n\
   this.ReleaseBoltCatchBottom = function() {\n\
-    console.info(this.id + ' Release BoltCatchBottom');\n\
+    console.info(this.id + ' Release Bolt_Catch_Bottom');\n\
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 0 ];\n\
     this.activity({ action: 'Release', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });\n\
   };\n\
 \n\
   this.PushChargingHandle = function() {\n\
-    console.info(this.id + ' Push ChargingHandle');\n\
+    console.info(this.id + ' Push Charging_Handle');\n\
     this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0.005, 0, 0 ], 0.25);\n\
     this.activity({ action: 'Push', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
   };\n\
@@ -860,7 +918,7 @@ scripts:\n\
   };\n\
 \n\
   this.PushBoltCatchTop = function() {\n\
-    console.info(this.id + ' Push BoltCatchTop');\n\
+    console.info(this.id + ' Push Bolt_Catch_Top');\n\
 \n\
     this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 12 ];\n\
     this.activity({ action: 'Push', arguments: [ this[ 'Bolt_Catch_Top Group_KbId' ] ], names: [ 'Bolt_Catch_Top Group' ] });\n\
@@ -879,7 +937,7 @@ scripts:\n\
     this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);\n\
   };\n\
 \n\
-  this.detach = function(detached) {\n\
+  this.detachSling = function(detached) {\n\
     console.info(this.id + 'DetachSling 2 detach actions detaching:' + detached);\n\
 \n\
     var detachSling = false;\n\
@@ -909,9 +967,9 @@ scripts:\n\
   };\n\
 \n\
   this.DetachSmallSlingSwivel = function() {\n\
-    console.info(this.id + ' Detach SmallSlingSwivel');\n\
+    console.info(this.id + ' Detach Small_Sling_Swivel');\n\
 \n\
-    this.detach('Small_Sling_Swivel');\n\
+    this.detachSling('Small_Sling_Swivel');\n\
     // arguments: detached from, thing detached\n\
     this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ], names: [ 'Small_Sling_Swivel' ] });\n\
   };\n\
@@ -919,13 +977,13 @@ scripts:\n\
   this.DetachSwivel = function() {\n\
     console.info(this.id + ' Detach Swivel');\n\
 \n\
-    this.detach('Swivel_LAMA1259863095');\n\
+    this.detachSling('Swivel_LAMA1259863095');\n\
     // arguments: detached from, thing detached\n\
     this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ], names: [ 'Swivel_LAMA1259863095' ] });\n\
   };\n\
 \n\
   this.PressHandguardSlipRing = function() {\n\
-    console.info(this.id + ' Press HandguardSlipRing');\n\
+    console.info(this.id + ' Press Handguard_Slip_Ring');\n\
 \n\
     this.Handguard_Slip_Ring_LAMA918813252.translateTo([ -0.0034912, 0, 0 ], 0.125);\n\
     // arguments: thingPressed\n\
@@ -933,7 +991,7 @@ scripts:\n\
   };\n\
 \n\
   this.DetachUpperHandguard = function() {\n\
-    console.info(this.id + ' Detach UpperHandguard');\n\
+    console.info(this.id + ' Detach Upper_Handguard');\n\
 \n\
     this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);\n\
     // arguments: detached from, thing detached\n\
@@ -941,7 +999,7 @@ scripts:\n\
   };\n\
 \n\
   this.DetachLowerHandguard = function() {\n\
-    console.info(this.id + ' Detach LowerHandguard');\n\
+    console.info(this.id + ' Detach Lower_Handguard');\n\
 \n\
     this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);\n\
     // arguments: detached from, thing detached\n\
@@ -949,7 +1007,7 @@ scripts:\n\
   };\n\
 \n\
   this.PushTakedownPin = function() {\n\
-    console.info(this.id + ' Push TakedownPin');\n\
+    console.info(this.id + ' Push Takedown_Pin');\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {\n\
         console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');\n\
@@ -981,7 +1039,7 @@ scripts:\n\
 \n\
     // arguments: pivot from, thing pivoted ???\n\
     // this.activity({ action: 'Pivot', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Upper_Reveiver Group', 'Lower_Receiver Group' ] });\n\
-    // arguments: thing opened ???\n\
+    // arguments: thingOpened\n\
     this.activity({ action: 'Open', arguments: [ this.M4_Carbine_dae_KbId ], names: [ 'M4_Carbine_dae' ] });\n\
   };\n\
 \n\
@@ -993,9 +1051,64 @@ scripts:\n\
         return;\n\
     }\n\
 \n\
-    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, 1 ], 1);\n\
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, -0.003344 ], 1);\n\
     // arguments: thingPushed\n\
-    this.activity({ action: 'Pivot', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });\n\
+    this.activity({ action: 'Push', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });\n\
+  };\n\
+\n\
+  this.PullPivotPin = function() {\n\
+    console.info(this.id + ' Pull Pivot_Pin');\n\
+\n\
+    if (this.children[ 'Lower_Receiver Group' ].children[ 12 ].name != 'Pivot_Pin') {\n\
+        console.warn(this.id + ' Lower_Receiver Group child 12 is not the Pivot_Pin');\n\
+        return;\n\
+    }\n\
+\n\
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, -0.018927 ], 1);\n\
+    // arguments: thingPushed\n\
+    this.activity({ action: 'Pull', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });\n\
+  };\n\
+\n\
+  this.DetachUpperFromLowerReceiver = function() {\n\
+    console.info(this.id + ' Detach Lower_Reveiver From Upper_Receiver');\n\
+    this.children[ 'Lower_Receiver Group' ].translateBy([ 0, 0.15, 0 ], 1);\n\
+    this.children[ 'Buttstock Group' ].translateBy([ 0, 0.15, 0 ], 1);\n\
+\n\
+    // arguments: detached from, thing detached\n\
+    this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Lower_Receiver Group' ] });\n\
+  };\n\
+\n\
+  this.LoosenNut = function(name) {\n\
+    console.info(this.id + ' Loosen ' + name);\n\
+\n\
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 18 ].name != 'Round_Nut1') {\n\
+        console.warn(this.id + ' Upper_Receiver Group child 18 is not the Round_Nut1');\n\
+        return;\n\
+    }\n\
+\n\
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 22 ].name != 'Round_Nut') {\n\
+        console.warn(this.id + ' Upper_Receiver Group child 22 is not the Round_Nut');\n\
+        return;\n\
+    }\n\
+\n\
+    switch (name) {\n\
+    case 'Round_Nut1':\n\
+      this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 18 ].translateBy([ 0, 0, 0.01 ], 1);\n\
+      break;\n\
+    case 'Round_Nut':\n\
+      this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 22 ].translateBy([ 0, 0, 0.01 ], 1);\n\
+      break;\n\
+    }\n\
+\n\
+    // arguments: screwLoosened\n\
+    this.activity({ action: 'Loosen', arguments: [ this[ name + '_KbId' ] ], names: [ name ] });\n\
+  };\n\
+\n\
+  this.DetachTheCarryHandle = function() {\n\
+    console.info(this.id + ' Detach Gun_Carrying_Handle From Upper_Receiver');\n\
+    this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].translateBy([ 0, -0.25, 0 ], 1);\n\
+    // arguments: detached from, thing detached\n\
+    this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Gun_Carrying_Handle Group_KbId' ] ], names: [ 'Gun_Carrying_Handle Group' ] });\n\
   };\n\
   //# sourceURL=M4_Carbine_dae.eui\n\
 ";

@@ -184,8 +184,14 @@
         },
         Detach: function(name) {
           switch (name) {
+          case 'Gun_Carrying_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachTheCarryHandle');
+            break;
           case 'Lower_Handguard':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachLowerHandguard');
+            break;
+          case 'Receiver Group':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperFromLowerReceiver');
             break;
           case 'Small_Sling_Swivel':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');
@@ -207,6 +213,9 @@
             break;
           }
         },
+        Loosen: function(name) {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'LoosenNut', [ name ]);
+        },
         Pivot: function(name) {
           switch (name) {
           case 'Receiver Group':
@@ -223,6 +232,9 @@
         },
         Pull: function(name) {
           switch (name) {
+          case 'Pivot_Pin':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullPivotPin');
+            break;
           case 'Takedown_Pin':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTakedownPin');
             break;
@@ -255,6 +267,9 @@
             break;
           case 'Magazine_Catch':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
+            break;
+          case 'Pivot_Pin':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushPivotPin');
             break;
           case 'Takedown_Pin':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTakedownPin');
@@ -492,6 +507,14 @@
 
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));
               break;
+            case 'Gun_Carrying_Handle':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach('Gun_Carrying_Handle');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
             case 'Handguard_Slip_Ring_LAMA918813252':
               contextMenu.Press = function() {
                 handleContextMenu();
@@ -516,6 +539,30 @@
               };
 
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+              break;
+            case 'Pivot_Pin':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Pivot_Pin');
+              };
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull('Pivot_Pin');
+              };
+
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));
+              }
+              break;
+            case 'Round_Nut1':
+            case 'Round_Nut':
+              contextMenu.Loosen = function() {
+                handleContextMenu();
+                view.Loosen(objectName);
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Loosen'));
               break;
             case 'Selector_Lever':
               contextMenu.SelectSwitchPosition = function() {
@@ -591,8 +638,15 @@
                 handleContextMenu();
                 view.Pivot('Receiver Group');
               };
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach('Receiver Group');
+              };
 
-              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pivot'));
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pivot'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              }
               break;
             default: // Everything else... is just the point action point at selection
               contextMenu.Point = function() {
