@@ -202,13 +202,13 @@ function addLink() {
     return;
   }
 
-  if ($.jstree.reference('#assetHierarchy') === null) {
+  if ($.jstree.reference('#hierarchy') === null) {
     alert("Error! No 3D model in hierarchy.");
     return;
   }
 
   var selectedClasses = $('#taxonomy').jstree('get_selected'),
-      selectedNodes = $('#assetHierarchy').jstree('get_selected');
+      selectedNodes = $('#hierarchy').jstree('get_selected');
 
   if (selectedClasses.length == 0) {
     alert("Error! You need to select a class in the Flora taxonomy.");
@@ -254,13 +254,13 @@ function removeLink() {
     return;
   }
 
-  if ($.jstree.reference('#assetHierarchy') === null) {
+  if ($.jstree.reference('#hierarchy') === null) {
     alert("Error! No 3D model in hierarchy.");
     return;
   }
 
   var selectedClasses = $('#taxonomy').jstree('get_selected'),
-      selectedNodes = $('#assetHierarchy').jstree('get_selected');
+      selectedNodes = $('#hierarchy').jstree('get_selected');
 
   if (selectedClasses.length == 0) {
     alert("Error! You need to select a class in the Flora taxonomy.");
