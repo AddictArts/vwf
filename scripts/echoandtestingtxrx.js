@@ -231,7 +231,7 @@ routes.get(routes.INV_CLEAR, function(req, res) { /* .../inventory */
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.get('/published/clearing/inventory', routes.gets[ routes.INV_CLEAR ]);
-routes.get('/published/disassembly/inventory', routes.gets[ routes.INV_CLEAR ]);
+routes.get('/exercises/071-100-0032/step02/m4_flora_disassembly/inventory', routes.gets[ routes.INV_CLEAR ]);
 
 routes.get('/CAT/inventory', function(req, res) {
     log('...handling route GET ' + req.reqPath);
@@ -291,7 +291,7 @@ routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
     res.send(JSON.stringify(data), 200, JSONt);
 });
 routes.post('/published/clearing/object', routes.posts[ routes.OBJ_CLEAR ]);
-routes.post('/published/disassembly/object', routes.posts[ routes.OBJ_CLEAR ]);
+routes.post('/exercises/071-100-0032/step02/m4_flora_disassembly/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/CAT/object', routes.posts[ routes.OBJ_CLEAR ]);
 routes.post('/PutExercise/object', routes.posts[ routes.OBJ_CLEAR ]);
 
@@ -331,7 +331,7 @@ routes.post(routes.Q_CLEAR, function(req, res) { /* .../query */
     }), 200, JSONt);
 });
 routes.post('/published/clearing/query', routes.posts[ routes.Q_CLEAR ]);
-routes.post('/published/disassembly/query', routes.posts[ routes.Q_CLEAR ]);
+routes.post('/exercises/071-100-0032/step02/m4_flora_disassembly/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/CAT/query', routes.posts[ routes.Q_CLEAR ]);
 routes.post('/PutExercise/query', routes.posts[ routes.Q_CLEAR ]);
 
@@ -346,7 +346,7 @@ routes.post(routes.ACT_CLEAR, function(req, res) { /* .../action */
     res.send('{ }\n', 200, JSONt);
 });
 routes.post('/published/clearing/action', routes.posts[ routes.ACT_CLEAR ]);
-routes.post('/published/disassembly/action', routes.posts[ routes.ACT_CLEAR ]);
+routes.post('/exercises/071-100-0032/step02/m4_flora_disassembly/action', routes.posts[ routes.ACT_CLEAR ]);
 routes.post('/PutExercise/action', routes.posts[ routes.ACT_CLEAR ]);
 
 routes.get(routes.ASSESS_CLEAR, function(req, res) { /* .../assessment */

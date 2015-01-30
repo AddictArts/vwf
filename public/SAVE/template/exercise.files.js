@@ -706,7 +706,6 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
       $('#euiMsg .actionArgs').text(__EUI.baseServerAddress);\n\
     }\n\
   </script>\n\
-  <!--script>var s = document.createElement('script'); s.src = 'http://localhost:35729/livereload.js?snipver=1'; document.body.appendChild(s);var monkeyPatchTimer = setInterval(function() { console.info('Waiting to monkey patch the LR reloader...'); if (LiveReload) { LiveReload.reloader.reloadPage = function() { window.document.location.href = '../'; }; clearInterval(monkeyPatchTimer); }}, 100);</script-->\n\
 </body>\n\
 </html>\n\
 ";
