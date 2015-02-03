@@ -1,7 +1,2 @@
-/bin/*
-/.bundle/
-/run.bat
-
-# Node.js
 /node_modules
 /npm-debug.log
