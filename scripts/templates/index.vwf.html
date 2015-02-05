@@ -1,0 +1,705 @@
+<!-- Copyright 2014, SRI International -->
+<html>
+  <head>
+    <title>Exercise UI</title>
+    <script type='text/javascript' src='../eui.json.js'></script>
+    <script type='text/javascript' src='/js/dat.gui.min.js'></script>
+    <style type='text/css'>
+      #wrapper {
+        position: absolute;
+        left: 350px;
+        top: 25px;
+        color: black;
+      }
+
+      #assessment {
+        display: none;
+      }
+
+      // dat.GUI style inspired by ...
+      // http://brm.io/dat-gui-light-theme/
+      // https://github.com/liabru/dat-gui-light-theme
+
+      .dg.main.taller-than-window .close-button {
+        border-top: 1px solid #ddd;
+      }
+
+      .dg.main .close-button {
+        background-color: #ccc;
+      }
+       
+      .dg.main .close-button:hover {
+        background-color: #ddd;
+      }
+
+      .dg {
+        color: #555;
+        text-shadow: none !important;
+      }
+
+      .dg.main::-webkit-scrollbar {
+        background: #fafafa;
+      }
+
+      .dg.main::-webkit-scrollbar-thumb {
+        background: #bbb;
+      }
+       
+      .dg li:not(.folder) {
+        background: #fafafa;
+        border-bottom: 1px solid #ddd;
+      }
+       
+      .dg li.save-row .button {
+        text-shadow: none !important;
+      }
+
+      .dg li.title {
+        background: #e8e8e8 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
+      }
+
+      .dg .cr.function .property-name {
+        width: inherit;
+      }
+
+      .dg .cr.function:hover,.dg .cr.boolean:hover {
+        background: #fff;
+      }
+       
+      .dg .c input[type=text] {
+        background: #e9e9e9;
+      }
+       
+      .dg .c input[type=text]:hover {
+        background: #eee;
+      }
+       
+      .dg .c input[type=text]:focus {
+        background: #eee;
+        color: #555;
+      }
+       
+      .dg .c .slider {
+        background: #e9e9e9;
+      }
+
+      .dg .c .slider:hover {
+        background: #eee;
+      }
+    </style>
+    <script type='text/javascript'>
+      var __EUI; // resist doing '= undefined, or = null' we just need it named and an async event will bind it, vwf script inject after parsing this!
+
+      (function() {
+      var cssIFrame = {
+        'border': '1px outset #999999',
+        'width': '450px',
+        'height': '600px',
+        'background-color': 'rgba(228, 228, 228, 0.8)'
+      };
+      var vwfapp = {
+        appId: vwf_view.kernel.application(),
+        tooltray: undefined,
+        instructorMode: false,
+        assessmentActive: false,
+        cameraId: undefined,
+        path: window.location.pathname.split('/').slice(0, -2).join('/')
+      };
+      var toolTrayMenu = { };
+      var controlMenu = {
+        bannerInstructorMode: vwfapp.path,
+        fontsize: '110%',
+        euiMsg: true,
+        cameraStartTranslation: undefined,
+        cameraStartRotation: undefined,
+        cameraFly: false,
+        cameraOrbit: 0,
+        cameraZoom: 0,
+        allActions: false,
+        reset: function() {
+          vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+        },
+        pathLink: function() {
+          window.location.pathname = vwfapp.path;
+        },
+        saveSolution: function() {
+          var self = this;
+          var url = __EUI.baseServerAddress + '/generateSolution';
+
+          console.info('Saving exercise to:' + url  +' with path:' + vwfapp.path);
+          $.ajax({ url: url, type: 'get', cache: false })
+          .done(function(data) {
+            view.controlGUI.remove(view.guiref.saveSolutionRef);
+            view.controlGUI.add(self, 'pathLink').name('Open ' + vwfapp.path);
+          })
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            console.info('using generateSolution:' + url);
+            console.warn('error:' + textStatus);
+          });
+        },
+        assessment: function() {
+          if (!vwfapp.assessmentActive) {
+            var url = __EUI.baseServerAddress + '/assessment';
+
+            $('<iframe/>', { name: 'assessment', id: 'assessmentIFrame', src: url}).appendTo('#assessment').css(cssIFrame);
+            $('#assessment').fadeIn();
+            vwfapp.assessmentActive = true;
+            controlMenu.euiMsg = false;
+            view.controlGUI.__controllers.forEach(function(ctrl) { ctrl.updateDisplay(); });
+            $('#euiMsg').hide();
+          }
+        },
+        init: function() {
+          this.cameraStartTranslation = vwf.getProperty(vwfapp.cameraId, 'translation');
+          this.cameraStartRotation = vwf.getProperty(vwfapp.cameraId, 'rotation');
+          vwf.setProperty(vwfapp.appId, 'cameraTarget', [ 'M4_Carbine_dae' ]);
+        }
+      };
+      var contextMenu = {
+        closeCtxMenu: function() {
+          handleContextMenu();
+        }
+      };
+      var view = {
+        toolTrayGUI: undefined,
+        controlGUI: undefined,
+        contextGUI: undefined,
+        contextActive: false,
+        guiref: { ctx: [ ] },
+        defaultPoint: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'Point', [ vwfapp.M4_Carbine_daeId ]);
+          handleContextMenu();
+        },
+        Semi: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Semi' ]);
+          handleContextMenu();
+        },
+        Safe: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Safe' ]);
+          handleContextMenu();
+        },
+        Burst: function() {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);
+          handleContextMenu();
+        },
+        Detach: function(name) {
+          switch (name) {
+          case 'Gun_Carrying_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachTheCarryHandle');
+            break;
+          case 'Lower_Handguard':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachLowerHandguard');
+            break;
+          case 'Receiver Group':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperFromLowerReceiver');
+            break;
+          case 'Small_Sling_Swivel':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');
+            break;
+          case 'Swivel_LAMA1259863095':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSwivel');
+            break;
+          case 'Upper_Handguard':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperHandguard');
+            break;
+          }
+
+          handleContextMenu();
+        },
+        Inspect: function(name) {
+          switch (name) {
+          case 'Ejection_Port_Cover':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'InspectChamberGroup');
+            break;
+          }
+        },
+        Loosen: function(name) {
+          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'LoosenNut', [ name ]);
+        },
+        Pivot: function(name) {
+          switch (name) {
+          case 'Receiver Group':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PivotUpperFromLowerReceiver');
+            break;
+          }
+        },
+        Press: function(name) {
+          switch (name) {
+          case 'Handguard_Slip_Ring_LAMA918813252':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PressHandguardSlipRing');
+            break;
+          }          
+        },
+        Pull: function(name) {
+          switch (name) {
+          case 'Pivot_Pin':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullPivotPin');
+            break;
+          case 'Takedown_Pin':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTakedownPin');
+            break;
+          case 'Trigger':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');
+            break;
+          }
+        },
+        PullAndHold: function(name) {
+          switch (name) {
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');
+            break;
+          }
+        },
+        PushAndHold: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushAndHoldBoltCatchBottom');
+            break;
+          }
+        },
+        Push: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushBoltCatchTop');
+            break;
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandle');
+            break;
+          case 'Magazine_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');
+            break;
+          case 'Pivot_Pin':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushPivotPin');
+            break;
+          case 'Takedown_Pin':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTakedownPin');
+            break;
+          }
+        },
+        Release: function(name) {
+          switch (name) {
+          case 'Bolt_Catch':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseBoltCatchBottom');
+            break;
+          case 'Charging_Handle':
+            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseChargingHandle');
+            break;
+          }
+        },
+        init: function() {
+          this.toolTrayGUI = new dat.GUI();
+          this.toolTrayGUI.name = 'Tool Tray';
+
+          for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
+            toolTrayMenu[ 'instance' + index ] = instance(index);
+            view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
+          }
+
+          // Control menu's
+          controlMenu.init();
+          this.controlGUI = new dat.GUI();
+          this.controlGUI.name = 'Control Menu';
+
+          if (vwfapp.instructorMode) {
+            this.controlGUI.add(controlMenu, 'bannerInstructorMode').name('Instructor');
+            $('li.cr.string').css('background-color', 'red');
+            $('li.cr.string span.property-name').css('color', 'white');
+            $('li.cr.string  div.c input').attr('readonly', 'readonly').css({ color: 'white', 'background-color': 'red', 'margin-top': '0px' });
+          }
+
+          this.controlGUI.add(controlMenu, 'fontsize').name('Fontsize').onFinishChange(function(value) { $('*.dg').css('font-size', value); });
+          this.controlGUI.add(controlMenu, 'euiMsg').name('Messages').onFinishChange(function(value) {
+            if (value) $('#euiMsg').show();
+            else $('#euiMsg').hide();
+          });
+          this.controlGUI.add(controlMenu, 'reset').name('Reset');
+          this.controlGUI.add(controlMenu, 'allActions').name('AllActions');
+          this.controlGUI.add(controlMenu, 'cameraFly').name('CameraFly').onFinishChange(function(value) {
+            controlMenu.cameraOrbit = 0;
+            controlMenu.cameraZoom = 0;
+            view.controlGUI.__controllers.forEach(function(ctrl) { ctrl.updateDisplay(); });
+
+            if (!value) {
+              vwf.setProperty(vwfapp.cameraId, 'translation', controlMenu.cameraStartTranslation);
+              vwf.setProperty(vwfapp.cameraId, 'rotation', controlMenu.cameraStartRotation);
+              vwf.setProperty(vwfapp.cameraId, 'navmode', [ 'none' ]);
+            } else {
+              vwf.setProperty(vwfapp.cameraId, 'navmode', [ 'fly' ]);
+            }
+          });
+          this.controlGUI.add(controlMenu, 'cameraOrbit', -180, 180).name('Orbit').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraOrbit', [ -value - 90 ]); // really we start at -90 behind the target, so we multiply by -1
+          });
+          this.controlGUI.add(controlMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraZoom', [ value ]);
+          }).onFinishChange(function(value) {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraLookAt', [ 'M4_Carbine_dae' ]);
+          });
+
+          if (vwfapp.instructorMode) view.guiref.saveSolutionRef = this.controlGUI.add(controlMenu, 'saveSolution').name('Save Solution');
+          else this.controlGUI.add(controlMenu, 'assessment').name('Assessment');
+
+          this.controlGUI.autoPlace = false;
+          this.controlGUI.domElement.style.position = 'fixed';
+          this.controlGUI.domElement.style.float = 'left';
+          this.controlGUI.domElement.style.left = '15px';
+          this.controlGUI.domElement.style.overflowX = 'visible';
+          $('body').append(this.controlGUI.domElement);
+
+          // Context menu drop down menu's
+          this.contextGUI = new dat.GUI();
+          this.contextGUI.name = 'Context Menu';
+          this.contextGUI.autoPlace = false;
+          this.contextGUI.domElement.style.position = 'absolute';
+          $('body').append(this.contextGUI.domElement);
+          $('div.close-button:last').css('display', 'none');
+
+          $('*.dg').css('font-size', controlMenu.fontsize);
+        }
+      };
+
+      function instance(index) {
+        return function() {
+          console.info('instance index:' + index);
+          console.info('tooltray[ ' + index + ' ]:');
+          console.log(vwfapp.tooltray[ index ]);
+
+          Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
+          view.toolTrayGUI.remove(view.guiref[ index ]);
+          vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
+        };
+      }
+
+      function addActionsToTrayMenu() {
+        // $('div.close-button:first').css('display', 'none');
+        // view.toolTrayGUI.add(view, 'defaultPoint').name('Point');
+      }
+
+      function handleContextMenu() {
+        if (view.contextActive) {
+          for (var i = 0, l = view.guiref.ctx.length; i < l; i++) {
+            view.contextGUI.remove(view.guiref.ctx[ i ]);
+          }
+
+          view.guiref.ctx = [ ];
+          view.contextActive = false;
+        }
+      }
+
+      function sceneInitialize() {
+        // Property observers...
+        vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
+          if (nodeId == vwfapp.appId) {
+            if (propertyName == 'backendResetSent') {
+              if (propertyValue) window.location.href = '../';
+            }
+          }
+        };
+
+        // notice the methodValue for the function return value as needed...
+        vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
+          if (methodName == 'processSaveDotJson') {
+            var callback = function(data) {
+              console.info('the view tooltray data is ' + JSON.stringify(data));
+              vwfapp.tooltray = data.tooltray;
+
+              if (data.instructorMode) vwfapp.instructorMode = true;
+
+              view.init();
+              vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);
+            };
+
+            var url = __EUI.baseServerAddress + '/inventory';
+
+            $.ajax({ url: url, type: 'get', cache: false })
+            .done(callback)
+            .fail(function(jqXHR, textStatus, errorThrown) {
+              console.info('using inventoryServerAddress:' + url);
+              console.warn('error:' + textStatus);
+            });
+          } else if (methodName == 'initInstance') {
+            Pace.stop(); // Loading the asset takes a long time, we are done manually remove busy status and adjust the menu width
+
+            var assetVwfId = vwf_view.kernel.find(vwfapp.appId, '//' + methodValue)[ 0 ];
+
+            console.info('initInstance completed for assetVwfId:' + assetVwfId);
+            vwfapp[ methodValue + 'Id' ] = assetVwfId;
+            vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
+            vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');
+            $('.dg.ac').toggle(); // hide / remove the tray menu //XXX we need to see if other things are in the tray before toggling it away
+            // addActionsToTrayMenu();
+          }
+        };
+
+        // Event observers...
+        vwf_view.firedEvent = function(nodeId, eventName, eventArgs) {
+          if (eventName != 'pointerDown') return;
+          if (eventArgs[ 0 ].button == 'right') return;
+          if (view.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
+
+          // console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
+
+          if (vwfapp[ nodeId ] !== undefined) {
+            view.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
+            view.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
+            view.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
+            console.info('picked id:' + eventArgs[ 1 ].pickID);
+            console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);
+
+            view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+
+            if (controlMenu.allActions) {
+              vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {
+                contextMenu[ action ] = function() { };
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));
+              });
+            }
+
+            var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];
+
+            switch (objectName) {
+            case 'Bolt_Catch':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push(objectName);
+              };
+              contextMenu.PushAndHold = function() {
+                handleContextMenu();
+                view.PushAndHold(objectName);
+              };
+              contextMenu.Release = function() {
+                handleContextMenu();
+                view.Release(objectName);
+              };
+
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PushAndHold'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));
+              }
+              break;
+            case 'Charging_Handle_Latch':
+            case 'Charging_Handle':
+              contextMenu.PullAndHold = function() {
+                handleContextMenu();
+                view.PullAndHold('Charging_Handle');
+              };
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Charging_Handle');
+              };
+              contextMenu.Release = function() {
+                handleContextMenu();
+                view.Release('Charging_Handle');
+              };
+
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));
+              }
+              break;
+            case 'Ejection_Port_Cover':
+              contextMenu.Inspect = function() {
+                handleContextMenu();
+                view.Inspect(objectName);
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));
+              break;
+            case 'Gun_Carrying_Handle':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach('Gun_Carrying_Handle');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
+            case 'Handguard_Slip_Ring_LAMA918813252':
+              contextMenu.Press = function() {
+                handleContextMenu();
+                view.Press('Handguard_Slip_Ring_LAMA918813252');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Press'));
+              break;
+            case 'Lower_Handguard':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach('Lower_Handguard');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
+            case 'Magazine_Catch':
+            case 'Magazine_Catch_Button':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Magazine_Catch');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+              break;
+            case 'Pivot_Pin':
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Pivot_Pin');
+              };
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull('Pivot_Pin');
+              };
+
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));
+              }
+              break;
+            case 'Round_Nut1':
+            case 'Round_Nut':
+              contextMenu.Loosen = function() {
+                handleContextMenu();
+                view.Loosen(objectName);
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Loosen'));
+              break;
+            case 'Selector_Lever':
+              contextMenu.SelectSwitchPosition = function() {
+                handleContextMenu();
+                view.contextActive = true;
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'Semi'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'Safe'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'Burst'));
+              };
+              view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'SelectSwitchPosition'));
+              break;
+            case 'Sling':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.contextActive = true;
+
+                var options = {
+                  Small_Sling_Swivel: function() { view.Detach('Small_Sling_Swivel'); },
+                  Swivel_LAMA1259863095: function() { view.Detach('Swivel_LAMA1259863095'); }
+                };
+
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+                view.guiref.ctx.push(view.contextGUI.add(options, 'Small_Sling_Swivel').name('Small Sling Swivel'));
+                view.guiref.ctx.push(view.contextGUI.add(options, 'Swivel_LAMA1259863095').name('Swivel LAMA1259863095'));
+              }
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
+            case 'Small_Sling_Swivel':
+            case 'Swivel_LAMA1259863095':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach(objectName);
+              }
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
+            case 'Takedown_Pin':
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull('Takedown_Pin');
+              };
+              contextMenu.Push = function() {
+                handleContextMenu();
+                view.Push('Takedown_Pin');
+              };
+
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
+              }
+              break;
+            case 'Trigger':
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull('Trigger');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));
+              break;
+            case 'Upper_Handguard':
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach('Upper_Handguard');
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              break;
+            case 'Upper_Receiver':
+            case 'Lower_Receiver':
+              contextMenu.Pivot = function() {
+                handleContextMenu();
+                view.Pivot('Receiver Group');
+              };
+              contextMenu.Detach = function() {
+                handleContextMenu();
+                view.Detach('Receiver Group');
+              };
+
+              if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pivot'));
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Detach'));
+              }
+              break;
+            default: // Everything else... is just the point action point at selection
+              contextMenu.Point = function() {
+                handleContextMenu();
+                view.contextActive = true;
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
+                view.guiref.ctx.push(view.contextGUI.add(view, 'defaultPoint').name('targets'));
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Point'));
+              break;
+            }
+          }
+        };
+
+        $(window).unload(function() { sceneDestroy(); });
+      }
+
+      function sceneDestroy() {
+      }
+
+      // vwf html view initialization event, you don't have window.onload and document.ready is not good enough...
+      // initialization, yes it can be done this way... from tile-puzzle-2D example
+      vwf_view.initializedNode = function(nodeID, childID, childExtendsID, childImplementsIDs, childSource, childType, childIndex, childName) {
+        if (childID == vwfapp.appId) {
+          sceneInitialize();
+          vwf_view.kernel.callMethod(vwfapp.appId, 'processSaveDotJson', [ __EUI ]);
+          vwfapp.cameraId = vwf_view.kernel.find(vwfapp.appId, '//camera')[ 0 ];
+          __EUI.vwfapp = vwfapp; // for console debug access
+        }
+      }
+      })(); //# sourceURL=index.vwf.html
+    </script>
+  </head>
+<body>
+  <div id='wrapper' class='wrapper'>
+    <div id='euiMsg' style='width: 40em;position: relative;font-size: medium;'>
+      <div class='actionDesc' style='left: 0; right: 100%;background: white; color: black; padding: 5px;'>Action performed: None</div>
+      <div class='actionKey' style='left: 0; right: 50%;background: green;color: white;padding: 5px;position: absolute;'>
+      </div>
+      <div class='actionArgs' style='left: 50%; right: 0;background: blue;color: white;padding: 5px;position: absolute;'>
+      </div>
+    </div>
+    <div id='assessment'></div>
+  </div>
+  <script type='text/javascript'>
+    $('#wrapper').appendTo('#vwf-root');
+
+    if (__EUI) {
+      $('#euiMsg .actionDesc').text('EUI Configured');
+      $('#euiMsg .actionKey').text('baseServerAddress');
+      $('#euiMsg .actionArgs').text(__EUI.baseServerAddress);
+    }
+  </script>
+</body>
+</html>
