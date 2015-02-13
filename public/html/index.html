@@ -33,6 +33,11 @@
 		}
 	)});
 	$(function(){
+		$("#b5").click(function(event){
+			window.open("/docs/SAVE-M4-Semantic-Mapping.pdf");
+		}
+	)});
+	$(function(){
 		$("#t1").click(function(event){
 			$('#dynamic').load('tool-s3d.html');
 		}
@@ -103,10 +108,10 @@
 			<img src="images/header-text.png" alt="SAVE" width="814" height="136">
 		</div>
 		<div id="buttons">
-				<img id="b4" class="img-button" src="images/button04.png">
-				<img id="b3" class="img-button" src="images/button03.png">
-				<img id="b2" class="img-button" src="images/button02.png">
 				<img id="b1" class="img-button" src="images/button01.png">
+				<img id="b3" class="img-button" src="images/button03.png">
+				<img id="b5" class="img-button" src="images/button05.png">
+				<img id="b2" class="img-button" src="images/button02.png">
 		</div>
 	</div>
 
@@ -136,6 +141,7 @@
 	</div>
 		
 	<div id="footer">
+		<img id="b4" class="img-button-g" src="images/button04g.png">
 		<p class="foot">Copyright 2015, SRI International</p>
 	</div>
 </div>
