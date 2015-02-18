@@ -288,6 +288,7 @@ var loadFlora = function(url, floraname) {
     $.ajax({ url: loadurl, type: 'get', cache: false })
     .done(function(data) {
         semantic.flora_base.uri = url;
+        semantic.flora_base.id = floraname + '_ont';
         getTaxonomyRoots(data, floraname)
     })
     .fail(ajaxFail);
@@ -486,7 +487,29 @@ var focusTween = function(n) {
     tween = pull;
 };
 
+var getS3dPathnameUsingTheDom = function(uri) {
+    var uri = uri || $('#semantic-filename').val(),
+        el = window.document.createElement('a'),
+        parts = uri.split('.');
+
+    el.href = uri;
+    uri =  el.pathname;
+    uri = uri[ 0 ] != '/'? '/' + uri : uri;
+    uri = parts[ parts.length - 1 ] != 's3d'? uri + '.s3d' : uri;
+    return uri;
+}
+
 var onClickSaveShow = function(jqe) {
+    var fn = $('#semantic-filename').val(),
+        fbid = $('#semantic-florabase-id').val();
+
+    if (fn == '') fn = '/s3d/';
+    else fn = getS3dPathnameUsingTheDom(fn);
+
+    if (fbid == '') fbid = semantic.flora_base.id;
+
+    $('#semantic-filename').prop('value', fn);
+    $('#semantic-florabase-id').prop('value', fbid);
     $('#b-semantic-info').show();
 }
 
@@ -498,7 +521,7 @@ var onClickSaveS3D = function(jqe) {
     updateSemanticInfoFromHtml();
 
     var sx = G2JS.so2xml(semantic, semantic.grouping),
-        url = 'http://' + hostname + ':3001' + $('#semantic-filename').val();
+        url = 'http://' + hostname + ':3001' + getS3dPathnameUsingTheDom();
 
     console.info('s3d:\n' + G2JS.sx2html(sx).text);
     console.info('Saving s3d to: ' + url);

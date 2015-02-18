@@ -61,7 +61,7 @@ var semanticXml2html = function(sourceXml) {
 var semanticObj2xml = function(semanticObj, groupingObj) {
     semanticObj = semanticObj || { };
 
-    var semanticXml = '<S3D>';
+    var semanticXml = '<?xml version="1.0" encoding="utf-8"?><S3D>';
 
     for (var p in semanticObj) {
         if (p == 'head') {

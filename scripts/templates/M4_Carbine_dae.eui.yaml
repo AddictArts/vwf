@@ -1,0 +1,351 @@
+# Copyright 2014, SRI International
+--- 
+properties:
+  __slingDetach: 0
+  actionNames: [ 'Attach', 'Close', 'Detach', 'Extract', 'Insert', 'Inspect', 'Lift', 'Open', 'Point', 'Press', 'Pull', 'PullAndHold', 'Push', 'PushAndHold', 'Release' ]
+methods:
+  setup:
+  detachSling:
+  Point:
+  SelectSwitchPosition:
+  PushMagazineReleaseButton:
+  PullAndHoldChargingHandle:
+  PushAndHoldBoltCatchBottom:
+  ReleaseChargingHandle:
+  ReleaseBoltCatchBottom:
+  PushChargingHandle:
+  InspectChamberGroup:
+  PushBoltCatchTop:
+  PullTrigger:
+  DetachSmallSlingSwivel:
+  DetachSwivel:
+  PressHandguardSlipRing:
+  DetachUpperHandguard:
+  DetachLowerHandguard:
+  PushTakedownPin:
+  PullTakedownPin:
+  PivotUpperFromLowerReceiver:
+  PushPivotPin:
+  PullPivotPin:
+  DetachUpperFromLowerReceiver:
+  LoosenNut:
+  DetachTheCarryHandle:
+scripts:
+- |
+  this.setup = function() {
+    console.info(this.id + ' ' + this.name + ' setup');
+    console.info(this.id + ' point behavior depends on shooting range targets KbId:' + this.parent.ShootingRange_dae.targets_KbId);
+    //#!=asset-translation;
+    //#!=asset-rotation;
+  };
+
+  this.Point = function(vwfId) {
+    var objectName = this.__idToName[ vwfId ];
+
+    console.info(this.id + 'Point ' + objectName);
+
+    switch (objectName) {
+    default:
+      this.rotateBy([ 0, 0, 1, -90 ], 0.5);
+      this.activity({ action: 'Point', arguments: [ this.M4_Carbine_dae_KbId, this.parent.ShootingRange_dae.targets_KbId ], names: [ 'M4_Carbine_dae', 'targets' ] });
+      break;
+    }
+  };
+
+  this.SelectSwitchPosition = function(position) {
+    console.info(this.id + ' Selector_Lever ' + position);
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 18 ].name != 'Selector_Lever') {
+        console.warn(this.id + ' Lower_Receiver Group child 18 is not the Selector_Lever');
+        return;
+    }
+
+    switch (position) {
+    case 'Safe':
+        this.children[ 'Lower_Receiver Group' ].children[ 18 ].rotation = [ 0, 0, 1, 90 ];
+        break;
+    case 'Semi':
+        this.children[ 'Lower_Receiver Group' ].children[ 18 ].rotation = [ 0, 0, 1, 0 ];
+        break;
+    case 'Burst':
+        this.children[ 'Lower_Receiver Group' ].children[ 18 ].rotation = [ 0, 0, 1, -90 ];
+        break;
+    }
+
+    this.activity({ action: 'SelectSwitchPosition', arguments: [ this.Selector_Lever_KbId, position ], names: [ 'Selector_Lever', position ] });
+  };
+
+  this.PushMagazineReleaseButton = function() {
+    console.info(this.id + ' Push Magazine_Release_Button');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 9 ].name != 'Magazine_Catch') {
+        console.warn(this.id + ' Lower_Receiver Group child 9 is not the Magazine_Catch');
+        return;
+    }
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 11 ].name != 'Magazine_Catch_Button') {
+        console.warn(this.id + ' Lower_Receiver Group child 9 is not the Magazine_Catch_Button');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 9 ].translateTo([ 0, 0, 0.0026 ], 0.125);
+    this.children[ 'Lower_Receiver Group' ].children[ 11 ].translateTo([ 0, 0, 0.0026], 0.125);
+    this.children[ 'Magazine_g Group' ].translateTo([ 0, 0.125, 0 ], 0.25);
+    this.activity({ action: 'Push', arguments: [ this.Magazine_Catch_Button_KbId ], names: [ 'Magazine_Catch_Button' ] });
+  };
+
+  this.PullAndHoldChargingHandle = function() {
+    console.info(this.id + ' PullAndHold Charging_Handle');
+    this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.005, 0, 0 ], 0.25);
+    this.activity({ action: 'PullAndHold', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
+  };
+
+  this.PushAndHoldBoltCatchBottom = function() {
+    console.info(this.id + ' PushAndHold Bolt_Catch_Bottom');
+    this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, -12 ];
+    this.activity({ action: 'PushAndHold', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });
+  };
+
+  this.ReleaseChargingHandle = function() {
+    console.info(this.id + ' Release Charging_Handle');
+    this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0., 0, 0 ], 0.25);
+    this.activity({ action: 'Release', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
+  };
+
+  this.ReleaseBoltCatchBottom = function() {
+    console.info(this.id + ' Release Bolt_Catch_Bottom');
+    this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 0 ];
+    this.activity({ action: 'Release', arguments: [ this[ 'Bolt_Catch_Bottom Group_KbId' ] ], names: [ 'Bolt_Catch_Bottom Group' ] });
+  };
+
+  this.PushChargingHandle = function() {
+    console.info(this.id + ' Push Charging_Handle');
+    this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ 0.005, 0, 0 ], 0.25);
+    this.activity({ action: 'Push', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
+  };
+
+  this.InspectChamberGroup = function() {
+    console.info(this.id + ' Inspect Chamber');
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 9 ].name != 'Ejection_Port_Cover') {
+        console.warn(this.id + ' Upper_Receiver Group child 9 is not the Ejection_Port_Cover');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 10 ].name != 'Cover_Spring') {
+        console.warn(this.id + ' Upper_Receiver Group child 10 is not the Cover_Spring');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].name != 'Casing4') {
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 11 is not the Casing4');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].name != 'Projectile4') {
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 12 is not the Projectile4');
+        return;
+    }
+
+    this.children[ 'Upper_Receiver Group' ].children[ 10 ].visible = false; // We have to hide it, beceause it does not have a proper rotation pivot point
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].future(0.5).visible = false;
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].future(0.5).visible = false;
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].translateTo([ -0.075, 0, 0 ], 0.25);
+    this.children[ 'Upper_Receiver Group' ].children[ 9 ].rotateTo([ 1, 0, 0, 130 ], 0.25);
+    this.activity({ action: 'Inspect', arguments: [ this[ 'Chamber Group_KbId' ] ], names: [ 'Chamber Group' ] });
+  };
+
+  this.PushBoltCatchTop = function() {
+    console.info(this.id + ' Push Bolt_Catch_Top');
+
+    this.children[ 'Lower_Receiver Group' ].children[ 'Bolt_Catch Group' ].rotation = [ 1, 0, 0, 12 ];
+    this.activity({ action: 'Push', arguments: [ this[ 'Bolt_Catch_Top Group_KbId' ] ], names: [ 'Bolt_Catch_Top Group' ] });
+  };
+
+  this.PullTrigger = function() {
+    console.info(this.id + ' Pull Trigger');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 1 ].name != 'Trigger') {
+      console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');
+      return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 1 ].rotateTo([ 0, 0, 1, 15 ], 0.5);
+    this.activity({ action: 'Pull', arguments: [ this.Trigger_KbId ], names: [ 'Trigger' ] });
+    this.children[ 'Lower_Receiver Group' ].children[ 1 ].future(1).rotateTo([ 0, 0, 1, 0 ], 0.125);
+  };
+
+  this.detachSling = function(detached) {
+    console.info(this.id + 'DetachSling 2 detach actions detaching:' + detached);
+
+    var detachSling = false;
+
+    switch (detached) {
+    case 'Small_Sling_Swivel':
+      if (this.__slingDetach == 2) detachSling = true;
+      else this.__slingDetach = 1;
+      break;
+    case 'Swivel_LAMA1259863095':
+      if (this.__slingDetach == 1) detachSling = true;
+      else this.__slingDetach = 2;
+      break;
+    }
+
+    if (detachSling) {
+      this.Sling.translateTo([ 0, 0.2, 0 ], 0.5);
+      this.Small_Sling_Swivel.translateTo([ 0, 0.2, 0 ], 0.5);
+
+      if (this.children[ 'Buttstock Group' ].children[ 1 ].name != 'Swivel_LAMA1259863095') {
+          console.warn(this.id + ' Buttstock Group child 1 is not the Swivel_LAMA1259863095');
+          return;
+      }
+
+      this.children[ 'Buttstock Group' ].children[ 1 ].translateTo([ 0, 0.2, 0 ], 0.5);
+    }
+  };
+
+  this.DetachSmallSlingSwivel = function() {
+    console.info(this.id + ' Detach Small_Sling_Swivel');
+
+    this.detachSling('Small_Sling_Swivel');
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Small_Sling_Swivel_KbId, this.Sling_KbId ], names: [ 'Small_Sling_Swivel' ] });
+  };
+
+  this.DetachSwivel = function() {
+    console.info(this.id + ' Detach Swivel');
+
+    this.detachSling('Swivel_LAMA1259863095');
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.Swivel_LAMA1259863095_KbId, this.Sling_KbId ], names: [ 'Swivel_LAMA1259863095' ] });
+  };
+
+  this.PressHandguardSlipRing = function() {
+    console.info(this.id + ' Press Handguard_Slip_Ring');
+
+    this.Handguard_Slip_Ring_LAMA918813252.translateTo([ -0.0034912, 0, 0 ], 0.125);
+    // arguments: thingPressed
+    this.activity({ action: 'Press', arguments: [ this.Handguard_Slip_Ring_LAMA918813252_KbId ], names: [ 'Handguard_Slip_Ring_LAMA918813252' ] });
+  };
+
+  this.DetachUpperHandguard = function() {
+    console.info(this.id + ' Detach Upper_Handguard');
+
+    this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_dae_KbId, this.Upper_Handguard_KbId ], names: [ 'Upper_Handguard' ] });
+  };
+
+  this.DetachLowerHandguard = function() {
+    console.info(this.id + ' Detach Lower_Handguard');
+
+    this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_dae_KbId, this.Lower_Handguard_KbId ], names: [ 'Lower_Handguard' ] });
+  };
+
+  this.PushTakedownPin = function() {
+    console.info(this.id + ' Push Takedown_Pin');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {
+        console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.003344 ], 0.5);
+    // arguments: thingPushed
+    this.activity({ action: 'Push', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });
+  };
+
+  this.PullTakedownPin = function() {
+    console.info(this.id + ' Pull Takedown_Pin');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 15 ].name != 'Takedown_Pin') {
+        console.warn(this.id + ' Lower_Receiver Group child 15 is not the Takedown_Pin');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 15 ].translateTo([ 0, 0, -0.018927 ], 0.5);
+    // arguments: thingPulled
+    this.activity({ action: 'Pull', arguments: [ this.Takedown_Pin_KbId ], names: [ 'Takedown_Pin' ] });
+  };
+
+  this.PivotUpperFromLowerReceiver = function() {
+    console.info(this.id + ' Pivot Upper_Reveiver From Lower_Receiver');
+    this.children[ 'Lower_Receiver Group' ].rotateBy([ 0, 0, 1, -16 ], 1);
+    this.children[ 'Buttstock Group' ].rotateBy([ 0, 0, 1, -16 ], 1);
+
+    // arguments: pivot from, thing pivoted ???
+    // this.activity({ action: 'Pivot', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Upper_Reveiver Group', 'Lower_Receiver Group' ] });
+    // arguments: thingOpened
+    this.activity({ action: 'Open', arguments: [ this.M4_Carbine_dae_KbId ], names: [ 'M4_Carbine_dae' ] });
+  };
+
+  this.PushPivotPin = function() {
+    console.info(this.id + ' Push Pivot_Pin');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 12 ].name != 'Pivot_Pin') {
+        console.warn(this.id + ' Lower_Receiver Group child 12 is not the Pivot_Pin');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, -0.003344 ], 1);
+    // arguments: thingPushed
+    this.activity({ action: 'Push', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });
+  };
+
+  this.PullPivotPin = function() {
+    console.info(this.id + ' Pull Pivot_Pin');
+
+    if (this.children[ 'Lower_Receiver Group' ].children[ 12 ].name != 'Pivot_Pin') {
+        console.warn(this.id + ' Lower_Receiver Group child 12 is not the Pivot_Pin');
+        return;
+    }
+
+    this.children[ 'Lower_Receiver Group' ].children[ 12 ].translateTo([ 0, 0, -0.018927 ], 1);
+    // arguments: thingPushed
+    this.activity({ action: 'Pull', arguments: [ this.Pivot_Pin_KbId ], names: [ 'Pivot_Pin' ] });
+  };
+
+  this.DetachUpperFromLowerReceiver = function() {
+    console.info(this.id + ' Detach Lower_Reveiver From Upper_Receiver');
+    this.children[ 'Lower_Receiver Group' ].translateBy([ 0, 0.15, 0 ], 1);
+    this.children[ 'Buttstock Group' ].translateBy([ 0, 0.15, 0 ], 1);
+
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Lower_Receiver Group' ] });
+  };
+
+  this.LoosenNut = function(name) {
+    console.info(this.id + ' Loosen ' + name);
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 18 ].name != 'Round_Nut1') {
+        console.warn(this.id + ' Upper_Receiver Group child 18 is not the Round_Nut1');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 22 ].name != 'Round_Nut') {
+        console.warn(this.id + ' Upper_Receiver Group child 22 is not the Round_Nut');
+        return;
+    }
+
+    switch (name) {
+    case 'Round_Nut1':
+      this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 18 ].translateBy([ 0, 0, 0.01 ], 1);
+      break;
+    case 'Round_Nut':
+      this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].children[ 22 ].translateBy([ 0, 0, 0.01 ], 1);
+      break;
+    }
+
+    // arguments: screwLoosened
+    this.activity({ action: 'Loosen', arguments: [ this[ name + '_KbId' ] ], names: [ name ] });
+  };
+
+  this.DetachTheCarryHandle = function() {
+    console.info(this.id + ' Detach Gun_Carrying_Handle From Upper_Receiver');
+    this.children[ 'Upper_Receiver Group' ].children[ 'Gun_Carrying_Handle Group' ].translateBy([ 0, -0.25, 0 ], 1);
+    // arguments: detached from, thing detached
+    this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Gun_Carrying_Handle Group_KbId' ] ], names: [ 'Gun_Carrying_Handle Group' ] });
+  };
+  //# sourceURL=M4_Carbine_dae.eui
