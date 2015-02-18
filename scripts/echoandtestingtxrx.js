@@ -121,7 +121,7 @@ routes.put(routes.PUTANY, function(req, res) {
 routes.get('/listfiles/s3d/json', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
-    var data = [ '/SAVE/testdata/s3d/ShootingRange.s3d', '/SAVE/testdata/s3d/M4.s3d' ];
+    var data = [ 'http://localhost:3000/SAVE/testdata/s3d/ShootingRange.s3d', '/SAVE/testdata/s3d/M4.s3d' ];
 
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(data), 200, JSONt);
