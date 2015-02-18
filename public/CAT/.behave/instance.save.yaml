@@ -74,7 +74,7 @@ scripts:
     var impl = [ '.behave/initNode3.save', '.behave/backendtxrx.save' ]; // => base behavior, and properties
 
     grouping = self.parseInstanceResponseGrouping(data);
-    name = grouping.name.replace(' ', '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
+    name = grouping.name.replace(/ /g, '_') + '_dae'; // => ex: ShootingRange -> ShootingRange_dae
 
     if (!self.__CAT) impl.push(name + '.eui'); // implement asset behaviors where any auto-loaded assets do not by convention have a asset_name_dae.eui.yaml
 

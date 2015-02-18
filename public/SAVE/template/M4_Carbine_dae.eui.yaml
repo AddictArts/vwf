@@ -34,7 +34,9 @@ scripts:
 - |
   this.setup = function() {
     console.info(this.id + ' ' + this.name + ' setup');
-    console.info(this.id + ' point behavior depends on shooting range targets KbId:' + this.parent.ShootingRange_dae.targets_KbId);
+
+    if (this.parent.ShootingRange_dae) console.info(this.id + ' point behavior depends on shooting range targets KbId:' + this.parent.ShootingRange_dae.targets_KbId);
+
     //#!=asset-translation;
     //#!=asset-rotation;
   };
@@ -47,7 +49,9 @@ scripts:
     switch (objectName) {
     default:
       this.rotateBy([ 0, 0, 1, -90 ], 0.5);
-      this.activity({ action: 'Point', arguments: [ this.M4_Carbine_dae_KbId, this.parent.ShootingRange_dae.targets_KbId ], names: [ 'M4_Carbine_dae', 'targets' ] });
+
+      if (this.parent.ShootingRange_dae) this.activity({ action: 'Point', arguments: [ this.//#!=asset-root-name_KbId, this.parent.ShootingRange_dae.targets_KbId ], names: [ '//#!=asset-root-name', 'targets' ] });
+
       break;
     }
   };
@@ -233,7 +237,7 @@ scripts:
 
     this.Upper_Handguard.translateTo([ 0, -0.15, 0 ], 0.5);
     // arguments: detached from, thing detached
-    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_dae_KbId, this.Upper_Handguard_KbId ], names: [ 'Upper_Handguard' ] });
+    this.activity({ action: 'Detach', arguments: [ this.//#!=asset-root-name_KbId, this.Upper_Handguard_KbId ], names: [ 'Upper_Handguard' ] });
   };
 
   this.DetachLowerHandguard = function() {
@@ -241,7 +245,7 @@ scripts:
 
     this.Lower_Handguard.translateTo([ 0, 0.15, 0 ], 0.5);
     // arguments: detached from, thing detached
-    this.activity({ action: 'Detach', arguments: [ this.M4_Carbine_dae_KbId, this.Lower_Handguard_KbId ], names: [ 'Lower_Handguard' ] });
+    this.activity({ action: 'Detach', arguments: [ this.//#!=asset-root-name_KbId, this.Lower_Handguard_KbId ], names: [ 'Lower_Handguard' ] });
   };
 
   this.PushTakedownPin = function() {
@@ -278,7 +282,7 @@ scripts:
     // arguments: pivot from, thing pivoted ???
     // this.activity({ action: 'Pivot', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Lower_Receiver Group_KbId' ] ], names: [ 'Upper_Reveiver Group', 'Lower_Receiver Group' ] });
     // arguments: thingOpened
-    this.activity({ action: 'Open', arguments: [ this.M4_Carbine_dae_KbId ], names: [ 'M4_Carbine_dae' ] });
+    this.activity({ action: 'Open', arguments: [ this.//#!=asset-root-name_KbId ], names: [ '//#!=asset-root-name' ] });
   };
 
   this.PushPivotPin = function() {
@@ -348,4 +352,4 @@ scripts:
     // arguments: detached from, thing detached
     this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Gun_Carrying_Handle Group_KbId' ] ], names: [ 'Gun_Carrying_Handle Group' ] });
   };
-  //# sourceURL=M4_Carbine_dae.eui
+  //# sourceURL=//#!=asset-root-name.eui

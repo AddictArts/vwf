@@ -199,9 +199,10 @@
               console.info(data);
               vwfapp.tooltray.forEach(function(tt) {
                 if (tt.__assetVwfId !==  undefined && !tt.__static) {
-                  if (tt.__name == 'M4_Carbine_dae') {
+                  if (tt.__behave) {
                     M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-translation', 'this.translation = ' + tt.__translation);
                     M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace('//#!=asset-rotation', 'this.rotation = ' + tt.__rotation);
+                    M4_Carbine_dae_eui_yaml = M4_Carbine_dae_eui_yaml.replace(/\/\/#!=asset-root-name/g, tt.__name);
                     $.ajax({
                       url: exercise +  '/' + tt.__name + '.eui.yaml',
                       type: 'put',
@@ -355,7 +356,8 @@
           rotZ: false,
           rotation: 0,
           visible: true,
-          static: false
+          static: false,
+          behave: true
         };
 
         assetPropertyFolder.add(xyzo, 'x').onFinishChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
@@ -363,6 +365,7 @@
         assetPropertyFolder.add(xyzo, 'z').onFinishChange(function(newZ) { vwf.setProperty(assetVwfId, 'translation', [ xyzo.x, xyzo.y, newZ ]); });
         assetPropertyFolder.add(xyzo, 'visible').onChange(function(val) { vwf.setProperty(assetVwfId, 'visible', val); });
         assetPropertyFolder.add(xyzo, 'static').name('auto load').onChange(function(val) { vwfapp.tooltray[ index ].__static = val; });
+        assetPropertyFolder.add(xyzo, 'behave').name('behaviors').onChange(function(val) { vwfapp.tooltray[ index ].__behave = val; });
         assetPropertyFolder.add(xyzo, 'rotX');
         assetPropertyFolder.add(xyzo, 'rotY');
         assetPropertyFolder.add(xyzo, 'rotZ');
@@ -414,6 +417,7 @@
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
             vwfapp.tooltray[ view.guiref.instanceIndex ].__name =  methodValue;
             vwfapp.tooltray[ view.guiref.instanceIndex ].__static = false;
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__behave = true;
             vwfapp.tooltray[ view.guiref.instanceIndex ].__assetVwfId = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
           }
@@ -436,23 +440,6 @@
           if (eventName != 'pointerDown') return;
           if (eventArgs[ 0 ].button == 'right') return;
           if (view.contextActive) return; // parents and children fire the event so we only want to handle this once and return for all others
-
-          // console.info('firedEvent pointerDown in the html view for ' + eventArgs[ 1 ].pickID);
-
-          if (vwfapp[ nodeId ] !== undefined) {
-            view.contextActive = true; // we will see fired events for the parent and the child, so I only need to handle it once...
-            view.contextGUI.domElement.style.left = eventArgs[ 0 ].screenPosition[ 0 ] + 'px';
-            view.contextGUI.domElement.style.top = eventArgs[ 0 ].screenPosition[ 1 ] + 'px';
-            console.info('picked id:' + eventArgs[ 1 ].pickID);
-            console.info('picked node name:' + vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]);
-
-            switch (vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ]) {
-            default: // Everything else...
-              // view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'close').name('(X) Close'));
-              // view.guiref.ctx.push(view.contextGUI.add(contextMenu, '').name(''));
-              break;
-            }
-          }
         };
 
         $(window).unload(function() { sceneDestroy(); });
