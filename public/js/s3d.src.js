@@ -489,10 +489,14 @@ var focusTween = function(n) {
 
 var getS3dPathnameUsingTheDom = function(uri) {
     var uri = uri || $('#semantic-filename').val(),
-        el = window.document.createElement('a');
+        el = window.document.createElement('a'),
+        parts = uri.split('.');
 
     el.href = uri;
-    return el.pathname;
+    uri =  el.pathname;
+    uri = uri[ 0 ] != '/'? '/' + uri : uri;
+    uri = parts[ parts.length - 1 ] != 's3d'? uri + '.s3d' : uri;
+    return uri;
 }
 
 var onClickSaveShow = function(jqe) {
