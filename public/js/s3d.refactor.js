@@ -186,12 +186,16 @@ function createAndAddLink() {
 
   var asset = window.__sjs.semantic_mapping.asset;
 
-  asset.objs.push({
-    name: currentNode,
-    node: currentNode,
-    sid: asset.sid,
-    flora_ref: currentClass
-  });
+  if (currentNode != asset.name) {
+    asset.objs.push({
+      name: currentNode,
+      node: currentNode,
+      sid: asset.sid,
+      flora_ref: currentClass
+    });
+  } else {
+    asset.flora_ref = currentClass;
+  }
 }
 
 function addLink() {
