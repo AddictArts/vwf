@@ -288,6 +288,7 @@ var loadFlora = function(url, floraname) {
     $.ajax({ url: loadurl, type: 'get', cache: false })
     .done(function(data) {
         semantic.flora_base.uri = url;
+        semantic.flora_base.id = floraname + '_ont';
         getTaxonomyRoots(data, floraname)
     })
     .fail(ajaxFail);
@@ -487,6 +488,14 @@ var focusTween = function(n) {
 };
 
 var onClickSaveShow = function(jqe) {
+    var fn = $('#semantic-filename').val(),
+        fbid = $('#semantic-florabase-id').val();
+
+    if (fn == '') fn = '/s3d/';
+    if (fbid == '') fbid = semantic.flora_base.id;
+
+    $('#semantic-filename').prop('value', fn);
+    $('#semantic-florabase-id').prop('value', fbid);
     $('#b-semantic-info').show();
 }
 
