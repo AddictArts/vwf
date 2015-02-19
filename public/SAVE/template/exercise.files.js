@@ -454,9 +454,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));\n\
 \n\
             if (controlMenu.allActions) {\n\
-              var an = vwfapp[\n\
-                '//#!=asset-root-name_actionNames'\n\
-              ];\n\
+              var an = vwfapp[ '//#!=asset-root-name_actionNames' ];\n\
 \n\
               an.forEach(function(action) {\n\
                 contextMenu[ action ] = function() { };\n\
@@ -935,7 +933,7 @@ scripts:\n\
     console.info(this.id + ' Pull Trigger');\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 1 ].name != 'Trigger') {\n\
-      console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');\n\
+      console.warn(this.id + ' Lower_Receiver Group child 1 is not the Trigger');\n\
       return;\n\
     }\n\
 \n\

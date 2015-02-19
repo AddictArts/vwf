@@ -449,9 +449,7 @@
             view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));
 
             if (controlMenu.allActions) {
-              var an = vwfapp[
-                '//#!=asset-root-name_actionNames'
-              ];
+              var an = vwfapp[ '//#!=asset-root-name_actionNames' ];
 
               an.forEach(function(action) {
                 contextMenu[ action ] = function() { };

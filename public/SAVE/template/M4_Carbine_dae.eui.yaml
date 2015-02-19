@@ -170,7 +170,7 @@ scripts:
     console.info(this.id + ' Pull Trigger');
 
     if (this.children[ 'Lower_Receiver Group' ].children[ 1 ].name != 'Trigger') {
-      console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');
+      console.warn(this.id + ' Lower_Receiver Group child 1 is not the Trigger');
       return;
     }
 
