@@ -509,6 +509,7 @@ var onClickSaveShow = function(jqe) {
     if (fbid == '') fbid = semantic.flora_base.id;
 
     $('#semantic-filename').prop('value', fn);
+    $('#semantic-asset-name').prop('value', semantic.semantic_mapping.asset.name);
     $('#semantic-florabase-id').prop('value', fbid);
     $('#b-semantic-info').show();
 }
@@ -542,12 +543,14 @@ var onClickSaveS3D = function(jqe) {
 };
 
 var updateSemanticInfoFromHtml = function() {
-    var desc = $('#semantic-desc').val(),
+    var assetname = $('#semantic-asset-name').val(),
+        desc = $('#semantic-desc').val(),
         auth = $('#semantic-auth').val(),
         created = $('#semantic-created').val(),
         modified = $('#semantic-modified').val(),
         flora_base_id = $('#semantic-florabase-id').val();
 
+    semantic.semantic_mapping.asset.name = semantic.grouping.name = assetname;
     semantic.head.description = desc;
     semantic.head.author = auth;
     semantic.head.created = created;

@@ -157,7 +157,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         init: function() {\n\
           this.cameraStartTranslation = vwf.getProperty(vwfapp.cameraId, 'translation');\n\
           this.cameraStartRotation = vwf.getProperty(vwfapp.cameraId, 'rotation');\n\
-          vwf.setProperty(vwfapp.appId, 'cameraTarget', [ 'M4_Carbine_dae' ]);\n\
+          vwf.setProperty(vwfapp.appId, 'cameraTarget', [ '//#!=asset-root-name' ]);\n\
         }\n\
       };\n\
       var contextMenu = {\n\
@@ -172,40 +172,40 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         contextActive: false,\n\
         guiref: { ctx: [ ] },\n\
         defaultPoint: function() {\n\
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'Point', [ vwfapp.M4_Carbine_daeId ]);\n\
+          //#!=vwf-kernel-call-method-asset-root-name-id 'Point', [ vwfapp.//#!=asset-root-nameId ]);\n\
           handleContextMenu();\n\
         },\n\
         Semi: function() {\n\
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Semi' ]);\n\
+          //#!=vwf-kernel-call-method-asset-root-name-id 'SelectSwitchPosition', [ 'Semi' ]);\n\
           handleContextMenu();\n\
         },\n\
         Safe: function() {\n\
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Safe' ]);\n\
+          //#!=vwf-kernel-call-method-asset-root-name-id 'SelectSwitchPosition', [ 'Safe' ]);\n\
           handleContextMenu();\n\
         },\n\
         Burst: function() {\n\
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'SelectSwitchPosition', [ 'Burst' ]);\n\
+          //#!=vwf-kernel-call-method-asset-root-name-id 'SelectSwitchPosition', [ 'Burst' ]);\n\
           handleContextMenu();\n\
         },\n\
         Detach: function(name) {\n\
           switch (name) {\n\
           case 'Gun_Carrying_Handle':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachTheCarryHandle');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'DetachTheCarryHandle');\n\
             break;\n\
           case 'Lower_Handguard':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachLowerHandguard');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'DetachLowerHandguard');\n\
             break;\n\
           case 'Receiver Group':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperFromLowerReceiver');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'DetachUpperFromLowerReceiver');\n\
             break;\n\
           case 'Small_Sling_Swivel':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSmallSlingSwivel');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'DetachSmallSlingSwivel');\n\
             break;\n\
           case 'Swivel_LAMA1259863095':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachSwivel');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'DetachSwivel');\n\
             break;\n\
           case 'Upper_Handguard':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'DetachUpperHandguard');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'DetachUpperHandguard');\n\
             break;\n\
           }\n\
 \n\
@@ -214,80 +214,80 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         Inspect: function(name) {\n\
           switch (name) {\n\
           case 'Ejection_Port_Cover':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'InspectChamberGroup');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'InspectChamberGroup');\n\
             break;\n\
           }\n\
         },\n\
         Loosen: function(name) {\n\
-          vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'LoosenNut', [ name ]);\n\
+          //#!=vwf-kernel-call-method-asset-root-name-id 'LoosenNut', [ name ]);\n\
         },\n\
         Pivot: function(name) {\n\
           switch (name) {\n\
           case 'Receiver Group':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PivotUpperFromLowerReceiver');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PivotUpperFromLowerReceiver');\n\
             break;\n\
           }\n\
         },\n\
         Press: function(name) {\n\
           switch (name) {\n\
           case 'Handguard_Slip_Ring_LAMA918813252':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PressHandguardSlipRing');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PressHandguardSlipRing');\n\
             break;\n\
           }          \n\
         },\n\
         Pull: function(name) {\n\
           switch (name) {\n\
           case 'Pivot_Pin':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullPivotPin');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PullPivotPin');\n\
             break;\n\
           case 'Takedown_Pin':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTakedownPin');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PullTakedownPin');\n\
             break;\n\
           case 'Trigger':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullTrigger');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PullTrigger');\n\
             break;\n\
           }\n\
         },\n\
         PullAndHold: function(name) {\n\
           switch (name) {\n\
           case 'Charging_Handle':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PullAndHoldChargingHandle');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PullAndHoldChargingHandle');\n\
             break;\n\
           }\n\
         },\n\
         PushAndHold: function(name) {\n\
           switch (name) {\n\
           case 'Bolt_Catch':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushAndHoldBoltCatchBottom');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PushAndHoldBoltCatchBottom');\n\
             break;\n\
           }\n\
         },\n\
         Push: function(name) {\n\
           switch (name) {\n\
           case 'Bolt_Catch':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushBoltCatchTop');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PushBoltCatchTop');\n\
             break;\n\
           case 'Charging_Handle':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushChargingHandle');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PushChargingHandle');\n\
             break;\n\
           case 'Magazine_Catch':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushMagazineReleaseButton');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PushMagazineReleaseButton');\n\
             break;\n\
           case 'Pivot_Pin':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushPivotPin');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PushPivotPin');\n\
             break;\n\
           case 'Takedown_Pin':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PushTakedownPin');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PushTakedownPin');\n\
             break;\n\
           }\n\
         },\n\
         Release: function(name) {\n\
           switch (name) {\n\
           case 'Bolt_Catch':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseBoltCatchBottom');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'ReleaseBoltCatchBottom');\n\
             break;\n\
           case 'Charging_Handle':\n\
-            vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'ReleaseChargingHandle');\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'ReleaseChargingHandle');\n\
             break;\n\
           }\n\
         },\n\
@@ -338,7 +338,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
           this.controlGUI.add(controlMenu, 'cameraZoom', 0, 90).step(1).name('Zoom').onChange(function(value) {\n\
             vwf_view.kernel.callMethod(vwfapp.appId, 'cameraZoom', [ value ]);\n\
           }).onFinishChange(function(value) {\n\
-            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraLookAt', [ 'M4_Carbine_dae' ]);\n\
+            vwf_view.kernel.callMethod(vwfapp.appId, 'cameraLookAt', [ '//#!=asset-root-name' ]);\n\
           });\n\
 \n\
           if (vwfapp.instructorMode) view.guiref.saveSolutionRef = this.controlGUI.add(controlMenu, 'saveSolution').name('Save Solution');\n\
@@ -454,7 +454,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'closeCtxMenu').name('(X) Close'));\n\
 \n\
             if (controlMenu.allActions) {\n\
-              vwfapp.M4_Carbine_dae_actionNames.forEach(function(action) {\n\
+              var an = vwfapp[ '//#!=asset-root-name_actionNames' ];\n\
+\n\
+              an.forEach(function(action) {\n\
                 contextMenu[ action ] = function() { };\n\
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, action));\n\
               });\n\
@@ -931,7 +933,7 @@ scripts:\n\
     console.info(this.id + ' Pull Trigger');\n\
 \n\
     if (this.children[ 'Lower_Receiver Group' ].children[ 1 ].name != 'Trigger') {\n\
-      console.warn(this.id + ' Lower_Receiver Group child 9 is not the Trigger');\n\
+      console.warn(this.id + ' Lower_Receiver Group child 1 is not the Trigger');\n\
       return;\n\
     }\n\
 \n\

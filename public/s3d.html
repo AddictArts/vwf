@@ -66,7 +66,7 @@
       background-color: #4C3327;    /* Footer */
       color: white;
       overflow: auto;
-    height: 300;
+      height: 300;
     }
     table, th, td {
       border: 1px solid black;
@@ -91,11 +91,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
     #b-save-buttons {
       float: right;
     }
-
+    #semantic-desc, #semantic-auth, #semantic-created, #semantic-modified, #semantic-florabase-id {
+      display: none;
+    }
   </style>
   <link rel="stylesheet" href="/js/themes/default/style.min.css" />
 
@@ -180,6 +181,7 @@
 </div>
 <div id="b-semantic-info">
   <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
+  <input id="semantic-asset-name" name="Asset name" value="" type="text" placeholder="Asset name:" size="64"><br>
   <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
   <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
   <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>

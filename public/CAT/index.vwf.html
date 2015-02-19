@@ -159,6 +159,9 @@
                 '      translation: ' + translation + '\n' +
                 '      rotation: ' + rotation
               );
+            } else if (tt.__behave) {
+              index_vwf_html = index_vwf_html.replace(/\/\/#!=asset-root-name/g, tt.__name);
+              index_vwf_html = index_vwf_html.replace(/\/\/#!=vwf-kernel-call-method-asset-root-name-id/g, 'vwf_view.kernel.callMethod(vwfapp.' + tt.__name + 'Id,');
             } else {
               tt.__translation = translation;
               tt.__rotation = rotation;
@@ -357,7 +360,7 @@
           rotation: 0,
           visible: true,
           static: false,
-          behave: true
+          behave: false
         };
 
         assetPropertyFolder.add(xyzo, 'x').onFinishChange(function(newX) { vwf.setProperty(assetVwfId, 'translation', [ newX, xyzo.y, xyzo.z ]); });
