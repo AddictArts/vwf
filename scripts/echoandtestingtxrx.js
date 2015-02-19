@@ -224,7 +224,7 @@ routes.get('/PutExercise/inventory', function(req, res) {
            ID: "myM4"
         }
         , {
-           name: "* Shooting Range", // for testing a not auto-load range instancing
+           name: "Shooting Range (!Auto)", // for testing a not auto-load range instancing
            ID: "myRange"
         }]
     };

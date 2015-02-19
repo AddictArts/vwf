@@ -103,6 +103,7 @@
         instructorMode: false,
         assessmentActive: false,
         cameraId: undefined,
+        trayItemsNotInstanced: 0,
         path: window.location.pathname.split('/').slice(0, -2).join('/')
       };
       var toolTrayMenu = { };
@@ -289,8 +290,9 @@
         init: function() {
           this.toolTrayGUI = new dat.GUI();
           this.toolTrayGUI.name = 'Tool Tray';
+          trayItemsNotInstanced = vwfapp.tooltray.length;
 
-          for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {
+          for (var index = 0, l = trayItemsNotInstanced; index < l; index++) {
             toolTrayMenu[ 'instance' + index ] = instance(index);
             view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);
           }
@@ -366,6 +368,7 @@
 
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model
           view.toolTrayGUI.remove(view.guiref[ index ]);
+          trayItemsNotInstanced--;
           vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);
         };
       }
@@ -426,7 +429,9 @@
             vwfapp[ methodValue + 'Id' ] = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
             vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');
-            $('.dg.ac').toggle(); // hide / remove the tray menu //XXX we need to see if other things are in the tray before toggling it away
+            
+            if (trayItemsNotInstanced === 0) $('.dg.ac').toggle(); // hide / remove the tray menu
+            
             // addActionsToTrayMenu();
           }
         };

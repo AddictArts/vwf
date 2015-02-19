@@ -108,6 +108,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         instructorMode: false,\n\
         assessmentActive: false,\n\
         cameraId: undefined,\n\
+        trayItemsNotInstanced: 0,\n\
         path: window.location.pathname.split('/').slice(0, -2).join('/')\n\
       };\n\
       var toolTrayMenu = { };\n\
@@ -294,8 +295,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         init: function() {\n\
           this.toolTrayGUI = new dat.GUI();\n\
           this.toolTrayGUI.name = 'Tool Tray';\n\
+          trayItemsNotInstanced = vwfapp.tooltray.length;\n\
 \n\
-          for (var index = 0, l = vwfapp.tooltray.length; index < l; index++) {\n\
+          for (var index = 0, l = trayItemsNotInstanced; index < l; index++) {\n\
             toolTrayMenu[ 'instance' + index ] = instance(index);\n\
             view.guiref[ index ] = this.toolTrayGUI.add(toolTrayMenu, 'instance' + index).name(vwfapp.tooltray[ index ].name);\n\
           }\n\
@@ -371,6 +373,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
 \n\
           Pace.restart(); // Loading the asset takes a long time, show the busy status, look for Pace.stop() after initInstance is called in the model\n\
           view.toolTrayGUI.remove(view.guiref[ index ]);\n\
+          trayItemsNotInstanced--;\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'instance', [ vwfapp.tooltray[ index ].name, vwfapp.tooltray[ index ].ID ]);\n\
         };\n\
       }\n\
@@ -431,7 +434,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             vwfapp[ methodValue + 'Id' ] = assetVwfId;\n\
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');\n\
             vwfapp[ methodValue + '_actionNames' ] = vwf.getProperty(assetVwfId, 'actionNames');\n\
-            $('.dg.ac').toggle(); // hide / remove the tray menu //XXX we need to see if other things are in the tray before toggling it away\n\
+            \n\
+            if (trayItemsNotInstanced === 0) $('.dg.ac').toggle(); // hide / remove the tray menu\n\
+            \n\
             // addActionsToTrayMenu();\n\
           }\n\
         };\n\
