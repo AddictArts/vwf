@@ -94,7 +94,7 @@
     #b-save-buttons {
       float: right;
     }
-    #semantic-desc, #semantic-auth, #semantic-created, #semantic-modified {
+    #semantic-desc, #semantic-auth, #semantic-created, #semantic-modified, #semantic-florabase-id {
       display: none;
     }
   </style>
@@ -180,16 +180,16 @@
   </div>
 </div>
 <div id="b-semantic-info">
-  <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br></input>
-  <input id="semantic-asset-name" name="Asset name" value="" type="text" placeholder="Asset name:" size="64"><br></input>
-  <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br></input>
-  <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br></input>
-  <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br></input>
-  <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br></input>
-  <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br></input>
+  <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
+  <input id="semantic-asset-name" name="Asset name" value="" type="text" placeholder="Asset name:" size="64"><br>
+  <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
+  <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
+  <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
+  <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
+  <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
   <div id="b-save-buttons">
-    <input id="cancel-button" name="Cancel" value="Ok" type="button"></input>
-    <input id="save-button-s3d" name="Save" value="Save" type="button"></input>
+    <input id="cancel-button" name="Cancel" value="Ok" type="button">
+    <input id="save-button-s3d" name="Save" value="Save" type="button">
   </div>
 </div>
 <script src="/js/s3d.refactor.js"></script>
