@@ -66,7 +66,7 @@
       background-color: #4C3327;    /* Footer */
       color: white;
       overflow: auto;
-    height: 300;
+      height: 300;
     }
     table, th, td {
       border: 1px solid black;
@@ -91,11 +91,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
     #b-save-buttons {
       float: right;
     }
-
+    #semantic-desc, #semantic-auth, #semantic-created, #semantic-modified {
+      display: none;
+    }
   </style>
   <link rel="stylesheet" href="/js/themes/default/style.min.css" />
 
@@ -179,15 +180,16 @@
   </div>
 </div>
 <div id="b-semantic-info">
-  <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br>
-  <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br>
-  <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br>
-  <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br>
-  <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br>
-  <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br>
+  <input id="semantic-filename" name="Filename" value="" type="text" placeholder="Filename:" size="64"><br></input>
+  <input id="semantic-asset-name" name="Asset Name" value="" type="text" placeholder="Asset Name:" size="64"><br></input>
+  <input id="semantic-desc" name="Description" value="" type="text" placeholder="Description:" size="64"><br></input>
+  <input id="semantic-auth" name="Author" value="" type="text" placeholder="Author:" size="32"><br></input>
+  <input id="semantic-created" name="Created" value="" type="text" placeholder="Created:" size="32"><br></input>
+  <input id="semantic-modified" name="Modified" value="" type="text" placeholder="Modified:" size="32"><br></input>
+  <input id="semantic-florabase-id" name="Flora_base_id" value="" type="text" placeholder="Flora base id:" size="32"><br></input>
   <div id="b-save-buttons">
-    <input id="cancel-button" name="Cancel" value="Ok" type="button">
-    <input id="save-button-s3d" name="Save" value="Save" type="button">
+    <input id="cancel-button" name="Cancel" value="Ok" type="button"></input>
+    <input id="save-button-s3d" name="Save" value="Save" type="button"></input>
   </div>
 </div>
 <script src="/js/s3d.refactor.js"></script>
