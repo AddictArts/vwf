@@ -509,6 +509,7 @@ var onClickSaveShow = function(jqe) {
     if (fbid == '') fbid = semantic.flora_base.id;
 
     $('#semantic-filename').prop('value', fn);
+    $('#semantic-asset-name').prop('value', semantic.semantic_mapping.asset.name);
     $('#semantic-florabase-id').prop('value', fbid);
     $('#b-semantic-info').show();
 }
