@@ -420,7 +420,7 @@
             console.info('initInstance completed for assetVwfId:' + assetVwfId);
             vwfapp.tooltray[ view.guiref.instanceIndex ].__name =  methodValue;
             vwfapp.tooltray[ view.guiref.instanceIndex ].__static = false;
-            vwfapp.tooltray[ view.guiref.instanceIndex ].__behave = true;
+            vwfapp.tooltray[ view.guiref.instanceIndex ].__behave = false;
             vwfapp.tooltray[ view.guiref.instanceIndex ].__assetVwfId = assetVwfId;
             vwfapp[ assetVwfId ] = vwf.getProperty(assetVwfId, '__idToName');
           }
