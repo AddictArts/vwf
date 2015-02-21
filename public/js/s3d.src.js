@@ -384,14 +384,17 @@ var createRepoTree = function(data, elemSelector, repoName, onSelect) {
         },
         plugins : [ 'search' ]
     }).on('changed.jstree', function(jqe, data) {
+        var tref = $.jstree.reference(elemSelector);
+
         if (data.node.parent == '#') { // The repository titled root deselect if selected
-            $.jstree.reference(elemSelector).deselect_node(data.selected);
+            tref.deselect_node(data.selected);
             return;
         }
 
         if (data.action == 'select_node') {
             var id = data.selected[ 0 ];
 
+            tref.close_all();
             console.info('Repository selection: ' + id);
             onSelect(treeId2Url[ id ], id);
         }
