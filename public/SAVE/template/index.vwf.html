@@ -104,6 +104,7 @@
         assessmentActive: false,
         cameraId: undefined,
         trayItemsNotInstanced: 0,
+        resetClicked: false,
         path: window.location.pathname.split('/').slice(0, -2).join('/')
       };
       var toolTrayMenu = { };
@@ -118,6 +119,7 @@
         cameraZoom: 0,
         allActions: false,
         reset: function() {
+          vwfapp.resetClicked = true;
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
         pathLink: function() {
@@ -393,8 +395,10 @@
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
           if (nodeId == vwfapp.appId) {
-            if (propertyName == 'backendResetSent') {
+            if (propertyName == 'backendResetSent' && vwfapp.resetClicked) {
               if (propertyValue) window.location.href = '../';
+
+              vwfapp.resetClicked = false;
             }
           }
         };
@@ -407,6 +411,7 @@
               vwfapp.tooltray = data.tooltray;
 
               if (data.instructorMode) vwfapp.instructorMode = true;
+              else vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
 
               view.init();
               vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);

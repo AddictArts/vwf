@@ -95,7 +95,8 @@
       var vwfapp = {
         appId: vwf_view.kernel.application(),
         cameraId: undefined,
-        tooltray: undefined
+        tooltray: undefined,
+        resetClicked: false
       };
       var toolTrayMenu = { };
       var controlMenu = {
@@ -128,6 +129,7 @@
           }
         },
         reset: function() {
+          vwfapp.resetClicked = true;
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
         },
         saveExercise: function() {
@@ -159,12 +161,14 @@
                 '      translation: ' + translation + '\n' +
                 '      rotation: ' + rotation
               );
-            } else if (tt.__behave) {
-              index_vwf_html = index_vwf_html.replace(/\/\/#!=asset-root-name/g, tt.__name);
-              index_vwf_html = index_vwf_html.replace(/\/\/#!=vwf-kernel-call-method-asset-root-name-id/g, 'vwf_view.kernel.callMethod(vwfapp.' + tt.__name + 'Id,');
             } else {
               tt.__translation = translation;
               tt.__rotation = rotation;
+  
+              if (tt.__behave) {
+                index_vwf_html = index_vwf_html.replace(/\/\/#!=asset-root-name/g, tt.__name);
+                index_vwf_html = index_vwf_html.replace(/\/\/#!=vwf-kernel-call-method-asset-root-name-id/g, 'vwf_view.kernel.callMethod(vwfapp.' + tt.__name + 'Id,');
+              }
             }
           }
 
@@ -388,8 +392,10 @@
         // Property observers...
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {
           if (nodeId == vwfapp.appId) {
-            if (propertyName == 'backendResetSent') {
+            if (propertyName == 'backendResetSent' && vwfapp.resetClicked) {
               if (propertyValue) window.location.href = '/CAT'; //reload(true); // window.location.href = window.location.href;
+
+              vwfapp.resetClicked = false;
             }
           }
         };
@@ -397,6 +403,8 @@
         // notice the methodValue for the function return value as needed...
         vwf_view.calledMethod = function(nodeId, methodName, methodParameters, methodValue) {
           if (methodName == 'processSaveDotJson') {
+            vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');
+
             var callback = function(data) {
               console.info('the view tooltray data is ' + JSON.stringify(data));
               vwfapp.tooltray = data.tooltray;
