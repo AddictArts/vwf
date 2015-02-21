@@ -109,6 +109,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         assessmentActive: false,\n\
         cameraId: undefined,\n\
         trayItemsNotInstanced: 0,\n\
+        resetClicked: false,\n\
         path: window.location.pathname.split('/').slice(0, -2).join('/')\n\
       };\n\
       var toolTrayMenu = { };\n\
@@ -123,6 +124,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         cameraZoom: 0,\n\
         allActions: false,\n\
         reset: function() {\n\
+          vwfapp.resetClicked = true;\n\
           vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');\n\
         },\n\
         pathLink: function() {\n\
@@ -398,8 +400,10 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         // Property observers...\n\
         vwf_view.satProperty = function(nodeId, propertyName, propertyValue) {\n\
           if (nodeId == vwfapp.appId) {\n\
-            if (propertyName == 'backendResetSent') {\n\
+            if (propertyName == 'backendResetSent' && vwfapp.resetClicked) {\n\
               if (propertyValue) window.location.href = '../';\n\
+\n\
+              vwfapp.resetClicked = false;\n\
             }\n\
           }\n\
         };\n\
@@ -412,6 +416,7 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               vwfapp.tooltray = data.tooltray;\n\
 \n\
               if (data.instructorMode) vwfapp.instructorMode = true;\n\
+              else vwf_view.kernel.callMethod(vwfapp.appId, 'resetBackend');\n\
 \n\
               view.init();\n\
               vwf_view.kernel.callMethod(vwfapp.appId, 'instanceAutoLoads', [ ]);\n\
