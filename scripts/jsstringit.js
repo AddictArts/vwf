@@ -26,6 +26,7 @@ scripts:\n\
     //#!=asset-translation;\n\
     //#!=asset-rotation;\n\
   };\n\
+  //# sourceURL=//#!=asset-root-name.eui\n\
 ";
 
     puts('// Copyright 2014, SRI International');
