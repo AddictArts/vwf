@@ -15,8 +15,8 @@ TOW.loadCollada('xyz.dae', function() {
 
 TOW.loadColladas([ 'a.dae', 'b.dae' ], function() {
   TOW.render(function(delta) {
-    $a..rotation.y += 0.005;
-    $b..rotation.y += Math.PI * delta;
+    $a.rotation.y += 0.005;
+    $b.rotation.y += Math.PI * delta;
   });
 });
 
@@ -90,7 +90,7 @@ TOW.changeContainerById = function(id) {
   TOW.Camera =  new THREE.PerspectiveCamera(TOW.Fov, TOW.ContainerWidth / TOW.ContainerHeight, TOW.Near, TOW.Far);;
   TOW.Canvas = container;
 
-  if (container.tagName == 'CANVAS') {
+  if (container.tagName === 'CANVAS') {
     TOW.Renderer = new THREE.WebGLRenderer({ canvas: TOW.Canvas, width: TOW.ContainerWidth, height: TOW.ContainerHeight, antialias: true });
     TOW.Renderer.setSize(TOW.ContainerWidth, TOW.ContainerHeight);
   } else {
