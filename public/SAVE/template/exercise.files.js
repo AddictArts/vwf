@@ -240,6 +240,9 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
         },\n\
         Pull: function(name) {\n\
           switch (name) {\n\
+          case 'Charging_Handle':\n\
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PullChargingHandle');\n\
+            break;\n\
           case 'Pivot_Pin':\n\
             //#!=vwf-kernel-call-method-asset-root-name-id 'PullPivotPin');\n\
             break;\n\
@@ -475,6 +478,15 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
             var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];\n\
 \n\
             switch (objectName) {\n\
+            case 'Bolt_Cam_Pin':\n\
+            case 'Bolt':\n\
+              contextMenu.Extract = function() {\n\
+                handleContextMenu();\n\
+                view.Extract(objectName);\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Extract'));\n\
+              break;\n\
             case 'Bolt_Catch':\n\
               contextMenu.Push = function() {\n\
                 handleContextMenu();\n\
@@ -497,20 +509,25 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               break;\n\
             case 'Charging_Handle_Latch':\n\
             case 'Charging_Handle':\n\
+              contextMenu.Pull = function() {\n\
+                handleContextMenu();\n\
+                view.Pull(objectName);\n\
+              };\n\
               contextMenu.PullAndHold = function() {\n\
                 handleContextMenu();\n\
-                view.PullAndHold('Charging_Handle');\n\
+                view.PullAndHold(objectName);\n\
               };\n\
               contextMenu.Push = function() {\n\
                 handleContextMenu();\n\
-                view.Push('Charging_Handle');\n\
+                view.Push(objectName);\n\
               };\n\
               contextMenu.Release = function() {\n\
                 handleContextMenu();\n\
-                view.Release('Charging_Handle');\n\
+                view.Release(objectName);\n\
               };\n\
 \n\
               if (!controlMenu.allActions) {\n\
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));\n\
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));\n\
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));\n\
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));\n\
@@ -523,6 +540,15 @@ var index_vwf_html = "\<!-- Copyright 2014, SRI International -->\n\
               };\n\
 \n\
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));\n\
+              break;\n\
+            case 'Firing_Pin_Retaining_Pin':\n\
+            case 'Firing_Pin':\n\
+              contextMenu.Extract = function() {\n\
+                handleContextMenu();\n\
+                view.Extract(objectName);\n\
+              };\n\
+\n\
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Extract'));\n\
               break;\n\
             case 'Gun_Carrying_Handle':\n\
               contextMenu.Detach = function() {\n\
@@ -803,6 +829,11 @@ methods:\n\
   DetachUpperFromLowerReceiver:\n\
   LoosenNut:\n\
   DetachTheCarryHandle:\n\
+  PullChargingHandle:\n\
+  ExtractFiringPinRetainingPin:\n\
+  ExtractFiringPin:\n\
+  ExtractBoltCamPin:\n\
+  ExtractBolt:\n\
 scripts:\n\
 - |\n\
   this.setup = function() {\n\
@@ -1125,6 +1156,56 @@ scripts:\n\
     // arguments: detached from, thing detached\n\
     this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Gun_Carrying_Handle Group_KbId' ] ], names: [ 'Gun_Carrying_Handle Group' ] });\n\
   };\n\
+\n\
+  this.PullChargingHandle = function() {\n\
+    console.info(this.id + ' Pull Charging_Handle');\n\
+\n\
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].name != 'Casing4') {\n\
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 11 is not the Casing4');\n\
+        return;\n\
+    }\n\
+\n\
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].name != 'Projectile4') {\n\
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 12 is not the Projectile4');\n\
+        return;\n\
+    }\n\
+\n\
+    this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.2, 0, 0 ], 0.25);\n\
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].visible = false;\n\
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].visible = false;\n\
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].translateTo([ -0.2, 0, 0 ], 0.25);\n\
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].future(0.5).translateBy([ 0, 0.05, 0 ], 0.25);\n\
+    // arguments: thing pulled\n\
+    this.activity({ action: 'Pull', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });\n\
+  };\n\
+\n\
+  this.ExtractFiringPinRetainingPin = function() {\n\
+    console.info(this.id + ' Extract Firing_Pin_Retaining_Pin');\n\
+\n\
+    // arguments: thing extracted, extracted from\n\
+    this.activity({ action: 'Extract', arguments: [ this.Firing_Pin_Retaining_Pin_KbId, this[ 'Key_and_Bolt_Carrier_Assembly Group_KbId' ] ], names: [ 'Firing_Pin_Retaining_Pin' ] });\n\
+  }\n\
+\n\
+  this.ExtractFiringPin = function() {\n\
+    console.info(this.id + ' Extract Firing_Pin');\n\
+\n\
+    // arguments: thing extracted, extracted from\n\
+    this.activity({ action: 'Extract', arguments: [ this.Firing_Pin_KbId, this[ 'Key_and_Bolt_Carrier_Assembly Group_KbId' ] ], names: [ 'Firing_Pin' ] });\n\
+  }\n\
+\n\
+  this.ExtractBoltCamPin = function() {\n\
+    console.info(this.id + ' Extract Bolt_Cam_Pin');\n\
+\n\
+    // arguments: thing extracted, extracted from\n\
+    this.activity({ action: 'Extract', arguments: [ this.Bolt_Cam_Pin_KbId, this[ 'Bolt Group_KbId' ] ], names: [ 'Bolt_Cam_Pin' ] });\n\
+  }\n\
+\n\
+  this.ExtractBolt = function() {\n\
+    console.info(this.id + ' Extract Bolt');\n\
+\n\
+    // arguments: thing extracted, extracted from\n\
+    this.activity({ action: 'Extract', arguments: [ this.Bolt_KbId, this[ 'Bolt Group_KbId' ] ], names: [ 'Bolt' ] });\n\
+  }\n\
   //# sourceURL=//#!=asset-root-name.eui\n\
 ";
 
@@ -1142,4 +1223,5 @@ scripts:\n\
     //#!=asset-translation;\n\
     //#!=asset-rotation;\n\
   };\n\
+  //# sourceURL=//#!=asset-root-name.eui\n\
 ";

@@ -62,7 +62,7 @@ routes.get(routes.ROOTANY, function(req, res) {
     } catch (e) { status = 404 }
 
     res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
-    res.send(data, status, req.contentType);
+    res.send(data, status, req.contentType? req.contentType: PLAINt);
 });
 
 // jQuery.ajax({

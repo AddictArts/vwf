@@ -235,6 +235,9 @@
         },
         Pull: function(name) {
           switch (name) {
+          case 'Charging_Handle':
+            //#!=vwf-kernel-call-method-asset-root-name-id 'PullChargingHandle');
+            break;
           case 'Pivot_Pin':
             //#!=vwf-kernel-call-method-asset-root-name-id 'PullPivotPin');
             break;
@@ -470,6 +473,15 @@
             var objectName = vwfapp[ nodeId ][ eventArgs[ 1 ].pickID ];
 
             switch (objectName) {
+            case 'Bolt_Cam_Pin':
+            case 'Bolt':
+              contextMenu.Extract = function() {
+                handleContextMenu();
+                view.Extract(objectName);
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Extract'));
+              break;
             case 'Bolt_Catch':
               contextMenu.Push = function() {
                 handleContextMenu();
@@ -492,20 +504,25 @@
               break;
             case 'Charging_Handle_Latch':
             case 'Charging_Handle':
+              contextMenu.Pull = function() {
+                handleContextMenu();
+                view.Pull(objectName);
+              };
               contextMenu.PullAndHold = function() {
                 handleContextMenu();
-                view.PullAndHold('Charging_Handle');
+                view.PullAndHold(objectName);
               };
               contextMenu.Push = function() {
                 handleContextMenu();
-                view.Push('Charging_Handle');
+                view.Push(objectName);
               };
               contextMenu.Release = function() {
                 handleContextMenu();
-                view.Release('Charging_Handle');
+                view.Release(objectName);
               };
 
               if (!controlMenu.allActions) {
+                view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Pull'));
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'PullAndHold'));
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Push'));
                 view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Release'));
@@ -518,6 +535,15 @@
               };
 
               if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Inspect'));
+              break;
+            case 'Firing_Pin_Retaining_Pin':
+            case 'Firing_Pin':
+              contextMenu.Extract = function() {
+                handleContextMenu();
+                view.Extract(objectName);
+              };
+
+              if (!controlMenu.allActions) view.guiref.ctx.push(view.contextGUI.add(contextMenu, 'Extract'));
               break;
             case 'Gun_Carrying_Handle':
               contextMenu.Detach = function() {

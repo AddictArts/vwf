@@ -30,6 +30,11 @@ methods:
   DetachUpperFromLowerReceiver:
   LoosenNut:
   DetachTheCarryHandle:
+  PullChargingHandle:
+  ExtractFiringPinRetainingPin:
+  ExtractFiringPin:
+  ExtractBoltCamPin:
+  ExtractBolt:
 scripts:
 - |
   this.setup = function() {
@@ -352,4 +357,54 @@ scripts:
     // arguments: detached from, thing detached
     this.activity({ action: 'Detach', arguments: [ this[ 'Upper_Receiver Group_KbId' ], this[ 'Gun_Carrying_Handle Group_KbId' ] ], names: [ 'Gun_Carrying_Handle Group' ] });
   };
+
+  this.PullChargingHandle = function() {
+    console.info(this.id + ' Pull Charging_Handle');
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].name != 'Casing4') {
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 11 is not the Casing4');
+        return;
+    }
+
+    if (this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].name != 'Projectile4') {
+        console.warn(this.id + ' Upper_Receiver Group->Key_and_Bolt_Carrier_Assembly Group->Bolt Group child 12 is not the Projectile4');
+        return;
+    }
+
+    this.children[ 'Upper_Receiver Group' ].children[ 'Charging_Handle Group' ].translateTo([ -0.2, 0, 0 ], 0.25);
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 11 ].visible = false;
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].children[ 'Bolt Group' ].children[ 12 ].visible = false;
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].translateTo([ -0.2, 0, 0 ], 0.25);
+    this.children[ 'Upper_Receiver Group' ].children[ 'Key_and_Bolt_Carrier_Assembly Group' ].future(0.5).translateBy([ 0, 0.05, 0 ], 0.25);
+    // arguments: thing pulled
+    this.activity({ action: 'Pull', arguments: [ this[ 'Charging_Handle Group_KbId' ] ], names: [ 'Charging_Handle Group' ] });
+  };
+
+  this.ExtractFiringPinRetainingPin = function() {
+    console.info(this.id + ' Extract Firing_Pin_Retaining_Pin');
+
+    // arguments: thing extracted, extracted from
+    this.activity({ action: 'Extract', arguments: [ this.Firing_Pin_Retaining_Pin_KbId, this[ 'Key_and_Bolt_Carrier_Assembly Group_KbId' ] ], names: [ 'Firing_Pin_Retaining_Pin' ] });
+  }
+
+  this.ExtractFiringPin = function() {
+    console.info(this.id + ' Extract Firing_Pin');
+
+    // arguments: thing extracted, extracted from
+    this.activity({ action: 'Extract', arguments: [ this.Firing_Pin_KbId, this[ 'Key_and_Bolt_Carrier_Assembly Group_KbId' ] ], names: [ 'Firing_Pin' ] });
+  }
+
+  this.ExtractBoltCamPin = function() {
+    console.info(this.id + ' Extract Bolt_Cam_Pin');
+
+    // arguments: thing extracted, extracted from
+    this.activity({ action: 'Extract', arguments: [ this.Bolt_Cam_Pin_KbId, this[ 'Bolt Group_KbId' ] ], names: [ 'Bolt_Cam_Pin' ] });
+  }
+
+  this.ExtractBolt = function() {
+    console.info(this.id + ' Extract Bolt');
+
+    // arguments: thing extracted, extracted from
+    this.activity({ action: 'Extract', arguments: [ this.Bolt_KbId, this[ 'Bolt Group_KbId' ] ], names: [ 'Bolt' ] });
+  }
   //# sourceURL=//#!=asset-root-name.eui
