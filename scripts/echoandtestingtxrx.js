@@ -145,6 +145,20 @@ routes.get('/listfiles/collada/json', function(req, res) {
     res.send(JSON.stringify(data), 200, JSONt);
 });
 
+routes.get('/listfiles/exercise/json', function(req, res) {
+    log('...handling route GET ' + req.reqPath);
+
+    var data = [
+        'http://localhost:3001/PutExercise',
+        'http://localhost:3001/exercises/071-100-0032/step01/m4_clear',
+        'http://localhost:3001/exercises/071-100-0032/step01/m4_flora_clear',
+        'http://localhost:3001/exercises/071-100-0032/step01/m4_flora_clear_exer_ese',
+    ];
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(data), 200, JSONt);
+});
+
 routes.get('/flora/server', function(req, res) {
     log('...handling route GET ' + req.reqPath);
 
