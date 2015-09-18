@@ -87,7 +87,7 @@ routes.put(routes.PUTANY, function(req, res) {
     res.httpRes.setHeader('Access-Control-Allow-Headers', 'Authorization');
     res.httpRes.setHeader('Access-Control-Allow-Methods', 'PUT');
 
-    if (req.method == 'OPTIONS') {
+    if (req.method === 'OPTIONS') {
         res.send('', 200, PLAINt);
         return;
     }
@@ -98,7 +98,7 @@ routes.put(routes.PUTANY, function(req, res) {
         data = file + ' on the server through PUT ' + req.reqPath;
 
     // after preflight now authenticate with http basic auth
-    if (req.headers.authorization === undefined) {
+    if (req.headers.authorization == null) {
         res.httpRes.setHeader('WWW-Authenticate', 'Basic realm="echoandtestingtxrx"');
         res.send('', 401, PLAINt);
         return;
@@ -273,7 +273,7 @@ routes.post(routes.OBJ_CLEAR, function(req, res) { /* .../object */
 
     log(util.inspect(o));
 
-    if (o.type == 'create') {
+    if (o.type === 'create') {
         if (!o.auto) {
             switch (o.ID) {
             case 'myRange':
@@ -395,7 +395,7 @@ function start(routes) {
         var ndx = 2;
 
         // Check for any flag
-        if (process.argv[ ndx ] && process.argv[ ndx ].charAt(0) == '-') {
+        if (process.argv[ ndx ] && process.argv[ ndx ].charAt(0) === '-') {
             util.puts('Usage: ' + process.argv[0] + ' ' + path.basename(process.argv[ 1 ]));
             process.exit(0);
         }
@@ -497,7 +497,7 @@ var notCuidId = 0, // cuid npm package for collision resistant
             method: hreq.method,
             headers: hreq.headers,
             body: '',
-            xhr: hreq.headers[ 'x-requested-with' ] == 'XMLHttpRequest',
+            xhr: hreq.headers[ 'x-requested-with' ] === 'XMLHttpRequest',
             reqPath: decodeURIComponent(pltqs),
             contentType: req2ContentType(pltqs, hreq.headers[ 'content-type' ]),
             queryString: getTheQueryString(hreq.url),
@@ -516,7 +516,7 @@ var notCuidId = 0, // cuid npm package for collision resistant
         req.body += data;
     });
     hreq.on('end', function () {
-        req.param = qs.parse(req.queryString == '' ? req.body : req.queryString);
+        req.param = qs.parse(req.queryString === '' ? req.body : req.queryString);
         routes.dispatch(req, res);
     });
 });
