@@ -1,4 +1,20 @@
-<!-- Copyright 2014, SRI International -->
+<!--
+/*
+Copyright 2016 SRI International
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+-->
 <html>
   <head>
     <title>Exercise UI</title>
@@ -27,7 +43,7 @@
       .dg.main .close-button {
         background-color: #ccc;
       }
-       
+
       .dg.main .close-button:hover {
         background-color: #ddd;
       }
@@ -44,12 +60,12 @@
       .dg.main::-webkit-scrollbar-thumb {
         background: #bbb;
       }
-       
+
       .dg li:not(.folder) {
         background: #fafafa;
         border-bottom: 1px solid #ddd;
       }
-       
+
       .dg li.save-row .button {
         text-shadow: none !important;
       }
@@ -65,20 +81,20 @@
       .dg .cr.function:hover,.dg .cr.boolean:hover {
         background: #fff;
       }
-       
+
       .dg .c input[type=text] {
         background: #e9e9e9;
       }
-       
+
       .dg .c input[type=text]:hover {
         background: #eee;
       }
-       
+
       .dg .c input[type=text]:focus {
         background: #eee;
         color: #555;
       }
-       
+
       .dg .c .slider {
         background: #e9e9e9;
       }
@@ -228,7 +244,7 @@
           case 'Handguard_Slip_Ring_LAMA918813252':
             vwf_view.kernel.callMethod(vwfapp.M4_Carbine_daeId, 'PressHandguardSlipRing');
             break;
-          }          
+          }
         },
         Pull: function(name) {
           switch (name) {

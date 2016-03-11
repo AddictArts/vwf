@@ -1,5 +1,18 @@
-// Copyright 2015, SRI International
+/*
+Copyright 2016 SRI International
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 //--------------Initialization-------------------------
 // Global variables
 
@@ -64,40 +77,40 @@ function addClassDetailsToTable(tax) {
 
 function createLinkTable() {
   var tableDiv = document.getElementById('tableContainer');
-  
+
   table = document.createElement('TABLE');
   table.border = '1';
   tableBody = document.createElement('TBODY');
   table.appendChild(tableBody);
-  
+
   var headerRow = document.createElement('TR');
-  
+
   tableBody.appendChild(headerRow);
-  
+
   var header1 = document.createElement('TH'),
       temp1 = document.createTextNode("Count");
-  
+
   header1.appendChild(temp1);
   headerRow.appendChild(header1);
-  
+
   var header2 = document.createElement('TH'),
       temp2 = document.createTextNode("Flora Class");
-  
+
   header2.appendChild(temp2);
   headerRow.appendChild(header2);
-  
+
   var header3 = document.createElement('TH');
-  
+
   headerRow.appendChild(header3);
-  
+
   var header4 = document.createElement('TH'),
       temp4 = document.createTextNode("3D Node");
-  
+
   header4.appendChild(temp4);
   headerRow.appendChild(header4);
-  
+
   var header5 = document.createElement('TH');
-  
+
   headerRow.appendChild(header5);
   tableDiv.appendChild(table);
 }
@@ -119,13 +132,13 @@ function createClassTable() {
 
   header1.appendChild(temp1);
   headerRow.appendChild(header1);
-  
+
   var header2 = document.createElement('TH'),
       temp2 = document.createTextNode("Super Classes");
-  
+
   header2.appendChild(temp2);
   headerRow.appendChild(header2);
-  
+
   var header4 = document.createElement('TH'),
       temp4 = document.createTextNode("Types");
 
@@ -145,13 +158,13 @@ function createTableRow(currentClass, currentNode, count) {
   var tableRow = document.createElement('TR'),
       countCell = document.createElement('TD'),
       countVal = document.createTextNode(count);
-  
+
   countCell.appendChild(countVal);
   tableRow.appendChild(countCell);
-  
+
   var classCell = document.createElement('TD'),
       classVal = document.createTextNode(currentClass);
-  
+
   classCell.appendChild(classVal);
   tableRow.appendChild(classCell);
 
