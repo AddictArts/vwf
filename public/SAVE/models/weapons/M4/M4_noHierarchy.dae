@@ -5240,7 +5240,7 @@
     </geometry>
   </library_geometries>
   <library_visual_scenes>
-    <visual_scene id="VisualSceneNode" name="M4_Carbine">
+    <visual_scene id="VisualSceneNode" name="M4_lowPoly_10">
       <node id="Washer" name="Washer1" type="NODE">
         <translate sid="translate">0.1094424 0 0</translate>
         <rotate sid="rotateZ">0 0 1 0</rotate>
