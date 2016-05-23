@@ -1,5 +1,7 @@
 # SAVE Web Applications
 
+Semantically Enhanced Automated Assessment in Virtual Environments
+
 ## Installation
 
 ```
@@ -15,19 +17,28 @@ $ node node-server.js -a public
 
 The SAVE application is now up and running at [http://localhost:3000](http://localhost:3000).
 
+A brief Description of each of the "vwf" applications is below. THe default page puctured below has more details and direct access to each application.
+
 <a href="SAVE.png">![](SAVE.png)</a>
 
 ## SAVE Applications Descriptions
-#### S3D annotation
+#### S3D Annotation
+Loads and edits s3d files
 
+#### CAT (Content Assembly Tool)
+Loads s3d files into a scene for assembly, positioning, and default settings
 
-#### CAT
+#### EUI (Exercise User Interface) "Instructor"
+Load the CAT scene and perform instructor specified actions creating the "gold" standard
 
-
-#### EUI
-
+#### EUI (Exercise User Interface) "Student"
+Load the CAT scene and perform student specified actions creating and examine the your "student" assessment.
 
 ## Reference
+
+
+## Development
+
 
 ## License
 
