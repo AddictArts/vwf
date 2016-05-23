@@ -35,10 +35,26 @@ Load the CAT scene and perform instructor specified actions creating the "gold" 
 Load the CAT scene and perform student specified actions creating and examine the your "student" assessment.
 
 ## Reference
+### cat.json.js
+Set the baseServerAddress to the SAVE backend
+NOTE: For development and testing there is a provided nodejs backend server echoandtestingtxrx.js, see [Development](Development)
+```
+var __CAT = {
+    "baseServerAddress": "http://localhost:3001/CAT"
+};
+```
 
+### eui.json.js
+Set the baseServerAddress to the SAVE backend
+NOTE: For development and testing there is a provided nodejs backend server echoandtestingtxrx.js, see [Development](Development)
+```
+var __EUI = {
+    "baseServerAddress": "http://localhost:3001/PutExercise"
+};
+```
 
 ## Development
-
+### echoandtestingtxrx.js
 
 ## License
 
