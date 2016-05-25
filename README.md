@@ -72,7 +72,3 @@ var __EUI = {
 ### cameranav.save.yaml
 ### initNode3.save.yaml
 ### instance.save.yaml
-
-## License
-
-Copyright 2014 United States Government, as represented by the Secretary of Defense, Under Secretary of Defense (Personnel & Readiness) licensed under the [Apache 2.0 License](https://github.com/virtual-world-framework/vwf/blob/master/LICENSE).
