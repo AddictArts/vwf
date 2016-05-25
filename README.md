@@ -64,11 +64,39 @@ var __EUI = {
 
 ## Development
 ### echoandtestingtxrx.js
+Located in the scripts folder. It is used for simulating the SAVE backend locally.
+```
+$ node echoandtestingtxrx
 
+http://localhost:3001
+```
+### Enhancing echoandtestingtxrx
+```
+route.get()
+route.put()
+```
 
 ## dot behave (.behave) subfolder contents and technical description of each
 ### backendtxrx.sav.yaml
+Communication functions for vwf nodes
+```
+obj()
+query()
+activity()
+post()
+```
+
 ### begin.save.yaml
+Initialize the SAVE application
+```
+processSaveDotJson
+```
+
 ### cameranav.save.yaml
+Camera orbit function, vwf orbit was broken, this is a replacement
+
 ### initNode3.save.yaml
+Initialize a SAVE node3
+
 ### instance.save.yaml
+Instance a SAVE S3D mapped 3D asset into the vwf
