@@ -72,31 +72,68 @@ http://localhost:3001
 ```
 ### Enhancing echoandtestingtxrx
 ```
-route.get()
-route.put()
+route.get(routePath, function(req, res) { /* handle req and send a response */ })
+route.put(routePath, function(req, res) { /* handle req and send a response */ })
+
+routes.get('/'), function(req, res) {
+    log('...handling route GET /');
+
+    var data = "/";
+
+    res.httpRes.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(data, 200, HTMLt);
+});
 ```
 
 ## dot behave (.behave) subfolder contents and technical description of each
 ### backendtxrx.sav.yaml
 Communication functions for vwf nodes
 ```
-obj()
-query()
-activity()
-post()
+obj(data, done /* callback */)
+query(data, done /* callback */)
+activity(data, done /* callback */)
+post(json, url, done /* callback */)
+
+this.query({ type: 'Reset' }, function() { self.backendResetSent = true; });
 ```
+
+Each of these methods correspond to SAVE backend REST requests.
 
 ### begin.save.yaml
 Initialize the SAVE application
 ```
-processSaveDotJson
+processSaveDotJson()
 ```
+Each SAVE application needs the baseServerAddress, essentially this is the bootstrap the application uses to get it to the vwf nodes.
+
+```
+this.objectServerAddress = data.baseServerAddress + '/object'; // POST
+this.queryServerAddress = data.baseServerAddress + '/query'; // POST
+this.activityServerAddress = data.baseServerAddress + '/action'; // POST
+```
+The vwf root node has these properties.
 
 ### cameranav.save.yaml
 Camera orbit function, vwf orbit was broken, this is a replacement
+```
+this.cameraZoom = function(value)
+this.cameraOrbit = function(theta)
+this.cameraClearLookAt = function()
+this.cameraLookAt = function(what)
+```
 
 ### initNode3.save.yaml
 Initialize a SAVE node3
+```
+this.init = function(KbId, mgroups)
+```
+This function is called by instance.save.yaml script functions. It is not useful to a SAVE application.
 
 ### instance.save.yaml
 Instance a SAVE S3D mapped 3D asset into the vwf
+```
+this.instanceAutoLoads = function()
+this.instance = function(trayName, backEndId)
+```
+
+These methods are used by the SAVE application GUI to bootstrap the scene and instance selected semantically mapped objects in the scene.
