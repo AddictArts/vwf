@@ -70,6 +70,9 @@ $ node echoandtestingtxrx
 
 http://localhost:3001
 ```
+
+This server has a complete set of handlers for SAVE 1.2 and essentially can be used to walk all the applications through the stages of the sample exercise.
+
 ### Enhancing echoandtestingtxrx
 ```
 route.get(routePath, function(req, res) { /* handle req and send a response */ })
@@ -85,8 +88,10 @@ routes.get('/'), function(req, res) {
 });
 ```
 
+Add your own route handlers for get, put, delete, and  post. THe example above is the route "/", ex. "http://localhost" or "http://localhost/". It essentially sends the text "/" to the browser. The 200 is the http status code. Use it to send redirects 304, or errors like 503.
+
 ## dot behave (.behave) subfolder contents and technical description of each
-### backendtxrx.sav.yaml
+### backendtxrx.save.yaml
 Communication functions for vwf nodes
 ```
 obj(data, done /* callback */)
